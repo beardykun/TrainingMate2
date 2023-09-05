@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- content description -->
+    <string name="cd_agree_with_policy">ポリシーに同意する</string>
+    <string name="cd_back_button">戻る</string>
+    <string name="cd_share_on_instagram">Instagramでシェア</string>
+    <string name="cd_share_on_twitter">Twitterでシェア</string>
+    <string name="cd_share_on_facebook">Facebookでシェア</string>
+    <string name="cd_share_on_tiktok">TikTokでシェア</string>
+    <string name="cd_download_button">画像ダウンロード</string>
+    <string name="cd_generated_image">生成画像</string>
+    <string name="cd_home_button">ホーム</string>
+    <string name="cd_my_page_button">マイページ</string>
+    <string name="cd_warning_icon">警告</string>
+    <string name="cd_selected_picture">選択した画像</string>
+    <string name="cd_close">閉じる</string>
+    <string name="ct_open">開ける</string>
+    <string name="cd_share_on_wechat">Wechatでシェア</string>
+    <string name="cd_share_on_whatsapp">WhatsUpでシェア</string>
+    <string name="cd_share_on_snapchat">Snapchatでシェア</string>
+    <string name="cd_share_on_line">LINEでシェア</string>
+    <string name="cd_picture_examples">モデル画像例</string>
+
+    <!-- start screen -->
+    <string name="accept_policy_1">私は</string>
+    <string name="accept_policy_2">利用規約</string>
+    <string name="accept_policy_3">に同意し、</string>
+    <string name="accept_policy_4">プライバシーポリシー</string>
+    <string name="accept_policy_5">を読みました</string>
+
+    <!-- first example screen -->
+    <string name="upload_picture">画像を1枚アップロードするだけ⭐️</string>
+
+    <!-- upload picture screen -->
+    <string name="upload_poster">ポスターにする画像をアップロード</string>
+    <string name="selfie">セルフィ</string>
+    <string name="prohibited_pictures">画像が極端に大きい、小さい\n画像のファイルサイズ大きすぎる、小さすぎる\n複雑な背景の画像\n画像の一部が欠けている、隠されているもの\n被写体に寄りすぎているもの\n被写体から引きすぎているもの\n顔を手で覆っているもの\n顔の解像度が低いもの\n背景に文字が映っている</string>
+    <string name="yes">YES</string>
+    <string name="prompt">プロンプト</string>
+    <string name="need_permission">カメラとストレージの許可なしに写真を生成することはできません 😔\n許可してください</string>
+    <string name="generate_warning">❗️固有名詞の文字を間違えると、意図通りの画像が出力されませんのでご注意ください。モデルによってはpromptの内容を学習してない場合があり、意図通りに出力されない場合がございますのであらかじめご了承ください</string>
+    <string name="name">名前</string>
+    <string name="name_explanation">（生成したい画像の固有名詞を英語かローマ字で入力）</string>
+    <string name="prompt_explanation">どんなポスター画像にしたい？</string>
+    <string name="only_english">（英語かローマ字単語。カンマ区切り）</string>
+    <string name="different_image">AIは毎回<font color="#00FF00">違う</font>画像を出力します</string>
+    <string name="bad_examples">❗️ダメな写真の例❗</string>
+
+    <!-- sellect style screen -->
+    <string name="style_max">6つのスタイルを選択</string>
+    <string name="pix2pix">アップ画像類似：中 枚数：1 </string>
+    <string name="image2image">アップ画像類似：中 枚数：3</string>
+    <string name="text2image">アップ画像類似：低 枚数：3</string>
+    <string name="input">入力例</string>
+    <string name="output">出力例を\nタップ</string>
+
+    <!-- example screen -->
+    <string name="example_cinematic">映画のようなライティング、入力写真に近いドラマティックテイスト</string>
+    <string name="example_sexy_punk">セクシーパンクな世界観。 ポージング、衣装、背景をテキストPromptをもとに独自生成</string>
+    <string name="example_hero">ヒーローっぽいテイスト。 鮮やかな色。 ポージング、衣装、背景をテキストPromptをもとに独自生成</string>
+    <string name="example_villain">入力写真に近いダークヴィランテイスト</string>
+    <string name="example_flower">花が散りばめられた世界観。 ポージング、衣装、背景をテキストPromptをもとに独自生成</string>
+    <string name="example_cyberpunk">サイバーパンク風SF風ビューをテキストPromptをもとに独自生成</string>
+    <string name="example_graffiti">カラフルなストリート グラフィティをテキストPromptをもとに独自に生成します。入力写真とのズレあり</string>
+    <string name="example_picasso">入力写真をピカソの新しいスタイルに変換</string>
+    <string name="example_anime">入力写真を萌えアニメ風に変換します。 要素の自動生成</string>
+    <string name="example_pixel">入力写真をスタイリッシュなドット絵に変換します。</string>
+    <string name="example_fantasy">RPGゲームのような中世ファンタジーの世界観をテキストPromptをもとに独自に生成。入力写真と異なる場合があります</string>
+    <string name="example_samurai">入力写真をもとに和風サムライを制作</string>
+
+    <!-- warning page -->
+    <string name="attention">❗️注意❗️</string>
+    <string name="inaccurate_or_flawed_images">AIは、不正確で欠点のある画像を出力する場合があります。入力画像を踏襲せず、オリジナル生成（text2image）で出力されるものもありますのでご了承ください。生成結果にはアタリとハズレがあります。続行する前にこのリスクを承認してください。</string>
+    <string name="description_easy_to_output">出力しやすい画像の説明\n・鮮明で高品質な画像\n・背景がシンプル\n・コントラストがクリア\n・適切な画像サイズ\n生成に失敗した場合、成功するまでリトライは無料でできます。</string>
+    <string name="copyright_warning">あなた自身以外が描写された生成画像を商用利用する場合著作権の問題が発生する場合があります。このアプリで生成される画像は原則個人利用を目的とします。</string>
+    <string name="got_it_btn">OK! 了解!</string>
+    <string name="purchase_cancel_hint">生成に失敗し、購入をキャンセルしたい場合はストアの「お支払いと定期購入」のページからできます。</string>
+
+    <!-- billing screen -->
+    <string name="create">作成</string>
+    <string name="purchase">購入</string>
+    <string name="no_internet">インターネットにアクセスできません。 接続を確認してください。</string>
+
+    <!-- generate screen -->
+    <string name="wait_some_time">AIが生成中・・・完成まで40分ほどお待ちください。</string>
+    <string name="notification_will_come">完成したら通知でお知らせします。生成が止まってしまうため、アプリを完全に終了しないでください。（バックグランド状態であれば停止しません）特に古いデバイスは、バックグラウンドに置かれたときにアプリが強制終了または再起動される可能性があります。エラーにより生成に失敗した場合、（生成時間が1時間を超えるなど）アプリを終了し、再度写真をアップロードすると無料で生成可能です。</string>
+    <string name="wait_for_generation">生成が終わるまでお待ちください</string>
+
+    <!-- picture grid -->
+    <string name="downloaded">ダウンロードしました!!</string>
+    <string name="download_and_share"><![CDATA[画像をダウンロードして共有しよう!!]]></string>
+
+    <!-- my page -->
+    <string name="my_page">マイページ</string>
+    <string name="history">生成した画像履歴</string>
+    <string name="rate_app">アプリをレビュー</string>
+    <string name="share_app">アプリを友達に紹介</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="use_terms">利用規約</string>
+    <string name="back_btn">戻る</string>
+    <string name="error_app_not_installed">アプリがインストールされていません</string>
+
+
+</resources>

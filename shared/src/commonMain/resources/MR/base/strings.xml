@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_notification_channel_id" translatable="false">generate</string>
+
+    <!-- content description -->
+    <string name="cd_agree_with_policy">Agree with policy</string>
+    <string name="cd_back_button">Back button</string>
+    <string name="cd_share_on_instagram">Share on Instagram</string>
+    <string name="cd_share_on_twitter">Share on Twitter</string>
+    <string name="cd_share_on_facebook">Share on Facebook</string>
+    <string name="cd_share_on_tiktok">Share on Tiktok</string>
+    <string name="cd_download_button">Download image button</string>
+    <string name="cd_generated_image">Generated image</string>
+    <string name="cd_home_button">Home</string>
+    <string name="cd_my_page_button">My Page</string>
+    <string name="cd_warning_icon">Warning icon</string>
+    <string name="cd_selected_picture">Selected picture</string>
+    <string name="cd_close">Close</string>
+    <string name="ct_open">Open</string>
+    <string name="cd_share_on_wechat">Share on Wechat</string>
+    <string name="cd_share_on_whatsapp">Share on WhatsUp</string>
+    <string name="cd_share_on_snapchat">Share on Snapchat</string>
+    <string name="cd_share_on_line">Share on Line</string>
+    <string name="cd_picture_examples">Model pictures examples</string>
+
+    <!-- start screen -->
+    <string name="accept_policy_1">I agree to the </string>
+    <string name="accept_policy_2">terms of use</string>
+    <string name="accept_policy_3"> and have read the </string>
+    <string name="accept_policy_4">privacy policy</string>
+    <string name="accept_policy_5"></string>
+
+    <!-- first example screen -->
+    <string name="upload_picture">Just upload a photo</string>
+
+    <!-- upload picture screen -->
+    <string name="upload_poster">Upload an image for your poster</string>
+    <string name="selfie">Selfie</string>
+    <string name="prohibited_pictures">Images that are too large or too small\nImages with too large or too small file size\nImages with a complex background\nImages with missing or hidden parts\nImages too close to the subject\nImages too far from the subject\nImages with face covered by hand\nImages with low face resolution\nImages with text in the background</string>
+    <string name="yes">Yes</string>
+    <string name="prompt">Prompt</string>
+    <string name="need_permission">Cannot generate photo without permission for camera and storage 😔\nPlease consider giving permission</string>
+    <string name="generate_warning">❗️Please note that if you make a mistake with proper nouns, the image may not be output as intended. Some models may not have learned the content of the prompt, and may not be output as intended. Please understand this in advance</string>
+    <string name="name">Name</string>
+    <string name="name_explanation">(Enter the proper noun in English or Roman letters)</string>
+    <string name="prompt_explanation">What kind of poster image do you want?</string>
+    <string name="only_english">(English or Roman letters only, separated by commas)</string>
+    <string name="different_image">AI outputs a different image every time</string>
+    <string name="bad_examples">❗️Examples of bad photos❗</string>
+
+    <!-- select style -->
+    <string name="style_max">Select %1$d styles</string>
+    <string name="stretched_output" translatable="false">512px*1024px output:3</string>
+    <string name="pix2pix">Image Similarity: middle output: 1 </string>
+    <string name="image2image">Image Similarity: middle output: 3</string>
+    <string name="text2image">Image Similarity: low output: 3</string>
+    <string name="input">Input</string>
+    <string name="output">Tap Output Ex.</string>
+
+    <!-- example screen -->
+    <string name="example_cinematic">Lighting like a movie, dramatic taste close to input photos</string>
+    <string name="example_sexy_punk">A sexy punk world view. Independently generates posing based on prompt, clothing and background</string>
+    <string name="example_hero">Hero -like taste. Vivid color. Independently generates posing based on prompt, clothing and background</string>
+    <string name="example_villain">Dark villain taste close to input photos</string>
+    <string name="example_flower">A view of the world where flowers are scattered. Independently generates posing based on prompt, clothing and background</string>
+    <string name="example_cyberpunk">Cyberpunk -like SF -like view based on input photos</string>
+    <string name="example_graffiti">Generate colorful street graffiti independently based on prompt. There is a gap from the input photo</string>
+    <string name="example_picasso">Convert input photos to Picasso\'s new style</string>
+    <string name="example_anime">Convert the input photo into a moe anime -like style. Automatic generation of elements</string>
+    <string name="example_pixel">Convert the input photo into a stylish pixel art.</string>
+    <string name="example_fantasy">Independently generates a medieval fantasy world view like an RPG game based on prompt. Sometimes different from input photos</string>
+    <string name="example_samurai">Produced a Japanese samurai style based on input photos.</string>
+
+    <!-- warning page -->
+    <string name="attention">❗️Attention❗️</string>
+    <string name="inaccurate_or_flawed_images">AI may output inaccurate and flawed images. Please accept this RISK before proceeding. Please note that some images are output with text2image that does not follow the input image. Keep in mind that there are hits and misses.</string>
+    <string name="description_easy_to_output">Description of easy-to-output images\n・Clear and high-quality images\n・Simple background\n・Clear contrast\n・Appropriate image size\nIf the generation fails, you can retry for free until it succeeds.</string>
+    <string name="copyright_warning">There may be copyright issues if you use generated images depicting someone other than yourself for commercial purposes. Images generated by this app are primarily for personal use.</string>
+    <string name="got_it_btn">OK! GOT IT</string>
+    <string name="purchase_cancel_hint">If generation failed and you want to cancel your purchase, you can do so from the “Payments and Subscriptions” page of the store.</string>
+
+    <!-- billing screen -->
+    <string name="create">CREATE</string>
+    <string name="purchase">PURCHASE</string>
+    <string name="no_internet">Cannot access the internet. Please check your connection.</string>
+
+    <!-- generate screen -->
+    <string name="wait_some_time">Please wait about 40 minutes for generating…</string>
+    <string name="notification_will_come">We will notify you when it is completed. Don\'t close the app completely as it will stop generating. (Won\'t stop if in background) Especially older devices may kill or restart the app when put in the background. If generation fails due to an error, you can generate it for free by exiting the app (generating time exceeds 1 hour, etc.) and uploading the photo again.</string>
+    <string name="wait_for_generation">Please wait until the end of generation</string>
+
+    <!-- picture grid -->
+    <string name="downloaded">Downloaded!!</string>
+    <string name="download_and_share"><![CDATA[Download and share your avatar!!]]></string>
+
+    <!-- my page -->
+    <string name="my_page">MY PAGE</string>
+    <string name="history">Image creation history</string>
+    <string name="rate_app">Rate the app</string>
+    <string name="share_app">Share app</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="use_terms">Terms of Use</string>
+    <string name="back_btn">Back</string>
+    <string name="error_app_not_installed">App is not installed</string>
+    <string name="created_by" translatable="false">Created by #PosterAIzed App</string>
+
+</resources>

@@ -1,0 +1,6 @@
+CREATE TABLE Exercise (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    best_lifted_weight REAL NOT NULL,
+    duration INTEGER NOT NULL
+);

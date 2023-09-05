@@ -1,0 +1,9 @@
+CREATE TABLE Training (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    date INTEGER NOT NULL, -- could use a UNIX timestamp to represent the date and time
+    duration INTEGER NOT NULL,
+    total_lifted_weight REAL NOT NULL, -- changed to REAL to match Kotlin's Double
+    FOREIGN KEY(user_id) REFERENCES User(id)
+);
