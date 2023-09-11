@@ -1,9 +1,0 @@
-CREATE TABLE TrainingExercise (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  training_id INTEGER NOT NULL,
-  exercise_id INTEGER NOT NULL,
-  total_lifted_weight INTEGER NOT NULL,
-  total_time_for_sets INTEGER NOT NULL,
-  FOREIGN KEY(training_id) REFERENCES Training(id),
-  FOREIGN KEY(exercise_id) REFERENCES Exercise(id)
-);

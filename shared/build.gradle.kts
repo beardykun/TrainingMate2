@@ -55,7 +55,7 @@ kotlin {
 
                 api("moe.tlaster:precompose:1.5.0")
 
-                //implementation(Deps.kammel)
+                implementation(Deps.kammel)
             }
         }
         val commonTest by getting {

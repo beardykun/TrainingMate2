@@ -1,0 +1,30 @@
+CREATE TABLE TrainingTemplate (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    groups TEXT NOT NULL,
+    description TEXT NOT NULL
+);
+
+getTrainings:
+SELECT *
+FROM TrainingTemplate
+ORDER BY name DESC;
+
+getTrainingsByGroup:
+SELECT *
+FROM TrainingTemplate
+WHERE groups = ?
+ORDER BY name DESC;
+
+insertTraining:
+INSERT OR REPLACE
+INTO TrainingTemplate(
+    id,
+    name,
+    groups,
+    description
+)
+VALUES(?, ?, ?, ?);
+
+countTrainingTemplates:
+SELECT COUNT(*) FROM TrainingTemplate;

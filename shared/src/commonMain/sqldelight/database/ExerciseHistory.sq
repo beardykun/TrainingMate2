@@ -1,13 +1,13 @@
 CREATE TABLE ExerciseHistory (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
-  exercise_id INTEGER NOT NULL,
-  training_id INTEGER NOT NULL,
-  date TEXT NOT NULL,
-  total_lifted_weight INTEGER NOT NULL,
-  num_of_sets INTEGER NOT NULL,
-  total_time_for_sets INTEGER NOT NULL,
-  FOREIGN KEY(user_id) REFERENCES User(id),
-  FOREIGN KEY(exercise_id) REFERENCES Exercise(id),
-  FOREIGN KEY(training_id) REFERENCES Training(id)
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      sets TEXT NOT NULL,
+      exercise_group TEXT NOT NULL,
+      bestLiftedWeight REAL NOT NULL,
+      duration INTEGER NOT NULL,
+      training_history_id TEXT NOT NULL,
+      exercise_template_id TEXT NOT NULL,
+      total_lifted_weight REAL NOT NULL,
+      FOREIGN KEY(training_history_id) REFERENCES TrainingHistory(id),
+      FOREIGN KEY(exercise_template_id) REFERENCES ExerciseTemplate(id)
 );

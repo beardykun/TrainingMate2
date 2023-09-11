@@ -1,8 +1,0 @@
-CREATE TABLE BestExercisePerformance (
-  user_id INTEGER NOT NULL,
-  exercise_id INTEGER NOT NULL,
-  best_lifted_weight INTEGER NOT NULL,
-  PRIMARY KEY(user_id, exercise_id),
-  FOREIGN KEY(user_id) REFERENCES User(id),
-  FOREIGN KEY(exercise_id) REFERENCES Exercise(id)
-);

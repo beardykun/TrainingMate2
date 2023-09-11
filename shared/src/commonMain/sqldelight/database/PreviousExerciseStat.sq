@@ -1,9 +1,0 @@
-CREATE TABLE PreviousExerciseStat (
-    id TEXT PRIMARY KEY,
-    exercise_id TEXT NOT NULL,
-    date INTEGER NOT NULL, -- Unix timestamp
-    best_lifted_weight REAL NOT NULL,
-    total_sets INTEGER NOT NULL,
-    duration INTEGER NOT NULL,
-    FOREIGN KEY(exercise_id) REFERENCES Exercise(id)
-);

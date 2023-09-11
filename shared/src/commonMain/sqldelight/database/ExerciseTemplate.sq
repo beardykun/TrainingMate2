@@ -1,0 +1,30 @@
+CREATE TABLE ExerciseTemplate (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    image TEXT NOT NULL,
+    exercise_group TEXT NOT NULL
+);
+
+getExercises:
+SELECT *
+FROM ExerciseTemplate
+ORDER BY name DESC;
+
+getExerciseByGroup:
+SELECT *
+FROM ExerciseTemplate
+WHERE exercise_group = ?
+ORDER BY name DESC;
+
+insertExercise:
+INSERT OR REPLACE
+INTO ExerciseTemplate(
+    id,
+    name,
+    image,
+    exercise_group
+)
+VALUES(?, ?, ?, ?);
+
+countExerciseTemplates:
+SELECT COUNT(*) FROM ExerciseTemplate;
