@@ -34,11 +34,11 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.AppViewModel
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.di.AppModule
-import jp.mikhail.pankratov.trainingMate.mainSccreeens.achivements.presentation.AchievementScreen
-import jp.mikhail.pankratov.trainingMate.mainSccreeens.analysis.presentation.AnalysisScreen
-import jp.mikhail.pankratov.trainingMate.mainSccreeens.analysis.presentation.HistiryScreen
-import jp.mikhail.pankratov.trainingMate.mainSccreeens.training.presentation.TrainingScreen
-import jp.mikhail.pankratov.trainingMate.mainSccreeens.training.presentation.TrainingViewModel
+import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.HistiryScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.rememberNavigator
@@ -110,7 +110,7 @@ fun App(
                     }
                 }
             ) {
-                NavHost(navigator)
+                NavHost(navigator, appModule)
             }
         }
     }
@@ -166,7 +166,7 @@ private fun bottomNavigationItems() = listOf(
 )
 
 @Composable
-fun NavHost(navigator: Navigator) {
+fun NavHost(navigator: Navigator, appModule: AppModule) {
     NavHost(
         navigator = navigator,
         navTransition = NavTransition(),
@@ -176,7 +176,7 @@ fun NavHost(navigator: Navigator) {
             val viewModel = getViewModel(
                 key = Routs.MainScreens.training.title,
                 factory = viewModelFactory {
-                    TrainingViewModel()
+                    TrainingViewModel(trainingDataSource = appModule.trainingDataSource)
                 })
 
             val state by viewModel.state.collectAsState()
@@ -195,6 +195,15 @@ fun NavHost(navigator: Navigator) {
         }
         scene(route = Routs.MainScreens.history.title, navTransition = NavTransition()) {
             HistiryScreen(navigator)
+        }
+
+        group(
+            route = Routs.TrainingScreens.trainingGroupRout,
+            initialRoute = Routs.TrainingScreens.trainingExercises
+        ) {
+            scene(route = Routs.TrainingScreens.trainingExercises) {
+
+            }
         }
     }
 }
