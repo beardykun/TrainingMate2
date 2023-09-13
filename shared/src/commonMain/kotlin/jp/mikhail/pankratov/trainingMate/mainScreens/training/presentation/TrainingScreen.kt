@@ -53,7 +53,7 @@ fun TrainingScreen(
                             group = training.groups,
                             description = training.description
                         ) {
-                            navigator.navigate(Routs.MainScreens.training.title)
+                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                         }
                     }
                 }

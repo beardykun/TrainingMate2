@@ -5,7 +5,7 @@ plugins {
     id("com.squareup.sqldelight")
     kotlin("plugin.serialization") version Deps.kotlinVersion
     id("dev.icerock.mobile.multiplatform-resources")
-    id("org.jetbrains.compose").version("1.5.0-rc06")
+    id("org.jetbrains.compose").version("1.5.1")
 }
 
 kotlin {
@@ -28,6 +28,9 @@ kotlin {
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "shared"
+            isStatic = true
+            export(Deps.mokoSharedRes)
+            export(Deps.mokoSharedGraphics)
         }
     }
 
@@ -113,7 +116,7 @@ sqldelight {
 
 multiplatformResources {
     multiplatformResourcesPackage = "jp.mikhail.pankratov.trainingMate"
-    //multiplatformResourcesClassName = "SharedRes"
+    multiplatformResourcesClassName = "SharedRes"
 }
 
 dependencies {

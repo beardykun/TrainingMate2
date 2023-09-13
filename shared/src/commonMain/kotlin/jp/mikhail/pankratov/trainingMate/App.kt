@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
-import jp.mikhail.pankratov.trainingMate.core.presentation.AppViewModel
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.di.AppModule
@@ -39,6 +38,8 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.Analy
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.HistiryScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
+import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingScreen
+import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.rememberNavigator
@@ -202,7 +203,18 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
             initialRoute = Routs.TrainingScreens.trainingExercises
         ) {
             scene(route = Routs.TrainingScreens.trainingExercises) {
-
+                val viewModel = getViewModel(
+                    key = Routs.TrainingScreens.trainingExercises,
+                    factory = viewModelFactory {
+                        ThisTrainingViewModel(exerciseDatasource = appModule.exerciseDataSource)
+                    }
+                )
+                val state by viewModel.state.collectAsState()
+                ThisTrainingScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    navigator = navigator
+                )
             }
         }
     }

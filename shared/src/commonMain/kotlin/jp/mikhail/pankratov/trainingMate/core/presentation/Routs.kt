@@ -1,8 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation
 
-import dev.icerock.moko.parcelize.Parcelable
-
-object Routs: Parcelable {
+object Routs {
 
     object MainScreens {
         val training = Screen("Training", 0)

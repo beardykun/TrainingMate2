@@ -8,13 +8,13 @@ CREATE TABLE ExerciseTemplate (
 getExercises:
 SELECT *
 FROM ExerciseTemplate
-ORDER BY name DESC;
+ORDER BY name ASC;
 
 getExerciseByGroup:
 SELECT *
 FROM ExerciseTemplate
 WHERE exercise_group = ?
-ORDER BY name DESC;
+ORDER BY name ASC;
 
 insertExercise:
 INSERT OR REPLACE

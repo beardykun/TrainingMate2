@@ -8,13 +8,13 @@ CREATE TABLE TrainingTemplate (
 getTrainings:
 SELECT *
 FROM TrainingTemplate
-ORDER BY name DESC;
+ORDER BY name ASC;
 
 getTrainingsByGroup:
 SELECT *
 FROM TrainingTemplate
 WHERE groups = ?
-ORDER BY name DESC;
+ORDER BY name ASC;
 
 insertTraining:
 INSERT OR REPLACE
