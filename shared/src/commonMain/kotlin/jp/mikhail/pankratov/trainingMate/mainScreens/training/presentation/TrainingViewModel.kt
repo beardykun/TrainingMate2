@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class TrainingViewModel(private val trainingDataSource: ITrainingDataSource) : ViewModel() {
+class TrainingViewModel(trainingDataSource: ITrainingDataSource) : ViewModel() {
 
     private val _state = MutableStateFlow(TrainingScreenState())
     val state = combine(_state, trainingDataSource.getTrainings()) { state, trainings ->

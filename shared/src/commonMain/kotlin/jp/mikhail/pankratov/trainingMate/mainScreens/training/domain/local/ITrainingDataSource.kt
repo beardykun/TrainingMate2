@@ -7,4 +7,5 @@ interface ITrainingDataSource {
     suspend fun insertTraining(training: Training)
     fun getTrainings(): Flow<List<Training>>
     suspend fun trainingTableEmpty(): Boolean
+    fun getTrainingById(trainingId: Long): Flow<Training>
 }

@@ -16,6 +16,11 @@ FROM TrainingTemplate
 WHERE groups = ?
 ORDER BY name ASC;
 
+getTrainingsById:
+SELECT *
+FROM TrainingTemplate
+WHERE id = ?;
+
 insertTraining:
 INSERT OR REPLACE
 INTO TrainingTemplate(

@@ -28,3 +28,9 @@ VALUES(?, ?, ?, ?);
 
 countExerciseTemplates:
 SELECT COUNT(*) FROM ExerciseTemplate;
+
+getExercisesByGroups:
+SELECT *
+FROM ExerciseTemplate
+WHERE exercise_group IN (?, ?, ?, ?, ?, ?, ?, ?)
+ORDER BY name ASC;

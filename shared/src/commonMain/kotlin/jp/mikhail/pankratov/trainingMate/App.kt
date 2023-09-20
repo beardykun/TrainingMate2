@@ -1,6 +1,8 @@
 package jp.mikhail.pankratov.trainingMate
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cabin
 import androidx.compose.material.icons.filled.Explore
@@ -20,6 +22,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,8 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
+import jp.mikhail.pankratov.trainingMate.addExercises.presentation.AddExercisesScreen
+import jp.mikhail.pankratov.trainingMate.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
+import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTraining
+import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingViewModel
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
@@ -42,6 +49,7 @@ import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingS
 import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
 
@@ -77,8 +85,14 @@ fun App(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
+            val current by navigator.currentEntry.collectAsState(null)
+
             Scaffold(
+                topBar = {
+                    TopAppBar(title = { Text(text = current?.route?.route ?: "") })
+                },
                 bottomBar = {
+                    if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) return@Scaffold
                     NavigationBar {
                         items.forEachIndexed { index, item ->
                             NavigationBarItem(
@@ -110,8 +124,10 @@ fun App(
                         }
                     }
                 }
-            ) {
-                NavHost(navigator, appModule)
+            ) { paddings ->
+                Column(modifier = Modifier.padding(paddings)) {
+                    NavHost(navigator, appModule)
+                }
             }
         }
     }
@@ -189,24 +205,42 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
         }
 
         scene(route = Routs.MainScreens.analysis.title, navTransition = NavTransition()) {
-            AnalysisScreen(navigator)
+            AnalysisScreen(navigator = navigator)
         }
         scene(route = Routs.MainScreens.achievement.title, navTransition = NavTransition()) {
-            AchievementScreen(navigator)
+            AchievementScreen(navigator = navigator)
         }
         scene(route = Routs.MainScreens.history.title, navTransition = NavTransition()) {
-            HistiryScreen(navigator)
+            HistiryScreen(navigator = navigator)
+        }
+        scene(route = Routs.TrainingScreens.createTraining, navTransition = NavTransition()) {
+            val viewModel = getViewModel(
+                key = Routs.TrainingScreens.createTraining,
+                factory = viewModelFactory {
+                    CreateTrainingViewModel()
+                }
+            )
+            val state by viewModel.state.collectAsState()
+            CreateTraining(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
 
         group(
-            route = Routs.TrainingScreens.trainingGroupRout,
+            route = "${Routs.TrainingScreens.trainingGroupRout}/{trainingId}",
             initialRoute = Routs.TrainingScreens.trainingExercises
         ) {
-            scene(route = Routs.TrainingScreens.trainingExercises) {
+            scene(
+                route = Routs.TrainingScreens.trainingExercises,
+                navTransition = NavTransition()
+            ) { backStackEntry ->
+                val trainingId: Long = backStackEntry.path<Long>("trainingId") ?: 0
+
                 val viewModel = getViewModel(
                     key = Routs.TrainingScreens.trainingExercises,
                     factory = viewModelFactory {
-                        ThisTrainingViewModel(exerciseDatasource = appModule.exerciseDataSource)
+                        ThisTrainingViewModel(
+                            trainingDataSource = appModule.trainingDataSource,
+                            trainingId = trainingId
+                        )
                     }
                 )
                 val state by viewModel.state.collectAsState()
@@ -215,6 +249,22 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     onEvent = viewModel::onEvent,
                     navigator = navigator
                 )
+            }
+
+            scene(
+                route = "${Routs.TrainingScreens.addExercises}/{groups}",
+                navTransition = NavTransition()
+            ) { backStackEntry ->
+                val groups: String = backStackEntry.path<String>("groups") ?: ""
+                val viewModel = getViewModel(key = Routs.TrainingScreens.addExercises,
+                    factory = viewModelFactory {
+                        AddExercisesViewModel(
+                            exerciseDatasource = appModule.exerciseDataSource,
+                            groups = groups
+                        )
+                    })
+                val state by viewModel.state.collectAsState()
+                AddExercisesScreen(state = state, navigator = navigator)
             }
         }
     }
