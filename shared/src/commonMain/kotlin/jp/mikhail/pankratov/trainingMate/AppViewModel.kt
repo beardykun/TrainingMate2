@@ -23,6 +23,7 @@ class AppViewModel(
                 userId = "1",
                 name = "Biceps Training example",
                 groups = DatabaseContract.BICEPS_GROUP,
+                exercises = emptyList(),
                 description = "example biceps training"
             )
         )

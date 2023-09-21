@@ -2,6 +2,7 @@ CREATE TABLE TrainingTemplate (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     groups TEXT NOT NULL,
+    exercises TEXT NOT NULL,
     description TEXT NOT NULL
 );
 
@@ -27,9 +28,10 @@ INTO TrainingTemplate(
     id,
     name,
     groups,
+    exercises,
     description
 )
-VALUES(?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?);
 
 countTrainingTemplates:
 SELECT COUNT(*) FROM TrainingTemplate;

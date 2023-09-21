@@ -9,6 +9,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,24 +28,34 @@ fun TrainingScreen(
     onEvent: (TrainingScreenEvent) -> Unit,
     navigator: Navigator
 ) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).verticalScroll(scrollState),
-        verticalArrangement = Arrangement.SpaceEvenly
-    ) {
-        TextLarge(text = state.greeting)
-        TextMedium(text = "Previous workout time and lifted weight")
-        TextMedium(text = "Maybe a mini progress bar to next achievement?")
+    Scaffold(floatingActionButton =
+    {
+        FloatingActionButton(onClick = {
+            navigator.navigate(Routs.TrainingScreens.createTraining)
+        }) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = "add new training")
+        }
+    }) {
+        val scrollState = rememberScrollState()
+        Column(
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            TextLarge(text = state.greeting)
+            TextMedium(text = "Previous workout time and lifted weight")
+            TextMedium(text = "Maybe a mini progress bar to next achievement?")
 
-        state.availableTrainings?.let { trainings ->
-            LazyRow(modifier = Modifier.fillMaxWidth()) {
-                items(trainings) { training ->
-                    TrainingItem(
-                        name = training.name,
-                        group = training.groups,
-                        description = training.description
-                    ) {
-                        navigator.navigate(Routs.TrainingScreens.trainingGroupRout + "/${training.id}")
+            state.availableTrainings?.let { trainings ->
+                LazyRow(modifier = Modifier.fillMaxWidth()) {
+                    items(trainings) { training ->
+                        TrainingItem(
+                            name = training.name,
+                            group = training.groups,
+                            description = training.description
+                        ) {
+                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout + "/${training.id}")
+                        }
                     }
                 }
             }

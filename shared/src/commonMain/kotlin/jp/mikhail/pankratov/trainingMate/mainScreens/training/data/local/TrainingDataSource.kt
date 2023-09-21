@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTraining
@@ -15,9 +16,10 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
 
     override suspend fun insertTraining(training: Training) {
         queries.insertTraining(
-            id = null,
+            id = training.id,
             name = training.name,
             groups = training.groups,
+            exercises = training.exercises.listToString(),
             description = training.description
         )
     }
@@ -38,10 +40,5 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
         return queries.getTrainingsById(trainingId).asFlow().map {
             it.executeAsOne().toTraining()
         }
-    }
-
-    private fun List<String>.listToString(): String {
-        return this.filterNot { it.isEmpty() }
-            .joinToString(separator = ", ")
     }
 }

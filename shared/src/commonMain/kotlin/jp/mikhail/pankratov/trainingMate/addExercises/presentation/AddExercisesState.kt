@@ -6,5 +6,5 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 data class AddExercisesState(
     val training: Training? = null,
     val availableExercises: List<Exercise>? = null,
-    val selectedExercises: List<Exercise>? = null
+    val selectedExercises: List<String> = emptyList()
 )

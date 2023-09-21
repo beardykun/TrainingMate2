@@ -42,6 +42,61 @@ class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource
         }
     }
 
+    override fun getExercisesByNames(exerciseList: List<String>): Flow<List<Exercise>> {
+        val queryParams = mutableListOf(
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"
+        )
+        exerciseList.forEachIndexed { index, s ->
+            queryParams[index] = s
+        }
+
+        return queries.getExercisesByNames(
+            queryParams[0],
+            queryParams[1],
+            queryParams[2],
+            queryParams[3],
+            queryParams[4],
+            queryParams[5],
+            queryParams[6],
+            queryParams[7],
+            queryParams[8],
+            queryParams[9],
+            queryParams[10],
+            queryParams[11],
+            queryParams[12],
+            queryParams[13],
+            queryParams[14],
+            queryParams[15],
+            queryParams[16],
+            queryParams[17],
+            queryParams[18],
+            queryParams[19]
+        ).asFlow().mapToList().map { exercises ->
+            exercises.map { exercise ->
+                exercise.toExercise()
+            }
+        }
+    }
+
     override suspend fun insertExercise(exercise: Exercise) {
         queries.insertExercise(
             id = null,

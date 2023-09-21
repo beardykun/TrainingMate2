@@ -2,28 +2,38 @@ package jp.mikhail.pankratov.trainingMate.addExercises.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseItem
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
-fun AddExercisesScreen(state: AddExercisesState,navigator: Navigator) {
+fun AddExercisesScreen(
+    state: AddExercisesState,
+    onEvent: (AddExercisesEvent) -> Unit,
+    navigator: Navigator
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         state.availableExercises?.let { exercises ->
-            LazyColumn {
-                items(exercises) { exercise ->
-                    ExerciseItem(
-                        name = exercise.name,
-                        group = exercise.group,
-                        image = exercise.image
-                    )
-                }
+            SelectableExercises(
+                exercises = exercises,
+                isSelected = state.selectedExercises,
+                modifier = Modifier.weight(1f)
+            ) { exercise ->
+                onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
             }
+        }
+        Button(
+            onClick = {
+                onEvent(AddExercisesEvent.OnAddNewExercises {
+                    navigator.popBackStack()
+                })
+            }) {
+            Text(text = "Add exercises")
         }
     }
 }

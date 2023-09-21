@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +20,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 
 @Composable
-fun ExerciseItem(name: String, group: String, image: String) {
+fun ExerciseItem(exercise: Exercise, onClick: (Exercise) -> Unit) {
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
@@ -30,12 +32,15 @@ fun ExerciseItem(name: String, group: String, image: String) {
             .padding(8.dp)
             .clip(RoundedCornerShape(percent = 25))
             .background(Color.Cyan)
+            .clickable {
+                onClick.invoke(exercise)
+            }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SharedRes.images.getImageByFileName(image)?.let {
+            SharedRes.images.getImageByFileName(exercise.image)?.let {
                 val painter: Painter =
                     jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
 
@@ -46,8 +51,8 @@ fun ExerciseItem(name: String, group: String, image: String) {
             }
 
             Column {
-                TextMedium(text = name)
-                TextMedium(text = group)
+                TextMedium(text = exercise.name)
+                TextMedium(text = exercise.group)
             }
         }
     }

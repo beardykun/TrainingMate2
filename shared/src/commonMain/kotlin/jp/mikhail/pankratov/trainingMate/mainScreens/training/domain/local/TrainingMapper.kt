@@ -8,6 +8,7 @@ fun TrainingTemplate.toTraining(): Training {
         id = id,
         name = name,
         groups = groups,
+        exercises = exercises.split(", "),
         description = description,
         userId = ""
     )

@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroup
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -28,7 +28,7 @@ fun CreateTraining(
             singleLine = true
         )
 
-        SelectableGroup(
+        SelectableGroups(
             groups = state.trainingGroups,
             isSelected = state.selectedGroups
         ) { selectedGroup ->

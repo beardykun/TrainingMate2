@@ -5,6 +5,7 @@ data class Training(
     val userId: String, // Foreign key referencing the user who performed the training
     val name: String, // Name of the training session, e.g., "Leg Day"
     val groups: String,
+    val exercises: List<String>,
     val description: String,
     val totalDuration: Long = 0, // Total duration of the training session in seconds
     val totalWeightLifted: Double = 0.0, // Sum of weights lifted in all exercises in kilograms

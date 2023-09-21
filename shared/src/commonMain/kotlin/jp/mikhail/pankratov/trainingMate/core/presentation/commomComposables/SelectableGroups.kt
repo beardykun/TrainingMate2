@@ -5,11 +5,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -22,26 +23,27 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 
 @Composable
-fun SelectableGroup(
+fun SelectableGroups(
     groups: List<String>,
     modifier: Modifier = Modifier,
     isSelected: List<String>,
     onClick: (String) -> Unit,
 ) {
-    Column(
+    LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp),
         modifier = modifier
     ) {
-        groups.forEach { item ->
-            SelectableItem(item, isSelected, onClick)
+        items(groups) { item ->
+            SelectableGroupItem(item, isSelected, onClick)
         }
     }
 }
 
 @Composable
-fun SelectableItem(
+fun SelectableGroupItem(
     group: String,
     isSelected: List<String>,
     onClick: (String) -> Unit,
@@ -78,6 +80,71 @@ fun SelectableItem(
 
         Spacer(Modifier.weight(1f))
         SharedRes.images.getImageByFileName(group)?.let {
+            val painter: Painter =
+                jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
+            Image(
+                painter = painter,
+                contentDescription = "Group Image"
+            )
+        }
+    }
+}
+
+@Composable
+fun SelectableExercises(
+    exercises: List<Exercise>,
+    modifier: Modifier = Modifier,
+    isSelected: List<String>,
+    onClick: (Exercise) -> Unit,
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp),
+        modifier = modifier
+    ) {
+        items(exercises) { item ->
+            SelectableExerciseItem(item, isSelected, onClick)
+        }
+    }
+}
+
+@Composable
+fun SelectableExerciseItem(
+    item: Exercise,
+    isSelected: List<String>,
+    onClick: (Exercise) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.selectable(
+            selected = isSelected.contains(item.name),
+            onClick = {
+                onClick.invoke(item)
+            }
+        )) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(Dimens.selectTextOuterCircle.dp)
+                .clip(CircleShape)
+                .background(color = MaterialTheme.colorScheme.primary)
+                .clip(CircleShape)
+        ) {
+            if (isSelected.contains(item.name))
+                Box(
+                    modifier = Modifier
+                        .size(Dimens.selectTextInnerCircle.dp)
+                        .clip(CircleShape)
+                        .background(color = Color.White)
+                        .clip(CircleShape)
+                )
+        }
+        Spacer(modifier = Modifier.padding(Dimens.Padding16.dp))
+        TextMedium(
+            text = item.name.uppercase(),
+        )
+
+        Spacer(Modifier.weight(1f))
+        SharedRes.images.getImageByFileName(item.image)?.let {
             val painter: Painter =
                 jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
             Image(
