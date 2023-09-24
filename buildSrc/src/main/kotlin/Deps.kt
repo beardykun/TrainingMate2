@@ -1,6 +1,6 @@
 object Deps {
     // COMPOSE
-    private const val activityComposeVersion = "1.7.1"
+    private const val activityComposeVersion = "1.7.2"
     const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
 
     const val composeVersion = "1.5.2"
@@ -35,6 +35,9 @@ object Deps {
     const val playReview = "com.google.android.play:review:$reviewVersion"
     const val playReviewKtx = "com.google.android.play:review-ktx:$reviewVersion"
 
+    const val apcompat = "androidx.appcompat:appcompat:1.6.1"
+    const val coreKtx = "androidx.core:core-ktx:1.12.0"
+
     //LOTTIE
     private const val lottieVersion = "6.0.0"
     const val lottie = "com.airbnb.android:lottie-compose:$lottieVersion"
@@ -42,21 +45,6 @@ object Deps {
     //IMAGE CROPPER
     private const val cropperVersion = "4.5.0"
     const val imageCropper = "com.vanniktech:android-image-cropper:$cropperVersion"
-
-    //KOIN
-    private const val koinVersion = "3.4.0"
-    const val koinCore = "io.insert-koin:koin-core:$koinVersion"
-    const val koinTest = "io.insert-koin:koin-test:$koinVersion"
-    const val koinAndroid = "io.insert-koin:koin-android:$koinVersion"
-
-    // HILT
-    private const val hiltVersion = "2.44"
-    private const val hiltCompilerVersion = "1.0.0"
-    const val hiltAndroid = "com.google.dagger:hilt-android:$hiltVersion"
-    const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:$hiltVersion"
-    const val hiltCompiler = "androidx.hilt:hilt-compiler:$hiltCompilerVersion"
-    const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:$hiltCompilerVersion"
-    const val hiltWorker = "androidx.hilt:hilt-work:$hiltCompilerVersion"
 
     //WORK MANAGER
     private const val workManagerVersion = "2.8.1"
@@ -97,7 +85,6 @@ object Deps {
     const val sqlDelightGradlePlugin =
         "com.squareup.sqldelight:gradle-plugin:$sqlDelightGradleVersion"
 
-    const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
 
     private const val crashlyticsGradleVer = "2.9.4"
     const val crashlyticsGradlePlugin =
@@ -129,10 +116,24 @@ object Deps {
     const val firebaseAnalyticsKtx = "com.google.firebase:firebase-crashlytics-ktx"
     const val firebaseMessagingKtx = "com.google.firebase:firebase-messaging-ktx"
 
+    const val androidXCore = "androidx.core:core:1.12.0"
+
+    //PRECOMPOSE for navigation
+    private const val precomposeVersion = "1.5.0"
+    const val precompose = "moe.tlaster:precompose:$precomposeVersion"
+
+    //MOKO MVVM
+    private const val mokoMvvmVersion = "0.16.1"
+    const val mokoMvvmCore = "dev.icerock.moko:mvvm-core:$mokoMvvmVersion"
+    const val mokoMvvmCompose = "dev.icerock.moko:mvvm-compose:$mokoMvvmVersion"
+    const val mokoMvvmFlow = "dev.icerock.moko:mvvm-flow:$mokoMvvmVersion"
+    const val mokoMvvmFlowCompose = "dev.icerock.moko:mvvm-flow-compose:$mokoMvvmVersion"
+
     //MOKO RESOURCES SHARE
     private const val mokoResVersion = "0.23.0"
     const val mokoRes = "dev.icerock.moko:resources-generator:$mokoResVersion"
     const val mokoSharedRes = "dev.icerock.moko:resources:$mokoResVersion"
+    const val mokoSharedResCompose = "dev.icerock.moko:resources-compose:$mokoResVersion"
     private const val mokoIosGraphicsVersion = "0.9.0"
     const val mokoSharedGraphics = "dev.icerock.moko:graphics:$mokoIosGraphicsVersion"
 
@@ -156,5 +157,4 @@ object Deps {
     const val composeTesting = "androidx.compose.ui:ui-test-junit4:$composeVersion"
     const val composeTestManifest = "androidx.compose.ui:ui-test-manifest:$composeVersion"
 
-    const val hiltTesting = "com.google.dagger:hilt-android-testing:$hiltVersion"
 }

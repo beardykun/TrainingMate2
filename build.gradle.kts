@@ -8,7 +8,6 @@ buildscript {
         classpath(Deps.kotlinGradlePlugin)
         classpath(Deps.androidBuildTools)
         classpath(Deps.sqlDelightGradlePlugin)
-        classpath(Deps.hiltGradlePlugin)
         classpath(Deps.googleServices)
         classpath(Deps.crashlyticsGradlePlugin)
         classpath(Deps.mokoRes)

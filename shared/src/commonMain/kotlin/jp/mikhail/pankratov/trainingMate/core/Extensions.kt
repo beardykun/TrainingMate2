@@ -9,3 +9,5 @@ fun String.stringToList(): List<String> {
     return this.split(", ")
 }
 
+
+

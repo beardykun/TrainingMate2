@@ -32,6 +32,8 @@ kotlin {
             export(Deps.mokoSharedRes)
             export(Deps.mokoSharedGraphics)
         }
+        extraSpecAttributes["resources"] =
+            "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
     sourceSets {
@@ -55,8 +57,9 @@ kotlin {
                 implementation(Deps.firebaseRemoteConfig)
 
                 api(Deps.mokoSharedRes)
+                api(Deps.mokoSharedResCompose)
 
-                api("moe.tlaster:precompose:1.5.0")
+                api(Deps.precompose)
 
                 implementation(Deps.kammel)
             }
@@ -69,9 +72,9 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api(Deps.activityCompose)
+                api(Deps.apcompat)
+                api(Deps.coreKtx)
 
                 implementation(Deps.sqlDelightAndroidDriver)
                 implementation(Deps.ktorAndroid)
@@ -101,6 +104,7 @@ android {
     defaultConfig {
         minSdk = 24
     }
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -120,9 +124,9 @@ multiplatformResources {
 }
 
 dependencies {
-    implementation("androidx.core:core:1.10.1")
-    commonMainApi("dev.icerock.moko:mvvm-core:0.16.1")
-    commonMainApi("dev.icerock.moko:mvvm-compose:0.16.1")
-    commonMainApi("dev.icerock.moko:mvvm-flow:0.16.1")
-    commonMainApi("dev.icerock.moko:mvvm-flow-compose:0.16.1")
+    implementation(Deps.androidXCore)
+    commonMainApi(Deps.mokoMvvmCore)
+    commonMainApi(Deps.mokoMvvmCompose)
+    commonMainApi(Deps.mokoMvvmFlow)
+    commonMainApi(Deps.mokoMvvmFlowCompose)
 }

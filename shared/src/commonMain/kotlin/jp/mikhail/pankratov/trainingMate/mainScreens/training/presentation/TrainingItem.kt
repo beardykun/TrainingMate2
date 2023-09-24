@@ -4,17 +4,12 @@ import Dimens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,9 +20,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
+import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 
@@ -36,7 +33,7 @@ fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = M
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
-            .fillMaxSize()
+            .widthIn(min = 100.dp, max = 300.dp)
             .padding(Dimens.Padding16.dp)
             .clip(RoundedCornerShape(Dimens.Padding24.dp))
             .background(MaterialTheme.colorScheme.inversePrimary)
@@ -47,10 +44,10 @@ fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = M
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            TextMedium(text = "Training name:")
-            TextMedium(text = training.name)
-            TextMedium(text = "Groups:")
-            TextMedium(text = training.groups)
+            TextLarge(text = stringResource(SharedRes.strings.training_name))
+            TextMedium(text = training.name.uppercase())
+            TextLarge(text = stringResource(SharedRes.strings.groups))
+            TextMedium(text = training.groups.uppercase())
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )
