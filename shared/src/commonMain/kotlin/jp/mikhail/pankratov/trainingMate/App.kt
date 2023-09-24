@@ -217,7 +217,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
             val viewModel = getViewModel(
                 key = Routs.TrainingScreens.createTraining,
                 factory = viewModelFactory {
-                    CreateTrainingViewModel()
+                    CreateTrainingViewModel(trainingDataSource = appModule.trainingDataSource)
                 }
             )
             val state by viewModel.state.collectAsState()

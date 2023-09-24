@@ -5,3 +5,7 @@ fun List<String>.listToString(): String {
         .joinToString(separator = ", ")
 }
 
+fun String.stringToList(): List<String> {
+    return this.split(", ")
+}
+

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -50,12 +51,11 @@ fun TrainingScreen(
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
                     items(trainings) { training ->
                         TrainingItem(
-                            name = training.name,
-                            group = training.groups,
-                            description = training.description
-                        ) {
-                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout + "/${training.id}")
-                        }
+                            training = training,
+                            onClick = {
+                                navigator.navigate(Routs.TrainingScreens.trainingGroupRout + "/${training.id}")
+                            }
+                        )
                     }
                 }
             }

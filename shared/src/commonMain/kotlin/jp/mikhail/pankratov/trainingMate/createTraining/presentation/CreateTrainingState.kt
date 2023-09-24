@@ -4,6 +4,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 
 data class CreateTrainingState(
     val trainingName: String = "",
+    val trainingDescription: String = "",
     val trainingGroups: List<String> =
         listOf(
             DatabaseContract.BICEPS_GROUP,
