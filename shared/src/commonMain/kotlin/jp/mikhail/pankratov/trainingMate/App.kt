@@ -40,6 +40,8 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTraining
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingViewModel
 import jp.mikhail.pankratov.trainingMate.di.AppModule
+import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkScreen
+import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.HistiryScreen
@@ -267,6 +269,32 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     })
                 val state by viewModel.state.collectAsState()
                 AddExercisesScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    navigator = navigator
+                )
+            }
+
+            scene(
+                route = "${Routs.ExerciseScreens.exerciseAtWork}/{trainingId}/{exerciseId}",
+                navTransition = NavTransition()
+            ) { backStackEntry ->
+                val trainingId: Long = backStackEntry.path("trainingId") ?: -1
+                val exerciseId: Long = backStackEntry.path("exerciseId") ?: -1
+                println("TAGGER1 $exerciseId")
+                val viewModel = getViewModel(
+                    key = Routs.ExerciseScreens.exerciseAtWork,
+                    factory = viewModelFactory {
+                        ExerciseAtWorkViewModel(
+                            trainingDataSource = appModule.trainingDataSource,
+                            exerciseDatasource = appModule.exerciseDataSource,
+                            trainingId = trainingId,
+                            exerciseId = exerciseId
+                        )
+                    }
+                )
+                val state by viewModel.state.collectAsState()
+                ExerciseAtWorkScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
                     navigator = navigator

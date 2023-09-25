@@ -64,7 +64,7 @@ fun OverlappingImagesBackground(groups: List<String>, modifier: Modifier = Modif
                     jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
                 Image(
                     painter = painter,
-                    contentDescription = "muscle group image",
+                    contentDescription = stringResource(SharedRes.strings.cd_muscle_group_image),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .offset(

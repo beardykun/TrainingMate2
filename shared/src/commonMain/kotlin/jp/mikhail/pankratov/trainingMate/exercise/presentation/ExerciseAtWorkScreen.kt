@@ -10,9 +10,13 @@ import androidx.compose.ui.Modifier
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
-fun ExerciseScreen(navigator: Navigator) {
+fun ExerciseAtWorkScreen(
+    state: ExerciseAtWorkState,
+    onEvent: (ExerciseAtWorkEvent) -> Unit,
+    navigator: Navigator
+) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        Text(text = "Second Screen", modifier = Modifier.clickable {
+        Text(text = state.exercise?.name.toString(), modifier = Modifier.clickable {
             navigator.goBack()
         })
     }

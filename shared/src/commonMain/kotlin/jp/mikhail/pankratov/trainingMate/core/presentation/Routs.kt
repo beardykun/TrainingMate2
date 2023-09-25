@@ -16,6 +16,10 @@ object Routs {
         val createTraining = "CreateTraining"
         val addExercises = "AddExercises"
     }
+
+    object ExerciseScreens {
+        val exerciseAtWork = "ExerciseAtWork"
+    }
 }
 
 data class Screen(val title: String, val position: Int = 0)

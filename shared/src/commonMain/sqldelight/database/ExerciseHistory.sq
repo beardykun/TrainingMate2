@@ -3,7 +3,6 @@ CREATE TABLE ExerciseHistory (
       name TEXT NOT NULL,
       sets TEXT NOT NULL,
       exercise_group TEXT NOT NULL,
-      bestLiftedWeight REAL NOT NULL,
       duration INTEGER NOT NULL,
       training_history_id TEXT NOT NULL,
       exercise_template_id TEXT NOT NULL,

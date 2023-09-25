@@ -14,16 +14,12 @@ import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
 fun ThisTrainingScreen(
-    state: ThisTrainingState,
-    onEvent: (ThisTrainingEvent) -> Unit,
-    navigator: Navigator
+    state: ThisTrainingState, onEvent: (ThisTrainingEvent) -> Unit, navigator: Navigator
 ) {
     Scaffold(floatingActionButton = {
-        FloatingActionButton(
-            onClick = {
-                navigator.navigate("${Routs.TrainingScreens.addExercises}/${state.training?.id}")
-            }
-        ) {
+        FloatingActionButton(onClick = {
+            navigator.navigate("${Routs.TrainingScreens.addExercises}/${state.training?.id}")
+        }) {
 
         }
     }) {
@@ -36,7 +32,10 @@ fun ThisTrainingScreen(
             LazyColumn {
                 items(exercises) { exercise ->
                     ExerciseItem(exercise = exercise) {
-
+                        println("TAGGER2 ${it.id}")
+                        navigator.navigate(
+                            "${Routs.ExerciseScreens.exerciseAtWork}/${state.training?.id}/${it.id}"
+                        )
                     }
                 }
             }

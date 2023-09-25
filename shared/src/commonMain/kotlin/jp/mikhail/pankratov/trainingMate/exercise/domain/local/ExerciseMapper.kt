@@ -5,9 +5,10 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 
 fun ExerciseTemplate.toExercise(): Exercise {
     return Exercise(
-        exerciseTemplateId = id,
+        id = id,
         name = name,
         image = image,
+        bestLiftedWeight = bestLiftedWeight,
         group = exercise_group
     )
 }
