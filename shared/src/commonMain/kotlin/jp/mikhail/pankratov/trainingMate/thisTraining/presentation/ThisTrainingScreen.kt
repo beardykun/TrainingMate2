@@ -32,9 +32,8 @@ fun ThisTrainingScreen(
             LazyColumn {
                 items(exercises) { exercise ->
                     ExerciseItem(exercise = exercise) {
-                        println("TAGGER2 ${it.id}")
                         navigator.navigate(
-                            "${Routs.ExerciseScreens.exerciseAtWork}/${state.training?.id}/${it.id}"
+                            "${Routs.ExerciseScreens.exerciseAtWork}/${it.id}"
                         )
                     }
                 }

@@ -1,6 +1,11 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
-sealed class TrainingScreenEvent {
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
-   data class OnBottomNavigationClick(val destination: Int)
+sealed class TrainingScreenEvent {
+    data object OnStartNewTraining : TrainingScreenEvent()
+    data class OnTrainingItemClick(
+        val shouldShowDialog: Boolean = false,
+        val training: Training? = null
+    ) : TrainingScreenEvent()
 }

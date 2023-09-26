@@ -5,6 +5,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +16,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ThisTrainingViewModel(
-    private val trainingDataSource: ITrainingDataSource,
+    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
     private val exerciseDatasource: IExerciseDatasource,
-    private val trainingId: Long
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
@@ -40,14 +40,16 @@ class ThisTrainingViewModel(
     }
 
     private fun loadTrainingAndExercises() = viewModelScope.launch(Dispatchers.IO) {
-        trainingDataSource.getTrainingById(trainingId).collect { training ->
+        trainingHistoryDataSource.getOngoingTraining().collect { training ->
             _training.value = training
-            val exercises = exerciseDatasource.getExercisesByNames(training.exercises).first()
+            val exercises = exerciseDatasource.getExercisesByNames(training!!.exercises).first()
             _exercises.value = exercises
         }
     }
 
     fun onEvent(event: ThisTrainingEvent) {
+        when(event) {
 
+        }
     }
 }

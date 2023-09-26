@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
 import Dimens
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +13,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -52,7 +55,7 @@ fun TrainingScreen(
 
             state.lastTraining?.let { lastTraining ->
                 TextMedium(text = "${lastTraining.name} ${lastTraining.totalWeightLifted}")
-            }?: TextMedium(text = "last training info")
+            } ?: TextMedium(text = "last training info")
 
             state.availableTrainings?.let { trainings ->
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
@@ -60,13 +63,48 @@ fun TrainingScreen(
                         TrainingItem(
                             training = training,
                             onClick = {
-                                navigator.navigate(Routs.TrainingScreens.trainingGroupRout + "/${training.id}")
+                                if (state.ongoingTraining?.id == training.id) {
+                                    navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                                    return@TrainingItem
+                                }
+                                //FIXME need to ask if want to finish last training if id != training.id
+                                onEvent(
+                                    TrainingScreenEvent.OnTrainingItemClick(
+                                        shouldShowDialog = true,
+                                        training = training
+                                    )
+                                )
                             }
                         )
                     }
                 }
             }
             TextMedium(text = "Maybe a mini progress bar to next achievement?")
+
+            AnimatedVisibility(visible = state.showStartTrainingDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        onEvent(TrainingScreenEvent.OnTrainingItemClick())
+                    },
+                    title = { TextMedium(text = "Start Training") },
+                    text = { TextMedium("Are you ready to start training?") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            onEvent(TrainingScreenEvent.OnStartNewTraining)
+                            // Navigate to the training screen or take any other action upon confirmation.
+                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                        }) {
+                            TextMedium("Yes")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = {
+                            onEvent(TrainingScreenEvent.OnTrainingItemClick())
+                        }) {
+                            TextMedium("No")
+                        }
+                    })
+            }
         }
     }
 }

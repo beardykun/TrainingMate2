@@ -41,4 +41,8 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
             it.executeAsOne().toTraining()
         }
     }
+
+    override suspend fun updateExercises(exercises: List<String>, id: Long) {
+        queries.updateExercises(exercises = exercises.listToString(), id = id)
+    }
 }

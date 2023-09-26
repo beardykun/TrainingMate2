@@ -35,3 +35,8 @@ VALUES(?, ?, ?, ?, ?);
 
 countTrainingTemplates:
 SELECT COUNT(*) FROM TrainingTemplate;
+
+updateExercises:
+UPDATE TrainingHistory
+SET exercises = ?
+WHERE id = ?;

@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface ITrainingHistoryDataSource {
     fun getTrainingRecordById(id: Long): Flow<Training>
     suspend fun insertTrainingRecord(training: Training)
+    fun getOngoingTraining(): Flow<Training?>
+    fun countOngoingTraining(): Flow<Long>
 }

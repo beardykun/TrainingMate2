@@ -8,4 +8,5 @@ interface ITrainingDataSource {
     fun getTrainings(): Flow<List<Training>>
     suspend fun trainingTableEmpty(): Boolean
     fun getTrainingById(trainingId: Long): Flow<Training>
+    suspend fun updateExercises(exercises: List<String>, id: Long)
 }

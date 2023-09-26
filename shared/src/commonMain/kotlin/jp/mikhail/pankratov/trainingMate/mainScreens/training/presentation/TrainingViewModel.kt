@@ -1,13 +1,23 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
-class TrainingViewModel(trainingDataSource: ITrainingDataSource) : ViewModel() {
+class TrainingViewModel(
+    trainingDataSource: ITrainingDataSource,
+    private val trainingHistoryDataSource: ITrainingHistoryDataSource
+) : ViewModel() {
 
     private val motivationalPhrases = listOf(
         "Every rep counts, make it matter!",
@@ -44,11 +54,16 @@ class TrainingViewModel(trainingDataSource: ITrainingDataSource) : ViewModel() {
 
 
     private val _state = MutableStateFlow(TrainingScreenState())
-    val state = combine(_state, trainingDataSource.getTrainings()) { state, trainings ->
+    val state = combine(
+        _state,
+        trainingDataSource.getTrainings(),
+        trainingHistoryDataSource.getOngoingTraining()
+    ) { state, trainings, ongoingTraining ->
         if (state.availableTrainings != trainings) {
             state.copy(
                 availableTrainings = trainings,
-                greeting = motivationalPhrases.random()
+                greeting = motivationalPhrases.random(),
+                ongoingTraining = ongoingTraining
             )
         } else state
     }.stateIn(
@@ -58,6 +73,35 @@ class TrainingViewModel(trainingDataSource: ITrainingDataSource) : ViewModel() {
     )
 
     fun onEvent(event: TrainingScreenEvent) {
+        when (event) {
+            is TrainingScreenEvent.OnStartNewTraining -> {
+                state.value.selectedTraining?.let {
+                    startNewTraining(it)
+                }
+            }
 
+            is TrainingScreenEvent.OnTrainingItemClick -> {
+                _state.update {
+                    it.copy(
+                        showStartTrainingDialog = event.shouldShowDialog,
+                        selectedTraining = event.training
+                    )
+                }
+            }
+        }
+    }
+
+    private fun startNewTraining(training: Training) = viewModelScope.launch(Dispatchers.IO) {
+        trainingHistoryDataSource.insertTrainingRecord(
+            Training(
+                trainingTemplateId = training.id!!,
+                name = training.name,
+                groups = training.groups,
+                description = training.description,
+                startTime = Clock.System.now().toEpochMilliseconds(),
+                userId = training.userId,
+                exercises = training.exercises
+            )
+        )
     }
 }

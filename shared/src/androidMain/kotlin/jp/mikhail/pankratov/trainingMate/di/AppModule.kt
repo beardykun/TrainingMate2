@@ -6,20 +6,29 @@ import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.exercise.data.local.ExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingDataSource
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 
 actual class AppModule(private val context: Context) {
 
     actual val trainingDataSource: ITrainingDataSource by lazy {
-            TrainingDataSource(
-                db = TrainingDatabase(
-                    driver = DatabaseDriverFactory(context = context).createDriver()
-                )
+        TrainingDataSource(
+            db = TrainingDatabase(
+                driver = DatabaseDriverFactory(context = context).createDriver()
             )
+        )
     }
 
     actual val exerciseDataSource: IExerciseDatasource by lazy {
         ExerciseDatasource(
+            db = TrainingDatabase(
+                driver = DatabaseDriverFactory(context = context).createDriver()
+            )
+        )
+    }
+    actual val trainingHistoryDataSource: ITrainingHistoryDataSource by lazy {
+        TrainingHistoryDataSource(
             db = TrainingDatabase(
                 driver = DatabaseDriverFactory(context = context).createDriver()
             )

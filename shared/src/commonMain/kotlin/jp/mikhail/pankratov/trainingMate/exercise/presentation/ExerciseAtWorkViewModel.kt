@@ -5,6 +5,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,10 +16,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ExerciseAtWorkViewModel(
-    private val trainingDataSource: ITrainingDataSource,
+    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
     private val exerciseDatasource: IExerciseDatasource,
-    //FIXME need to create training history and pass it here instead
-    private val trainingId: Long,
     private val exerciseId: Long
 ) : ViewModel() {
 
@@ -30,7 +29,7 @@ class ExerciseAtWorkViewModel(
             training = training,
             exercise = exercise,
             exerciseRecord = Exercise(
-                trainingHistoryId = trainingId,
+                trainingHistoryId = training.trainingTemplateId,
                 exerciseTemplateId = exerciseId,
                 name = exercise?.name ?: "",
                 group = exercise?.group ?: "",
@@ -48,7 +47,7 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun loadData() = viewModelScope.launch(Dispatchers.IO) {
-        trainingDataSource.getTrainingById(trainingId).collect { training ->
+        trainingHistoryDataSource.getOngoingTraining().collect { training ->
             _training.value = training
             _exercise.value = exerciseDatasource.getExerciseById(exerciseId).first()
         }
