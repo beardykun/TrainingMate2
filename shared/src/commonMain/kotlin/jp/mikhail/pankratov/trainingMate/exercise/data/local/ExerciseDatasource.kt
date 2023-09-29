@@ -2,25 +2,25 @@ package jp.mikhail.pankratov.trainingMate.exercise.data.local
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.toExercise
+import jp.mikhail.pankratov.trainingMate.exercise.domain.local.toExerciseLocal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource {
 
     private val queries = db.exerciseTemplateQueries
-    override fun getAllExercises(): Flow<List<Exercise>> {
+    override fun getAllExercises(): Flow<List<ExerciseLocal>> {
         return queries.getExercises().asFlow().mapToList().map { exercises ->
             exercises.map {
-                it.toExercise()
+                it.toExerciseLocal()
             }
         }
     }
 
-    override fun getExercisesByGroups(groups: String): Flow<List<Exercise>> {
+    override fun getExercisesByGroups(groups: String): Flow<List<ExerciseLocal>> {
         val queryParams = mutableListOf("1", "2", "3", "4", "5", "6", "7", "8")
         val groupList = groups.split(", ")
         groupList.forEachIndexed { index, s ->
@@ -37,18 +37,18 @@ class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource
             queryParams[7]
         ).asFlow().mapToList().map { exercises ->
             exercises.map {
-                it.toExercise()
+                it.toExerciseLocal()
             }
         }
     }
 
-    override fun getExerciseById(exerciseId: Long): Flow<Exercise> {
+    override fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal> {
         return queries.getExerciseById(exerciseId).asFlow().map {
-            it.executeAsOne().toExercise()
+            it.executeAsOne().toExerciseLocal()
         }
     }
 
-    override fun getExercisesByNames(exerciseList: List<String>): Flow<List<Exercise>> {
+    override fun getExercisesByNames(exerciseList: List<String>): Flow<List<ExerciseLocal>> {
         val adjustedExerciseList = exerciseList.toMutableList()
         while (adjustedExerciseList.size < 20) {
             adjustedExerciseList.add("") // Or any default value
@@ -77,18 +77,18 @@ class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource
             adjustedExerciseList[19]
         ).asFlow().mapToList().map { exercises ->
             exercises.map { exercise ->
-                exercise.toExercise()
+                exercise.toExerciseLocal()
             }
         }
     }
 
-    override suspend fun insertExercise(exercise: Exercise) {
+    override suspend fun insertExercise(exerciseLocal: ExerciseLocal) {
         queries.insertExercise(
-            id = exercise.id,
-            name = exercise.name,
-            image = exercise.image,
-            bestLiftedWeight = exercise.bestLiftedWeight,
-            exercise_group = exercise.group
+            id = exerciseLocal.id,
+            name = exerciseLocal.name,
+            image = exerciseLocal.image,
+            bestLiftedWeight = exerciseLocal.bestLiftedWeight,
+            exercise_group = exerciseLocal.group
         )
     }
 

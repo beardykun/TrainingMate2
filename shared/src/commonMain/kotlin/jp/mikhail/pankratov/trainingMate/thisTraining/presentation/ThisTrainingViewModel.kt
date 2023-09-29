@@ -1,10 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.thisTraining.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -21,13 +20,13 @@ class ThisTrainingViewModel(
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
-    private val _exercises = MutableStateFlow<List<Exercise>?>(null)
+    private val _exercises = MutableStateFlow<List<ExerciseLocal>?>(null)
     val state = combine(
         _training,
         _exercises
     ) { training, exercises ->
         ThisTrainingState(
-            training = training, exercises = exercises
+            training = training, exerciseLocals = exercises
         )
     }.stateIn(
         scope = viewModelScope,
@@ -41,9 +40,11 @@ class ThisTrainingViewModel(
 
     private fun loadTrainingAndExercises() = viewModelScope.launch(Dispatchers.IO) {
         trainingHistoryDataSource.getOngoingTraining().collect { training ->
-            _training.value = training
-            val exercises = exerciseDatasource.getExercisesByNames(training!!.exercises).first()
-            _exercises.value = exercises
+            training?.let { trainingNotNull ->
+                _training.value = trainingNotNull
+                val exercises = exerciseDatasource.getExercisesByNames(trainingNotNull.exercises).first()
+                _exercises.value = exercises
+            }
         }
     }
 

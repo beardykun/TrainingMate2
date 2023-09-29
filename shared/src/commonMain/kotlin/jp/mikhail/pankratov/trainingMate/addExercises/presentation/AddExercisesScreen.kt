@@ -18,9 +18,9 @@ fun AddExercisesScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        state.availableExercises?.let { exercises ->
+        state.availableExerciseLocals?.let { exercises ->
             SelectableExercises(
-                exercises = exercises,
+                exerciseLocals = exercises,
                 isSelected = state.selectedExercises,
                 modifier = Modifier.weight(1f)
             ) { exercise ->

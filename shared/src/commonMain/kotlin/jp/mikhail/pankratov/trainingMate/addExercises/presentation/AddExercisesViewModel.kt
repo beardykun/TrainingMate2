@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.addExercises.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
@@ -24,7 +24,7 @@ class AddExercisesViewModel(
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
-    private val _availableExercises = MutableStateFlow<List<Exercise>>(emptyList())
+    private val _availableExercises = MutableStateFlow<List<ExerciseLocal>>(emptyList())
     private val _selectedExercises = MutableStateFlow<List<String>>(emptyList())
 
     val state = combine(
@@ -33,7 +33,7 @@ class AddExercisesViewModel(
         _selectedExercises
     ) { training, availableExercises, selectedExercises ->
         AddExercisesState(
-            availableExercises = availableExercises,
+            availableExerciseLocals = availableExercises,
             selectedExercises = selectedExercises,
             training = training
         )

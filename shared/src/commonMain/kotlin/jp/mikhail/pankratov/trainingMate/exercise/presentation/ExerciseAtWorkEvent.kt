@@ -1,7 +1,13 @@
 package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
+import androidx.compose.ui.text.input.TextFieldValue
+
 sealed class ExerciseAtWorkEvent {
-    data class OnTimerChanged(val newTime: Int) : ExerciseAtWorkEvent()
-    data object OnTimerStart: ExerciseAtWorkEvent()
-    data class OnAddNewSet(val setData: String) : ExerciseAtWorkEvent()
+    data object OnTimerStart : ExerciseAtWorkEvent()
+    data object OnAddNewSet : ExerciseAtWorkEvent()
+    data object OnDropdownOpen : ExerciseAtWorkEvent()
+    data object OnDropdownClosed : ExerciseAtWorkEvent()
+    data class OnDropdownItemSelected(val item: String) : ExerciseAtWorkEvent()
+    data class OnWeightChanged(val newWeight: TextFieldValue) : ExerciseAtWorkEvent()
+    data class OnRepsChanged(val newReps: TextFieldValue) : ExerciseAtWorkEvent()
 }

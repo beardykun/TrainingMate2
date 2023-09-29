@@ -20,11 +20,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 
 @Composable
-fun ExerciseItem(exercise: Exercise, onClick: (Exercise) -> Unit) {
+fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit) {
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
@@ -33,14 +33,14 @@ fun ExerciseItem(exercise: Exercise, onClick: (Exercise) -> Unit) {
             .clip(RoundedCornerShape(percent = 25))
             .background(Color.Cyan)
             .clickable {
-                onClick.invoke(exercise)
+                onClick.invoke(exerciseLocal)
             }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SharedRes.images.getImageByFileName(exercise.image)?.let {
+            SharedRes.images.getImageByFileName(exerciseLocal.image)?.let {
                 val painter: Painter =
                     jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
 
@@ -51,8 +51,8 @@ fun ExerciseItem(exercise: Exercise, onClick: (Exercise) -> Unit) {
             }
 
             Column {
-                TextMedium(text = exercise.name)
-                TextMedium(text = exercise.group)
+                TextMedium(text = exerciseLocal.name)
+                TextMedium(text = exerciseLocal.group)
             }
         }
     }

@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 
 @Composable
 fun SelectableGroups(
@@ -92,16 +92,16 @@ fun SelectableGroupItem(
 
 @Composable
 fun SelectableExercises(
-    exercises: List<Exercise>,
+    exerciseLocals: List<ExerciseLocal>,
     modifier: Modifier = Modifier,
     isSelected: List<String>,
-    onClick: (Exercise) -> Unit,
+    onClick: (ExerciseLocal) -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp),
         modifier = modifier
     ) {
-        items(exercises) { item ->
+        items(exerciseLocals) { item ->
             SelectableExerciseItem(item, isSelected, onClick)
         }
     }
@@ -109,9 +109,9 @@ fun SelectableExercises(
 
 @Composable
 fun SelectableExerciseItem(
-    item: Exercise,
+    item: ExerciseLocal,
     isSelected: List<String>,
-    onClick: (Exercise) -> Unit,
+    onClick: (ExerciseLocal) -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

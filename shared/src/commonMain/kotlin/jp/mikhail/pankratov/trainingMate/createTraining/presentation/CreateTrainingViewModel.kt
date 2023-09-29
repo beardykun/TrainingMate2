@@ -51,7 +51,7 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
     private fun addNewTraining() = viewModelScope.launch(Dispatchers.IO) {
         val training = Training(
             id = null,
-            name = state.value.trainingName,
+            name = state.value.trainingName.text,
             groups = state.value.selectedGroups.listToString(),
             exercises = emptyList(),
             userId = "1",

@@ -1,9 +1,10 @@
 package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
+import androidx.compose.ui.text.input.TextFieldValue
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 
 data class CreateTrainingState(
-    val trainingName: String = "",
+    val trainingName: TextFieldValue = TextFieldValue(""),
     val trainingDescription: String = "",
     val trainingGroups: List<String> =
         listOf(
