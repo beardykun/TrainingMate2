@@ -1,10 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -15,29 +12,24 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ExerciseAtWorkViewModel(
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val exerciseDatasource: IExerciseDatasource,
-    private val exerciseId: Long
+    private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
+    private val trainingId: Long,
+    private val exerciseTemplateId: Long
 ) : ViewModel() {
 
-    private val _training: MutableStateFlow<Training?> = MutableStateFlow(null)
-    private val _exerciseLocal: MutableStateFlow<ExerciseLocal?> = MutableStateFlow(null)
-
     private val _state = MutableStateFlow(ExerciseAtWorkState())
-    val state = combine(_state, _training, _exerciseLocal) { state, training, exercise ->
+    val state = combine(
+        _state,
+        exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId)
+    ) { state, exercise ->
 
-        if (state.training != training) {
+        if (state.exercise != exercise) {
             state.copy(
-                training = training
-            )
-        } else if (state.exerciseLocal != exercise) {
-            state.copy(
-                exerciseLocal = exercise
+                exercise = exercise
             )
         } else state
 
@@ -47,27 +39,16 @@ class ExerciseAtWorkViewModel(
         initialValue = ExerciseAtWorkState()
     )
 
-    init {
-        loadData()
-    }
-
-    private fun loadData() = viewModelScope.launch(Dispatchers.IO) {
-        val training = trainingHistoryDataSource.getOngoingTraining().first()
-        val exerciseLocal = exerciseDatasource.getExerciseById(exerciseId).first()
-        withContext(Dispatchers.Main) {
-            _training.value = training
-            _exerciseLocal.value = exerciseLocal
-        }
-    }
-
     private var timerJob: Job? = null
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
             is ExerciseAtWorkEvent.OnAddNewSet -> {
                 if (invalidInput()) return
-                _state.update {
-                    it.copy(
-                        sets = state.value.sets.plus("${state.value.weight.text} x ${state.value.reps.text}")
+                viewModelScope.launch(Dispatchers.IO) {
+                    exerciseHistoryDatasource.updateExerciseSets(
+                        sets = state.value.exercise?.sets?.plus("${state.value.weight.text} x ${state.value.reps.text}")!!,
+                        trainingHistoryId = trainingId,
+                        exerciseTemplateId = exerciseTemplateId
                     )
                 }
             }

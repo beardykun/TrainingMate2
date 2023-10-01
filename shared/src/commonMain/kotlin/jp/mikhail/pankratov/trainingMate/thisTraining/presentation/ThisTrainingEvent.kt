@@ -1,4 +1,11 @@
 package jp.mikhail.pankratov.trainingMate.thisTraining.presentation
 
-class ThisTrainingEvent {
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+
+sealed class ThisTrainingEvent {
+    data class OnExerciseClick(
+        val exercise: ExerciseLocal,
+        val navigateToExercise: (Long) -> Unit
+    ) :
+        ThisTrainingEvent()
 }

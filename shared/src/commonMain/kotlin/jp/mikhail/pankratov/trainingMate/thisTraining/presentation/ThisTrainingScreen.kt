@@ -35,8 +35,14 @@ fun ThisTrainingScreen(
             LazyColumn {
                 items(exercises) { exercise ->
                     ExerciseItem(exerciseLocal = exercise) {
-                        navigator.navigate(
-                            "${Routs.ExerciseScreens.exerciseAtWork}/${it.id}"
+                        onEvent(
+                            ThisTrainingEvent.OnExerciseClick(
+                                it,
+                                navigateToExercise = { exerciseId ->
+                                    navigator.navigate(
+                                        "${Routs.ExerciseScreens.exerciseAtWork}/${state.training?.id}/${exerciseId}"
+                                    )
+                                })
                         )
                     }
                 }

@@ -6,7 +6,7 @@ data class Exercise(
     val group: String,
     val sets: List<String> = emptyList(), // List of sets performed in the exercise
     val bestLiftedWeight: Double = 0.0, // The highest weight lifted in this exercise so far
-    val trainingHistoryId: Long? = null,
-    val exerciseTemplateId: Long? = null,
+    val trainingHistoryId: Long,
+    val exerciseTemplateId: Long,
     val totalLiftedWeight: Double = 0.0,
 )

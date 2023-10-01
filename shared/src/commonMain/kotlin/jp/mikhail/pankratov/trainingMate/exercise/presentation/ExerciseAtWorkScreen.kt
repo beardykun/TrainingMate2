@@ -72,7 +72,7 @@ fun ExerciseAtWorkScreen(
                     modifier = Modifier.weight(1f)
                 )
             }
-            state.sets.let { sets ->
+            state.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = 4)) {
                     items(sets) {
                         Text(it)

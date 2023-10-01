@@ -58,7 +58,6 @@ fun InputField(
         supportingText = { TextMedium(errorText ?: "") },
         isError = isError,
         modifier = modifier
-            .padding(horizontal = Dimens.Padding16.dp)
             .padding(top = Dimens.Padding16.dp)
     )
 }

@@ -1,0 +1,11 @@
+package jp.mikhail.pankratov.trainingMate.exercise.domain.local
+
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import kotlinx.coroutines.flow.Flow
+
+interface IExerciseHistoryDatasource {
+    fun getExerciseFromHistory(trainingHistoryId: Long, exerciseTemplateId: Long): Flow<Exercise?>
+    fun countExerciseInHistory(trainingHistoryId: Long, exerciseTemplateId: Long): Flow<Long>
+    suspend fun insertExerciseHistory(exercise: Exercise)
+    suspend fun updateExerciseSets(sets: List<String>, trainingHistoryId: Long, exerciseTemplateId: Long)
+}

@@ -9,3 +9,31 @@ CREATE TABLE ExerciseHistory (
       FOREIGN KEY(training_history_id) REFERENCES TrainingHistory(id),
       FOREIGN KEY(exercise_template_id) REFERENCES ExerciseTemplate(id)
 );
+
+countExerciseInHistory:
+SELECT COUNT(*)
+FROM ExerciseHistory
+WHERE training_history_id = ? AND exercise_template_id = ?;
+
+getExerciseFromHistory:
+SELECT *
+FROM ExerciseHistory
+WHERE training_history_id = ? AND exercise_template_id = ?;
+
+updateExerciseSets:
+UPDATE ExerciseHistory
+SET sets = ?
+WHERE training_history_id = ? AND exercise_template_id = ?;
+
+insertExerciseHistory:
+INSERT OR REPLACE
+INTO ExerciseHistory(
+id,
+name,
+sets,
+exercise_group,
+training_history_id,
+exercise_template_id,
+total_lifted_weight
+)
+VALUES(?, ?, ?, ?, ?, ?, ?);
