@@ -24,11 +24,10 @@ fun TextSmall(text: String) {
 }
 
 @Composable
-fun TextLarge(text: String, fontWeight: FontWeight = FontWeight.Bold, color: Color = MaterialTheme.colorScheme.primary) {
+fun TextLarge(text: String, fontWeight: FontWeight = FontWeight.Bold) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyLarge,
         fontWeight = fontWeight,
-        color = color
     )
 }

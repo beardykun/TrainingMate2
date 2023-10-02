@@ -8,12 +8,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
@@ -44,13 +42,11 @@ class ExerciseAtWorkViewModel(
         when (event) {
             is ExerciseAtWorkEvent.OnAddNewSet -> {
                 if (invalidInput()) return
-                viewModelScope.launch(Dispatchers.IO) {
-                    exerciseHistoryDatasource.updateExerciseSets(
-                        sets = state.value.exercise?.sets?.plus("${state.value.weight.text} x ${state.value.reps.text}")!!,
-                        trainingHistoryId = trainingId,
-                        exerciseTemplateId = exerciseTemplateId
-                    )
-                }
+
+                val newInput = "${state.value.weight.text} x ${state.value.reps.text}"
+                val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
+
+                updateSets(sets)
             }
 
             ExerciseAtWorkEvent.OnTimerStart -> {
@@ -109,7 +105,38 @@ class ExerciseAtWorkViewModel(
                     )
                 }
             }
+
+            is ExerciseAtWorkEvent.OnSetDelete -> {
+                state.value.deleteItem?.let {
+                    val sets = state.value.exercise?.sets?.minus(it) ?: emptyList()
+
+                    updateSets(sets)
+                }
+                _state.update {
+                    it.copy(
+                        deleteItem = null,
+                        isDeleteDialogVisible = false
+                    )
+                }
+            }
+
+            is ExerciseAtWorkEvent.OnDisplayDeleteDialog -> {
+                _state.update {
+                    it.copy(
+                        isDeleteDialogVisible = event.display,
+                        deleteItem = event.item
+                    )
+                }
+            }
         }
+    }
+
+    private fun updateSets(sets: List<String>) = viewModelScope.launch(Dispatchers.IO) {
+        exerciseHistoryDatasource.updateExerciseSets(
+            sets = sets,
+            trainingHistoryId = trainingId,
+            exerciseTemplateId = exerciseTemplateId
+        )
     }
 
     private fun startTimer(initValue: Int) = flow {
@@ -144,29 +171,29 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun validateWeight(weight: String): String? {
-        if (weight == "0.0" || weight == "0") {
-            return "Weight can't be 0"
-        } else if (weight.contains(",")) {
-            return "Please use '.' instead of ',' for weight"
-        } else if (weight.isBlank()) {
-            return "Weight field should not be empty"
-        }
         try {
             weight.toDouble()
         } catch (e: NumberFormatException) {
-            return "Invalid input format"
+            return "w1"
         }
 
+        if (weight == "0.0" || weight == "0") {
+            return "w2"
+        } else if (weight.contains(",")) {
+            return "w3"
+        } else if (weight.isBlank()) {
+            return "w4"
+        }
         return null
     }
 
     private fun validateReps(reps: String): String? {
         return if (reps.isBlank()) {
-            "Reps field should not be empty"
+            "r1"
         } else if (reps.contains(",") || reps.contains(".")) {
-            "Reps should not be a floating point number"
+            "r2"
         } else if (reps == "0") {
-            "Reps should not be 0"
+            "r3"
         } else null
     }
 }

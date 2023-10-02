@@ -2,9 +2,31 @@
 <resources>
 
     <!-- Create training -->
-    <string name = "training_name">Training name:</string>
-    <string name = "groups">Groups:</string>
-    <string name = "cd_muscle_group_image">muscle group image</string>
-    <string name = "cd_add_new_training">add new training</string>
+    <string name="training_name">Training name:</string>
+    <string name="groups">Groups:</string>
+    <string name="cd_muscle_group_image">muscle group image</string>
+    <string name="cd_add_new_training">add new training</string>
+
+    <!-- Exercise at work -->
+    <string name="select_weight">Select weight</string>
+    <string name="select_reps">Select reps</string>
+    <string name="weight">Weight</string>
+    <string name="reps">Reps</string>
+    <string name="add_set">Add set</string>
+    <string name="cd_start_timer_button">Start timer button</string>
+    <string name="weight_cant_be_0">Weight can\'t be 0</string>
+    <string name="use_dot">Please, use '.' instead of ',' for weight</string>
+    <string name="weight_should_not_be_empty">Weight field should not be empty</string>
+    <string name="invalid_input_format">Invalid input format</string>
+    <string name="reps_should_not_be_empty">Reps field should not be empty</string>
+    <string name="not_a_float">Reps should not be a floating point number</string>
+    <string name="not_a_0">Reps should not be 0</string>
+    <string name="delete_set">Delete set?</string>
+    <string name="sure_delete_set">Do you want to delete last set?</string>
+
+    <!-- Training Main -->
+    <string name="start_training">Start Training</string>
+    <string name="are_you_ready_to_start">Are you ready to start training?</string>
+
 
 </resources>

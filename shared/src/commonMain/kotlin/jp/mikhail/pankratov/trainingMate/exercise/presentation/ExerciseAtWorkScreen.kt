@@ -1,15 +1,22 @@
 package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
+import Dimens
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
@@ -20,11 +27,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -38,49 +50,56 @@ fun ExerciseAtWorkScreen(
             FloatingActionButton(
                 onClick = {
                     onEvent(ExerciseAtWorkEvent.OnTimerStart)
-                }
+                }, modifier = Modifier.offset(y = (-32).dp)
             ) {
-                Icon(imageVector = Icons.Default.Timer, contentDescription = "Start timer button")
+                Icon(
+                    imageVector = Icons.Default.Timer,
+                    contentDescription = stringResource(SharedRes.strings.cd_start_timer_button)
+                )
             }
         }
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
                     value = state.weight,
-                    placeholder = "Select weight",
-                    label = "Weight",
+                    placeholder = stringResource(SharedRes.strings.select_weight),
+                    label = stringResource(SharedRes.strings.weight),
                     onValueChanged = { value ->
                         onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
                     },
                     keyboardType = KeyboardType.Decimal,
                     isError = state.errorWeight != null,
-                    errorText = state.errorWeight,
+                    errorText = getErrorMessage(state.errorWeight),
                     modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.padding(32.dp))
+                Spacer(modifier = Modifier.padding(Dimens.Padding32.dp))
                 InputField(
                     value = state.reps,
-                    placeholder = "Select reps",
-                    label = "Reps",
+                    placeholder = stringResource(SharedRes.strings.select_reps),
+                    label = stringResource(SharedRes.strings.reps),
                     onValueChanged = { value ->
                         onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
                     },
                     keyboardType = KeyboardType.Number,
                     isError = state.errorReps != null,
-                    errorText = state.errorReps,
+                    errorText = getErrorMessage(state.errorReps),
                     modifier = Modifier.weight(1f)
                 )
             }
             state.exercise?.sets?.let { sets ->
-                LazyVerticalGrid(columns = GridCells.Fixed(count = 4)) {
-                    items(sets) {
-                        Text(it)
+                LazyVerticalGrid(columns = GridCells.Fixed(count = 3)) {
+                    items(sets) { item ->
+                        Text(item, modifier = Modifier.pointerInput(Unit) {
+                            detectTapGestures(onLongPress = {
+                                onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, item))
+                            })
+                        })
                     }
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth().height(60.dp)) {
                 DropDown(
                     initValue = state.timer.toString(),
                     isOpen = state.isExpanded,
@@ -90,13 +109,28 @@ fun ExerciseAtWorkScreen(
                         onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected(value))
                     },
                     values = listOf("15", "30", "45", "60", "90", "120", "150", "180", "300"),
-                    modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
+                    modifier = Modifier.clip(
+                        RoundedCornerShape(percent = 50)
+                    ).background(color = MaterialTheme.colorScheme.primary)
                 )
+                Spacer(modifier = Modifier.width(Dimens.Padding16.dp))
                 Button(onClick = {
                     onEvent(ExerciseAtWorkEvent.OnAddNewSet)
-                }, modifier = Modifier.fillMaxWidth()) {
-                    TextLarge(text = "Add set")
+                }, modifier = Modifier.fillMaxSize().weight(1f)) {
+                    TextMedium(text = stringResource(SharedRes.strings.add_set))
                 }
+            }
+            AnimatedVisibility(visible = state.isDeleteDialogVisible) {
+                DialogPopup(
+                    title = stringResource(SharedRes.strings.delete_set),
+                    description = stringResource(SharedRes.strings.sure_delete_set),
+                    onAccept = {
+                               onEvent(ExerciseAtWorkEvent.OnSetDelete)
+                    },
+                    onDenny = {
+                        onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(false))
+                    }
+                )
             }
         }
     }

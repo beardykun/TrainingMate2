@@ -12,5 +12,7 @@ data class ExerciseAtWorkState(
     val weight: TextFieldValue = TextFieldValue(""),
     val reps: TextFieldValue = TextFieldValue(""),
     val errorReps: String? = null,
-    val errorWeight: String? = null
+    val errorWeight: String? = null,
+    val isDeleteDialogVisible: Boolean = false,
+    val deleteItem: String? = null
 )

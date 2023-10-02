@@ -10,4 +10,6 @@ sealed class ExerciseAtWorkEvent {
     data class OnDropdownItemSelected(val item: String) : ExerciseAtWorkEvent()
     data class OnWeightChanged(val newWeight: TextFieldValue) : ExerciseAtWorkEvent()
     data class OnRepsChanged(val newReps: TextFieldValue) : ExerciseAtWorkEvent()
+    data object OnSetDelete : ExerciseAtWorkEvent()
+    data class OnDisplayDeleteDialog(val display: Boolean = false, val item: String? = null) : ExerciseAtWorkEvent()
 }

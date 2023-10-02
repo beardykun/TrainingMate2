@@ -13,17 +13,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
@@ -82,28 +81,17 @@ fun TrainingScreen(
             TextMedium(text = "Maybe a mini progress bar to next achievement?")
 
             AnimatedVisibility(visible = state.showStartTrainingDialog) {
-                AlertDialog(
-                    onDismissRequest = {
+                DialogPopup(
+                    title = stringResource(SharedRes.strings.start_training),
+                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
+                    onAccept = {
+                        onEvent(TrainingScreenEvent.OnStartNewTraining)
+                        navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                    },
+                    onDenny = {
                         onEvent(TrainingScreenEvent.OnTrainingItemClick())
-                    },
-                    title = { TextMedium(text = "Start Training") },
-                    text = { TextMedium("Are you ready to start training?") },
-                    confirmButton = {
-                        TextButton(onClick = {
-                            onEvent(TrainingScreenEvent.OnStartNewTraining)
-                            // Navigate to the training screen or take any other action upon confirmation.
-                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-                        }) {
-                            TextMedium("Yes")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = {
-                            onEvent(TrainingScreenEvent.OnTrainingItemClick())
-                        }) {
-                            TextMedium("No")
-                        }
-                    })
+                    }
+                )
             }
         }
     }
