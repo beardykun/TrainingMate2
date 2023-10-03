@@ -15,7 +15,7 @@
     <string name="add_set">Add set</string>
     <string name="cd_start_timer_button">Start timer button</string>
     <string name="weight_cant_be_0">Weight can\'t be 0</string>
-    <string name="use_dot">Please, use '.' instead of ',' for weight</string>
+    <string name="use_dot">Please, use \'.\' instead of \',\' for weight</string>
     <string name="weight_should_not_be_empty">Weight field should not be empty</string>
     <string name="invalid_input_format">Invalid input format</string>
     <string name="reps_should_not_be_empty">Reps field should not be empty</string>
@@ -27,6 +27,5 @@
     <!-- Training Main -->
     <string name="start_training">Start Training</string>
     <string name="are_you_ready_to_start">Are you ready to start training?</string>
-
 
 </resources>

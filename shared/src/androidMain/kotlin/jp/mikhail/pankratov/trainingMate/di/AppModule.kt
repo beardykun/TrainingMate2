@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.di
 
 import android.content.Context
+import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.data.local.DatabaseDriverFactory
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.exercise.data.local.ExerciseDatasource
@@ -44,5 +45,8 @@ actual class AppModule(private val context: Context) {
                 driver = DatabaseDriverFactory(context = context).createDriver()
             )
         )
+    }
+    actual val notificationUtils: NotificationUtils by lazy {
+        NotificationUtils(context)
     }
 }

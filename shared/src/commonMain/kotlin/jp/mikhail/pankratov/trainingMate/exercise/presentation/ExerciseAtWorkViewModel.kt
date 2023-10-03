@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
     private val trainingId: Long,
-    private val exerciseTemplateId: Long
+    private val exerciseTemplateId: Long,
+    private val notificationUtils: NotificationUtils
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ExerciseAtWorkState())
@@ -52,11 +54,19 @@ class ExerciseAtWorkViewModel(
             ExerciseAtWorkEvent.OnTimerStart -> {
                 timerJob?.cancel()
                 timerJob = viewModelScope.launch {
-                    startTimer(state.value.timer).collect { counter ->
+                    startTimer(state.value.timerValue).collect { counter ->
                         _state.update {
                             it.copy(
                                 timer = counter
                             )
+                        }
+                        if (counter == 0) {
+                            _state.update {
+                                it.copy(
+                                    timer = state.value.timerValue
+                                )
+                            }
+                            notificationUtils.sendNotification()
                         }
                     }
                 }
@@ -82,6 +92,7 @@ class ExerciseAtWorkViewModel(
                 timerJob?.cancel()
                 _state.update {
                     it.copy(
+                        timerValue = event.item.toInt(),
                         timer = event.item.toInt(),
                         isExpanded = false
                     )

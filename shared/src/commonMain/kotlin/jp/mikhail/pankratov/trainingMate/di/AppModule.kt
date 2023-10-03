@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.di
 
+import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
@@ -10,4 +11,5 @@ expect class AppModule {
     val exerciseDataSource: IExerciseDatasource
     val exerciseHistoryDataSource: IExerciseHistoryDatasource
     val trainingHistoryDataSource: ITrainingHistoryDataSource
+    val notificationUtils: NotificationUtils
 }

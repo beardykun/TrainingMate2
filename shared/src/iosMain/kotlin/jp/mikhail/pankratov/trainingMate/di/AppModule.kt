@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.di
 
+import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.data.local.DatabaseDriverFactory
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.exercise.data.local.ExerciseDatasource
@@ -44,4 +45,6 @@ actual class AppModule {
             )
         )
     }
+    actual val notificationUtils: NotificationUtils
+        get() = TODO("Not yet implemented")
 }

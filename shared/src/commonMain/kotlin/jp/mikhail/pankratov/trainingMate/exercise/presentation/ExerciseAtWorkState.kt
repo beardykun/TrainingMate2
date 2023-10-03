@@ -7,6 +7,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 data class ExerciseAtWorkState(
     val training: Training? = null,
     val exercise: Exercise? = null,
+    val timerValue: Int = 60,
     val timer: Int = 60,
     val isExpanded: Boolean = false,
     val weight: TextFieldValue = TextFieldValue(""),

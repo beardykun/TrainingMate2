@@ -289,7 +289,8 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                         ExerciseAtWorkViewModel(
                             exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
                             trainingId = trainingId,
-                            exerciseTemplateId = exerciseTemplateId
+                            exerciseTemplateId = exerciseTemplateId,
+                            notificationUtils = appModule.notificationUtils
                         )
                     }
                 )
