@@ -13,9 +13,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlin.time.Duration.Companion.seconds
 
 class ThisTrainingViewModel(
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
@@ -25,13 +29,20 @@ class ThisTrainingViewModel(
 
     private val _training = MutableStateFlow<Training?>(null)
     private val _exercises = MutableStateFlow<List<ExerciseLocal>?>(null)
+    private val _state = MutableStateFlow(ThisTrainingState())
     val state = combine(
+        _state,
         _training,
         _exercises
-    ) { training, exercises ->
-        ThisTrainingState(
-            training = training, exerciseLocals = exercises
-        )
+    ) { state, training, exercises ->
+        val newState =
+            if (training != state.training) {
+                state.copy(
+                    training = training,
+                    exerciseLocals = exercises
+                )
+            } else state
+        newState
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000L),
@@ -49,6 +60,17 @@ class ThisTrainingViewModel(
                 val exercises =
                     exerciseDatasource.getExercisesByNames(trainingNotNull.exercises).first()
                 _exercises.value = exercises
+                startTimer(trainingNotNull)
+            }
+        }
+    }
+
+    private fun startTimer(training: Training) = viewModelScope.launch(Dispatchers.Main) {
+        countTrainingTime(training).collect { time ->
+            _state.update {
+                it.copy(
+                    trainingTime = time
+                )
             }
         }
     }
@@ -96,4 +118,17 @@ class ThisTrainingViewModel(
             ).first()
         return Triple(trainingId, exerciseId, exerciseExists)
     }
+
+    private fun countTrainingTime(training: Training) = flow {
+        while (training.status == "ONGOING") {
+            val durationMillis = Clock.System.now().toEpochMilliseconds()
+                .minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
+            val totalSeconds = durationMillis / 1000
+            val hours = totalSeconds / 3600
+            val minutes = (totalSeconds % 3600) / 60
+            val seconds = totalSeconds % 60
+            kotlinx.coroutines.delay(1000L)
+            emit("Training time: ${hours}h:${minutes}m:${seconds}s")
+        }
+    }.flowOn(Dispatchers.Default)
 }

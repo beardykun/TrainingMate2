@@ -31,7 +31,7 @@ actual class NotificationUtils(private val context: Context) {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationBuilder.setSmallIcon(SharedRes.images.abs.drawableResId)
+        notificationBuilder.setSmallIcon(SharedRes.images.chin_up.drawableResId)
             .setContentTitle("Rest is over!")
             .setContentText("Return to your workout!")
             .setAutoCancel(true)

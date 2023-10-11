@@ -248,6 +248,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     }
                 )
                 val state by viewModel.state.collectAsState()
+
                 ThisTrainingScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
@@ -256,17 +257,15 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
             }
 
             scene(
-                route = "${Routs.TrainingScreens.addExercises}/{trainingId}",
+                route = Routs.TrainingScreens.addExercises,
                 navTransition = NavTransition()
             ) { backStackEntry ->
-                val trainingId: Long = backStackEntry.path<Long>("trainingId") ?: -1
                 val viewModel = getViewModel(key = Routs.TrainingScreens.addExercises,
                     factory = viewModelFactory {
                         AddExercisesViewModel(
                             trainingDataSource = appModule.trainingDataSource,
                             exerciseDatasource = appModule.exerciseDataSource,
-                            trainingHistoryDataSource = appModule.trainingHistoryDataSource,
-                            trainingId = trainingId
+                            trainingHistoryDataSource = appModule.trainingHistoryDataSource
                         )
                     })
                 val state by viewModel.state.collectAsState()
@@ -288,6 +287,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     factory = viewModelFactory {
                         ExerciseAtWorkViewModel(
                             exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
+                            trainingHistoryDataSource = appModule.trainingHistoryDataSource,
                             trainingId = trainingId,
                             exerciseTemplateId = exerciseTemplateId,
                             notificationUtils = appModule.notificationUtils

@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.exercise.presentation
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -14,8 +15,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val SET_DIVIDER = " x "
+
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
+    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
     private val notificationUtils: NotificationUtils
@@ -24,15 +28,13 @@ class ExerciseAtWorkViewModel(
     private val _state = MutableStateFlow(ExerciseAtWorkState())
     val state = combine(
         _state,
+        trainingHistoryDataSource.getOngoingTraining(),
         exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId)
-    ) { state, exercise ->
-
-        if (state.exercise != exercise) {
-            state.copy(
-                exercise = exercise
-            )
-        } else state
-
+    ) { state, training, exercise ->
+        state.copy(
+            exercise = exercise,
+            training = training
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000L),
@@ -45,10 +47,10 @@ class ExerciseAtWorkViewModel(
             is ExerciseAtWorkEvent.OnAddNewSet -> {
                 if (invalidInput()) return
 
-                val newInput = "${state.value.weight.text} x ${state.value.reps.text}"
+                val newInput = "${state.value.weight.text}$SET_DIVIDER${state.value.reps.text}"
                 val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
 
-                updateSets(sets)
+                updateSets(sets, state.value.weight.text.toDouble() * state.value.reps.text.toInt())
             }
 
             ExerciseAtWorkEvent.OnTimerStart -> {
@@ -120,8 +122,9 @@ class ExerciseAtWorkViewModel(
             is ExerciseAtWorkEvent.OnSetDelete -> {
                 state.value.deleteItem?.let {
                     val sets = state.value.exercise?.sets?.minus(it) ?: emptyList()
-
-                    updateSets(sets)
+                    val setData = it.split(SET_DIVIDER)
+                    val minusWeight = setData.first().toDouble() * setData.last().toInt()
+                    updateSets(sets, -minusWeight)
                 }
                 _state.update {
                     it.copy(
@@ -142,12 +145,24 @@ class ExerciseAtWorkViewModel(
         }
     }
 
-    private fun updateSets(sets: List<String>) = viewModelScope.launch(Dispatchers.IO) {
-        exerciseHistoryDatasource.updateExerciseSets(
-            sets = sets,
-            trainingHistoryId = trainingId,
-            exerciseTemplateId = exerciseTemplateId
-        )
+    private fun updateSets(sets: List<String>, weight: Double) =
+        viewModelScope.launch(Dispatchers.IO) {
+            val totalLiftedWeight = (state.value.training?.totalWeightLifted ?: 0.0) + weight
+            updateTrainingTime(trainingId, totalLiftedWeight)
+            exerciseHistoryDatasource.updateExerciseSets(
+                sets = sets,
+                totalLiftedWeight = totalLiftedWeight,
+                trainingHistoryId = trainingId,
+                exerciseTemplateId = exerciseTemplateId
+            )
+        }
+
+    private suspend fun updateTrainingTime(trainingId: Long, totalLiftedWeight: Double) {
+        if (state.value.training?.startTime == 0L) {
+            trainingHistoryDataSource.updateStartTime(trainingId, totalLiftedWeight)
+        } else {
+            trainingHistoryDataSource.updateEndTime(trainingId, totalLiftedWeight)
+        }
     }
 
     private fun startTimer(initValue: Int) = flow {

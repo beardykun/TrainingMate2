@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
@@ -8,6 +9,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTraining
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
 
 class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSource {
 
@@ -15,6 +17,14 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     override fun getTrainingRecordById(id: Long): Flow<Training> {
         return query.getTrainingRecordById(id).asFlow().map { trainingHistory ->
             trainingHistory.executeAsOne().toTraining()
+        }
+    }
+
+    override fun getLatestHistoryTrainings(): Flow<List<Training>> {
+        return query.getLatestHistoryTrainings().asFlow().mapToList().map { trainings ->
+            trainings.map {
+                it.toTraining()
+            }
         }
     }
 
@@ -42,5 +52,28 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         return query.countOngoingTraining().asFlow().map {
             it.executeAsOne()
         }
+    }
+
+    override suspend fun updateEndTime(trainingId: Long, totalLiftedWeight: Double) {
+        query.updateEndTime(
+            end_time = Clock.System.now().toEpochMilliseconds(),
+            id = trainingId,
+            total_lifted_weight = totalLiftedWeight
+        )
+    }
+
+    override suspend fun updateStartTime(trainingId: Long, totalLiftedWeight: Double) {
+        query.updateEndTime(
+            end_time = Clock.System.now().toEpochMilliseconds(),
+            id = trainingId,
+            total_lifted_weight = totalLiftedWeight
+        )
+    }
+
+    override suspend fun updateStatus(trainingId: Long) {
+        query.updateStatus(
+            status = "COMPLETED",
+            id = trainingId
+        )
     }
 }

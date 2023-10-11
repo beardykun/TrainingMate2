@@ -1,11 +1,15 @@
 package jp.mikhail.pankratov.trainingMate.addExercises.presentation
 
+import Dimens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
 import moe.tlaster.precompose.navigation.Navigator
 
@@ -17,6 +21,7 @@ fun AddExercisesScreen(
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
+            .padding(horizontal = Dimens.Padding16.dp, vertical = Dimens.Padding8.dp)
     ) {
         state.availableExerciseLocals?.let { exercises ->
             SelectableExercises(
@@ -32,7 +37,8 @@ fun AddExercisesScreen(
                 onEvent(AddExercisesEvent.OnAddNewExercises {
                     navigator.popBackStack()
                 })
-            }) {
+            }, modifier = Modifier.fillMaxWidth()
+        ) {
             Text(text = "Add exercises")
         }
     }

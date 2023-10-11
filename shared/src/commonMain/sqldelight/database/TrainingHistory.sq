@@ -8,7 +8,7 @@ CREATE TABLE TrainingHistory (
     start_time INTEGER NOT NULL,
     end_time INTEGER NOT NULL,
     total_lifted_weight REAL NOT NULL, -- changed to REAL to match Kotlin's Double
-    status TEXT DEFAULT 'ONGOING' CHECK (status IN ('ONGOING', 'COMPLETED')),
+    status TEXT NOT NULL DEFAULT 'ONGOING' CHECK (status IN ('ONGOING', 'COMPLETED')),
     FOREIGN KEY(user_id) REFERENCES User(id)
 );
 
@@ -41,5 +41,26 @@ countOngoingTraining:
 SELECT COUNT(*)
 FROM TrainingHistory
 WHERE status = 'ONGOING';
+
+updateEndTime:
+UPDATE TrainingHistory
+SET end_time = ?, total_lifted_weight = ?
+WHERE id = ?;
+
+updateStartTime:
+UPDATE TrainingHistory
+SET start_time = ?, total_lifted_weight = ?
+WHERE id = ?;
+
+updateStatus:
+UPDATE TrainingHistory
+SET status = ?
+WHERE id = ?;
+
+getLatestHistoryTrainings:
+SELECT *
+FROM TrainingHistory
+ORDER BY id DESC
+LIMIT 30;
 
 

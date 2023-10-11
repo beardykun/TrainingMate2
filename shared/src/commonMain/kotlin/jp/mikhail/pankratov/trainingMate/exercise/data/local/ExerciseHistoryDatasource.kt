@@ -50,11 +50,13 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
 
     override suspend fun updateExerciseSets(
         sets: List<String>,
+        totalLiftedWeight: Double,
         trainingHistoryId: Long,
         exerciseTemplateId: Long
     ) {
         query.updateExerciseSets(
             sets = sets.listToString(),
+            total_lifted_weight = totalLiftedWeight,
             training_history_id = trainingHistoryId,
             exercise_template_id = exerciseTemplateId
         )

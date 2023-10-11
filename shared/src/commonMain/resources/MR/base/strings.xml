@@ -26,6 +26,6 @@
 
     <!-- Training Main -->
     <string name="start_training">Start Training</string>
-    <string name="are_you_ready_to_start">Are you ready to start training?</string>
+    <string name="are_you_ready_to_start">Ready to start a new training?\nOther ongoing trainings will be finished.</string>
 
 </resources>

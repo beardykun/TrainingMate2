@@ -22,7 +22,7 @@ WHERE training_history_id = ? AND exercise_template_id = ?;
 
 updateExerciseSets:
 UPDATE ExerciseHistory
-SET sets = ?
+SET sets = ?, total_lifted_weight = ?
 WHERE training_history_id = ? AND exercise_template_id = ?;
 
 insertExerciseHistory:

@@ -19,8 +19,7 @@ import kotlinx.coroutines.launch
 class AddExercisesViewModel(
     private val trainingDataSource: ITrainingDataSource,
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val exerciseDatasource: IExerciseDatasource,
-    private val trainingId: Long
+    private val exerciseDatasource: IExerciseDatasource
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)

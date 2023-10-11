@@ -57,15 +57,15 @@ class TrainingViewModel(
     val state = combine(
         _state,
         trainingDataSource.getTrainings(),
-        trainingHistoryDataSource.getOngoingTraining()
-    ) { state, trainings, ongoingTraining ->
-        if (state.availableTrainings != trainings) {
+        trainingHistoryDataSource.getOngoingTraining(),
+        trainingHistoryDataSource.getLatestHistoryTrainings()
+    ) { state, trainings, ongoingTraining, trainingsHistory ->
             state.copy(
                 availableTrainings = trainings,
                 greeting = motivationalPhrases.random(),
-                ongoingTraining = ongoingTraining
+                ongoingTraining = ongoingTraining,
+                lastTrainings = trainingsHistory
             )
-        } else state
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000L),
@@ -92,6 +92,8 @@ class TrainingViewModel(
     }
 
     private fun startNewTraining(training: Training) = viewModelScope.launch(Dispatchers.IO) {
+        finishLastTrainingWhenStartingNew()
+
         trainingHistoryDataSource.insertTrainingRecord(
             Training(
                 trainingTemplateId = training.id!!,
@@ -103,5 +105,11 @@ class TrainingViewModel(
                 exercises = training.exercises
             )
         )
+    }
+
+    private suspend fun finishLastTrainingWhenStartingNew() {
+        state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
+            trainingHistoryDataSource.updateStatus(trainingId = ongoingTrainingId)
+        }
     }
 }

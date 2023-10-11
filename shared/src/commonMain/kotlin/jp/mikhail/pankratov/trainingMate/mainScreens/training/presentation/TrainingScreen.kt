@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -18,10 +19,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.BarChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -52,8 +56,10 @@ fun TrainingScreen(
         ) {
             TextLarge(text = state.greeting)
 
-            state.lastTraining?.let { lastTraining ->
-                TextMedium(text = "${lastTraining.name} ${lastTraining.totalWeightLifted}")
+            state.lastTrainings?.let { lastTrainings ->
+                if (lastTrainings.isNotEmpty()) {
+                    TextMedium(text = "${lastTrainings.first().name} ${lastTrainings.first().totalWeightLifted}")
+                }
             } ?: TextMedium(text = "last training info")
 
             state.availableTrainings?.let { trainings ->
@@ -66,7 +72,6 @@ fun TrainingScreen(
                                     navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                                     return@TrainingItem
                                 }
-                                //FIXME need to ask if want to finish last training if id != training.id
                                 onEvent(
                                     TrainingScreenEvent.OnTrainingItemClick(
                                         shouldShowDialog = true,
@@ -78,6 +83,18 @@ fun TrainingScreen(
                     }
                 }
             }
+            state.lastTrainings?.let { lastTrainings ->
+                BarChart(
+                    data = lastTrainings,
+                    weightSelector = { training ->
+                        training.totalWeightLifted.toFloat()
+                    },
+                    dateSelector = { training ->
+                        Utils.formatEpochMillisToDate(training.startTime ?: 0)
+                    }, modifier = Modifier.height(150.dp).clipToBounds()
+                )
+            }
+
             TextMedium(text = "Maybe a mini progress bar to next achievement?")
 
             AnimatedVisibility(visible = state.showStartTrainingDialog) {
