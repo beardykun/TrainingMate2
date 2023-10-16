@@ -2,26 +2,27 @@ package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
@@ -45,20 +47,7 @@ fun ExerciseAtWorkScreen(
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     navigator: Navigator
 ) {
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    onEvent(ExerciseAtWorkEvent.OnTimerStart)
-                }, modifier = Modifier.offset(y = (-32).dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Timer,
-                    contentDescription = stringResource(SharedRes.strings.cd_start_timer_button)
-                )
-            }
-        }
-    ) {
+    Scaffold {
         Column(modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
@@ -119,13 +108,25 @@ fun ExerciseAtWorkScreen(
                 }, modifier = Modifier.fillMaxSize().weight(1f)) {
                     TextMedium(text = stringResource(SharedRes.strings.add_set))
                 }
+                Spacer(modifier = Modifier.width(Dimens.Padding16.dp))
+                Image(
+                    imageVector = Icons.Default.Timer,
+                    contentDescription = "Start timer",
+                    contentScale = ContentScale.Inside,
+                    modifier = Modifier.clickable {
+                        onEvent(ExerciseAtWorkEvent.OnTimerStart)
+                    }.fillMaxHeight()
+                        .width(60.dp)
+                        .clip(CircleShape)
+                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                )
             }
             AnimatedVisibility(visible = state.isDeleteDialogVisible) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.delete_set),
                     description = stringResource(SharedRes.strings.sure_delete_set),
                     onAccept = {
-                               onEvent(ExerciseAtWorkEvent.OnSetDelete)
+                        onEvent(ExerciseAtWorkEvent.OnSetDelete)
                     },
                     onDenny = {
                         onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(false))

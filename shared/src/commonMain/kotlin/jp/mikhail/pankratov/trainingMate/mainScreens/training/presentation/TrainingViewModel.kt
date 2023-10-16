@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
@@ -60,12 +61,13 @@ class TrainingViewModel(
         trainingHistoryDataSource.getOngoingTraining(),
         trainingHistoryDataSource.getLatestHistoryTrainings()
     ) { state, trainings, ongoingTraining, trainingsHistory ->
-            state.copy(
-                availableTrainings = trainings,
-                greeting = motivationalPhrases.random(),
-                ongoingTraining = ongoingTraining,
-                lastTrainings = trainingsHistory
-            )
+        println("TAGGER $trainings")
+        state.copy(
+            availableTrainings = trainings,
+            greeting = motivationalPhrases.random(),
+            ongoingTraining = ongoingTraining,
+            lastTrainings = trainingsHistory
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000L),
@@ -91,7 +93,7 @@ class TrainingViewModel(
         }
     }
 
-    private fun startNewTraining(training: Training) = viewModelScope.launch(Dispatchers.IO) {
+    private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {
         finishLastTrainingWhenStartingNew()
 
         trainingHistoryDataSource.insertTrainingRecord(
@@ -101,7 +103,7 @@ class TrainingViewModel(
                 groups = training.groups,
                 description = training.description,
                 startTime = Clock.System.now().toEpochMilliseconds(),
-                userId = training.userId,
+                userId = "1",
                 exercises = training.exercises
             )
         )

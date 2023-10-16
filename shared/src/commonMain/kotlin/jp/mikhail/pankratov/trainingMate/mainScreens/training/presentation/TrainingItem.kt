@@ -24,12 +24,13 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 
 @Composable
-fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
@@ -48,6 +49,34 @@ fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = M
             TextMedium(text = training.name.uppercase())
             TextLarge(text = stringResource(SharedRes.strings.groups))
             TextMedium(text = training.groups.uppercase())
+            OverlappingImagesBackground(
+                groups = training.groups.stringToList()
+            )
+        }
+    }
+}
+
+@Composable
+fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
+            .padding(Dimens.Padding16.dp)
+            .clip(RoundedCornerShape(Dimens.Padding24.dp))
+            .background(MaterialTheme.colorScheme.inversePrimary)
+            .padding(Dimens.Padding16.dp)
+            .clickable { onClick.invoke() }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            TextLarge(text = stringResource(SharedRes.strings.training_name))
+            TextMedium(text = training.name.uppercase())
+            TextLarge(text = stringResource(SharedRes.strings.groups))
+            TextMedium(text = training.groups.uppercase())
+            TextMedium(text = "Exercises: " + training.exercises.toString())
+            TextMedium(text = "Total lifted weight: " + training.totalWeightLifted.toString())
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )

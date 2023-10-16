@@ -3,16 +3,16 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local
 import database.TrainingHistory
 import database.TrainingTemplate
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 
-fun TrainingTemplate.toTraining(): Training {
-    return Training(
+fun TrainingTemplate.toTrainingLocal(): TrainingLocal {
+    return TrainingLocal(
         id = id,
         name = name,
         groups = groups,
         exercises = exercises.split(", "),
         description = description,
-        userId = ""
     )
 }
 

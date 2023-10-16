@@ -3,7 +3,7 @@ package jp.mikhail.pankratov.trainingMate
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +17,11 @@ class AppViewModel(
 
     fun insertDefaultTraining() = viewModelScope.launch(Dispatchers.IO) {
         if (!trainingDataSource.trainingTableEmpty()) return@launch
+        println("TAGGER insert trainings")
+
         trainingDataSource.insertTraining(
-            Training(
+            TrainingLocal(
                 id = null,
-                userId = "1",
                 name = "Biceps Training example",
                 groups = DatabaseContract.BICEPS_GROUP,
                 exercises = emptyList(),

@@ -1,9 +1,8 @@
 package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.listToString
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -49,12 +48,11 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
     }
 
     private fun addNewTraining() = viewModelScope.launch(Dispatchers.IO) {
-        val training = Training(
+        val training = TrainingLocal(
             id = null,
             name = state.value.trainingName.text,
             groups = state.value.selectedGroups.listToString(),
             exercises = emptyList(),
-            userId = "1",
             description = state.value.trainingDescription
         )
         trainingDataSource.insertTraining(training = training)

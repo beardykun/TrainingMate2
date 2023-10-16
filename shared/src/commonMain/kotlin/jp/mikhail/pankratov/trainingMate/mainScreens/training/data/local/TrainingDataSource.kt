@@ -2,11 +2,11 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTraining
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTrainingLocal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -14,7 +14,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
 
     private val queries = db.trainingTemplateQueries
 
-    override suspend fun insertTraining(training: Training) {
+    override suspend fun insertTraining(training: TrainingLocal) {
         queries.insertTraining(
             id = training.id,
             name = training.name,
@@ -24,10 +24,10 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
         )
     }
 
-    override fun getTrainings(): Flow<List<Training>> {
+    override fun getTrainings(): Flow<List<TrainingLocal>> {
         return queries.getTrainings().asFlow().mapToList().map { trainings ->
             trainings.map { training ->
-                training.toTraining()
+                training.toTrainingLocal()
             }
         }
     }
@@ -36,9 +36,9 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
         return queries.countTrainingTemplates().executeAsOne() == 0L
     }
 
-    override fun getTrainingById(trainingId: Long): Flow<Training> {
+    override fun getTrainingById(trainingId: Long): Flow<TrainingLocal> {
         return queries.getTrainingsById(trainingId).asFlow().map {
-            it.executeAsOne().toTraining()
+            it.executeAsOne().toTrainingLocal()
         }
     }
 

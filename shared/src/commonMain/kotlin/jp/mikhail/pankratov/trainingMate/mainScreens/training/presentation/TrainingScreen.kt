@@ -50,7 +50,7 @@ fun TrainingScreen(
     }) {
         val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
+            modifier = Modifier.fillMaxSize().padding(horizontal = Dimens.Padding16.dp)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp)
         ) {
@@ -60,17 +60,17 @@ fun TrainingScreen(
                 if (lastTrainings.isNotEmpty()) {
                     TextMedium(text = "${lastTrainings.first().name} ${lastTrainings.first().totalWeightLifted}")
                 }
-            } ?: TextMedium(text = "last training info")
+            }
 
             state.availableTrainings?.let { trainings ->
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
                     items(trainings) { training ->
-                        TrainingItem(
+                        LocalTrainingItem(
                             training = training,
                             onClick = {
                                 if (state.ongoingTraining?.id == training.id) {
                                     navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-                                    return@TrainingItem
+                                    return@LocalTrainingItem
                                 }
                                 onEvent(
                                     TrainingScreenEvent.OnTrainingItemClick(

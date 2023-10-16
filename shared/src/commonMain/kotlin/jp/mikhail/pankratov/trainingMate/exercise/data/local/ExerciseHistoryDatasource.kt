@@ -24,6 +24,10 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         }
     }
 
+    override fun getExercisesForTrainingHistory(trainingHistoryId: Long): Flow<List<Exercise?>> {
+        return query.
+    }
+
     override fun countExerciseInHistory(
         trainingHistoryId: Long,
         exerciseTemplateId: Long

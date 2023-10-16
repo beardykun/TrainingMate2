@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cabin
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.Home
@@ -16,6 +17,7 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -44,7 +46,8 @@ import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkScr
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
-import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.HistiryScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistiryScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingScreen
@@ -91,7 +94,17 @@ fun App(
 
             Scaffold(
                 topBar = {
-                    TopAppBar(title = { Text(text = current?.route?.route ?: "") })
+                    TopAppBar(title = { Text(text = current?.route?.route ?: "") },
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                navigator.popBackStack()
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = null
+                                )
+                            }
+                        })
                 },
                 bottomBar = {
                     if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) return@Scaffold
@@ -216,7 +229,12 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
             AchievementScreen(navigator = navigator)
         }
         scene(route = Routs.MainScreens.history.title, navTransition = NavTransition()) {
-            HistiryScreen(navigator = navigator)
+            val viewModel = getViewModel(key = Routs.MainScreens.history,
+                factory = viewModelFactory {
+                    HistoryScreenViewModel(trainingHistoryDataSource = appModule.trainingHistoryDataSource)
+                })
+            val state by viewModel.state.collectAsState()
+            HistiryScreen(state = state, navigator = navigator)
         }
         scene(route = Routs.TrainingScreens.createTraining, navTransition = NavTransition()) {
             val viewModel = getViewModel(

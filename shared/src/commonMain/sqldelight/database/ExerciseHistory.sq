@@ -20,6 +20,11 @@ SELECT *
 FROM ExerciseHistory
 WHERE training_history_id = ? AND exercise_template_id = ?;
 
+getExercisesForTrainingHistory:
+SELECT *
+FROM ExerciseHistory
+WHERE training_history_id = ?;
+
 updateExerciseSets:
 UPDATE ExerciseHistory
 SET sets = ?, total_lifted_weight = ?
