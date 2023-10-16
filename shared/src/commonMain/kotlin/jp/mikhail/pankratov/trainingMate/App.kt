@@ -46,6 +46,8 @@ import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkScr
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistiryScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
@@ -54,6 +56,7 @@ import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingS
 import jp.mikhail.pankratov.trainingMate.thisTraining.presentation.ThisTrainingViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
@@ -247,78 +250,115 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
             CreateTraining(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
 
-        group(
-            route = Routs.TrainingScreens.trainingGroupRout,
-            initialRoute = Routs.TrainingScreens.trainingExercises
+        trainingScreens(appModule, navigator)
+        historyScreens(appModule, navigator)
+    }
+}
+
+private fun RouteBuilder.historyScreens(
+    appModule: AppModule,
+    navigator: Navigator
+) {
+    group(
+        route = Routs.HistoryScreens.historyGroupRoot,
+        initialRoute = "${Routs.HistoryScreens.historyInfo}/{trainingHistoryId}"
+    ) {
+        scene(
+            route = "${Routs.HistoryScreens.historyInfo}/{trainingHistoryId}",
+            navTransition = NavTransition()
+        ) { backStackEntry ->
+            val trainingId: Long = backStackEntry.path("trainingHistoryId") ?: -1
+            val viewModel = getViewModel(
+                key = Routs.HistoryScreens.historyInfo,
+                viewModelFactory {
+                    HistoryInfoViewModel(
+                        exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
+                        trainingHistoryId = trainingId
+                    )
+                }
+            )
+            val state by viewModel.state.collectAsState()
+            HistoryInfoScreen(state = state, navigator = navigator)
+        }
+    }
+}
+
+
+private fun RouteBuilder.trainingScreens(
+    appModule: AppModule,
+    navigator: Navigator
+) {
+    group(
+        route = Routs.TrainingScreens.trainingGroupRout,
+        initialRoute = Routs.TrainingScreens.trainingExercises
+    ) {
+        scene(
+            route = Routs.TrainingScreens.trainingExercises,
+            navTransition = NavTransition()
         ) {
-            scene(
-                route = Routs.TrainingScreens.trainingExercises,
-                navTransition = NavTransition()
-            ) { backStackEntry ->
-                val viewModel = getViewModel(
-                    key = Routs.TrainingScreens.trainingExercises,
-                    factory = viewModelFactory {
-                        ThisTrainingViewModel(
-                            trainingHistoryDataSource = appModule.trainingHistoryDataSource,
-                            exerciseDatasource = appModule.exerciseDataSource,
-                            exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
-                        )
-                    }
-                )
-                val state by viewModel.state.collectAsState()
+            val viewModel = getViewModel(
+                key = Routs.TrainingScreens.trainingExercises,
+                factory = viewModelFactory {
+                    ThisTrainingViewModel(
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource,
+                        exerciseDatasource = appModule.exerciseDataSource,
+                        exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
+                    )
+                }
+            )
+            val state by viewModel.state.collectAsState()
 
-                ThisTrainingScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    navigator = navigator
-                )
-            }
+            ThisTrainingScreen(
+                state = state,
+                onEvent = viewModel::onEvent,
+                navigator = navigator
+            )
+        }
 
-            scene(
-                route = Routs.TrainingScreens.addExercises,
-                navTransition = NavTransition()
-            ) { backStackEntry ->
-                val viewModel = getViewModel(key = Routs.TrainingScreens.addExercises,
-                    factory = viewModelFactory {
-                        AddExercisesViewModel(
-                            trainingDataSource = appModule.trainingDataSource,
-                            exerciseDatasource = appModule.exerciseDataSource,
-                            trainingHistoryDataSource = appModule.trainingHistoryDataSource
-                        )
-                    })
-                val state by viewModel.state.collectAsState()
-                AddExercisesScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    navigator = navigator
-                )
-            }
+        scene(
+            route = Routs.TrainingScreens.addExercises,
+            navTransition = NavTransition()
+        ) {
+            val viewModel = getViewModel(key = Routs.TrainingScreens.addExercises,
+                factory = viewModelFactory {
+                    AddExercisesViewModel(
+                        trainingDataSource = appModule.trainingDataSource,
+                        exerciseDatasource = appModule.exerciseDataSource,
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource
+                    )
+                })
+            val state by viewModel.state.collectAsState()
+            AddExercisesScreen(
+                state = state,
+                onEvent = viewModel::onEvent,
+                navigator = navigator
+            )
+        }
 
-            scene(
-                route = "${Routs.ExerciseScreens.exerciseAtWork}/{trainingId}/{exerciseTemplateId}",
-                navTransition = NavTransition()
-            ) { backStackEntry ->
-                val trainingId: Long = backStackEntry.path("trainingId") ?: -1
-                val exerciseTemplateId: Long = backStackEntry.path("exerciseTemplateId") ?: -1
-                val viewModel = getViewModel(
-                    key = Routs.ExerciseScreens.exerciseAtWork,
-                    factory = viewModelFactory {
-                        ExerciseAtWorkViewModel(
-                            exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
-                            trainingHistoryDataSource = appModule.trainingHistoryDataSource,
-                            trainingId = trainingId,
-                            exerciseTemplateId = exerciseTemplateId,
-                            notificationUtils = appModule.notificationUtils
-                        )
-                    }
-                )
-                val state by viewModel.state.collectAsState()
-                ExerciseAtWorkScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    navigator = navigator
-                )
-            }
+        scene(
+            route = "${Routs.ExerciseScreens.exerciseAtWork}/{trainingId}/{exerciseTemplateId}",
+            navTransition = NavTransition()
+        ) { backStackEntry ->
+            val trainingId: Long = backStackEntry.path("trainingId") ?: -1
+            val exerciseTemplateId: Long = backStackEntry.path("exerciseTemplateId") ?: -1
+            val viewModel = getViewModel(
+                key = Routs.ExerciseScreens.exerciseAtWork,
+                factory = viewModelFactory {
+                    ExerciseAtWorkViewModel(
+                        exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource,
+                        trainingId = trainingId,
+                        exerciseTemplateId = exerciseTemplateId,
+                        notificationUtils = appModule.notificationUtils
+                    )
+                }
+            )
+            val state by viewModel.state.collectAsState()
+            ExerciseAtWorkScreen(
+                state = state,
+                onEvent = viewModel::onEvent,
+                navigator = navigator
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.exercise.data.local
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
@@ -25,7 +26,12 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
     }
 
     override fun getExercisesForTrainingHistory(trainingHistoryId: Long): Flow<List<Exercise?>> {
-        return query.
+        return query.getExercisesForTrainingHistory(training_history_id = trainingHistoryId)
+            .asFlow().mapToList().map { exercises ->
+                exercises.map { exercise ->
+                    exercise.toExercise()
+                }
+            }
     }
 
     override fun countExerciseInHistory(

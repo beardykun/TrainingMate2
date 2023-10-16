@@ -11,10 +11,15 @@ object Routs {
     }
 
     object TrainingScreens {
-        val trainingGroupRout = "ThisTraining"
+        val trainingGroupRout = "TrainingGroupRout"
         val trainingExercises = "TrainingExercises"
         val createTraining = "CreateTraining"
         val addExercises = "AddExercises"
+    }
+
+    object HistoryScreens {
+        val historyGroupRoot = "HistoryGroupRoot"
+        val historyInfo = "HistoryInfo"
     }
 
     object ExerciseScreens {
