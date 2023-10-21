@@ -51,7 +51,8 @@ fun DropDown(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextMedium(
-                text = initValue
+                text = initValue,
+                color = Color.White
             )
             Icon(
                 imageVector = if (isOpen) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,

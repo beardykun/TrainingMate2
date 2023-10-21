@@ -109,15 +109,17 @@ fun ExerciseAtWorkScreen(
                     TextMedium(text = stringResource(SharedRes.strings.add_set))
                 }
                 Spacer(modifier = Modifier.width(Dimens.Padding16.dp))
+
                 Image(
                     imageVector = Icons.Default.Timer,
                     contentDescription = "Start timer",
                     contentScale = ContentScale.Inside,
-                    modifier = Modifier.clickable {
-                        onEvent(ExerciseAtWorkEvent.OnTimerStart)
-                    }.fillMaxHeight()
+                    modifier = Modifier.clip(CircleShape)
+                        .clickable {
+                            onEvent(ExerciseAtWorkEvent.OnTimerStart)
+                        }
+                        .fillMaxHeight()
                         .width(60.dp)
-                        .clip(CircleShape)
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
             }

@@ -60,6 +60,7 @@ WHERE id = ?;
 getLatestHistoryTrainings:
 SELECT *
 FROM TrainingHistory
+WHERE total_lifted_weight != 0.0
 ORDER BY id DESC
 LIMIT 30;
 

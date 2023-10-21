@@ -272,6 +272,7 @@ private fun RouteBuilder.historyScreens(
                 key = Routs.HistoryScreens.historyInfo,
                 viewModelFactory {
                     HistoryInfoViewModel(
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource,
                         exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
                         trainingHistoryId = trainingId
                     )

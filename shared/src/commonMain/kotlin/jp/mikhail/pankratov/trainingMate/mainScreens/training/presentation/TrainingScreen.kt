@@ -4,6 +4,7 @@ import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -63,7 +64,10 @@ fun TrainingScreen(
             }
 
             state.availableTrainings?.let { trainings ->
-                LazyRow(modifier = Modifier.fillMaxWidth()) {
+                TextLarge(text = "Available trainings:".uppercase())
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
                     items(trainings) { training ->
                         LocalTrainingItem(
                             training = training,

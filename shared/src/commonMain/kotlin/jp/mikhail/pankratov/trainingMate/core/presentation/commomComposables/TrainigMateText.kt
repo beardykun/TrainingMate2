@@ -8,11 +8,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun TextMedium(text: String, fontWeight: FontWeight = FontWeight.Bold, modifier: Modifier = Modifier) {
+fun TextMedium(
+    text: String,
+    fontWeight: FontWeight = FontWeight.Bold,
+    color: Color = Color.Unspecified,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = fontWeight,
+        color = color,
         modifier = modifier
     )
 }
@@ -27,7 +33,11 @@ fun TextSmall(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TextLarge(text: String, fontWeight: FontWeight = FontWeight.Bold, modifier: Modifier = Modifier) {
+fun TextLarge(
+    text: String,
+    fontWeight: FontWeight = FontWeight.Bold,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyLarge,

@@ -6,11 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,24 +36,26 @@ import jp.mikhail.pankratov.trainingMate.core.stringToList
 
 @Composable
 fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.TopCenter,
+    Card(
+        elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
-            .widthIn(min = 100.dp, max = 300.dp)
-            .padding(Dimens.Padding16.dp)
-            .clip(RoundedCornerShape(Dimens.Padding24.dp))
-            .background(MaterialTheme.colorScheme.inversePrimary)
-            .padding(Dimens.Padding16.dp)
             .clickable { onClick.invoke() }
+            .padding(Dimens.Padding8.dp)
+            .clip(RoundedCornerShape(percent = 15))
+            .background(MaterialTheme.colorScheme.inversePrimary)
+            .widthIn(min = 100.dp, max = 300.dp)
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize().padding(Dimens.Padding16.dp)
         ) {
             TextLarge(text = stringResource(SharedRes.strings.training_name))
-            TextMedium(text = training.name.uppercase())
-            TextLarge(text = stringResource(SharedRes.strings.groups))
-            TextMedium(text = training.groups.uppercase())
+            TextLarge(text = training.name.uppercase())
+            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            val groupsText =
+                stringResource(SharedRes.strings.groups) + training.groups.uppercase()
+            TextLarge(text = groupsText)
+            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )
@@ -58,23 +65,26 @@ fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Mo
 
 @Composable
 fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.TopCenter,
+    Card(
+        elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
-            .padding(Dimens.Padding16.dp)
-            .clip(RoundedCornerShape(Dimens.Padding24.dp))
-            .background(MaterialTheme.colorScheme.inversePrimary)
-            .padding(Dimens.Padding16.dp)
             .clickable { onClick.invoke() }
+            .background(MaterialTheme.colorScheme.inversePrimary)
+            .padding(Dimens.Padding8.dp)
+            .clip(RoundedCornerShape(percent = 15))
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(Dimens.Padding16.dp)
+
         ) {
             TextLarge(text = stringResource(SharedRes.strings.training_name))
             TextMedium(text = training.name.uppercase())
-            TextLarge(text = stringResource(SharedRes.strings.groups))
-            TextMedium(text = training.groups.uppercase())
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                TextLarge(text = stringResource(SharedRes.strings.groups))
+                TextMedium(text = training.groups.uppercase())
+            }
             TextMedium(text = "Exercises: " + training.exercises.toString())
             TextMedium(text = "Total lifted weight: " + training.totalWeightLifted.toString())
             OverlappingImagesBackground(

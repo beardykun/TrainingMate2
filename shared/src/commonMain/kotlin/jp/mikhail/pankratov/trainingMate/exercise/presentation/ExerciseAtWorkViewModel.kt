@@ -51,27 +51,11 @@ class ExerciseAtWorkViewModel(
                 val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
 
                 updateSets(sets, state.value.weight.text.toDouble() * state.value.reps.text.toInt())
+                runTimerJob()
             }
 
             ExerciseAtWorkEvent.OnTimerStart -> {
-                timerJob?.cancel()
-                timerJob = viewModelScope.launch {
-                    startTimer(state.value.timerValue).collect { counter ->
-                        _state.update {
-                            it.copy(
-                                timer = counter
-                            )
-                        }
-                        if (counter == 0) {
-                            _state.update {
-                                it.copy(
-                                    timer = state.value.timerValue
-                                )
-                            }
-                            notificationUtils.sendNotification()
-                        }
-                    }
-                }
+                runTimerJob()
             }
 
             ExerciseAtWorkEvent.OnDropdownOpen -> {
@@ -145,13 +129,34 @@ class ExerciseAtWorkViewModel(
         }
     }
 
+    private fun runTimerJob() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            startTimer(state.value.timerValue).collect { counter ->
+                _state.update {
+                    it.copy(
+                        timer = counter
+                    )
+                }
+                if (counter == 0) {
+                    _state.update {
+                        it.copy(
+                            timer = state.value.timerValue
+                        )
+                    }
+                    notificationUtils.sendNotification()
+                }
+            }
+        }
+    }
+
     private fun updateSets(sets: List<String>, weight: Double) =
         viewModelScope.launch(Dispatchers.IO) {
             val totalLiftedWeight = (state.value.training?.totalWeightLifted ?: 0.0) + weight
             updateTrainingTime(trainingId, totalLiftedWeight)
             exerciseHistoryDatasource.updateExerciseSets(
                 sets = sets,
-                totalLiftedWeight = totalLiftedWeight,
+                totalLiftedWeight = weight,
                 trainingHistoryId = trainingId,
                 exerciseTemplateId = exerciseTemplateId
             )
