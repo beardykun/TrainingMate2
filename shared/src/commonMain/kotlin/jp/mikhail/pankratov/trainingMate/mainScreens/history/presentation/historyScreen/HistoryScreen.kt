@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingItem
@@ -19,7 +21,8 @@ fun HistiryScreen(state: HistoryScreenState, navigator: Navigator) {
         state.historyList?.let { list ->
             if (list.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     TextLarge("You don't have a training history yet...")
                 }

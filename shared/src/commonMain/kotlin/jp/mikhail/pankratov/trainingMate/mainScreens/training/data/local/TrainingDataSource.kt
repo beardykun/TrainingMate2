@@ -45,4 +45,8 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
     override suspend fun updateExercises(exercises: List<String>, id: Long) {
         queries.updateExercises(exercises = exercises.listToString(), id = id)
     }
+
+    override suspend fun isTrainingExists(name: String): Boolean {
+        return queries.isTrainingExists(name = name).executeAsOne() != 0L
+    }
 }

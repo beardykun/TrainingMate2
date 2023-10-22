@@ -42,12 +42,13 @@ fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Mo
             .clickable { onClick.invoke() }
             .padding(Dimens.Padding8.dp)
             .clip(RoundedCornerShape(percent = 15))
-            .background(MaterialTheme.colorScheme.inversePrimary)
             .widthIn(min = 100.dp, max = 300.dp)
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize().padding(Dimens.Padding16.dp)
+                .background(MaterialTheme.colorScheme.inversePrimary)
+                .fillMaxSize()
+                .padding(Dimens.Padding16.dp)
         ) {
             TextLarge(text = stringResource(SharedRes.strings.training_name))
             TextLarge(text = training.name.uppercase())
@@ -69,12 +70,12 @@ fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = M
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
             .clickable { onClick.invoke() }
-            .background(MaterialTheme.colorScheme.inversePrimary)
             .padding(Dimens.Padding8.dp)
             .clip(RoundedCornerShape(percent = 15))
     ) {
         Column(
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.inversePrimary)
                 .fillMaxSize()
                 .padding(Dimens.Padding16.dp)
 

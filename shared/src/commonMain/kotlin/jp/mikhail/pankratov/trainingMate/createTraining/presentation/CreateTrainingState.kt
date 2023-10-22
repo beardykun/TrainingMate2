@@ -16,5 +16,6 @@ data class CreateTrainingState(
             DatabaseContract.LEGS_GROUP,
             DatabaseContract.ABS_GROUP
         ),
-    val selectedGroups: List<String> = emptyList()
+    val selectedGroups: List<String> = emptyList(),
+    val invalidNameInput: Boolean = false
 )

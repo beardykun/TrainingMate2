@@ -36,6 +36,11 @@ VALUES(?, ?, ?, ?, ?);
 countTrainingTemplates:
 SELECT COUNT(*) FROM TrainingTemplate;
 
+isTrainingExists:
+SELECT COUNT(*)
+FROM TrainingTemplate
+WHERE name = ?;
+
 updateExercises:
 UPDATE TrainingTemplate
 SET exercises = ?

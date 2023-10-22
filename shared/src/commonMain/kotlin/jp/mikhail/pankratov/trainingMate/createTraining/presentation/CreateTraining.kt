@@ -32,7 +32,9 @@ fun CreateTraining(
             },
             label = "Choose a training name",
             placeholder = "Choose a training name",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            isError = state.invalidNameInput,
+            errorText = "Invalid or duplicate training name"
         )
 
         SelectableGroups(
@@ -44,8 +46,9 @@ fun CreateTraining(
 
         Button(
             onClick = {
-                onEvent(CreateTrainingEvent.OnAddNewTraining)
-                navigator.popBackStack()
+                onEvent(CreateTrainingEvent.OnAddNewTraining(onSuccess = {
+                    navigator.popBackStack()
+                }))
             },
         ) {
             TextMedium(text = "Add Training")

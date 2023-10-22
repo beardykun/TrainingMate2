@@ -41,10 +41,34 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
                 }
             }
 
-            CreateTrainingEvent.OnAddNewTraining -> {
-                addNewTraining()
+            is CreateTrainingEvent.OnAddNewTraining -> {
+                if (validNameInput()) {
+                    viewModelScope.launch {
+                        if (trainingDataSource.isTrainingExists(state.value.trainingName.text)) {
+                            _state.update {
+                                it.copy(invalidNameInput = true)
+                            }
+                        } else {
+                            _state.update {
+                                it.copy(invalidNameInput = false)
+                            }
+                            addNewTraining()
+                            event.onSuccess.invoke()
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private fun validNameInput(): Boolean {
+        val trainingName = state.value.trainingName.text
+        return if(trainingName.isBlank() || trainingName.length < 2) {
+            _state.update {
+                it.copy(invalidNameInput = true)
+            }
+            false
+        } else true
     }
 
     private fun addNewTraining() = viewModelScope.launch(Dispatchers.IO) {
