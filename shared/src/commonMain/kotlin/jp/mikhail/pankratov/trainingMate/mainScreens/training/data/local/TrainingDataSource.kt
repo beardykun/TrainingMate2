@@ -47,6 +47,6 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
     }
 
     override suspend fun isTrainingExists(name: String): Boolean {
-        return queries.isTrainingExists(name = name).executeAsOne() != 0L
+        return queries.isTrainingExists(name = name.uppercase()).executeAsOne() != 0L
     }
 }

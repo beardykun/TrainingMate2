@@ -24,7 +24,7 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
     fun onEvent(event: CreateTrainingEvent) {
         when (event) {
             is CreateTrainingEvent.OnTrainingGroupsChanged -> {
-                val newGroups = if (state.value.selectedGroups.contains(event.group)) {
+                if (state.value.selectedGroups.contains(event.group)) {
                     _state.update {
                         it.copy(selectedGroups = state.value.selectedGroups.minus(event.group))
                     }
@@ -63,7 +63,7 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
 
     private fun validNameInput(): Boolean {
         val trainingName = state.value.trainingName.text
-        return if(trainingName.isBlank() || trainingName.length < 2) {
+        return if (trainingName.isBlank() || trainingName.length < 2) {
             _state.update {
                 it.copy(invalidNameInput = true)
             }
@@ -74,7 +74,7 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
     private fun addNewTraining() = viewModelScope.launch(Dispatchers.IO) {
         val training = TrainingLocal(
             id = null,
-            name = state.value.trainingName.text,
+            name = state.value.trainingName.text.uppercase(),
             groups = state.value.selectedGroups.listToString(),
             exercises = emptyList(),
             description = state.value.trainingDescription

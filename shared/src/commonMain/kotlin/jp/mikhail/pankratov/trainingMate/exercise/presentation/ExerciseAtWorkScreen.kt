@@ -2,10 +2,14 @@ package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,15 +28,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
@@ -47,7 +54,7 @@ fun ExerciseAtWorkScreen(
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     navigator: Navigator
 ) {
-    Scaffold {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
@@ -100,7 +107,7 @@ fun ExerciseAtWorkScreen(
                     values = listOf("15", "30", "45", "60", "90", "120", "150", "180", "300"),
                     modifier = Modifier.clip(
                         RoundedCornerShape(percent = 50)
-                    ).background(color = MaterialTheme.colorScheme.primary)
+                    ).background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
                 Spacer(modifier = Modifier.width(Dimens.Padding16.dp))
                 Button(onClick = {
@@ -123,6 +130,7 @@ fun ExerciseAtWorkScreen(
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
             }
+
             AnimatedVisibility(visible = state.isDeleteDialogVisible) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.delete_set),
@@ -136,5 +144,34 @@ fun ExerciseAtWorkScreen(
                 )
             }
         }
+        AnimatedVisibility(visible = state.timer <= 10) {
+            if (state.timer <= 10) {
+                CountdownAnimation(currentTimerValue = state.timer)
+            }
+        }
     }
 }
+
+@Composable
+fun CountdownAnimation(
+    currentTimerValue: Int,
+) {
+    // This will hold the current scale of the animation.
+    val scale: Float by animateFloatAsState(
+        targetValue = 1f / (currentTimerValue * 0.1f),
+        animationSpec = tween(
+            durationMillis = 500, // duration of the animation
+            easing = LinearEasing
+        )
+    )
+
+    // We display the countdown text, making sure it's in the middle of the screen.
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = if (currentTimerValue > 0) currentTimerValue.toString() else "",
+            fontSize = 120.sp, // or whatever size is appropriate
+            modifier = Modifier.scale(scale) // applying the scale modifier
+        )
+    }
+}
+

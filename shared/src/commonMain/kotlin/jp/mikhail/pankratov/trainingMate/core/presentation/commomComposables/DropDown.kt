@@ -2,7 +2,6 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -51,8 +49,7 @@ fun DropDown(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextMedium(
-                text = initValue,
-                color = Color.White
+                text = initValue
             )
             Icon(
                 imageVector = if (isOpen) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
@@ -61,7 +58,6 @@ fun DropDown(
                 } else {
                     "SharedRes.strings.ct_open.localize()"
                 },
-                tint = Color.White,
                 modifier = Modifier.size(30.dp)
             )
         }

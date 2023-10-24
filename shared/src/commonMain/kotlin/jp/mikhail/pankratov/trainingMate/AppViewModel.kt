@@ -4,6 +4,7 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import kotlinx.coroutines.Dispatchers
@@ -17,15 +18,18 @@ class AppViewModel(
 
     fun insertDefaultTraining() = viewModelScope.launch(Dispatchers.IO) {
         if (!trainingDataSource.trainingTableEmpty()) return@launch
-        println("TAGGER insert trainings")
-
         trainingDataSource.insertTraining(
             TrainingLocal(
                 id = null,
-                name = "Biceps Training example",
-                groups = DatabaseContract.BICEPS_GROUP,
+                name = "Full Body",
+                groups = listOf(
+                    DatabaseContract.BICEPS_GROUP, DatabaseContract.TRICEPS_GROUP,
+                    DatabaseContract.SHOULDERS_GROUP, DatabaseContract.BACK_GROUP,
+                    DatabaseContract.CHEST_GROUP, DatabaseContract.LEGS_GROUP,
+                    DatabaseContract.TRAPS_GROUP, DatabaseContract.ABS_GROUP
+                ).listToString(),
                 exercises = emptyList(),
-                description = "example biceps training"
+                description = "full body training, good after a long break to restart your training process"
             )
         )
         insertDefaultExercises()

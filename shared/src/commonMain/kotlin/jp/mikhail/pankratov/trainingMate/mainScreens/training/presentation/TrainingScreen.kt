@@ -2,13 +2,15 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -17,10 +19,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
@@ -98,6 +103,51 @@ fun TrainingScreen(
                     }, modifier = Modifier.height(150.dp).clipToBounds()
                 )
             }
+            MaterialTheme.colorScheme.apply {
+                val colorEntries = listOf(
+                    ColorEntry("primary", primary),
+                    ColorEntry("onPrimary", onPrimary),
+                    ColorEntry("primaryContainer", primaryContainer),
+                    ColorEntry("onPrimaryContainer", onPrimaryContainer),
+                    ColorEntry("inversePrimary", inversePrimary),
+                    ColorEntry("secondary", secondary),
+                    ColorEntry("onSecondary", onSecondary),
+                    ColorEntry("secondaryContainer", secondaryContainer),
+                    ColorEntry("onSecondaryContainer", onSecondaryContainer),
+                    ColorEntry("tertiary", tertiary),
+                    ColorEntry("onTertiary", onTertiary),
+                    ColorEntry("tertiaryContainer", tertiaryContainer),
+                    ColorEntry("onTertiaryContainer", onTertiaryContainer),
+                    ColorEntry("background", background),
+                    ColorEntry("onBackground", onBackground),
+                    ColorEntry("surface", surface),
+                    ColorEntry("onSurface", onSurface),
+                    ColorEntry("surfaceVariant", surfaceVariant),
+                    ColorEntry("onSurfaceVariant", onSurfaceVariant),
+                    ColorEntry("surfaceTint", surfaceTint),
+                    ColorEntry("inverseSurface", inverseSurface),
+                    ColorEntry("inverseOnSurface", inverseOnSurface),
+                    ColorEntry("error", error),
+                    ColorEntry("onError", onError),
+                    ColorEntry("errorContainer", errorContainer),
+                    ColorEntry("onErrorContainer", onErrorContainer),
+                    ColorEntry("outline", outline),
+                    ColorEntry("outlineVariant", outlineVariant),
+                    ColorEntry("scrim", scrim)
+                )
+                LazyRow {
+                    items(colorEntries) { entity ->
+                        Column {
+                            Text(text = entity.name + " /")
+                            Box(
+                                modifier = Modifier.height(50.dp).width(20.dp)
+                                    .background(entity.color)
+                            )
+                        }
+                    }
+                }
+            }
+
 
             TextMedium(text = "Maybe a mini progress bar to next achievement?")
 
@@ -117,3 +167,8 @@ fun TrainingScreen(
         }
     }
 }
+
+data class ColorEntry(
+    val name: String,
+    val color: Color  // Assuming Color is a predefined type representing color values
+)
