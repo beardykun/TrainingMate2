@@ -11,8 +11,9 @@ fun ExerciseTemplate.toExerciseLocal(): ExerciseLocal {
         id = id,
         name = name,
         image = image,
-        bestLiftedWeight = bestLiftedWeight,
-        group = exercise_group
+        bestLiftedWeight = best_lifted_weight,
+        group = exercise_group,
+        usesTwoDumbbells = uses_two_dumbbells.toInt() != 0
     )
 }
 

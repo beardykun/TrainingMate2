@@ -69,14 +69,16 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Seated dumbbell curls",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "seated_dumbbell_curls"
+                image = "seated_dumbbell_curls",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
                 name = "Dumbbell preacher curl",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "dumbbell_preacher_curl"
+                image = "dumbbell_preacher_curl",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -97,14 +99,16 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Dumbbell bicep curl",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "dumbbell_bicep_curl"
+                image = "dumbbell_bicep_curl",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
                 name = "Dumbbell alternate bicep curl",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "dumbbell_alternate_bicep_curl"
+                image = "dumbbell_alternate_bicep_curl",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -133,7 +137,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Triceps dumbbell kickback",
                 group = DatabaseContract.TRICEPS_GROUP,
-                image = "tricep_dumbbell_kickback"
+                image = "tricep_dumbbell_kickback",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -219,7 +224,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Front dumbbell raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "front_dumbbell_raise"
+                image = "front_dumbbell_raise",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -233,7 +239,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Dumbbell shoulder press",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "dumbbell_shoulder_press"
+                image = "dumbbell_shoulder_press",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -247,7 +254,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Bent over dumbbell rear delt raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "bent_over_dumbbell_rear_delt_raise"
+                image = "bent_over_dumbbell_rear_delt_raise",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -261,7 +269,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Arnold dumbbell press",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "arnold_dumbbell_press"
+                image = "arnold_dumbbell_press",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -370,14 +379,16 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Dumbbell flyes",
                 group = DatabaseContract.CHEST_GROUP,
-                image = "dumbbell_flyes"
+                image = "dumbbell_flyes",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
                 name = "Decline dumbbell bench press",
                 group = DatabaseContract.CHEST_GROUP,
-                image = "decline_dumbbell_bench_press"
+                image = "decline_dumbbell_bench_press",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -398,14 +409,16 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Incline dumbbell bench press",
                 group = DatabaseContract.CHEST_GROUP,
-                image = "incline_dumbbell_bench_press"
+                image = "incline_dumbbell_bench_press",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
                 name = "Incline dumbbell flyes",
                 group = DatabaseContract.CHEST_GROUP,
-                image = "incline_dumbbell_flyes"
+                image = "incline_dumbbell_flyes",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -491,14 +504,16 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Dumbbell lunges",
                 group = DatabaseContract.LEGS_GROUP,
-                image = "dumbbell_lunges"
+                image = "dumbbell_lunges",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
                 name = "Dumbbell step ups",
                 group = DatabaseContract.LEGS_GROUP,
-                image = "dumbbell_step_ups"
+                image = "dumbbell_step_ups",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -607,7 +622,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Dumbbell shrug",
                 group = DatabaseContract.TRAPS_GROUP,
-                image = "dumbbell_shrug"
+                image = "dumbbell_shrug",
+                usesTwoDumbbells = true
             )
         )
     }

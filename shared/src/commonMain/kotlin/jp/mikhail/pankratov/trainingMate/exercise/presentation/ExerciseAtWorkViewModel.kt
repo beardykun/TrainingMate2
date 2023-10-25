@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.exercise.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
+import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,7 @@ private const val SET_DIVIDER = " x "
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
+    exerciseDataSource: IExerciseDatasource,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
     private val notificationUtils: NotificationUtils
@@ -28,11 +30,13 @@ class ExerciseAtWorkViewModel(
     private val _state = MutableStateFlow(ExerciseAtWorkState())
     val state = combine(
         _state,
+        exerciseDataSource.getExerciseById(exerciseTemplateId),
         trainingHistoryDataSource.getOngoingTraining(),
         exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId)
-    ) { state, training, exercise ->
+    ) { state, exerciseLocal, training, exercise ->
         state.copy(
             exercise = exercise,
+            exerciseLocal = exerciseLocal,
             training = training
         )
     }.stateIn(
@@ -50,7 +54,12 @@ class ExerciseAtWorkViewModel(
                 val newInput = "${state.value.weight.text}$SET_DIVIDER${state.value.reps.text}"
                 val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
 
-                updateSets(sets, state.value.weight.text.toDouble() * state.value.reps.text.toInt())
+                val weight =
+                    if (state.value.exerciseLocal?.usesTwoDumbbells == true)
+                        state.value.weight.text.toDouble() * 2
+                    else
+                        state.value.weight.text.toDouble()
+                updateSets(sets, weight * state.value.reps.text.toInt())
                 runTimerJob()
             }
 

@@ -2,8 +2,9 @@ CREATE TABLE ExerciseTemplate (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     image TEXT NOT NULL,
-    bestLiftedWeight REAL NOT NULL,
-    exercise_group TEXT NOT NULL
+    best_lifted_weight REAL NOT NULL,
+    exercise_group TEXT NOT NULL,
+    uses_two_dumbbells INTEGER NOT NULL
 );
 
 getExercises:
@@ -28,10 +29,11 @@ INTO ExerciseTemplate(
     id,
     name,
     image,
-    bestLiftedWeight,
-    exercise_group
+    best_lifted_weight,
+    exercise_group,
+    uses_two_dumbbells
 )
-VALUES(?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?);
 
 countExerciseTemplates:
 SELECT COUNT(*) FROM ExerciseTemplate;

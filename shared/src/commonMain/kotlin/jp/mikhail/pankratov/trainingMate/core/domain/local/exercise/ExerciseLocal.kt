@@ -5,5 +5,6 @@ data class ExerciseLocal(
     val name: String, // Name of the exercise, e.g., "Bench Press"
     val bestLiftedWeight: Double = 0.0,
     val group: String,
-    val image: String
+    val image: String,
+    val usesTwoDumbbells: Boolean = false
 )

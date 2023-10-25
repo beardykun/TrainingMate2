@@ -87,8 +87,9 @@ class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource
             id = exerciseLocal.id,
             name = exerciseLocal.name,
             image = exerciseLocal.image,
-            bestLiftedWeight = exerciseLocal.bestLiftedWeight,
-            exercise_group = exerciseLocal.group
+            best_lifted_weight = exerciseLocal.bestLiftedWeight,
+            exercise_group = exerciseLocal.group,
+            uses_two_dumbbells = if (exerciseLocal.usesTwoDumbbells) 1 else 0
         )
     }
 

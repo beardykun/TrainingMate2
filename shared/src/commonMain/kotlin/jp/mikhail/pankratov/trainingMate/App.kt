@@ -348,6 +348,7 @@ private fun RouteBuilder.trainingScreens(
                     ExerciseAtWorkViewModel(
                         exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
                         trainingHistoryDataSource = appModule.trainingHistoryDataSource,
+                        exerciseDataSource = appModule.exerciseDataSource,
                         trainingId = trainingId,
                         exerciseTemplateId = exerciseTemplateId,
                         notificationUtils = appModule.notificationUtils

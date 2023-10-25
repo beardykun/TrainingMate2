@@ -8,5 +8,5 @@ data class Exercise(
     val bestLiftedWeight: Double = 0.0, // The highest weight lifted in this exercise so far
     val trainingHistoryId: Long,
     val exerciseTemplateId: Long,
-    val totalLiftedWeight: Double = 0.0,
+    val totalLiftedWeight: Double = 0.0
 )
