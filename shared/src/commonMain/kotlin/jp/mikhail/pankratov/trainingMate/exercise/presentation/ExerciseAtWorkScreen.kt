@@ -31,13 +31,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
@@ -54,6 +60,23 @@ fun ExerciseAtWorkScreen(
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     navigator: Navigator
 ) {
+
+    val focusRequesterWeight = remember { FocusRequester() }
+    val focusRequesterReps = remember { FocusRequester() }
+
+    // Handle the focus event
+    val onFocusChangedReps: (FocusState) -> Unit = { focusState ->
+        if (focusState.isFocused) {
+            // Clear the input when the field is focused
+            onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = TextFieldValue("")))
+        }
+    }
+    val onFocusChangedWeight: (FocusState) -> Unit = { focusState ->
+        if (focusState.isFocused) {
+            // Clear the input when the field is focused
+            onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = TextFieldValue("")))
+        }
+    }
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -68,6 +91,8 @@ fun ExerciseAtWorkScreen(
                     isError = state.errorWeight != null,
                     errorText = getErrorMessage(state.errorWeight),
                     modifier = Modifier.weight(1f)
+                        .focusRequester(focusRequesterWeight)
+                        .onFocusChanged(onFocusChangedWeight)
                 )
                 Spacer(modifier = Modifier.padding(Dimens.Padding32.dp))
                 InputField(
@@ -81,6 +106,8 @@ fun ExerciseAtWorkScreen(
                     isError = state.errorReps != null,
                     errorText = getErrorMessage(state.errorReps),
                     modifier = Modifier.weight(1f)
+                        .focusRequester(focusRequesterReps)
+                        .onFocusChanged(onFocusChangedReps)
                 )
             }
             state.exercise?.sets?.let { sets ->
