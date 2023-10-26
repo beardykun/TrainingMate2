@@ -15,6 +15,7 @@ object Routs {
         val trainingExercises = "TrainingExercises"
         val createTraining = "CreateTraining"
         val addExercises = "AddExercises"
+        val createExercise = "CreateExercise"
     }
 
     object HistoryScreens {
