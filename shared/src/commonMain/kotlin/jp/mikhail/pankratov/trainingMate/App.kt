@@ -347,7 +347,8 @@ private fun RouteBuilder.trainingScreens(
                 key = Routs.TrainingScreens.createExercise,
                 factory = viewModelFactory {
                     CreateExerciseViewModel(
-                        exerciseDatasource = appModule.exerciseDataSource
+                        exerciseDatasource = appModule.exerciseDataSource,
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource
                     )
                 })
             val state by viewModel.state.collectAsState()

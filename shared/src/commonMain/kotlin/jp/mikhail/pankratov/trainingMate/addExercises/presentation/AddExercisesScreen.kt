@@ -5,11 +5,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
 import moe.tlaster.precompose.navigation.Navigator
 
@@ -19,27 +25,39 @@ fun AddExercisesScreen(
     onEvent: (AddExercisesEvent) -> Unit,
     navigator: Navigator
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .padding(horizontal = Dimens.Padding16.dp, vertical = Dimens.Padding8.dp)
-    ) {
-        state.availableExerciseLocals?.let { exercises ->
-            SelectableExercises(
-                exerciseLocals = exercises,
-                isSelected = state.selectedExercises,
-                modifier = Modifier.weight(1f)
-            ) { exercise ->
-                onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
-            }
+    Scaffold(floatingActionButton = {
+        FloatingActionButton(onClick = {
+            navigator.navigate(Routs.TrainingScreens.createExercise)
+        }) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Create new exercises button"
+            )
         }
-        Button(
-            onClick = {
-                onEvent(AddExercisesEvent.OnAddNewExercises {
-                    navigator.popBackStack()
-                })
-            }, modifier = Modifier.fillMaxWidth()
+    }) { padding ->
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(padding)
+                .padding(horizontal = Dimens.Padding16.dp, vertical = Dimens.Padding8.dp)
         ) {
-            Text(text = "Add exercises")
+            state.availableExerciseLocals?.let { exercises ->
+                SelectableExercises(
+                    exerciseLocals = exercises,
+                    isSelected = state.selectedExercises,
+                    modifier = Modifier.weight(1f)
+                ) { exercise ->
+                    onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
+                }
+            }
+            Button(
+                onClick = {
+                    onEvent(AddExercisesEvent.OnAddNewExercises {
+                        navigator.popBackStack()
+                    })
+                }, modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Add exercises")
+            }
         }
     }
 }
