@@ -31,8 +31,8 @@ import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.BarChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
@@ -93,15 +93,15 @@ fun TrainingScreen(
                 }
             }
             state.lastTrainings?.let { lastTrainings ->
-                BarChart(
-                    data = lastTrainings,
-                    weightSelector = { training ->
-                        training.totalWeightLifted.toFloat()
-                    },
-                    dateSelector = { training ->
-                        Utils.formatEpochMillisToDate(training.startTime ?: 0)
-                    }, modifier = Modifier.height(150.dp).clipToBounds()
-                )
+                AnimatedVisibility(visible = lastTrainings.size >= 2) {
+                    LineChart(
+                        data = lastTrainings,
+                        weightSelector = { training ->
+                            training.totalWeightLifted.toFloat()
+                        },
+                        modifier = Modifier.height(150.dp).clipToBounds()
+                    )
+                }
             }
             MaterialTheme.colorScheme.apply {
                 val colorEntries = listOf(

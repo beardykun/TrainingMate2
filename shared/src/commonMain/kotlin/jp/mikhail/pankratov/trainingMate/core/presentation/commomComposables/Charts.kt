@@ -3,85 +3,85 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 import Dimens
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <T> BarChart(
+fun <T> LineChart(
     data: List<T>,
     weightSelector: (T) -> Float,
-    dateSelector: (T) -> String,
     modifier: Modifier = Modifier
 ) {
-    // Calculate the max weight to scale the bar heights within the chart.
-    val maxWeight = data.maxOfOrNull(weightSelector) ?: 1f
+    val maxWeight = (data.maxOfOrNull(weightSelector)?.times(1.5f)) ?: 1f
 
-    val bars = data.map(weightSelector)
-    val dates = data.map(dateSelector)
-    var sizeValue by remember { mutableStateOf(Size.Zero) } // We start with an initial size of zero
+    // Ensure the scale has up to 10 divisions maximum
+    val numberOfDivisions = 5
+    val divisionValue = maxWeight / numberOfDivisions
 
-    Box(
+    var sizeValue by remember { mutableStateOf(Size.Zero) }
+
+    Row(
         modifier = modifier
-            .padding(horizontal = Dimens.Padding32.dp, vertical = Dimens.Padding16.dp),
-        contentAlignment = Alignment.BottomStart
+            .padding(all = Dimens.Padding16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            sizeValue = size
-            val barWidth = size.width / (2 * bars.size + 1) // space for bars plus one space in between
-            bars.forEachIndexed { index, bar ->
-                val normalizedBarHeight = (bar / maxWeight) * size.height
-                drawRect(
-                    color = Color.Blue,
-                    topLeft = Offset(x = (index * 2 + 1) * barWidth, y = size.height - normalizedBarHeight),
-                    size = Size(width = barWidth, height = normalizedBarHeight)
-                )
-            }
-        }
-
-        // Drawing the texts outside of the Canvas, positioned in relation to the bars.
-        Row(
-            modifier = Modifier.align(Alignment.BottomStart)
-        ) {
-            dates.forEachIndexed { index, date ->
-                // Spacer for the first bar's width before the first date.
-                if (index == 0) Spacer(modifier = Modifier.width(Dimens.Padding32.dp))
-
-                TextMedium(
-                    text = date,
-                    modifier = Modifier.padding(end = Dimens.Padding32.dp) // for space between dates
-                )
-            }
-        }
-
-        // Adding this to display the weight above or at the top of the bar, adjust as needed
+        // Generate and display scale divisions
         Column(
-            modifier = Modifier.align(Alignment.BottomEnd)
+            modifier = Modifier.padding(end = Dimens.Padding16.dp).fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            bars.forEachIndexed { index, weight ->
-                // consider adding condition or formatting for larger numbers
-                TextMedium(text = weight.toString())
-                // This spacer will make the next weight text appear above the previous
-                Spacer(modifier = Modifier.height(((weight / maxWeight) * sizeValue.height).dp))
+            for (i in numberOfDivisions downTo 0) {
+                val weightValue = (divisionValue * i).toInt() // Calculate the value for this division
+                TextSmall(text = weightValue.toString())
+            }
+        }
+
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            sizeValue = size // Remember the current size of the canvas
+            val dotRadius = 8f
+            val spaceBetween = size.width / (data.size - 1)
+
+            val points = data.mapIndexed { index, item ->
+                val x = index * spaceBetween
+                val y = size.height - (weightSelector(item) / maxWeight) * size.height
+                Offset(x, y)
+            }
+
+            // Draw the line between points
+            for (i in 0 until points.size - 1) {
+                drawLine(
+                    color = Color.Blue,
+                    start = points[i],
+                    end = points[i + 1],
+                    strokeWidth = 4f
+                )
+            }
+
+            // Draw points on the line
+            points.forEach { point ->
+                drawCircle(
+                    color = Color.Red,
+                    radius = dotRadius,
+                    center = point
+                )
             }
         }
     }
 }
-
