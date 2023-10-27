@@ -55,19 +55,23 @@ class CreateExerciseViewModel(
 
             is CreateExerciseEvent.OnExerciseCreate -> {
                 if (validNameAndGroupInput().not()) return
-                
-                viewModelScope.launch {
-                    if (exerciseDatasource.isExerciseExists(state.value.exerciseName.text)) {
-                        _state.update {
-                            it.copy(invalidNameInput = true)
-                        }
-                    } else {
-                        _state.update {
-                            it.copy(invalidNameInput = false)
-                        }
-                        insertNewExercise(event.onSuccess)
-                    }
+
+                validateItNotInDbAndInsert(event)
+            }
+        }
+    }
+
+    private fun validateItNotInDbAndInsert(event: CreateExerciseEvent.OnExerciseCreate) {
+        viewModelScope.launch {
+            if (exerciseDatasource.isExerciseExists(state.value.exerciseName.text)) {
+                _state.update {
+                    it.copy(invalidNameInput = true)
                 }
+            } else {
+                _state.update {
+                    it.copy(invalidNameInput = false)
+                }
+                insertNewExercise(event.onSuccess)
             }
         }
     }
