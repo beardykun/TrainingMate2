@@ -42,19 +42,19 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
             }
 
             is CreateTrainingEvent.OnAddNewTraining -> {
-                if (validNameInput()) {
-                    viewModelScope.launch {
-                        if (trainingDataSource.isTrainingExists(state.value.trainingName.text)) {
-                            _state.update {
-                                it.copy(invalidNameInput = true)
-                            }
-                        } else {
-                            _state.update {
-                                it.copy(invalidNameInput = false)
-                            }
-                            addNewTraining()
-                            event.onSuccess.invoke()
+                if (validNameInput().not()) return
+
+                viewModelScope.launch {
+                    if (trainingDataSource.isTrainingExists(state.value.trainingName.text)) {
+                        _state.update {
+                            it.copy(invalidNameInput = true)
                         }
+                    } else {
+                        _state.update {
+                            it.copy(invalidNameInput = false)
+                        }
+                        addNewTraining()
+                        event.onSuccess.invoke()
                     }
                 }
             }

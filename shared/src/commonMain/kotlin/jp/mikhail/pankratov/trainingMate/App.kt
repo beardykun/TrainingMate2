@@ -41,7 +41,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.createExercise.CreateExerciseScreen
 import jp.mikhail.pankratov.trainingMate.createExercise.CreateExerciseViewModel
-import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTraining
+import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingScreen
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingViewModel
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkScreen
@@ -249,7 +249,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                 }
             )
             val state by viewModel.state.collectAsState()
-            CreateTraining(state = state, onEvent = viewModel::onEvent, navigator = navigator)
+            CreateTrainingScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
 
         trainingScreens(appModule, navigator)

@@ -29,7 +29,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLoca
 fun SelectableGroups(
     groups: List<String>,
     modifier: Modifier = Modifier,
-    isSelected: List<String>,
+    selected: List<String>,
     onClick: (String) -> Unit,
 ) {
     LazyColumn(
@@ -37,7 +37,7 @@ fun SelectableGroups(
         modifier = modifier
     ) {
         items(groups) { item ->
-            SelectableGroupItem(item, isSelected, onClick)
+            SelectableGroupItem(item, selected, onClick)
         }
     }
 }
@@ -45,13 +45,13 @@ fun SelectableGroups(
 @Composable
 fun SelectableGroupItem(
     group: String,
-    isSelected: List<String>,
+    selected: List<String>,
     onClick: (String) -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.selectable(
-            selected = isSelected.contains(group),
+            selected = selected.contains(group),
             onClick = {
                 onClick.invoke(group)
             }
@@ -64,7 +64,7 @@ fun SelectableGroupItem(
                 .background(color = MaterialTheme.colorScheme.primary)
                 .clip(CircleShape)
         ) {
-            if (isSelected.contains(group))
+            if (selected.contains(group))
                 Box(
                     modifier = Modifier
                         .size(Dimens.selectTextInnerCircle.dp)

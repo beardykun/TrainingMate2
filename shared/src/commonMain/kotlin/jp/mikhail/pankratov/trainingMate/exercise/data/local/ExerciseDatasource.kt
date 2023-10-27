@@ -9,7 +9,7 @@ import jp.mikhail.pankratov.trainingMate.exercise.domain.local.toExerciseLocal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource {
+class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
 
     private val queries = db.exerciseTemplateQueries
     override fun getAllExercises(): Flow<List<ExerciseLocal>> {
@@ -85,7 +85,7 @@ class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource
     override suspend fun insertExercise(exerciseLocal: ExerciseLocal) {
         queries.insertExercise(
             id = exerciseLocal.id,
-            name = exerciseLocal.name,
+            name = exerciseLocal.name.lowercase(),
             image = exerciseLocal.image,
             best_lifted_weight = exerciseLocal.bestLiftedWeight,
             exercise_group = exerciseLocal.group,
@@ -95,5 +95,9 @@ class ExerciseDatasource(private val db: TrainingDatabase) : IExerciseDatasource
 
     override suspend fun exerciseTableEmpty(): Boolean {
         return queries.countExerciseTemplates().executeAsOne() == 0L
+    }
+
+    override suspend fun isExerciseExists(name: String): Boolean {
+        return queries.isExerciseExists(name.lowercase()).executeAsOne() != 0L
     }
 }

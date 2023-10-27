@@ -1,8 +1,10 @@
 package jp.mikhail.pankratov.trainingMate.createExercise
 
+import androidx.compose.ui.text.input.TextFieldValue
+
 sealed class CreateExerciseEvent {
-    data class OnExerciseNameChanged(val newName: String) : CreateExerciseEvent()
+    data class OnExerciseNameChanged(val newName: TextFieldValue) : CreateExerciseEvent()
     data class OnExerciseGroupChanged(val newGroup: String) : CreateExerciseEvent()
     data object OnExerciseUsesTwoDumbbells : CreateExerciseEvent()
-    data object OnExerciseCreate : CreateExerciseEvent()
+    data class OnExerciseCreate(val onSuccess: () -> Unit) : CreateExerciseEvent()
 }

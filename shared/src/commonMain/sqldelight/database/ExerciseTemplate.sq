@@ -49,3 +49,8 @@ SELECT *
 FROM ExerciseTemplate
 WHERE name IN (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ORDER BY name ASC;
+
+isExerciseExists:
+SELECT COUNT(*)
+FROM ExerciseTemplate
+WHERE name = ?;

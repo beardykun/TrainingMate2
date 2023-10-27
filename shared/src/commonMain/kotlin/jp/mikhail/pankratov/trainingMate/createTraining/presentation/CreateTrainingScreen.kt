@@ -16,7 +16,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
-fun CreateTraining(
+fun CreateTrainingScreen(
     state: CreateTrainingState,
     onEvent: (CreateTrainingEvent) -> Unit,
     navigator: Navigator
@@ -34,12 +34,12 @@ fun CreateTraining(
             placeholder = "Choose a training name",
             modifier = Modifier.fillMaxWidth(),
             isError = state.invalidNameInput,
-            errorText = "Invalid or duplicate training name"
+            errorText = if (state.invalidNameInput) "Invalid or duplicate training name" else ""
         )
 
         SelectableGroups(
             groups = state.trainingGroups,
-            isSelected = state.selectedGroups
+            selected = state.selectedGroups
         ) { selectedGroup ->
             onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
         }

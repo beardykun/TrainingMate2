@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateExerciseViewModel(
     private val exerciseDatasource: IExerciseDatasource,
@@ -52,21 +53,52 @@ class CreateExerciseViewModel(
                 }
             }
 
-            CreateExerciseEvent.OnExerciseCreate -> {
-                //TODO validate inputs
-                insertNewExercise()
+            is CreateExerciseEvent.OnExerciseCreate -> {
+                if (validNameAndGroupInput().not()) return
+                
+                viewModelScope.launch {
+                    if (exerciseDatasource.isExerciseExists(state.value.exerciseName.text)) {
+                        _state.update {
+                            it.copy(invalidNameInput = true)
+                        }
+                    } else {
+                        _state.update {
+                            it.copy(invalidNameInput = false)
+                        }
+                        insertNewExercise(event.onSuccess)
+                    }
+                }
             }
         }
     }
 
-    private fun insertNewExercise() = viewModelScope.launch(Dispatchers.IO) {
+    private fun validNameAndGroupInput(): Boolean {
+        val trainingName = state.value.exerciseName.text
+        return if (trainingName.isBlank() || trainingName.length < 2) {
+            _state.update {
+                it.copy(invalidNameInput = true)
+            }
+            false
+        } else if (state.value.exerciseGroup.isBlank()) {
+            _state.update {
+                it.copy(invalidGroupInput = true)
+            }
+            false
+        } else true
+    }
+
+
+    private fun insertNewExercise(onSuccess: () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
         exerciseDatasource.insertExercise(
             ExerciseLocal(
-                name = state.value.exerciseName,
+                name = state.value.exerciseName.text,
                 group = state.value.exerciseGroup,
                 usesTwoDumbbells = state.value.usesTwoDumbbell,
                 image = state.value.exerciseGroup.lowercase()
             )
         )
+        withContext(Dispatchers.Main) {
+            onSuccess.invoke()
+        }
     }
 }

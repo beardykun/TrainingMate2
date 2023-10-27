@@ -10,5 +10,5 @@ interface IExerciseDatasource {
     fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal>
     suspend fun insertExercise(exerciseLocal: ExerciseLocal)
     suspend fun exerciseTableEmpty(): Boolean
-
+    suspend fun isExerciseExists(name: String) : Boolean
 }
