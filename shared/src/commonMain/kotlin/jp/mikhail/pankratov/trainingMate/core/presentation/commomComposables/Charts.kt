@@ -31,7 +31,6 @@ fun <T> LineChart(
 ) {
     val maxWeight = (data.maxOfOrNull(weightSelector)?.times(1.5f)) ?: 1f
 
-    // Ensure the scale has up to 10 divisions maximum
     val numberOfDivisions = 5
     val divisionValue = maxWeight / numberOfDivisions
 
@@ -42,13 +41,12 @@ fun <T> LineChart(
             .padding(all = Dimens.Padding16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Generate and display scale divisions
         Column(
             modifier = Modifier.padding(end = Dimens.Padding16.dp).fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in numberOfDivisions downTo 0) {
-                val weightValue = (divisionValue * i).toInt() // Calculate the value for this division
+                val weightValue = (divisionValue * i).toInt()
                 TextSmall(text = weightValue.toString())
             }
         }

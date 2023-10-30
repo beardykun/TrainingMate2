@@ -54,3 +54,8 @@ isExerciseExists:
 SELECT COUNT(*)
 FROM ExerciseTemplate
 WHERE name = ?;
+
+updateBestLiftedWeightById:
+UPDATE ExerciseTemplate
+SET best_lifted_weight = ?
+WHERE id = ?;

@@ -4,6 +4,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
+import jp.mikhail.pankratov.trainingMate.exercise.domain.local.ExerciseId
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.toExerciseLocal
 import kotlinx.coroutines.flow.Flow
@@ -99,5 +100,9 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
 
     override suspend fun isExerciseExists(name: String): Boolean {
         return queries.isExerciseExists(name.lowercase()).executeAsOne() != 0L
+    }
+
+    override fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double) {
+        queries.updateBestLiftedWeightById(best_lifted_weight = newBestWeight, id = id)
     }
 }

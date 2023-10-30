@@ -52,7 +52,8 @@ fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit)
 
             Column {
                 TextMedium(text = exerciseLocal.name)
-                TextMedium(text = exerciseLocal.group)
+                TextMedium(text = "Group: ${exerciseLocal.group.uppercase()}")
+                TextMedium(text = "Best weight: ${exerciseLocal.bestLiftedWeight} kg")
             }
         }
     }

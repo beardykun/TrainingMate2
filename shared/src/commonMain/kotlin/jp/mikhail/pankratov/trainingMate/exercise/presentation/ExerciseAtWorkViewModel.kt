@@ -21,7 +21,7 @@ private const val SET_DIVIDER = " x "
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    exerciseDataSource: IExerciseDatasource,
+    private val exerciseDataSource: IExerciseDatasource,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
     private val notificationUtils: NotificationUtils
@@ -49,18 +49,7 @@ class ExerciseAtWorkViewModel(
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
             is ExerciseAtWorkEvent.OnAddNewSet -> {
-                if (invalidInput()) return
-
-                val newInput = "${state.value.weight.text}$SET_DIVIDER${state.value.reps.text}"
-                val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
-
-                val weight =
-                    if (state.value.exerciseLocal?.usesTwoDumbbells == true)
-                        state.value.weight.text.toDouble() * 2
-                    else
-                        state.value.weight.text.toDouble()
-                updateSets(sets, weight * state.value.reps.text.toInt())
-                runTimerJob()
+                handleAddSetEvent()
             }
 
             ExerciseAtWorkEvent.OnTimerStart -> {
@@ -138,6 +127,23 @@ class ExerciseAtWorkViewModel(
         }
     }
 
+    private fun handleAddSetEvent() {
+        if (invalidInput()) return
+
+        val newInput = "${state.value.weight.text}$SET_DIVIDER${state.value.reps.text}"
+        val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
+
+        updateBestLiftedWeightIfNeeded(state.value.weight.text.toDouble())
+
+        val weight =
+            if (state.value.exerciseLocal?.usesTwoDumbbells == true)
+                state.value.weight.text.toDouble() * 2
+            else
+                state.value.weight.text.toDouble()
+        updateSets(sets, weight * state.value.reps.text.toInt())
+        runTimerJob()
+    }
+
     private fun runTimerJob() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
@@ -208,6 +214,15 @@ class ExerciseAtWorkViewModel(
             return true
         }
         return false
+    }
+
+    private fun updateBestLiftedWeightIfNeeded(currentLiftedWeight: Double) {
+        if (currentLiftedWeight > (state.value.exerciseLocal?.bestLiftedWeight ?: 0.0)) {
+            exerciseDataSource.updateBestLiftedWeightById(
+                id = state.value.exerciseLocal?.id ?: -1,
+                newBestWeight = currentLiftedWeight
+            )
+        }
     }
 
     private fun validateWeight(weight: String): String? {

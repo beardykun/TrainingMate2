@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.core
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -10,7 +11,7 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 
 actual class NotificationUtils(private val context: Context) {
     actual fun sendNotification() {
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
 
         var notificationBuilder: NotificationCompat.Builder? = null
         val notificationManager =
@@ -34,6 +35,7 @@ actual class NotificationUtils(private val context: Context) {
         notificationBuilder.setSmallIcon(SharedRes.images.chin_up.drawableResId)
             .setContentTitle("Rest is over!")
             .setContentText("Return to your workout!")
+            .setVibrate(longArrayOf(0, 400, 200, 400))
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
 
