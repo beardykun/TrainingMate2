@@ -13,5 +13,6 @@ interface IExerciseDatasource {
     suspend fun insertExercise(exerciseLocal: ExerciseLocal)
     suspend fun exerciseTableEmpty(): Boolean
     suspend fun isExerciseExists(name: String): Boolean
-    fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double)
+    suspend fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double)
+    suspend fun deleteExerciseById(id: ExerciseId)
 }

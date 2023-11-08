@@ -5,7 +5,7 @@ plugins {
     id("com.squareup.sqldelight")
     kotlin("plugin.serialization") version Deps.kotlinVersion
     id("dev.icerock.mobile.multiplatform-resources")
-    id("org.jetbrains.compose").version("1.5.1")
+    id("org.jetbrains.compose").version("1.5.10")
 }
 
 kotlin {
@@ -45,6 +45,7 @@ kotlin {
                 implementation(compose.materialIconsExtended)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(compose.ui)
 
                 implementation(Deps.ktorCore)
                 implementation(Deps.ktorSerialization)

@@ -102,7 +102,11 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
         return queries.isExerciseExists(name.lowercase()).executeAsOne() != 0L
     }
 
-    override fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double) {
+    override suspend fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double) {
         queries.updateBestLiftedWeightById(best_lifted_weight = newBestWeight, id = id)
+    }
+
+    override suspend fun deleteExerciseById(id: ExerciseId) {
+        queries.deleteExerciseById(id)
     }
 }

@@ -26,12 +26,14 @@ class AddExercisesViewModel(
     private val _availableExercises = MutableStateFlow<List<ExerciseLocal>>(emptyList())
     private val _selectedExercises = MutableStateFlow<List<String>>(emptyList())
 
+    private val _state = MutableStateFlow(AddExercisesState())
     val state = combine(
+        _state,
         _training,
         _availableExercises,
         _selectedExercises
-    ) { training, availableExercises, selectedExercises ->
-        AddExercisesState(
+    ) { state, training, availableExercises, selectedExercises ->
+        state.copy(
             availableExerciseLocals = availableExercises,
             selectedExercises = selectedExercises,
             training = training
@@ -78,6 +80,30 @@ class AddExercisesViewModel(
                 state.value.training?.let { oldTraining ->
                     updateTraining(oldTraining)
                     event.onSuccess.invoke()
+                }
+            }
+
+            AddExercisesEvent.OnDeleteExercise -> {
+                viewModelScope.launch {
+                    state.value.selectedForDelete?.id?.let {
+                        exerciseDatasource.deleteExerciseById(it)
+                        loadTrainingAndExercises()
+                    }
+                }
+                _state.update {
+                    it.copy(
+                        selectedForDelete = null,
+                        isDeleteDialogVisible = false
+                    )
+                }
+            }
+
+            is AddExercisesEvent.OnDisplayDeleteDialog -> {
+                _state.update {
+                    it.copy(
+                        isDeleteDialogVisible = event.isDeleteVisible,
+                        selectedForDelete = event.exercise
+                    )
                 }
             }
         }

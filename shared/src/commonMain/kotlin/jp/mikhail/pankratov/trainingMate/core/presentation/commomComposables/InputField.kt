@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 import Dimens
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ fun InputField(
     keyboardType: KeyboardType = KeyboardType.Text,
     errorText: String? = null,
     isError: Boolean = false,
+    keyboardActions: KeyboardActions = KeyboardActions(),
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
@@ -49,6 +51,7 @@ fun InputField(
             imeAction = ImeAction.Done
         ),
         singleLine = true,
+        keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.onBackground,
             unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,

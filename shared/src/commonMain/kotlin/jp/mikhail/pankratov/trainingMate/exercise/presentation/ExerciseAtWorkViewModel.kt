@@ -216,14 +216,15 @@ class ExerciseAtWorkViewModel(
         return false
     }
 
-    private fun updateBestLiftedWeightIfNeeded(currentLiftedWeight: Double) {
-        if (currentLiftedWeight > (state.value.exerciseLocal?.bestLiftedWeight ?: 0.0)) {
-            exerciseDataSource.updateBestLiftedWeightById(
-                id = state.value.exerciseLocal?.id ?: -1,
-                newBestWeight = currentLiftedWeight
-            )
+    private fun updateBestLiftedWeightIfNeeded(currentLiftedWeight: Double) =
+        viewModelScope.launch(Dispatchers.IO) {
+            if (currentLiftedWeight > (state.value.exerciseLocal?.bestLiftedWeight ?: 0.0)) {
+                exerciseDataSource.updateBestLiftedWeightById(
+                    id = state.value.exerciseLocal?.id ?: -1,
+                    newBestWeight = currentLiftedWeight
+                )
+            }
         }
-    }
 
     private fun validateWeight(weight: String): String? {
         try {
@@ -243,6 +244,11 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun validateReps(reps: String): String? {
+        try {
+            reps.toInt()
+        } catch (e: NumberFormatException) {
+            return "w1"
+        }
         return if (reps.isBlank()) {
             "r1"
         } else if (reps.contains(",") || reps.contains(".")) {

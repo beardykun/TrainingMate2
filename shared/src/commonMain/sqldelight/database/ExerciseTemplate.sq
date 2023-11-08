@@ -59,3 +59,8 @@ updateBestLiftedWeightById:
 UPDATE ExerciseTemplate
 SET best_lifted_weight = ?
 WHERE id = ?;
+
+deleteExerciseById:
+DELETE
+FROM ExerciseTemplate
+WHERE id = ?;

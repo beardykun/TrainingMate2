@@ -6,12 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun TextMedium(
     text: String,
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = Color.Unspecified,
+    maxLines: Int = 10,
+    overflow: TextOverflow = TextOverflow.Clip,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -19,6 +22,8 @@ fun TextMedium(
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = fontWeight,
         color = color,
+        maxLines = maxLines,
+        overflow = overflow,
         modifier = modifier
     )
 }

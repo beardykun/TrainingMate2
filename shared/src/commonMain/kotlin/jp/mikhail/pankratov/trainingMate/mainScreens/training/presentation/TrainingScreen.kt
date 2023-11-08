@@ -64,7 +64,7 @@ fun TrainingScreen(
 
             state.lastTrainings?.let { lastTrainings ->
                 if (lastTrainings.isNotEmpty()) {
-                    TextMedium(text = "${lastTrainings.first().name} ${lastTrainings.first().totalWeightLifted}")
+                    TextMedium(text = "Last Training:\n${lastTrainings.first().name} ${lastTrainings.first().totalWeightLifted} kg")
                 }
             }
 
@@ -77,7 +77,8 @@ fun TrainingScreen(
                         LocalTrainingItem(
                             training = training,
                             onClick = {
-                                if (state.ongoingTraining?.id == training.id) {
+                                if (state.ongoingTraining?.trainingTemplateId == training.id) {
+
                                     navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                                     return@LocalTrainingItem
                                 }

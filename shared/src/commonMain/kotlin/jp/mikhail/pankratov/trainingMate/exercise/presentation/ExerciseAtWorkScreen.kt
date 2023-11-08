@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,13 +25,17 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +45,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -52,7 +61,10 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Dia
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import kotlinx.coroutines.delay
 import moe.tlaster.precompose.navigation.Navigator
+import kotlin.random.Random
+
 
 @Composable
 fun ExerciseAtWorkScreen(
@@ -77,7 +89,10 @@ fun ExerciseAtWorkScreen(
             onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = TextFieldValue("")))
         }
     }
+    val focus = LocalFocusManager.current
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        FireworksAnimation(isRunning = state.errorReps?.isNotEmpty() == true)
+
         Column(modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
@@ -90,6 +105,9 @@ fun ExerciseAtWorkScreen(
                     keyboardType = KeyboardType.Decimal,
                     isError = state.errorWeight != null,
                     errorText = getErrorMessage(state.errorWeight),
+                    keyboardActions = KeyboardActions(onDone = {
+                        focus.clearFocus()
+                    }),
                     modifier = Modifier.weight(1f)
                         .focusRequester(focusRequesterWeight)
                         .onFocusChanged(onFocusChangedWeight)
@@ -105,6 +123,9 @@ fun ExerciseAtWorkScreen(
                     keyboardType = KeyboardType.Number,
                     isError = state.errorReps != null,
                     errorText = getErrorMessage(state.errorReps),
+                    keyboardActions = KeyboardActions(onDone = {
+                        focus.clearFocus()
+                    }),
                     modifier = Modifier.weight(1f)
                         .focusRequester(focusRequesterReps)
                         .onFocusChanged(onFocusChangedReps)
@@ -201,4 +222,69 @@ fun CountdownAnimation(
         )
     }
 }
+
+@Composable
+fun FireworksAnimation(isRunning: Boolean, modifier: Modifier = Modifier.fillMaxSize()) {
+    val particles = remember { mutableStateListOf<Particle>() }
+    val screenSize = remember { mutableStateOf(Offset.Zero) }
+
+    LaunchedEffect(isRunning) {
+        if (isRunning) {
+            particles.clear()
+            screenSize.value = Offset.Zero
+            // Create initial particles
+            for (i in 1..100) {
+                particles.add(
+                    Particle(
+                        position = Offset(screenSize.value.x / 2, screenSize.value.y / 2),
+                        velocity = Offset(
+                            Random.nextFloat() * 4f - 2f,
+                            Random.nextFloat() * 4f - 2f
+                        ),
+                        color = Color(
+                            Random.nextFloat(),
+                            Random.nextFloat(),
+                            Random.nextFloat(),
+                            1f
+                        ),
+                        lifespan = Random.nextInt(50, 150)
+                    )
+                )
+            }
+
+            while (particles.isNotEmpty() && isRunning) {
+                delay(16L) // Roughly 60 FPS
+                particles.forEach { particle ->
+                    particle.apply {
+                        // Update particle position
+                        position += velocity
+                        // Decrease lifespan
+                        lifespan--
+                        // Fade out particle
+                        color = color.copy(alpha = lifespan / 150f)
+                    }
+                }
+                // Remove dead particles
+                particles.removeAll { it.lifespan <= 0 }
+            }
+        }
+    }
+
+    Canvas(modifier = modifier) {
+        screenSize.value = Offset(size.width, size.height)
+
+        particles.forEach { particle ->
+            withTransform({
+                translate(left = particle.position.x, top = particle.position.y)
+            }) {
+                drawCircle(
+                    color = particle.color,
+                    radius = 4f
+                )
+            }
+        }
+    }
+}
+
+
 

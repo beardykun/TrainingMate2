@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.addExercises.presentation
 
 import Dimens
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
 import moe.tlaster.precompose.navigation.Navigator
 
@@ -44,10 +48,19 @@ fun AddExercisesScreen(
                 SelectableExercises(
                     exerciseLocals = exercises,
                     isSelected = state.selectedExercises,
-                    modifier = Modifier.weight(1f)
-                ) { exercise ->
-                    onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
-                }
+                    modifier = Modifier.weight(1f),
+                    onClick = { exercise ->
+                        onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
+                    },
+                    onDeleteClick = { exercise ->
+                        onEvent(
+                            AddExercisesEvent.OnDisplayDeleteDialog(
+                                exercise = exercise,
+                                isDeleteVisible = true
+                            )
+                        )
+                    }
+                )
             }
             Button(
                 onClick = {
@@ -57,6 +70,18 @@ fun AddExercisesScreen(
                 }, modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Add exercises")
+            }
+            AnimatedVisibility(visible = state.isDeleteDialogVisible) {
+                DialogPopup(
+                    title = stringResource(SharedRes.strings.delete_set),
+                    description = stringResource(SharedRes.strings.sure_delete_set),
+                    onAccept = {
+                        onEvent(AddExercisesEvent.OnDeleteExercise)
+                    },
+                    onDenny = {
+                        onEvent(AddExercisesEvent.OnDisplayDeleteDialog(false))
+                    }
+                )
             }
         }
     }

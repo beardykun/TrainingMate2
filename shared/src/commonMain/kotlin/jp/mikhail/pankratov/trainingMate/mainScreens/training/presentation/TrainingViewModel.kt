@@ -61,7 +61,6 @@ class TrainingViewModel(
         trainingHistoryDataSource.getOngoingTraining(),
         trainingHistoryDataSource.getLatestHistoryTrainings()
     ) { state, trainings, ongoingTraining, trainingsHistory ->
-        println("TAGGER $trainings")
         state.copy(
             availableTrainings = trainings,
             greeting = motivationalPhrases.random(),
@@ -95,7 +94,6 @@ class TrainingViewModel(
 
     private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {
         finishLastTrainingWhenStartingNew()
-
         trainingHistoryDataSource.insertTrainingRecord(
             Training(
                 trainingTemplateId = training.id!!,
