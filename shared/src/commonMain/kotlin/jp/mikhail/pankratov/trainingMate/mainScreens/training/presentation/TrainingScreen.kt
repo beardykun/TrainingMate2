@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChart
@@ -62,14 +61,16 @@ fun TrainingScreen(
         ) {
             TextLarge(text = state.greeting)
 
-            state.lastTrainings?.let { lastTrainings ->
-                if (lastTrainings.isNotEmpty()) {
-                    TextMedium(text = "Last Training:\n${lastTrainings.first().name} ${lastTrainings.first().totalWeightLifted} kg")
-                }
+            if (state.lastTrainings?.isNotEmpty() == true) {
+                TextLarge(text = "Last training:".uppercase())
+                val lastTraining = state.lastTrainings.last()
+                TrainingItem(training = lastTraining, onClick = {
+                    navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
+                })
             }
 
             state.availableTrainings?.let { trainings ->
-                TextLarge(text = "Available trainings:".uppercase())
+                TextLarge(text = "Choose your training:".uppercase())
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
                 ) {

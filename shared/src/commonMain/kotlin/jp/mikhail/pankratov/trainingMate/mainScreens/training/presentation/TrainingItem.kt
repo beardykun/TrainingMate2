@@ -41,21 +41,18 @@ fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Mo
         modifier = Modifier
             .clickable { onClick.invoke() }
             .padding(Dimens.Padding8.dp)
-            .clip(RoundedCornerShape(percent = 15))
             .widthIn(min = 100.dp, max = 300.dp)
     ) {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.inversePrimary)
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(Dimens.Padding16.dp)
         ) {
             TextLarge(text = stringResource(SharedRes.strings.training_name))
             TextLarge(text = training.name.uppercase())
             Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
-            val groupsText =
-                stringResource(SharedRes.strings.groups) + training.groups.uppercase()
-            TextLarge(text = groupsText)
+            TextLarge(text = stringResource(SharedRes.strings.groups))
             Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
@@ -71,23 +68,21 @@ fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = M
         modifier = Modifier
             .clickable { onClick.invoke() }
             .padding(Dimens.Padding8.dp)
-            .clip(RoundedCornerShape(percent = 15))
     ) {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.inversePrimary)
                 .fillMaxSize()
                 .padding(Dimens.Padding16.dp)
 
         ) {
             TextLarge(text = stringResource(SharedRes.strings.training_name))
-            TextMedium(text = training.name.uppercase())
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                TextLarge(text = stringResource(SharedRes.strings.groups))
-                TextMedium(text = training.groups.uppercase())
-            }
-            TextMedium(text = "Exercises: " + training.exercises.toString())
-            TextMedium(text = "Total lifted weight: " + training.totalWeightLifted.toString())
+            TextLarge(text = training.name.uppercase())
+            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            TextLarge(text = "Exercises:\n" + training.exercises.toString().substring(1, training.exercises.toString().length - 1))
+            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            TextLarge(text = "Total lifted weight:\n" + training.totalWeightLifted.toString())
+            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            TextLarge(text = stringResource(SharedRes.strings.groups))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )
