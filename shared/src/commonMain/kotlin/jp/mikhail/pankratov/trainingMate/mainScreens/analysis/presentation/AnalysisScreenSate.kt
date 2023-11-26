@@ -1,11 +1,16 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
 data class AnalysisScreenSate(
-    val historyTrainings: Training? = null,
+    val historyTrainings: List<Training>? = null,
+    val historyExercises: List<Exercise>? = null,
+    val localExercises: List<ExerciseLocal>? = null,
     val analysisMode: AnalysisMode = AnalysisMode.WEIGHT,
-    val metricsMode: MetricsMode = MetricsMode.GENERAL
+    val metricsMode: MetricsMode = MetricsMode.GENERAL,
+    val graphDisplayed: Boolean = false
 )
 
 enum class AnalysisMode {

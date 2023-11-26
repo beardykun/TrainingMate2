@@ -64,4 +64,19 @@ WHERE total_lifted_weight != 0.0
 ORDER BY id ASC
 LIMIT 30;
 
+getGroupTrainings:
+SELECT *
+FROM TrainingHistory
+WHERE groups = ?;
+
+getParticularTrainings:
+SELECT *
+FROM TrainingHistory
+WHERE training_template_id = ?;
+
+getTrainingsWithExercise:
+SELECT *
+FROM TrainingHistory
+WHERE name = ?;
+
 

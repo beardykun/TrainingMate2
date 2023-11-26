@@ -48,6 +48,7 @@ import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkScr
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistiryScreen
@@ -228,13 +229,24 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
         }
 
         scene(route = Routs.MainScreens.analysis.title, navTransition = NavTransition()) {
-            AnalysisScreen(navigator = navigator)
+            val viewModel = getViewModel(
+                key = Routs.MainScreens.analysis.title,
+                factory = viewModelFactory {
+                    AnalysisViewModel(
+                        historyDataSource = appModule.trainingHistoryDataSource,
+                        exerciseDataSource = appModule.exerciseDataSource,
+                        exerciseHistoryDatasource = appModule.exerciseHistoryDataSource
+                    )
+                })
+            val state by viewModel.state.collectAsState()
+            AnalysisScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
         scene(route = Routs.MainScreens.achievement.title, navTransition = NavTransition()) {
             AchievementScreen(navigator = navigator)
         }
         scene(route = Routs.MainScreens.history.title, navTransition = NavTransition()) {
-            val viewModel = getViewModel(key = Routs.MainScreens.history,
+            val viewModel = getViewModel(
+                key = Routs.MainScreens.history,
                 factory = viewModelFactory {
                     HistoryScreenViewModel(trainingHistoryDataSource = appModule.trainingHistoryDataSource)
                 })

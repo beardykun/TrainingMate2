@@ -12,4 +12,7 @@ interface ITrainingHistoryDataSource {
     suspend fun updateEndTime(trainingId: Long, totalLiftedWeight: Double)
     suspend fun updateStartTime(trainingId: Long, totalLiftedWeight: Double)
     suspend fun updateStatus(trainingId: Long)
+    fun getGroupTrainings(group: String) : Flow<List<Training>>
+    fun getParticularTrainings(trainingTemplateId: Long) : Flow<List<Training>>
+    fun getTrainingsWithExercise(exerciseName: String) : Flow<List<Training>>
 }

@@ -8,6 +8,8 @@
     <application
         android:allowBackup="false"
         android:supportsRtl="true"
+        android:name=".TrainingMateApp"
+        android:label="TrainingMate"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"

@@ -76,4 +76,29 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             id = trainingId
         )
     }
+
+    override fun getGroupTrainings(group: String): Flow<List<Training>> {
+        return query.getGroupTrainings(group).asFlow().mapToList().map { trainings ->
+            trainings.map { training ->
+                training.toTraining()
+            }
+        }
+    }
+
+    override fun getParticularTrainings(trainingTemplateId: Long): Flow<List<Training>> {
+        return query.getParticularTrainings(trainingTemplateId).asFlow().mapToList()
+            .map { trainings ->
+                trainings.map { training ->
+                    training.toTraining()
+                }
+            }
+    }
+
+    override fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>> {
+        return query.getTrainingsWithExercise(exerciseName).asFlow().mapToList().map { trainings ->
+            trainings.map { training ->
+                training.toTraining()
+            }
+        }
+    }
 }
