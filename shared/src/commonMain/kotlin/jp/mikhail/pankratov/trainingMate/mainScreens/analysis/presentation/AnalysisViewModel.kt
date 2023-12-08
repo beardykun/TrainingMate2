@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -31,10 +30,12 @@ class AnalysisViewModel(
         combine(
             _state,
             trainingsData,
+            trainingDataSource.getTrainings(),
             exerciseDataSource.getAllExercises()
-        ) { state, historyTrainings, localExercises ->
+        ) { state, historyTrainings, localTrainings, localExercises ->
             state.copy(
                 historyTrainings = historyTrainings,
+                localTrainings = localTrainings,
                 localExercises = localExercises
             )
         }.stateIn(
@@ -76,17 +77,24 @@ class AnalysisViewModel(
             }
 
             is AnalysisScreenEvent.OnTrainingSelected -> {
+                getParticularTrainingExercises(event.trainingName)
                 _state.update {
                     it.copy(graphDisplayed = true)
                 }
-                getParticularTrainingExercises(event.trainingName)
             }
 
             AnalysisScreenEvent.OnGeneralSelected -> {
+                getGeneralTrainings()
                 _state.update {
                     it.copy(graphDisplayed = true)
                 }
-                getGeneralTrainings()
+            }
+
+            is AnalysisScreenEvent.OnTrainingNameSelected -> {
+                getExercisesForTraining(trainingName = event.trainingName)
+                _state.update {
+                    it.copy(graphDisplayed = true)
+                }
             }
         }
     }
@@ -103,15 +111,16 @@ class AnalysisViewModel(
         }
     }
 
-    private fun getParticularTrainingExercises(trainingName: String) = viewModelScope.launch(Dispatchers.IO) {
-        exerciseHistoryDatasource.getExercisesWihName(trainingName).collect { exercises ->
-            _state.update {
-                it.copy(
-                    historyExercises = exercises
-                )
+    private fun getParticularTrainingExercises(trainingName: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            exerciseHistoryDatasource.getExercisesWihName(trainingName).collect { exercises ->
+                _state.update {
+                    it.copy(
+                        historyExercises = exercises
+                    )
+                }
             }
         }
-    }
 
     private fun getTrainingsWithExercise(exerciseName: String) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -120,5 +129,17 @@ class AnalysisViewModel(
                     it.copy(historyExercises = exercises)
                 }
             }
+        }
+
+    private fun getExercisesForTraining(trainingName: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            exerciseHistoryDatasource.getExercisesForTrainingWithName(trainingName = trainingName)
+                .collect { exercises ->
+                    _state.update {
+                        it.copy(
+                            historyExercises = exercises
+                        )
+                    }
+                }
         }
 }

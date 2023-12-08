@@ -233,7 +233,8 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                 key = Routs.MainScreens.analysis.title,
                 factory = viewModelFactory {
                     AnalysisViewModel(
-                        historyDataSource = appModule.trainingHistoryDataSource,
+                        trainingDataSource = appModule.trainingDataSource,
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource,
                         exerciseDataSource = appModule.exerciseDataSource,
                         exerciseHistoryDatasource = appModule.exerciseHistoryDataSource
                     )
