@@ -90,8 +90,8 @@ class AnalysisViewModel(
                 }
             }
 
-            is AnalysisScreenEvent.OnTrainingNameSelected -> {
-                getExercisesForTraining(trainingName = event.trainingName)
+            is AnalysisScreenEvent.OnTrainingIdSelected -> {
+                getExercisesForTraining(trainingId = event.trainingId)
                 _state.update {
                     it.copy(graphDisplayed = true)
                 }
@@ -131,10 +131,13 @@ class AnalysisViewModel(
             }
         }
 
-    private fun getExercisesForTraining(trainingName: String) =
+    private fun getExercisesForTraining(trainingId: Long) =
         viewModelScope.launch(Dispatchers.IO) {
-            exerciseHistoryDatasource.getExercisesForTrainingWithName(trainingName = trainingName)
+            println("TAGGER $trainingId")
+
+            exerciseHistoryDatasource.getExercisesForTrainingWithId(trainingId = trainingId)
                 .collect { exercises ->
+                    println("TAGGER $exercises")
                     _state.update {
                         it.copy(
                             historyExercises = exercises

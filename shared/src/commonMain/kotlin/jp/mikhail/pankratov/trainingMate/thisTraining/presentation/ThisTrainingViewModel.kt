@@ -93,30 +93,35 @@ class ThisTrainingViewModel(
         exercise: ExerciseLocal,
         navigateToExercise: (Long) -> Unit
     ) {
-        val (trainingId, exerciseId, exerciseExists) = isExerciseExists(exercise)
-        if (exerciseExists == 0L) {
-            exerciseHistoryDatasource.insertExerciseHistory(
-                Exercise(
-                    id = null,
-                    name = exercise.name,
-                    group = exercise.group,
-                    trainingHistoryId = trainingId,
-                    exerciseTemplateId = exerciseId,
+        state.value.training?.let { training ->
+            val (exerciseId, exerciseExists) = isExerciseExists(training, exercise)
+            if (exerciseExists == 0L) {
+                exerciseHistoryDatasource.insertExerciseHistory(
+                    Exercise(
+                        id = null,
+                        name = exercise.name,
+                        group = exercise.group,
+                        trainingHistoryId = training.id ?: 0,
+                        trainingTemplateId = training.trainingTemplateId,
+                        exerciseTemplateId = exerciseId,
+                    )
                 )
-            )
+            }
+            navigateToExercise.invoke(exerciseId)
         }
-        navigateToExercise.invoke(exerciseId)
     }
 
-    private suspend fun isExerciseExists(exercise: ExerciseLocal): Triple<Long, Long, Long> {
-        val trainingId = state.value.training!!.id!!
+    private suspend fun isExerciseExists(
+        training: Training,
+        exercise: ExerciseLocal
+    ): Pair<Long, Long> {
         val exerciseId = exercise.id!!
         val exerciseExists =
             exerciseHistoryDatasource.countExerciseInHistory(
-                trainingHistoryId = trainingId,
+                trainingHistoryId = training.id ?: 0,
                 exerciseTemplateId = exerciseId
             ).first()
-        return Triple(trainingId, exerciseId, exerciseExists)
+        return Pair(exerciseId, exerciseExists)
     }
 
     private fun countTrainingTime(training: Training) = flow {

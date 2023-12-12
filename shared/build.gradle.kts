@@ -63,6 +63,8 @@ kotlin {
                 api(Deps.precompose)
 
                 implementation(Deps.kammel)
+
+                implementation("io.github.thechance101:chart:Beta-0.0.5")
             }
         }
         val commonTest by getting {

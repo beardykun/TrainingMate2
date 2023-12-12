@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface IExerciseHistoryDatasource {
     fun getExerciseFromHistory(trainingHistoryId: Long, exerciseTemplateId: Long): Flow<Exercise?>
     fun getExercisesForTrainingHistory(trainingHistoryId: Long): Flow<List<Exercise>>
-    fun getExercisesForTrainingWithName(trainingName: String): Flow<List<Exercise>>
+    fun getExercisesForTrainingWithId(trainingId: Long): Flow<List<Exercise>>
     fun getExercisesWihName(name: String): Flow<List<Exercise>>
     fun countExerciseInHistory(trainingHistoryId: Long, exerciseTemplateId: Long): Flow<Long>
     suspend fun insertExerciseHistory(exercise: Exercise)

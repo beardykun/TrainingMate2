@@ -23,6 +23,7 @@ fun ExerciseHistory.toExercise(): Exercise {
         name = name,
         group = exercise_group,
         trainingHistoryId = training_history_id,
+        trainingTemplateId = training_template_id,
         sets = sets.stringToList(),
         exerciseTemplateId = exercise_template_id,
         totalLiftedWeight = total_lifted_weight

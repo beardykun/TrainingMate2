@@ -1,8 +1,10 @@
 package jp.mikhail.pankratov.trainingMate.core.data
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import dev.icerock.moko.resources.ImageResource
 
+@Composable
 actual fun painterResource(imageResource: ImageResource): Painter {
     TODO("Not implemented yet")
 }

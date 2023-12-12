@@ -3,7 +3,6 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -17,11 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChart
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChartSample
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import kotlinx.coroutines.launch
 
@@ -63,23 +61,21 @@ fun TabsComposable(
     HorizontalPager(state = pagerState) {
         if (selectedTabIndex == 0) {
             AnimatedVisibility(visible = !trainings.isNullOrEmpty()) {
-                LineChart(
-                    data = trainings ?: emptyList(),
-                    weightSelector = { training ->
-                        training.totalWeightLifted.toFloat()
-                    },
-                    modifier = Modifier.height(150.dp).clipToBounds()
-                )
+                trainings?.let {
+                    LineChartSample(
+                        data = trainings.map { it.totalWeightLifted },
+                        xAxisData = trainings.map { it.name }
+                    )
+                }
             }
         } else {
             AnimatedVisibility(visible = !exercises.isNullOrEmpty()) {
-                LineChart(
-                    data = exercises ?: emptyList(),
-                    weightSelector = { exercise ->
-                        exercise.totalLiftedWeight.toFloat()
-                    },
-                    modifier = Modifier.height(150.dp).clipToBounds()
-                )
+                exercises?.let {
+                    LineChartSample(
+                        data = exercises.map { it.totalLiftedWeight },
+                        xAxisData = exercises.map { it.name }
+                    )
+                }
             }
         }
     }

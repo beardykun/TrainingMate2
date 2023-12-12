@@ -24,14 +24,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChart
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChartSample
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
@@ -96,12 +95,9 @@ fun TrainingScreen(
             }
             state.lastTrainings?.let { lastTrainings ->
                 AnimatedVisibility(visible = lastTrainings.size >= 2) {
-                    LineChart(
-                        data = lastTrainings,
-                        weightSelector = { training ->
-                            training.totalWeightLifted.toFloat()
-                        },
-                        modifier = Modifier.height(150.dp).clipToBounds()
+                    LineChartSample(
+                        data = lastTrainings.map { it.totalWeightLifted },
+                        xAxisData = lastTrainings.map { it.name }
                     )
                 }
             }

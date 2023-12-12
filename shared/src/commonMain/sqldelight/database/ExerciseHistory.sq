@@ -4,6 +4,7 @@ CREATE TABLE ExerciseHistory (
       sets TEXT NOT NULL,
       exercise_group TEXT NOT NULL,
       training_history_id INTEGER NOT NULL,
+      training_template_id INTEGER NOT NULL,
       exercise_template_id INTEGER NOT NULL,
       total_lifted_weight REAL NOT NULL,
       FOREIGN KEY(training_history_id) REFERENCES TrainingHistory(id),
@@ -25,10 +26,10 @@ SELECT *
 FROM ExerciseHistory
 WHERE training_history_id = ?;
 
-getExercisesForTrainingWithName:
+getExercisesForTrainingWithId:
 SELECT *
 FROM ExerciseHistory
-WHERE name = ?;
+WHERE training_template_id = ?;
 
 getExercisesWithName:
 SELECT *
@@ -48,7 +49,8 @@ name,
 sets,
 exercise_group,
 training_history_id,
+training_template_id,
 exercise_template_id,
 total_lifted_weight
 )
-VALUES(?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?);

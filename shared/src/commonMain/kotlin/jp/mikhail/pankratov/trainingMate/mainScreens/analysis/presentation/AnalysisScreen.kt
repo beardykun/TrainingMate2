@@ -30,8 +30,8 @@ fun AnalysisScreen(
         }
         if (state.metricsMode == MetricsMode.TRAINING && !state.graphDisplayed) {
             state.localTrainings?.let { localTrainings ->
-                TrainingChoice(localTrainings) { trainingName ->
-                    onEvent(AnalysisScreenEvent.OnExerciseNameSelected(trainingName))
+                TrainingChoice(localTrainings) { trainingId ->
+                    onEvent(AnalysisScreenEvent.OnTrainingIdSelected(trainingId))
                 }
             }
         }
@@ -64,7 +64,7 @@ fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String
 }
 
 @Composable
-fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (String) -> Unit) {
+fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long) -> Unit) {
     TextLarge(text = "Choose your training:".uppercase())
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -73,7 +73,7 @@ fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (String) ->
             LocalTrainingItem(
                 training = training,
                 onClick = {
-                    onItemClick.invoke(training.name)
+                    training.id?.let { onItemClick.invoke(it) }
                 }
             )
         }
