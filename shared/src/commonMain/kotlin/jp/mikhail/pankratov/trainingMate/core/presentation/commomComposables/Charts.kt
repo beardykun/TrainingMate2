@@ -11,11 +11,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aay.compose.baseComponents.model.GridOrientation
+import com.aay.compose.lineChart.LineChart
 import com.aay.compose.lineChart.model.LineParameters
 import com.aay.compose.lineChart.model.LineType
 
 @Composable
-fun LineChartSample(
+fun CommonLineChart(
     data: List<Double>,
     xAxisData: List<String>
 ) {
@@ -29,7 +30,7 @@ fun LineChartSample(
     )
 
     Box(Modifier.height(150.dp)) {
-        com.aay.compose.lineChart.LineChart(
+        LineChart(
             modifier = Modifier.fillMaxSize(),
             linesParameters = listOf(lineParameters),
             isGrid = true,

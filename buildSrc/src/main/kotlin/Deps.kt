@@ -66,6 +66,10 @@ object Deps {
     private const val kammelVersion = "0.7.1"
     const val kammel = "media.kamel:kamel-image:$kammelVersion"
 
+    //CHARTS
+    private const val chartVersion = "Beta-0.0.5"
+    const val chart = "io.github.thechance101:chart:$chartVersion"
+
     // KTOR
     private const val ktorVersion = "2.3.2"
     const val ktorCore = "io.ktor:ktor-client-core:$ktorVersion"

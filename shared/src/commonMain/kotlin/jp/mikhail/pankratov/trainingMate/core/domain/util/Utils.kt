@@ -22,4 +22,11 @@ object Utils {
         val seconds = totalSeconds?.rem(60)
         return "${hours}h:${minutes}m:${seconds}s"
     }
+
+    fun trainingLengthInMin(training: Training): Double {
+        val durationMillis =
+            training.endTime?.minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
+        val totalSeconds = durationMillis?.div(1000)
+        return totalSeconds?.div(60)?.toDouble() ?: 0.0
+    }
 }

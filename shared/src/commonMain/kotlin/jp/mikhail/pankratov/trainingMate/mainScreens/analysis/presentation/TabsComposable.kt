@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChartSample
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import kotlinx.coroutines.launch
 
@@ -62,7 +62,7 @@ fun TabsComposable(
         if (selectedTabIndex == 0) {
             AnimatedVisibility(visible = !trainings.isNullOrEmpty()) {
                 trainings?.let {
-                    LineChartSample(
+                    CommonLineChart(
                         data = trainings.map { it.totalWeightLifted },
                         xAxisData = trainings.map { it.name }
                     )
@@ -71,7 +71,7 @@ fun TabsComposable(
         } else {
             AnimatedVisibility(visible = !exercises.isNullOrEmpty()) {
                 exercises?.let {
-                    LineChartSample(
+                    CommonLineChart(
                         data = exercises.map { it.totalLiftedWeight },
                         xAxisData = exercises.map { it.name }
                     )

@@ -64,7 +64,7 @@ kotlin {
 
                 implementation(Deps.kammel)
 
-                implementation("io.github.thechance101:chart:Beta-0.0.5")
+                implementation(Deps.chart)
             }
         }
         val commonTest by getting {

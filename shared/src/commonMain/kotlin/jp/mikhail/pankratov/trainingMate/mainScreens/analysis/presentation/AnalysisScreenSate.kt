@@ -12,7 +12,9 @@ data class AnalysisScreenSate(
     val localExercises: List<ExerciseLocal>? = null,
     val analysisMode: AnalysisMode = AnalysisMode.WEIGHT,
     val metricsMode: MetricsMode = MetricsMode.GENERAL,
-    val graphDisplayed: Boolean = false
+    val graphDisplayed: Boolean = false,
+    val metricsData: List<Double>? = null,
+    val metricsXAxisData: List<String>? = null
 )
 
 enum class AnalysisMode {
@@ -20,5 +22,5 @@ enum class AnalysisMode {
 }
 
 enum class MetricsMode {
-    GENERAL, MUSCLE_GROUP, TRAINING, EXERCISE
+    GENERAL, TRAINING, EXERCISE
 }

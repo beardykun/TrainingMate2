@@ -38,7 +38,6 @@ fun AnalysisScreen(
         TabsComposable(
             categories = listOf(
                 MetricsMode.GENERAL,
-                MetricsMode.MUSCLE_GROUP,
                 MetricsMode.TRAINING,
                 MetricsMode.EXERCISE
             ),

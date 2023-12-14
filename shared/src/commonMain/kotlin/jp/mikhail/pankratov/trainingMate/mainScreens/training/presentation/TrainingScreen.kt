@@ -30,7 +30,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.LineChartSample
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
@@ -95,7 +95,7 @@ fun TrainingScreen(
             }
             state.lastTrainings?.let { lastTrainings ->
                 AnimatedVisibility(visible = lastTrainings.size >= 2) {
-                    LineChartSample(
+                    CommonLineChart(
                         data = lastTrainings.map { it.totalWeightLifted },
                         xAxisData = lastTrainings.map { it.name }
                     )

@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AnalysisViewModel(
     private val trainingDataSource: ITrainingDataSource,
@@ -96,6 +98,117 @@ class AnalysisViewModel(
                     it.copy(graphDisplayed = true)
                 }
             }
+
+            is AnalysisScreenEvent.OnAnalysisModeChanged -> {
+                prepareMetricsDataBasedOnAnalysisMode(event.analysisMode)
+            }
+        }
+    }
+
+    private fun prepareMetricsDataBasedOnAnalysisMode(analysisMode: AnalysisMode) {
+        when (analysisMode) {
+            AnalysisMode.WEIGHT -> {
+                prepareWeightData()
+            }
+
+            AnalysisMode.LENGTH -> {
+                prepareLengthData()
+            }
+
+            AnalysisMode.PROGRESS -> {
+                if (state.value.metricsMode == MetricsMode.EXERCISE) {
+                    prepareProgressDataExercises()
+                } else
+                    prepareProgressDataTrainings()
+            }
+        }
+    }
+
+    private fun prepareProgressDataTrainings() = viewModelScope.launch(Dispatchers.Default) {
+        state.value.historyTrainings?.let { trainings ->
+            val weightList = trainings.map { it.totalWeightLifted }
+            val weightBaseline = weightList.sum().div(weightList.size)
+            val weightFivePercent = weightBaseline.div(20)
+
+            val durationsList = trainings.map { Utils.trainingLengthInMin(it) }
+            val durationsBaseline = durationsList.sum().div(durationsList.size)
+            val durationFivePercent = durationsBaseline.div(20)
+
+            val data = trainings.map { training ->
+                val weightScore =
+                    (training.totalWeightLifted - weightBaseline) / weightFivePercent
+
+                val durationScore =
+                    (Utils.trainingLengthInMin(training) - durationsBaseline) / durationFivePercent
+
+                weightScore + durationScore
+            }
+
+            withContext(Dispatchers.Main) {
+                _state.update {
+                    it.copy(
+                        metricsData = data,
+                        metricsXAxisData = trainings.map { tr -> tr.name }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun prepareProgressDataExercises() = viewModelScope.launch(Dispatchers.Default) {
+        state.value.historyExercises?.let { exercises ->
+            val weightList = exercises.map { it.totalLiftedWeight }
+            val weightBaseline = weightList.sum().div(weightList.size)
+            val weightFivePercent = weightBaseline.div(20)
+
+            val setsList = exercises.map { it.sets.size }
+            val setsBaseline = setsList.sum() / setsList.size
+
+            val data = exercises.map { exercise ->
+                val weightScore =
+                    (exercise.totalLiftedWeight - weightBaseline) / weightFivePercent
+
+                val setsScore = exercise.sets.size - setsBaseline
+
+                weightScore + setsScore
+            }
+
+            withContext(Dispatchers.Main) {
+                _state.update {
+                    it.copy(
+                        metricsData = data,
+                        metricsXAxisData = exercises.map { tr -> tr.name }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun prepareLengthData() {
+        val data = state.value.historyTrainings?.map { Utils.trainingLengthInMin(it) }
+        val xAxisData = state.value.historyTrainings?.map { it.name }
+        _state.update {
+            it.copy(
+                metricsData = data,
+                metricsXAxisData = xAxisData
+            )
+        }
+    }
+
+    private fun prepareWeightData() {
+        val data = if (state.value.metricsMode == MetricsMode.EXERCISE) {
+            state.value.historyExercises?.map { it.totalLiftedWeight }
+        } else state.value.historyTrainings?.map { it.totalWeightLifted }
+
+        val xAxisData = if (state.value.metricsMode == MetricsMode.EXERCISE) {
+            state.value.historyExercises?.map { it.name }
+        } else state.value.historyTrainings?.map { it.name }
+
+        _state.update {
+            it.copy(
+                metricsData = data,
+                metricsXAxisData = xAxisData
+            )
         }
     }
 
