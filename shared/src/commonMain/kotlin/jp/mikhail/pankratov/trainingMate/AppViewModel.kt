@@ -590,13 +590,6 @@ class AppViewModel(
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
-                name = "Oblique crunches on the flor",
-                group = DatabaseContract.ABS_GROUP,
-                image = "oblique_crunches_on_the_flor"
-            )
-        )
-        exerciseDataSource.insertExercise(
-            ExerciseLocal(
                 name = "Tuck crunch",
                 group = DatabaseContract.ABS_GROUP,
                 image = "tuck_crunch"

@@ -29,7 +29,7 @@ fun CommonLineChart(
         lineShadow = true,
     )
 
-    Box(Modifier.height(150.dp)) {
+    Box(Modifier.fillMaxSize()) {
         LineChart(
             modifier = Modifier.fillMaxSize(),
             linesParameters = listOf(lineParameters),

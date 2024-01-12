@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:name=".TrainingMateApp"
         android:label="TrainingMate"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@drawable/ic_launcher_round"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"

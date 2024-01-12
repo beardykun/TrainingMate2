@@ -17,8 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import kotlinx.coroutines.launch
@@ -27,8 +25,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TabsComposable(
     categories: List<MetricsMode>,
-    trainings: List<Training>?,
-    exercises: List<Exercise>?,
+    metricsData: List<Double>?,
+    metricsXAxisData: List<String>?,
     onEvent: (AnalysisScreenEvent) -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { categories.size })
@@ -59,23 +57,12 @@ fun TabsComposable(
         }
     }
     HorizontalPager(state = pagerState) {
-        if (selectedTabIndex == 0) {
-            AnimatedVisibility(visible = !trainings.isNullOrEmpty()) {
-                trainings?.let {
-                    CommonLineChart(
-                        data = trainings.map { it.totalWeightLifted },
-                        xAxisData = trainings.map { it.name }
-                    )
-                }
-            }
-        } else {
-            AnimatedVisibility(visible = !exercises.isNullOrEmpty()) {
-                exercises?.let {
-                    CommonLineChart(
-                        data = exercises.map { it.totalLiftedWeight },
-                        xAxisData = exercises.map { it.name }
-                    )
-                }
+        AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
+            metricsData?.let {
+                CommonLineChart(
+                    data = metricsData,
+                    xAxisData = metricsXAxisData!!
+                )
             }
         }
     }

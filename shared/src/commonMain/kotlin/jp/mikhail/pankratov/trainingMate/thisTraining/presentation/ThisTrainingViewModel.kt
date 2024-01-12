@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.thisTraining.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
@@ -36,10 +37,11 @@ class ThisTrainingViewModel(
         _exercises
     ) { state, training, exercises ->
         val newState =
-            if (training != state.training) {
+            if (training != state.ongoingTraining) {
                 state.copy(
-                    training = training,
-                    exerciseLocals = exercises
+                    ongoingTraining = training,
+                    exerciseLocals = getExerciseListWithHeaders(exercises?.sortedBy { it.group }
+                        ?: emptyList())
                 )
             } else state
         newState
@@ -86,6 +88,16 @@ class ThisTrainingViewModel(
                     }
                 }
             }
+
+            ThisTrainingEvent.EndTraining -> {
+                endLastTraining()
+            }
+        }
+    }
+
+    private fun endLastTraining() = viewModelScope.launch(Dispatchers.IO) {
+        state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
+            trainingHistoryDataSource.updateStatus(trainingId = ongoingTrainingId)
         }
     }
 
@@ -93,7 +105,7 @@ class ThisTrainingViewModel(
         exercise: ExerciseLocal,
         navigateToExercise: (Long) -> Unit
     ) {
-        state.value.training?.let { training ->
+        state.value.ongoingTraining?.let { training ->
             val (exerciseId, exerciseExists) = isExerciseExists(training, exercise)
             if (exerciseExists == 0L) {
                 exerciseHistoryDatasource.insertExerciseHistory(
@@ -136,4 +148,19 @@ class ThisTrainingViewModel(
             emit("Training time: ${hours}h:${minutes}m:${seconds}s")
         }
     }.flowOn(Dispatchers.Default)
+
+    private fun getExerciseListWithHeaders(exercises: List<ExerciseLocal>): List<ExerciseListItem> {
+        val items = mutableListOf<ExerciseListItem>()
+        var lastGroup = ""
+
+        for (exercise in exercises) {
+            if (exercise.group != lastGroup) {
+                items.add(ExerciseListItem.Header(exercise.group))
+                lastGroup = exercise.group
+            }
+            items.add(ExerciseListItem.ExerciseItem(exercise))
+        }
+
+        return items
+    }
 }

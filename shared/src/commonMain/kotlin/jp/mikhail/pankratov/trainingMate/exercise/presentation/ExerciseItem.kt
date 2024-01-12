@@ -23,7 +23,6 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 
 @Composable
 fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit) {
-
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier.fillMaxSize()

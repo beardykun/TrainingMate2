@@ -6,6 +6,7 @@ sealed class ThisTrainingEvent {
     data class OnExerciseClick(
         val exercise: ExerciseLocal,
         val navigateToExercise: (Long) -> Unit
-    ) :
-        ThisTrainingEvent()
+    ) : ThisTrainingEvent()
+
+    data object EndTraining : ThisTrainingEvent()
 }

@@ -21,6 +21,16 @@ fun AnalysisScreen(
     navigator: Navigator
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
+        TabsComposable(
+            categories = listOf(
+                MetricsMode.GENERAL,
+                MetricsMode.TRAINING,
+                MetricsMode.EXERCISE
+            ),
+            metricsData = state.metricsData,
+            metricsXAxisData = state.metricsXAxisData,
+            onEvent = onEvent
+        )
         if (state.metricsMode == MetricsMode.EXERCISE && !state.graphDisplayed) {
             state.localExercises?.let { localExercises ->
                 ExerciseNameChoice(localExercises = localExercises) { exerciseName ->
@@ -35,16 +45,6 @@ fun AnalysisScreen(
                 }
             }
         }
-        TabsComposable(
-            categories = listOf(
-                MetricsMode.GENERAL,
-                MetricsMode.TRAINING,
-                MetricsMode.EXERCISE
-            ),
-            trainings = state.historyTrainings,
-            exercises = state.historyExercises,
-            onEvent = onEvent
-        )
     }
 }
 

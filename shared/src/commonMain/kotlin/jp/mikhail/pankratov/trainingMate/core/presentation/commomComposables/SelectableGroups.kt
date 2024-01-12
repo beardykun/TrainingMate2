@@ -4,7 +4,6 @@ import Dimens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
@@ -26,11 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 
 @Composable
@@ -100,7 +100,7 @@ fun SelectableGroupItem(
 
 @Composable
 fun SelectableExercises(
-    exerciseLocals: List<ExerciseLocal>,
+    exerciseLocals: List<ExerciseListItem>,
     modifier: Modifier = Modifier,
     isSelected: List<String>,
     onClick: (ExerciseLocal) -> Unit,
@@ -111,10 +111,24 @@ fun SelectableExercises(
         modifier = modifier
     ) {
         items(exerciseLocals) { item ->
-            SelectableExerciseItem(item, isSelected, onClick, onDeleteClick)
+            when (item) {
+                is ExerciseListItem.Header -> {
+                    TextLarge(
+                        text = item.muscleGroup.uppercase(),
+                        modifier = Modifier.clip(RoundedCornerShape(25))
+                            .background(color = MaterialTheme.colorScheme.primaryContainer)
+                            .padding(Dimens.Padding4.dp)
+                    )
+                }
+
+                is ExerciseListItem.ExerciseItem -> {
+                    SelectableExerciseItem(item.exercise, isSelected, onClick, onDeleteClick)
+                }
+            }
         }
     }
 }
+
 
 @Composable
 fun SelectableExerciseItem(

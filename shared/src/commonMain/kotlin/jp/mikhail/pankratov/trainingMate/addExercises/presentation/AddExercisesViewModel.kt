@@ -34,7 +34,7 @@ class AddExercisesViewModel(
         _selectedExercises
     ) { state, training, availableExercises, selectedExercises ->
         state.copy(
-            availableExerciseLocals = availableExercises,
+            availableExerciseLocals = getExerciseListWithHeaders(availableExercises.sortedBy { it.group }),
             selectedExercises = selectedExercises,
             training = training
         )
@@ -116,4 +116,19 @@ class AddExercisesViewModel(
             oldTraining.trainingTemplateId
         )
     }
+}
+
+private fun getExerciseListWithHeaders(exercises: List<ExerciseLocal>): List<ExerciseListItem> {
+    val items = mutableListOf<ExerciseListItem>()
+    var lastGroup = ""
+
+    for (exercise in exercises) {
+        if (exercise.group != lastGroup) {
+            items.add(ExerciseListItem.Header(exercise.group))
+            lastGroup = exercise.group
+        }
+        items.add(ExerciseListItem.ExerciseItem(exercise))
+    }
+
+    return items
 }
