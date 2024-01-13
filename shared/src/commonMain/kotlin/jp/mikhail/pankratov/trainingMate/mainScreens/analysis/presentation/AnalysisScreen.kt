@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
@@ -20,6 +21,11 @@ fun AnalysisScreen(
     onEvent: (AnalysisScreenEvent) -> Unit,
     navigator: Navigator
 ) {
+    if (!state.historyTrainings.isNullOrEmpty()) {
+        LaunchedEffect(Unit) {
+            onEvent(AnalysisScreenEvent.OnGeneralSelected)
+        }
+    }
     Column(modifier = Modifier.fillMaxSize()) {
         TabsComposable(
             categories = listOf(
@@ -31,17 +37,18 @@ fun AnalysisScreen(
             metricsXAxisData = state.metricsXAxisData,
             onEvent = onEvent
         )
-        if (state.metricsMode == MetricsMode.EXERCISE && !state.graphDisplayed) {
-            state.localExercises?.let { localExercises ->
-                ExerciseNameChoice(localExercises = localExercises) { exerciseName ->
-                    onEvent(AnalysisScreenEvent.OnExerciseNameSelected(exerciseName))
-                }
-            }
-        }
+
         if (state.metricsMode == MetricsMode.TRAINING && !state.graphDisplayed) {
             state.localTrainings?.let { localTrainings ->
                 TrainingChoice(localTrainings) { trainingId ->
                     onEvent(AnalysisScreenEvent.OnTrainingIdSelected(trainingId))
+                }
+            }
+        }
+        if (state.metricsMode == MetricsMode.EXERCISE && !state.graphDisplayed) {
+            state.localExercises?.let { localExercises ->
+                ExerciseNameChoice(localExercises = localExercises) { exerciseName ->
+                    onEvent(AnalysisScreenEvent.OnExerciseNameSelected(exerciseName))
                 }
             }
         }

@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -43,7 +44,6 @@ fun TabsComposable(
         categories.forEachIndexed { index, category ->
             Tab(selected = selectedTabIndex == index,
                 onClick = {
-                    onEvent(AnalysisScreenEvent.OnMetricsModeChanged(category))
                     selectedTabIndex = index
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(index)

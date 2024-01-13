@@ -47,17 +47,14 @@ class AnalysisViewModel(
             initialValue = AnalysisScreenSate()
         )
 
-    init {
-        onEvent(AnalysisScreenEvent.OnGeneralSelected)
-    }
-
     fun onEvent(event: AnalysisScreenEvent) {
         when (event) {
             is AnalysisScreenEvent.OnMetricsModeChanged -> {
                 _state.update {
                     it.copy(
                         metricsMode = event.metricsMode,
-                        graphDisplayed = false
+                        graphDisplayed = false,
+                        metricsData = null
                     )
                 }
                 if (event.metricsMode == MetricsMode.GENERAL) {

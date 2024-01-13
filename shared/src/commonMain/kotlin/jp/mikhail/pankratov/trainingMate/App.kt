@@ -102,15 +102,19 @@ fun App(
                 topBar = {
                     TopAppBar(title = { Text(text = current?.route?.route ?: "") },
                         navigationIcon = {
-                            IconButton(onClick = {
-                                navigator.popBackStack()
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBack,
-                                    contentDescription = null
-                                )
+                            if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) {
+
+                                IconButton(onClick = {
+                                    navigator.popBackStack()
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowBack,
+                                        contentDescription = null
+                                    )
+                                }
                             }
-                        })
+                        }
+                    )
                 },
                 bottomBar = {
                     if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) return@Scaffold

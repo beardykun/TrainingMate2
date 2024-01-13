@@ -2,13 +2,11 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aay.compose.baseComponents.model.GridOrientation
 import com.aay.compose.lineChart.LineChart
@@ -49,7 +47,8 @@ fun CommonLineChart(
             ),
             yAxisRange = 14,
             oneLineChart = false,
-            gridOrientation = GridOrientation.VERTICAL
+            gridOrientation = GridOrientation.VERTICAL,
+            showXAxis = false
         )
     }
 }
