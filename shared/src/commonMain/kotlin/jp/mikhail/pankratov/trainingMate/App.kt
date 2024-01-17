@@ -5,14 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Cabin
-import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MobileOff
-import androidx.compose.material.icons.outlined.Cabin
-import androidx.compose.material.icons.outlined.Explore
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.MobileOff
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Timeline
+import androidx.compose.material.icons.outlined.EmojiEvents
+import androidx.compose.material.icons.outlined.FitnessCenter
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -183,26 +183,26 @@ private fun navigateOnTabClick(index: Int, navigator: Navigator) {
 private fun bottomNavigationItems() = listOf(
     BottomNavigationItem(
         title = Routs.MainScreens.training.title,
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home,
+        selectedIcon = Icons.Filled.FitnessCenter,
+        unselectedIcon = Icons.Outlined.FitnessCenter,
         hasNews = false
     ),
     BottomNavigationItem(
         title = Routs.MainScreens.analysis.title,
-        selectedIcon = Icons.Filled.Explore,
-        unselectedIcon = Icons.Outlined.Explore,
+        selectedIcon = Icons.Filled.Timeline,
+        unselectedIcon = Icons.Outlined.Timeline,
         hasNews = false
     ),
     BottomNavigationItem(
         title = Routs.MainScreens.achievement.title,
-        selectedIcon = Icons.Filled.MobileOff,
-        unselectedIcon = Icons.Outlined.MobileOff,
+        selectedIcon = Icons.Filled.EmojiEvents,
+        unselectedIcon = Icons.Outlined.EmojiEvents,
         hasNews = false
     ),
     BottomNavigationItem(
         title = Routs.MainScreens.history.title,
-        selectedIcon = Icons.Filled.Cabin,
-        unselectedIcon = Icons.Outlined.Cabin,
+        selectedIcon = Icons.Filled.History,
+        unselectedIcon = Icons.Outlined.History,
         hasNews = false
     )
 )

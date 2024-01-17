@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -43,19 +44,27 @@ fun CreateExerciseScreen(
         )
 
         state.ongoingTraining?.let { ongoingTraining ->
-            SelectableGroups(
-                groups = ongoingTraining.groups.stringToList(),
-                selected = state.exerciseGroup.stringToList(),
-                modifier = Modifier.weight(1f)
-            ) { selectedGroup ->
-                onEvent(CreateExerciseEvent.OnExerciseGroupChanged(selectedGroup))
+            val groups = ongoingTraining.groups.stringToList()
+            if (groups.size == 1) {
+                LaunchedEffect(Unit) {
+                    onEvent(CreateExerciseEvent.OnExerciseGroupChanged(groups.first()))
+                }
+            } else {
+                val selectedGroups = state.exerciseGroup.stringToList()
+                SelectableGroups(
+                    groups = groups,
+                    selected = selectedGroups,
+                    modifier = Modifier.weight(1f)
+                ) { selectedGroup ->
+                    onEvent(CreateExerciseEvent.OnExerciseGroupChanged(selectedGroup))
+                }
             }
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = state.usesTwoDumbbell, onCheckedChange = {
                 onEvent(CreateExerciseEvent.OnExerciseUsesTwoDumbbells)
             })
-            TextMedium(text = "Check the exercise you use two dumbbells but recording the weight of one dumbbell")
+            TextMedium(text = "For dumbbell exercises, check if you input weight of only one dumbbell")
         }
         Spacer(modifier = Modifier.height(Dimens.Padding16.dp))
         Button(

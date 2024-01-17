@@ -93,14 +93,6 @@ fun TrainingScreen(
                     }
                 }
             }
-            state.lastTrainings?.let { lastTrainings ->
-                AnimatedVisibility(visible = lastTrainings.size >= 2) {
-                    CommonLineChart(
-                        data = lastTrainings.map { it.totalWeightLifted },
-                        xAxisData = lastTrainings.map { it.name }
-                    )
-                }
-            }
             MaterialTheme.colorScheme.apply {
                 val colorEntries = listOf(
                     ColorEntry("primary", primary),
