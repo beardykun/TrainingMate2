@@ -152,7 +152,7 @@ fun ExerciseAtWorkScreen(
                     onSelectedValue = { value ->
                         onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected(value))
                     },
-                    values = listOf("15", "30", "45", "60", "90", "120", "150", "180", "300"),
+                    values = listOf("30", "45", "60", "90", "120", "150", "180", "300"),
                     modifier = Modifier.clip(
                         RoundedCornerShape(percent = 50)
                     ).background(color = MaterialTheme.colorScheme.primaryContainer)

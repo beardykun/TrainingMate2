@@ -12,7 +12,8 @@ data class AnalysisScreenSate(
     val metricsMode: MetricsMode = MetricsMode.GENERAL,
     val graphDisplayed: Boolean = false,
     val metricsData: List<Double>? = null,
-    val metricsXAxisData: List<String>? = null
+    val metricsXAxisData: List<String>? = null,
+    val isDropdownExpanded: Boolean = false
 )
 
 enum class AnalysisMode {

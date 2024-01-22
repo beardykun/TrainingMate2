@@ -33,9 +33,12 @@ fun ThisTrainingScreen(
     state: ThisTrainingState, onEvent: (ThisTrainingEvent) -> Unit, navigator: Navigator
 ) {
     Scaffold(floatingActionButton = {
-        FloatingActionButton(onClick = {
-            navigator.navigate(Routs.TrainingScreens.addExercises)
-        }) {
+        FloatingActionButton(
+            onClick = {
+                navigator.navigate(Routs.TrainingScreens.addExercises)
+            },
+            modifier = Modifier.padding(bottom = Dimens.Padding32.dp)
+        ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add new exercises button")
         }
     }) { padding ->

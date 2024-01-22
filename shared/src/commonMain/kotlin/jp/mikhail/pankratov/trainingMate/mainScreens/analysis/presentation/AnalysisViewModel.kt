@@ -91,8 +91,37 @@ class AnalysisViewModel(
             }
 
             is AnalysisScreenEvent.OnAnalysisModeChanged -> {
+                val analysisMode = when (event.analysisMode) {
+                    AnalysisMode.WEIGHT.name -> AnalysisMode.WEIGHT
+                    AnalysisMode.LENGTH.name -> AnalysisMode.LENGTH
+                    AnalysisMode.PROGRESS.name -> AnalysisMode.PROGRESS
+                    else -> AnalysisMode.WEIGHT
+                }
+                _state.update {
+                    it.copy(
+                        isDropdownExpanded = false,
+                        analysisMode = analysisMode
+                    )
+                }
                 viewModelScope.launch(Dispatchers.Default) {
-                    prepareMetricsDataBasedOnAnalysisMode(event.analysisMode)
+                    println("TAGGER ${_state.value.historyTrainings}")
+                    println("TAGGER ${state.value.historyTrainings}")
+                    prepareMetricsDataBasedOnAnalysisMode(
+                        trainings = _state.value.historyTrainings,
+                        analysisMode = analysisMode
+                    )
+                }
+            }
+
+            AnalysisScreenEvent.OnDropdownClosed -> {
+                _state.update {
+                    it.copy(isDropdownExpanded = false)
+                }
+            }
+
+            AnalysisScreenEvent.OnDropdownOpen -> {
+                _state.update {
+                    it.copy(isDropdownExpanded = true)
                 }
             }
         }
@@ -152,10 +181,16 @@ class AnalysisViewModel(
                 weightScore + durationScore
             }
 
+            // Find the minimum value in the data list
+            val minValue = data.minOrNull() ?: 0.0
+
+            // Shift all values up so that the minimum value becomes zero
+            val adjustedData = data.map { it - minValue }
+
             withContext(Dispatchers.Main) {
                 _state.update {
                     it.copy(
-                        metricsData = data,
+                        metricsData = adjustedData,
                         metricsXAxisData = trainings.map { tr -> tr.name }
                     )
                 }
@@ -183,16 +218,23 @@ class AnalysisViewModel(
                 weightScore + setsScore
             }
 
+            // Find the minimum value in the data list
+            val minValue = data.minOrNull() ?: 0.0
+
+            // Shift all values up so that the minimum value becomes zero
+            val adjustedData = data.map { it - minValue }
+
             withContext(Dispatchers.Main) {
                 _state.update {
                     it.copy(
-                        metricsData = data,
+                        metricsData = adjustedData,
                         metricsXAxisData = exercises.map { tr -> tr.name }
                     )
                 }
             }
         }
     }
+
 
     private suspend fun prepareLengthData(
         historyTrainings: List<Training>? = null
@@ -234,6 +276,9 @@ class AnalysisViewModel(
 
     private suspend fun getGeneralTrainings() = viewModelScope.launch(Dispatchers.IO) {
         val trainings = trainingHistoryDataSource.getLatestHistoryTrainings().first()
+        _state.update {
+            it.copy(historyTrainings = trainings)
+        }
         prepareMetricsDataBasedOnAnalysisMode(state.value.analysisMode, trainings = trainings)
     }
 
@@ -246,6 +291,11 @@ class AnalysisViewModel(
         val trainings =
             trainingHistoryDataSource.getParticularTrainings(trainingTemplateId = trainingId)
                 .first()
+
+        _state.update {
+            it.copy(historyTrainings = trainings)
+        }
+
         val exercises =
             exerciseHistoryDatasource.getExercisesForTrainingWithId(trainingId = trainingId).first()
         prepareMetricsDataBasedOnAnalysisMode(
