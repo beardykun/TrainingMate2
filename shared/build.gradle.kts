@@ -5,7 +5,7 @@ plugins {
     id("com.squareup.sqldelight")
     kotlin("plugin.serialization") version Deps.kotlinVersion
     id("dev.icerock.mobile.multiplatform-resources")
-    id("org.jetbrains.compose").version("1.5.10")
+    id("org.jetbrains.compose").version("1.6.0-rc01")
 }
 
 kotlin {

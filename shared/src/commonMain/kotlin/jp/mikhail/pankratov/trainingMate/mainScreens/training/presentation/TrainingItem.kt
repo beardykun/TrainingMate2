@@ -4,23 +4,26 @@ import Dimens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -31,7 +34,6 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 
 @Composable
@@ -62,7 +64,7 @@ fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Mo
 }
 
 @Composable
-fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Long) -> Unit) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
         modifier = Modifier
@@ -75,10 +77,22 @@ fun TrainingItem(training: Training, onClick: () -> Unit, modifier: Modifier = M
                 .padding(Dimens.Padding16.dp)
 
         ) {
-            TextLarge(text = stringResource(SharedRes.strings.training_name))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                TextLarge(text = stringResource(SharedRes.strings.training_name))
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    tint = Color.Red,
+                    contentDescription = "Delete",
+                    modifier = Modifier.clickable {
+                        training.id?.let { onDeleteClick.invoke(it) }
+                    })
+            }
             TextLarge(text = training.name.uppercase())
             Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
-            TextLarge(text = "Exercises:\n" + training.exercises.toString().substring(1, training.exercises.toString().length - 1))
+            TextLarge(
+                text = "Exercises:\n" + training.exercises.toString()
+                    .substring(1, training.exercises.toString().length - 1)
+            )
             Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
             TextLarge(text = "Total lifted weight:\n" + training.totalWeightLifted.toString())
             Spacer(modifier = Modifier.height(Dimens.Padding8.dp))

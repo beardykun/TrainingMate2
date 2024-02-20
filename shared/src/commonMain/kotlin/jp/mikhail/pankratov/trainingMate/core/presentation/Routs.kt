@@ -25,6 +25,7 @@ object Routs {
 
     object ExerciseScreens {
         val exerciseAtWork = "ExerciseAtWork"
+        val exerciseAtWorkHistory = "ExerciseAtWorkHistory"
     }
 }
 

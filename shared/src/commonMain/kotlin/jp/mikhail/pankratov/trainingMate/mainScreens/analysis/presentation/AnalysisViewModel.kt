@@ -283,7 +283,7 @@ class AnalysisViewModel(
     }
 
     private suspend fun getExercisesWithName(exerciseName: String) {
-        val exercises = exerciseHistoryDatasource.getExercisesWihName(exerciseName).first()
+        val exercises = exerciseHistoryDatasource.getExercisesWithName(exerciseName).first()
         prepareMetricsDataBasedOnAnalysisMode(state.value.analysisMode, exercises = exercises)
     }
 

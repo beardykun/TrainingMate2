@@ -27,9 +27,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
@@ -90,10 +96,17 @@ fun ExerciseAtWorkScreen(
         }
     }
     val focus = LocalFocusManager.current
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        FireworksAnimation(isRunning = state.errorReps?.isNotEmpty() == true)
-
-        Column(modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp)) {
+    Scaffold(floatingActionButton = {
+        FloatingActionButton(
+            onClick = {
+                navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/${state.exercise?.name}")
+            },
+            modifier = Modifier.padding(bottom = Dimens.Padding64.dp)
+        ) {
+            Icon(imageVector = Icons.Default.History, contentDescription = "Exercise history")
+        }
+    }, modifier = Modifier.padding(all = Dimens.Padding16.dp)) { padding ->
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
                     value = state.weight,
@@ -222,69 +235,5 @@ fun CountdownAnimation(
         )
     }
 }
-
-@Composable
-fun FireworksAnimation(isRunning: Boolean, modifier: Modifier = Modifier.fillMaxSize()) {
-    val particles = remember { mutableStateListOf<Particle>() }
-    val screenSize = remember { mutableStateOf(Offset.Zero) }
-
-    LaunchedEffect(isRunning) {
-        if (isRunning) {
-            particles.clear()
-            screenSize.value = Offset.Zero
-            // Create initial particles
-            for (i in 1..100) {
-                particles.add(
-                    Particle(
-                        position = Offset(screenSize.value.x / 2, screenSize.value.y / 2),
-                        velocity = Offset(
-                            Random.nextFloat() * 4f - 2f,
-                            Random.nextFloat() * 4f - 2f
-                        ),
-                        color = Color(
-                            Random.nextFloat(),
-                            Random.nextFloat(),
-                            Random.nextFloat(),
-                            1f
-                        ),
-                        lifespan = Random.nextInt(50, 150)
-                    )
-                )
-            }
-
-            while (particles.isNotEmpty() && isRunning) {
-                delay(16L) // Roughly 60 FPS
-                particles.forEach { particle ->
-                    particle.apply {
-                        // Update particle position
-                        position += velocity
-                        // Decrease lifespan
-                        lifespan--
-                        // Fade out particle
-                        color = color.copy(alpha = lifespan / 150f)
-                    }
-                }
-                // Remove dead particles
-                particles.removeAll { it.lifespan <= 0 }
-            }
-        }
-    }
-
-    Canvas(modifier = modifier) {
-        screenSize.value = Offset(size.width, size.height)
-
-        particles.forEach { particle ->
-            withTransform({
-                translate(left = particle.position.x, top = particle.position.y)
-            }) {
-                drawCircle(
-                    color = particle.color,
-                    radius = 4f
-                )
-            }
-        }
-    }
-}
-
 
 

@@ -41,13 +41,14 @@ fun TextSmall(text: String, modifier: Modifier = Modifier) {
 fun TextLarge(
     text: String,
     fontWeight: FontWeight = FontWeight.Bold,
+    color: Color = Color.Unspecified,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyLarge,
         fontWeight = fontWeight,
-        color = Color.Black,
+        color = color,
         modifier = modifier
     )
 }

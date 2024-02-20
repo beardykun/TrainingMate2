@@ -70,9 +70,9 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         )
     }
 
-    override suspend fun updateStatus(trainingId: Long) {
+    override suspend fun updateStatus(trainingId: Long, status: String) {
         query.updateStatus(
-            status = "COMPLETED",
+            status = status,
             id = trainingId
         )
     }
@@ -100,5 +100,9 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
                 training.toTraining()
             }
         }
+    }
+
+    override suspend fun deleteTrainingRecord(trainingId: Long) {
+        query.deleteTrainigRecord(id = trainingId)
     }
 }

@@ -85,7 +85,6 @@ fun TabsComposable(
     HorizontalPager(state = pagerState) {
         AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
             metricsData?.let {
-                //println("TAGGER $metricsData")
                 CommonLineChart(
                     data = metricsData,
                     xAxisData = metricsXAxisData!!

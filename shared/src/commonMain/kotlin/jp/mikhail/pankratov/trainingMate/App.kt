@@ -46,6 +46,8 @@ import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrain
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkScreen
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseAtWorkViewModel
+import jp.mikhail.pankratov.trainingMate.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryScreen
+import jp.mikhail.pankratov.trainingMate.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisViewModel
@@ -256,7 +258,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     HistoryScreenViewModel(trainingHistoryDataSource = appModule.trainingHistoryDataSource)
                 })
             val state by viewModel.state.collectAsState()
-            HistiryScreen(state = state, navigator = navigator)
+            HistiryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
         scene(route = Routs.TrainingScreens.createTraining, navTransition = NavTransition()) {
             val viewModel = getViewModel(
@@ -298,7 +300,7 @@ private fun RouteBuilder.historyScreens(
                 }
             )
             val state by viewModel.state.collectAsState()
-            HistoryInfoScreen(state = state, navigator = navigator)
+            HistoryInfoScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
     }
 }
@@ -397,6 +399,28 @@ private fun RouteBuilder.trainingScreens(
             )
             val state by viewModel.state.collectAsState()
             ExerciseAtWorkScreen(
+                state = state,
+                onEvent = viewModel::onEvent,
+                navigator = navigator
+            )
+        }
+
+        scene(
+            route = "${Routs.ExerciseScreens.exerciseAtWorkHistory}/{exerciseName}",
+            navTransition = NavTransition()
+        ) { backStackEntry ->
+            val exerciseName: String = backStackEntry.path("exerciseName") ?: ""
+            val viewModel = getViewModel(
+                key = Routs.ExerciseScreens.exerciseAtWorkHistory,
+                factory = viewModelFactory {
+                    ExerciseAtWorkHistoryViewModel(
+                        exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
+                        exerciseName = exerciseName
+                    )
+                }
+            )
+            val state by viewModel.state.collectAsState()
+            ExerciseAtWorkHistoryScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
                 navigator = navigator

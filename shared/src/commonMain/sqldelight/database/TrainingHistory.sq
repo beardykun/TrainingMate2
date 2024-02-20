@@ -79,4 +79,9 @@ SELECT *
 FROM TrainingHistory
 WHERE name = ?;
 
+deleteTrainigRecord:
+DELETE
+FROM TrainingHistory
+WHERE id = ?;
+
 

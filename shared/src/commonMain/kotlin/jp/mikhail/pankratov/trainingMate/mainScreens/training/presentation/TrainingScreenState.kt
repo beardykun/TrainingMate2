@@ -9,5 +9,7 @@ data class TrainingScreenState(
     val selectedTraining: TrainingLocal? = null,
     val showStartTrainingDialog: Boolean = false,
     val ongoingTraining: Training? = null,
-    val lastTrainings: List<Training>? = null
+    val lastTrainings: List<Training>? = null,
+    val showDeleteDialog: Boolean = false,
+    val lastTrainingId: Long? = null
 )

@@ -43,7 +43,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             }
     }
 
-    override fun getExercisesWihName(name: String): Flow<List<Exercise>> {
+    override fun getExercisesWithName(name: String): Flow<List<Exercise>> {
         return query.getExercisesWithName(name).asFlow().mapToList().map { exercises ->
             exercises.map { exercise ->
                 exercise.toExercise()
@@ -68,6 +68,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             id = exercise.id,
             name = exercise.name,
             sets = exercise.sets.listToString(),
+            date = exercise.date,
             exercise_group = exercise.group,
             training_history_id = exercise.trainingHistoryId,
             training_template_id = exercise.trainingTemplateId,

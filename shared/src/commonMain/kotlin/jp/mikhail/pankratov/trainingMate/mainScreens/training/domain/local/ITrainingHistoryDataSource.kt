@@ -11,8 +11,9 @@ interface ITrainingHistoryDataSource {
     fun countOngoingTraining(): Flow<Long>
     suspend fun updateEndTime(trainingId: Long, totalLiftedWeight: Double)
     suspend fun updateStartTime(trainingId: Long, totalLiftedWeight: Double)
-    suspend fun updateStatus(trainingId: Long)
-    fun getGroupTrainings(group: String) : Flow<List<Training>>
-    fun getParticularTrainings(trainingTemplateId: Long) : Flow<List<Training>>
-    fun getTrainingsWithExercise(exerciseName: String) : Flow<List<Training>>
+    suspend fun updateStatus(trainingId: Long, status: String = "COMPLETED")
+    fun getGroupTrainings(group: String): Flow<List<Training>>
+    fun getParticularTrainings(trainingTemplateId: Long): Flow<List<Training>>
+    fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>>
+    suspend fun deleteTrainingRecord(trainingId: Long)
 }

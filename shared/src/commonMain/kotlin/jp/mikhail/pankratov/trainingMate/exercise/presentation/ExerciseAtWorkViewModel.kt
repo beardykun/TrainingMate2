@@ -173,7 +173,7 @@ class ExerciseAtWorkViewModel(
                 sets = sets,
                 totalLiftedWeight = weight,
                 trainingHistoryId = trainingId,
-                exerciseTemplateId = exerciseTemplateId
+                exerciseTemplateId = exerciseTemplateId,
             )
         }
 

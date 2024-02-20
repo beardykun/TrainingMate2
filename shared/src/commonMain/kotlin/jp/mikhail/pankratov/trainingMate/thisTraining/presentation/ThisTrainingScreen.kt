@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
@@ -37,7 +38,7 @@ fun ThisTrainingScreen(
             onClick = {
                 navigator.navigate(Routs.TrainingScreens.addExercises)
             },
-            modifier = Modifier.padding(bottom = Dimens.Padding32.dp)
+            modifier = Modifier.padding(bottom = Dimens.Padding64.dp)
         ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add new exercises button")
         }
@@ -94,7 +95,10 @@ fun ThisTrainingScreen(
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextLarge(text = "End Training")
+                    TextLarge(
+                        text = "End Training",
+                        color = Color.White
+                    )
                 }
             }
         }

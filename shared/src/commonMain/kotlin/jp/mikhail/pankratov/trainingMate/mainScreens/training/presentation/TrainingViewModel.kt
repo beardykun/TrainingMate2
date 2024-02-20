@@ -89,7 +89,38 @@ class TrainingViewModel(
                     )
                 }
             }
+
+            is TrainingScreenEvent.OnLastTrainingDelete -> {
+                _state.update {
+                    it.copy(
+                        lastTrainingId = event.trainingId,
+                        showDeleteDialog = true
+                    )
+                }
+            }
+
+            TrainingScreenEvent.OnDeleteConfirmClick -> {
+                _state.update {
+                    it.copy(
+                        lastTrainingId = null,
+                        showDeleteDialog = false
+                    )
+                }
+                state.value.lastTrainingId?.let { deleteLastTraining(trainingId = it) }
+            }
+            TrainingScreenEvent.OnDeleteDenyClick -> {
+                _state.update {
+                    it.copy(
+                        lastTrainingId = null,
+                        showDeleteDialog = false
+                    )
+                }
+            }
         }
+    }
+
+    private fun deleteLastTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
+        trainingHistoryDataSource.deleteTrainingRecord(trainingId = trainingId)
     }
 
     private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {

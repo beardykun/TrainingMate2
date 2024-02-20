@@ -25,6 +25,7 @@ fun ExerciseHistory.toExercise(): Exercise {
         trainingHistoryId = training_history_id,
         trainingTemplateId = training_template_id,
         sets = sets.stringToList(),
+        date = date,
         exerciseTemplateId = exercise_template_id,
         totalLiftedWeight = total_lifted_weight
     )

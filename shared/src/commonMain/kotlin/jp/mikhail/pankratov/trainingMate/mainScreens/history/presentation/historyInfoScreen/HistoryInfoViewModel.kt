@@ -3,15 +3,20 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histo
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HistoryInfoViewModel(
-    trainingHistoryDataSource: ITrainingHistoryDataSource,
+    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
     exerciseHistoryDatasource: IExerciseHistoryDatasource,
-    trainingHistoryId: Long
+    private val trainingHistoryId: Long
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryInfoState())
@@ -28,4 +33,19 @@ class HistoryInfoViewModel(
         started = SharingStarted.WhileSubscribed(3000L),
         initialValue = HistoryInfoState()
     )
+
+    fun onEvent(event: HistoryInfoEvent) {
+        when (event) {
+            is HistoryInfoEvent.OnContinueTraining -> {
+                updateTrainingStatus(event.onSuccess)
+            }
+        }
+    }
+
+    private fun updateTrainingStatus(onSuccess: () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
+        trainingHistoryDataSource.updateStatus(trainingId = trainingHistoryId, status = "ONGOING")
+        withContext(Dispatchers.Main) {
+            onSuccess.invoke()
+        }
+    }
 }

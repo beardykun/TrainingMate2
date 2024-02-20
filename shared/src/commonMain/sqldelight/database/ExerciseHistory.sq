@@ -2,6 +2,7 @@ CREATE TABLE ExerciseHistory (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       sets TEXT NOT NULL,
+      date TEXT NOT NULL,
       exercise_group TEXT NOT NULL,
       training_history_id INTEGER NOT NULL,
       training_template_id INTEGER NOT NULL,
@@ -47,10 +48,11 @@ INTO ExerciseHistory(
 id,
 name,
 sets,
+date,
 exercise_group,
 training_history_id,
 training_template_id,
 exercise_template_id,
 total_lifted_weight
 )
-VALUES(?, ?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);

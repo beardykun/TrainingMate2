@@ -33,6 +33,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Dia
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenEvent
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -63,9 +64,14 @@ fun TrainingScreen(
             if (state.lastTrainings?.isNotEmpty() == true) {
                 TextLarge(text = "Last training:".uppercase())
                 val lastTraining = state.lastTrainings.last()
-                TrainingItem(training = lastTraining, onClick = {
-                    navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
-                })
+                TrainingItem(
+                    training = lastTraining,
+                    onClick = {
+                        navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
+                    },
+                    onDeleteClick = {
+                        onEvent(TrainingScreenEvent.OnLastTrainingDelete(lastTraining.id!!))
+                    })
             }
 
             state.availableTrainings?.let { trainings ->
@@ -151,6 +157,19 @@ fun TrainingScreen(
                     },
                     onDenny = {
                         onEvent(TrainingScreenEvent.OnTrainingItemClick())
+                    }
+                )
+            }
+            AnimatedVisibility(visible = state.showDeleteDialog) {
+                DialogPopup(
+                    title = stringResource(SharedRes.strings.start_training),
+                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
+                    onAccept = {
+                        onEvent(TrainingScreenEvent.OnDeleteConfirmClick)
+                        navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                    },
+                    onDenny = {
+                        onEvent(TrainingScreenEvent.OnDeleteDenyClick)
                     }
                 )
             }
