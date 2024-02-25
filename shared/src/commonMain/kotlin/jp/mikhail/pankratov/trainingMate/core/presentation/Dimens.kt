@@ -1,28 +1,32 @@
+import androidx.compose.ui.unit.dp
+
 object Dimens {
-    val Padding2 = 2
-    val Padding4 = 4
-    val Padding8 = 8
-    val Padding12 = 12
-    val Padding16 = 16
-    val Padding20 = 20
-    val Padding24 = 24
-    val Padding32 = 32
-    val Padding40 = 40
-    val Padding48 = 48
-    val Padding64 = 64
+    val Padding2 = 2.dp
+    val Padding4 = 4.dp
+    val Padding8 = 8.dp
+    val Padding12 = 12.dp
+    val Padding16 = 16.dp
+    val Padding20 = 20.dp
+    val Padding24 = 24.dp
+    val Padding32 = 32.dp
+    val Padding40 = 40.dp
+    val Padding48 = 48.dp
+    val Padding64 = 64.dp
+    val Padding128 = 128.dp
 
-    // upload picture
-    val AddContainerOuter = 150
-    val AddContainerInner = 120
-    val AddIconSize = 150
+    //card
+    val dividerHeight = 1.dp
+    val cardElevation = 4.dp
+    val cardMinWidth = 100.dp
+    val cardMaxWidth = 300.dp
+    val mediumIconSize = 30.dp
 
-    //style select
-    val selectTextOuterCircle = 30
-    val selectTextInnerCircle = 20
-    val exampleSize = 50
+    //selectable items
+    val selectTextOuterCircle = 30.dp
+    val selectTextInnerCircle = 20.dp
 
-    //lottie
-    val lottieAnimationSize = 300
-    val lottieLoadingSize = 200
-    val lottieLoadingPadding = 100
+
+    val selectableGroupImageSize = 48.dp
+    val standardIcon = 24.dp
+    val timerIcon = 60.dp
 }

@@ -16,8 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun DropDown(
@@ -45,7 +43,7 @@ fun DropDown(
         Row(
             modifier = modifier
                 .clickable(onClick = onClick)
-                .padding(Dimens.Padding16.dp),
+                .padding(Dimens.Padding16),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextMedium(
@@ -58,7 +56,7 @@ fun DropDown(
                 } else {
                     "SharedRes.strings.ct_open.localize()"
                 },
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(Dimens.mediumIconSize)
             )
         }
     }

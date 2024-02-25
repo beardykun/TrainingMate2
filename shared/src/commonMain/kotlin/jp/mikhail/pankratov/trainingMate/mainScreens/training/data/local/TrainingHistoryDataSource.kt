@@ -63,8 +63,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     }
 
     override suspend fun updateStartTime(trainingId: Long, totalLiftedWeight: Double) {
-        query.updateEndTime(
-            end_time = Clock.System.now().toEpochMilliseconds(),
+        query.updateStartTime(
+            start_time = Clock.System.now().toEpochMilliseconds(),
             id = trainingId,
             total_lifted_weight = totalLiftedWeight
         )

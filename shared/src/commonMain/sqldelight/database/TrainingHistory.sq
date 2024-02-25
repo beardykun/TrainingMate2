@@ -61,7 +61,7 @@ getLatestHistoryTrainings:
 SELECT *
 FROM TrainingHistory
 WHERE total_lifted_weight != 0.0
-ORDER BY id ASC
+ORDER BY start_time
 LIMIT 30;
 
 getGroupTrainings:
@@ -72,7 +72,8 @@ WHERE groups = ?;
 getParticularTrainings:
 SELECT *
 FROM TrainingHistory
-WHERE training_template_id = ?;
+WHERE training_template_id = ?
+ORDER BY id DESC;
 
 getTrainingsWithExercise:
 SELECT *

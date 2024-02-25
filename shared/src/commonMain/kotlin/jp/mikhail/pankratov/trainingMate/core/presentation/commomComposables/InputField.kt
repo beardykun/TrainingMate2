@@ -1,11 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -15,7 +13,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun InputField(
@@ -32,9 +29,11 @@ fun InputField(
     OutlinedTextField(
         value = value,
         onValueChange = { newValue ->
-            onValueChanged.invoke(newValue.copy(
-                selection = TextRange(newValue.text.length)
-            ))
+            onValueChanged.invoke(
+                newValue.copy(
+                    selection = TextRange(newValue.text.length)
+                )
+            )
         },
         shape = MaterialTheme.shapes.large,
         label = {
@@ -61,6 +60,6 @@ fun InputField(
         supportingText = { TextMedium(errorText ?: "") },
         isError = isError,
         modifier = modifier
-            .padding(top = Dimens.Padding16.dp)
+            .padding(top = Dimens.Padding16)
     )
 }

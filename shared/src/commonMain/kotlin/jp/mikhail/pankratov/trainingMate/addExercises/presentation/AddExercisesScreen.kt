@@ -15,7 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
@@ -42,7 +41,7 @@ fun AddExercisesScreen(
         Column(
             modifier = Modifier.fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = Dimens.Padding16.dp, vertical = Dimens.Padding8.dp)
+                .padding(horizontal = Dimens.Padding16, vertical = Dimens.Padding8)
         ) {
             state.availableExerciseLocals?.let { exercises ->
                 SelectableExercises(

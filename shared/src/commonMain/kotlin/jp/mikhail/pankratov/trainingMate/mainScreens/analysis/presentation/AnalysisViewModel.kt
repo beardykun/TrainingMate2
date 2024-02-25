@@ -104,8 +104,6 @@ class AnalysisViewModel(
                     )
                 }
                 viewModelScope.launch(Dispatchers.Default) {
-                    println("TAGGER ${_state.value.historyTrainings}")
-                    println("TAGGER ${state.value.historyTrainings}")
                     prepareMetricsDataBasedOnAnalysisMode(
                         trainings = _state.value.historyTrainings,
                         analysisMode = analysisMode

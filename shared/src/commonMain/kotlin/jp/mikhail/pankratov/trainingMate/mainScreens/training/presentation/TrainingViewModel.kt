@@ -140,6 +140,10 @@ class TrainingViewModel(
 
     private suspend fun finishLastTrainingWhenStartingNew() {
         state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
+            if (state.value.ongoingTraining?.totalWeightLifted == 0.0) {
+                trainingHistoryDataSource.deleteTrainingRecord(ongoingTrainingId)
+                return@let
+            }
             trainingHistoryDataSource.updateStatus(trainingId = ongoingTrainingId)
         }
     }

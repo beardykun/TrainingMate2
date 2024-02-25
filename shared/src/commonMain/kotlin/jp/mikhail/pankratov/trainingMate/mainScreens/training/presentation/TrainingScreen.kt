@@ -55,9 +55,9 @@ fun TrainingScreen(
     }) {
         val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier.fillMaxSize().padding(horizontal = Dimens.Padding16.dp)
+            modifier = Modifier.fillMaxSize().padding(horizontal = Dimens.Padding16)
                 .verticalScroll(scrollState),
-            verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp)
+            verticalArrangement = Arrangement.spacedBy(Dimens.Padding16)
         ) {
             TextLarge(text = state.greeting)
 

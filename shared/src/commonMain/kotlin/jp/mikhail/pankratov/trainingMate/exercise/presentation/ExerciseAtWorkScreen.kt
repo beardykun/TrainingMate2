@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,7 +26,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
@@ -37,10 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,15 +45,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
@@ -67,9 +58,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Dia
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
-import kotlinx.coroutines.delay
 import moe.tlaster.precompose.navigation.Navigator
-import kotlin.random.Random
 
 
 @Composable
@@ -101,11 +90,11 @@ fun ExerciseAtWorkScreen(
             onClick = {
                 navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/${state.exercise?.name}")
             },
-            modifier = Modifier.padding(bottom = Dimens.Padding64.dp)
+            modifier = Modifier.padding(bottom = Dimens.Padding64)
         ) {
             Icon(imageVector = Icons.Default.History, contentDescription = "Exercise history")
         }
-    }, modifier = Modifier.padding(all = Dimens.Padding16.dp)) { padding ->
+    }, modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
@@ -125,7 +114,7 @@ fun ExerciseAtWorkScreen(
                         .focusRequester(focusRequesterWeight)
                         .onFocusChanged(onFocusChangedWeight)
                 )
-                Spacer(modifier = Modifier.padding(Dimens.Padding32.dp))
+                Spacer(modifier = Modifier.padding(Dimens.Padding32))
                 InputField(
                     value = state.reps,
                     placeholder = stringResource(SharedRes.strings.select_reps),
@@ -156,7 +145,7 @@ fun ExerciseAtWorkScreen(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            Row(modifier = Modifier.fillMaxWidth().height(60.dp)) {
+            Row(modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon)) {
                 DropDown(
                     initValue = state.timer.toString(),
                     isOpen = state.isExpanded,
@@ -170,13 +159,13 @@ fun ExerciseAtWorkScreen(
                         RoundedCornerShape(percent = 50)
                     ).background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
-                Spacer(modifier = Modifier.width(Dimens.Padding16.dp))
+                Spacer(modifier = Modifier.width(Dimens.Padding16))
                 Button(onClick = {
                     onEvent(ExerciseAtWorkEvent.OnAddNewSet)
                 }, modifier = Modifier.fillMaxSize().weight(1f)) {
                     TextMedium(text = stringResource(SharedRes.strings.add_set))
                 }
-                Spacer(modifier = Modifier.width(Dimens.Padding16.dp))
+                Spacer(modifier = Modifier.width(Dimens.Padding16))
 
                 Image(
                     imageVector = Icons.Default.Timer,
@@ -187,7 +176,7 @@ fun ExerciseAtWorkScreen(
                             onEvent(ExerciseAtWorkEvent.OnTimerStart)
                         }
                         .fillMaxHeight()
-                        .width(60.dp)
+                        .width(Dimens.timerIcon)
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
             }

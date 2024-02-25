@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -38,7 +37,7 @@ fun ThisTrainingScreen(
             onClick = {
                 navigator.navigate(Routs.TrainingScreens.addExercises)
             },
-            modifier = Modifier.padding(bottom = Dimens.Padding64.dp)
+            modifier = Modifier.padding(bottom = Dimens.Padding64)
         ) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add new exercises button")
         }
@@ -48,7 +47,7 @@ fun ThisTrainingScreen(
         ) {
             TextLarge(
                 state.trainingTime,
-                modifier = Modifier.padding(horizontal = Dimens.Padding16.dp)
+                modifier = Modifier.padding(horizontal = Dimens.Padding16)
             )
             state.exerciseLocals?.let { exercises ->
                 if (exercises.isEmpty()) {
@@ -65,10 +64,10 @@ fun ThisTrainingScreen(
                             is ExerciseListItem.Header -> {
                                 TextLarge(
                                     text = item.muscleGroup.uppercase(),
-                                    modifier = Modifier.padding(start = Dimens.Padding16.dp)
+                                    modifier = Modifier.padding(start = Dimens.Padding16)
                                         .clip(RoundedCornerShape(25))
                                         .background(color = MaterialTheme.colorScheme.primaryContainer)
-                                        .padding(Dimens.Padding4.dp)
+                                        .padding(Dimens.Padding4)
                                 )
                             }
 

@@ -17,7 +17,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -29,20 +28,20 @@ fun HistoryInfoScreen(
     onEvent: (HistoryInfoEvent) -> Unit,
     navigator: Navigator
 ) {
-    Column(modifier = Modifier.fillMaxSize().padding(all = Dimens.Padding16.dp)) {
+    Column(modifier = Modifier.fillMaxSize().padding(all = Dimens.Padding16)) {
         state.training?.let { training ->
             TextLarge(text = "Training name: ${training.name}")
-            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = "Training groups: ${training.groups}")
-            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = "Training duration: ${Utils.countTrainingTime(training)}")
-            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = "Total Lifted weight: ${training.totalWeightLifted}")
-            HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
         }
         Row(modifier = Modifier.fillMaxWidth()) {
             Button(onClick = {
@@ -62,14 +61,14 @@ fun HistoryInfoScreen(
             LazyColumn {
                 items(exercises) { exercise ->
                     Card(
-                        elevation = CardDefaults.cardElevation(4.dp),
-                        modifier = Modifier.padding(all = Dimens.Padding8.dp).fillParentMaxWidth()
+                        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
+                        modifier = Modifier.padding(all = Dimens.Padding8).fillParentMaxWidth()
                     ) {
 
-                        Column(modifier = Modifier.padding(all = Dimens.Padding16.dp)) {
+                        Column(modifier = Modifier.padding(all = Dimens.Padding16)) {
                             TextMedium(text = exercise?.name.toString())
                             TextMedium(text = "Lifted weight: ${exercise?.totalLiftedWeight.toString()}")
-                            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+                            Spacer(modifier = Modifier.height(Dimens.Padding8))
                             TextMedium(text = "Sets: ")
                             exercise?.sets?.let { sets ->
                                 sets.forEach { set ->

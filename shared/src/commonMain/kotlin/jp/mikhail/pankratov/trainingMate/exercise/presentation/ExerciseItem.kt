@@ -14,7 +14,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.data.painterResource
@@ -24,15 +23,15 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 @Composable
 fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit) {
     Card(
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = Modifier.fillMaxSize()
-            .padding(all = Dimens.Padding8.dp)
+            .padding(all = Dimens.Padding8)
             .clickable {
-            onClick.invoke(exerciseLocal)
-        }) {
+                onClick.invoke(exerciseLocal)
+            }) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.fillMaxWidth().padding(Dimens.Padding8),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.Padding16)
         ) {
             SharedRes.images.getImageByFileName(exerciseLocal.image)?.let {
                 val painter: Painter =

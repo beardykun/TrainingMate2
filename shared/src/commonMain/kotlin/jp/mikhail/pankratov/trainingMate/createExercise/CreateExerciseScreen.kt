@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -28,7 +27,7 @@ fun CreateExerciseScreen(
     navigator: Navigator
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp),
+        modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         InputField(
@@ -66,7 +65,7 @@ fun CreateExerciseScreen(
             })
             TextMedium(text = "For dumbbell exercises, check if you input weight of only one dumbbell")
         }
-        Spacer(modifier = Modifier.height(Dimens.Padding16.dp))
+        Spacer(modifier = Modifier.height(Dimens.Padding16))
         Button(
             onClick = {
                 onEvent(CreateExerciseEvent.OnExerciseCreate(onSuccess = {

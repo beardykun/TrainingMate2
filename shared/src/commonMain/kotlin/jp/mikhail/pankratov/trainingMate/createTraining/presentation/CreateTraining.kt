@@ -9,7 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -22,7 +21,7 @@ fun CreateTrainingScreen(
     navigator: Navigator
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(Dimens.Padding16.dp),
+        modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         InputField(

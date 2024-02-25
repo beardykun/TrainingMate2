@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
@@ -39,23 +38,23 @@ import jp.mikhail.pankratov.trainingMate.core.stringToList
 @Composable
 fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = Modifier
             .clickable { onClick.invoke() }
-            .padding(Dimens.Padding8.dp)
-            .widthIn(min = 100.dp, max = 300.dp)
+            .padding(Dimens.Padding8)
+            .widthIn(min = Dimens.cardMinWidth, max = Dimens.cardMaxWidth)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.inversePrimary)
-                .padding(Dimens.Padding16.dp)
+                .padding(Dimens.Padding16)
         ) {
             TextLarge(text = stringResource(SharedRes.strings.training_name))
             TextLarge(text = training.name.uppercase())
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = stringResource(SharedRes.strings.groups))
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )
@@ -66,18 +65,21 @@ fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Mo
 @Composable
 fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Long) -> Unit) {
     Card(
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = Modifier
             .clickable { onClick.invoke() }
-            .padding(Dimens.Padding8.dp)
+            .padding(Dimens.Padding8)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(Dimens.Padding16.dp)
+                .padding(Dimens.Padding16)
 
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 TextLarge(text = stringResource(SharedRes.strings.training_name))
                 Icon(
                     imageVector = Icons.Filled.Delete,
@@ -88,14 +90,14 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
                     })
             }
             TextLarge(text = training.name.uppercase())
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
                 text = "Exercises:\n" + training.exercises.toString()
                     .substring(1, training.exercises.toString().length - 1)
             )
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = "Total lifted weight:\n" + training.totalWeightLifted.toString())
-            Spacer(modifier = Modifier.height(Dimens.Padding8.dp))
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = stringResource(SharedRes.strings.groups))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
@@ -117,7 +119,7 @@ fun OverlappingImagesBackground(groups: List<String>, modifier: Modifier = Modif
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .offset(
-                            x = index * 30.dp
+                            x = index * Dimens.mediumIconSize
                         )
                 )
             }

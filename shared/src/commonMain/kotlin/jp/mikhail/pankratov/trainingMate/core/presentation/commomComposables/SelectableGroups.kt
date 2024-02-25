@@ -27,7 +27,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
@@ -41,7 +40,7 @@ fun SelectableGroups(
     onClick: (String) -> Unit,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Padding16),
         modifier = modifier
     ) {
         items(groups) { item ->
@@ -67,7 +66,7 @@ fun SelectableGroupItem(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(Dimens.selectTextOuterCircle.dp)
+                .size(Dimens.selectTextOuterCircle)
                 .clip(CircleShape)
                 .background(color = MaterialTheme.colorScheme.primary)
                 .clip(CircleShape)
@@ -75,13 +74,13 @@ fun SelectableGroupItem(
             if (selected.contains(group))
                 Box(
                     modifier = Modifier
-                        .size(Dimens.selectTextInnerCircle.dp)
+                        .size(Dimens.selectTextInnerCircle)
                         .clip(CircleShape)
                         .background(color = Color.White)
                         .clip(CircleShape)
                 )
         }
-        Spacer(modifier = Modifier.padding(Dimens.Padding16.dp))
+        Spacer(modifier = Modifier.padding(Dimens.Padding16))
         TextMedium(
             text = group.uppercase(),
         )
@@ -107,7 +106,7 @@ fun SelectableExercises(
     onDeleteClick: (ExerciseLocal) -> Unit
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(Dimens.Padding16.dp),
+        verticalArrangement = Arrangement.spacedBy(Dimens.Padding16),
         modifier = modifier
     ) {
         items(exerciseLocals) { item ->
@@ -117,7 +116,7 @@ fun SelectableExercises(
                         text = item.muscleGroup.uppercase(),
                         modifier = Modifier.clip(RoundedCornerShape(25))
                             .background(color = MaterialTheme.colorScheme.primaryContainer)
-                            .padding(Dimens.Padding4.dp)
+                            .padding(Dimens.Padding4)
                     )
                 }
 
@@ -149,7 +148,7 @@ fun SelectableExerciseItem(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(Dimens.selectTextOuterCircle.dp)
+                .size(Dimens.selectTextOuterCircle)
                 .clip(CircleShape)
                 .background(color = MaterialTheme.colorScheme.primary)
                 .clip(CircleShape)
@@ -157,13 +156,13 @@ fun SelectableExerciseItem(
             if (isSelected.contains(item.name))
                 Box(
                     modifier = Modifier
-                        .size(Dimens.selectTextInnerCircle.dp)
+                        .size(Dimens.selectTextInnerCircle)
                         .clip(CircleShape)
                         .background(color = Color.White)
                         .clip(CircleShape)
                 )
         }
-        Spacer(modifier = Modifier.padding(Dimens.Padding16.dp))
+        Spacer(modifier = Modifier.padding(Dimens.Padding16))
         TextMedium(
             text = item.name.uppercase(),
             modifier = Modifier.weight(1f),  // Add weight here
@@ -171,14 +170,14 @@ fun SelectableExerciseItem(
             overflow = TextOverflow.Ellipsis  // Add ellipsis if text is too long
         )
 
-        Spacer(Modifier.width(Dimens.Padding16.dp)) // Use width here to give consistent spacing
+        Spacer(Modifier.width(Dimens.Padding16)) // Use width here to give consistent spacing
         SharedRes.images.getImageByFileName(item.image)?.let {
             val painter: Painter =
                 jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
             Image(
                 painter = painter,
                 contentDescription = "Group Image",
-                modifier = Modifier.size(48.dp)  // Define a consistent size if necessary
+                modifier = Modifier.size(Dimens.selectableGroupImageSize)  // Define a consistent size if necessary
             )
         }
 
@@ -189,8 +188,8 @@ fun SelectableExerciseItem(
                 .clickable {
                     onDeleteClick.invoke(item)
                 }
-                .padding(start = Dimens.Padding8.dp)  // Optional padding for space between image and icon
-                .size(24.dp)  // Define a consistent size for the icon
+                .padding(start = Dimens.Padding8)  // Optional padding for space between image and icon
+                .size(Dimens.standardIcon)  // Define a consistent size for the icon
         )
     }
 }
