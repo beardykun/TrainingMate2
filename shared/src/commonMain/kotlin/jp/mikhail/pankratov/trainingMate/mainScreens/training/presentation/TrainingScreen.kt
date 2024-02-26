@@ -159,11 +159,10 @@ fun TrainingScreen(
             }
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
-                    title = stringResource(SharedRes.strings.start_training),
-                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
+                    title = stringResource(SharedRes.strings.delete_last_training),
+                    description = stringResource(SharedRes.strings.want_to_delete_last_training),
                     onAccept = {
                         onEvent(TrainingScreenEvent.OnDeleteConfirmClick)
-                        navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                     },
                     onDenny = {
                         onEvent(TrainingScreenEvent.OnDeleteDenyClick)

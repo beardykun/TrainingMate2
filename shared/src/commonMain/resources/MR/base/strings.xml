@@ -26,8 +26,10 @@
 
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>
+    <string name="delete_last_training">Delete Last Training</string>
     <string name="last_training">Last training:</string>
     <string name="are_you_ready_to_start">Ready to start a new training?\nOther ongoing trainings will be finished.</string>
+    <string name="want_to_delete_last_training">Want to delete last training?</string>
 
 
     <!-- AddExercisesScreen -->
@@ -59,7 +61,7 @@
 
     <!-- ExerciseItem -->
     <string name="group">Group: %1$s</string>
-    <string name="best_weight">Best weight: %1$d kg</string>
+    <string name="best_weight">Best weight: %1$.2f kg</string>
 
     <!-- ExerciseAtWorkHistoryScreen -->
     <string name="date">Date %1$s</string>
@@ -75,8 +77,8 @@
     <string name="training_name_with_arg">Training name: %1$s</string>
     <string name="training_groups_with_arg">Training groups: %1$s</string>
     <string name="training_duration_with_arg">Training duration: %1$s</string>
-    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$d</string>
-    <string name="lifted_weight_with_arg">Lifted weight: %1$d</string>
+    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$.2f</string>
+    <string name="lifted_weight_with_arg">Lifted weight: %1$.2f</string>
     <string name="back_btn">Back</string>
     <string name="continue_training">Continue training</string>
     <string name="sets">"Sets: "</string>
