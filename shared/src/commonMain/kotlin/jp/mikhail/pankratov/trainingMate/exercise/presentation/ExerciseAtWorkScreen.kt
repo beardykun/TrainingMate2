@@ -92,7 +92,10 @@ fun ExerciseAtWorkScreen(
             },
             modifier = Modifier.padding(bottom = Dimens.Padding64)
         ) {
-            Icon(imageVector = Icons.Default.History, contentDescription = "Exercise history")
+            Icon(
+                imageVector = Icons.Default.History,
+                contentDescription = stringResource(SharedRes.strings.cd_exercise_history)
+            )
         }
     }, modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
@@ -169,7 +172,7 @@ fun ExerciseAtWorkScreen(
 
                 Image(
                     imageVector = Icons.Default.Timer,
-                    contentDescription = "Start timer",
+                    contentDescription = stringResource(SharedRes.strings.cd_start_timer),
                     contentScale = ContentScale.Inside,
                     modifier = Modifier.clip(CircleShape)
                         .clickable {

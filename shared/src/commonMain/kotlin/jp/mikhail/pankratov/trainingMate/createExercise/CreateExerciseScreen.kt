@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -35,11 +37,11 @@ fun CreateExerciseScreen(
             onValueChanged = { newValue ->
                 onEvent(CreateExerciseEvent.OnExerciseNameChanged(newName = newValue))
             },
-            label = "Choose a exercise name",
-            placeholder = "Choose a exercise name",
+            label = stringResource(SharedRes.strings.choose_exercise_name),
+            placeholder = stringResource(SharedRes.strings.choose_exercise_name),
             modifier = Modifier.fillMaxWidth(),
             isError = state.invalidNameInput,
-            errorText = if (state.invalidNameInput) "Invalid or duplicate exercise name" else ""
+            errorText = if (state.invalidNameInput) stringResource(SharedRes.strings.invalid_or_duplicate_exercise_name) else ""
         )
 
         state.ongoingTraining?.let { ongoingTraining ->
@@ -63,7 +65,7 @@ fun CreateExerciseScreen(
             Checkbox(checked = state.usesTwoDumbbell, onCheckedChange = {
                 onEvent(CreateExerciseEvent.OnExerciseUsesTwoDumbbells)
             })
-            TextMedium(text = "For dumbbell exercises, check if you input weight of only one dumbbell")
+            TextMedium(text = stringResource(SharedRes.strings.using_two_dumbbell))
         }
         Spacer(modifier = Modifier.height(Dimens.Padding16))
         Button(
@@ -73,7 +75,7 @@ fun CreateExerciseScreen(
                 }))
             },
         ) {
-            TextMedium(text = "Add Exercise")
+            TextMedium(text = stringResource(SharedRes.strings.add_exercise))
         }
     }
 }

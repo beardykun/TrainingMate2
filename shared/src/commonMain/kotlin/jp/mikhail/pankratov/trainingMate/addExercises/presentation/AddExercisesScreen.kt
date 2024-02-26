@@ -20,6 +20,7 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -34,7 +35,7 @@ fun AddExercisesScreen(
         }) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Create new exercises button"
+                contentDescription = stringResource(SharedRes.strings.create_new_ex_btn)
             )
         }
     }) { padding ->
@@ -68,7 +69,7 @@ fun AddExercisesScreen(
                     })
                 }, modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Add exercises")
+                TextMedium(text = stringResource(SharedRes.strings.add_exercises))
             }
             AnimatedVisibility(visible = state.isDeleteDialogVisible) {
                 DialogPopup(

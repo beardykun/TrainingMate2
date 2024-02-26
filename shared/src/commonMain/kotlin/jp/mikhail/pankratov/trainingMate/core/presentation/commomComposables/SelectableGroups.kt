@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
+import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
@@ -91,7 +92,7 @@ fun SelectableGroupItem(
                 jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
             Image(
                 painter = painter,
-                contentDescription = "Group Image"
+                contentDescription = stringResource(SharedRes.strings.cd_group_image)
             )
         }
     }
@@ -176,7 +177,7 @@ fun SelectableExerciseItem(
                 jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
             Image(
                 painter = painter,
-                contentDescription = "Group Image",
+                contentDescription = stringResource(SharedRes.strings.cd_group_image),
                 modifier = Modifier.size(Dimens.selectableGroupImageSize)  // Define a consistent size if necessary
             )
         }

@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -39,7 +41,10 @@ fun ThisTrainingScreen(
             },
             modifier = Modifier.padding(bottom = Dimens.Padding64)
         ) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Add new exercises button")
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = stringResource(SharedRes.strings.cd_add_new_exercises_button)
+            )
         }
     }) { padding ->
         Column(
@@ -55,7 +60,7 @@ fun ThisTrainingScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        TextLarge("No exercises in this training yet")
+                        TextLarge(stringResource(SharedRes.strings.no_exercises_in_training))
                     }
                 }
                 LazyColumn(modifier = Modifier.weight(1f)) {
@@ -95,7 +100,7 @@ fun ThisTrainingScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextLarge(
-                        text = "End Training",
+                        text = stringResource(SharedRes.strings.finish_training),
                         color = Color.White
                     )
                 }

@@ -24,8 +24,71 @@
     <string name="delete_set">Delete set?</string>
     <string name="sure_delete_set">Do you want to delete last set?</string>
 
-    <!-- Training Main -->
+    <!-- Training Screen -->
     <string name="start_training">Start Training</string>
+    <string name="last_training">Last training:</string>
     <string name="are_you_ready_to_start">Ready to start a new training?\nOther ongoing trainings will be finished.</string>
+
+
+    <!-- AddExercisesScreen -->
+    <string name="create_new_ex_btn">"Create new exercises button"</string>
+    <string name="add_exercises">"Add exercises"</string>
+
+
+    <!-- DialogPopup -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!-- SelectableExercises -->
+    <string name="cd_group_image">Group Image</string>
+
+    <!-- CreateTrainingScreen -->
+    <string name="choose_training_name">Choose a training name</string>
+    <string name="invalid_or_duplicate_training_name">Invalid or duplicate training name</string>
+    <string name="add_training">Add Training</string>
+
+    <!-- CreateExerciseScreen -->
+    <string name="choose_exercise_name">Choose a exercise name</string>
+    <string name="invalid_or_duplicate_exercise_name">Invalid or duplicate exercise name</string>
+    <string name="using_two_dumbbell">For dumbbell exercises, check if you input weight of only one dumbbell</string>
+    <string name="add_exercise">Add Exercise</string>
+
+    <!-- ExerciseAtWorkScreen -->
+    <string name="cd_exercise_history">Exercise history</string>
+    <string name="cd_start_timer">Start timer</string>
+
+    <!-- ExerciseItem -->
+    <string name="group">Group: %1$s</string>
+    <string name="best_weight">Best weight: %1$d kg</string>
+
+    <!-- ExerciseAtWorkHistoryScreen -->
+    <string name="date">Date %1$s</string>
+
+    <!-- AnalysisScreen -->
+    <string name="select_exercise">Select Exercise</string>
+    <string name="choose_your_training">Choose your training:</string>
+
+    <!-- HistoryScreen -->
+    <string name="no_history">You don\'t have a training history yet...</string>
+
+    <!-- HistoryInfoScreen -->
+    <string name="training_name_with_arg">Training name: %1$s</string>
+    <string name="training_groups_with_arg">Training groups: %1$s</string>
+    <string name="training_duration_with_arg">Training duration: %1$s</string>
+    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$d</string>
+    <string name="lifted_weight_with_arg">Lifted weight: %1$d</string>
+    <string name="back_btn">Back</string>
+    <string name="continue_training">Continue training</string>
+    <string name="sets">"Sets: "</string>
+
+    <!-- TrainingItem -->
+    <string name="cd_delete">Delete</string>
+    <string name="exercises_with_new_line">Exercises:\n</string>
+    <string name="total_lifted_weight_with_new_line">Total lifted weight:\n</string>
+
+    <!-- ThisTrainingScreen -->
+    <string name="cd_add_new_exercises_button">Add new exercises button</string>
+    <string name="no_exercises_in_training">No exercises in this training yet</string>
+    <string name="finish_training">Finish Training</string>
 
 </resources>

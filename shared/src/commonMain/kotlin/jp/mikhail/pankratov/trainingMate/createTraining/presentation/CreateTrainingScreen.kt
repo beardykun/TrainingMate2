@@ -9,6 +9,8 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -29,11 +31,11 @@ fun CreateTrainingScreen(
             onValueChanged = { newValue ->
                 onEvent(CreateTrainingEvent.OnTrainingNameChanged(name = newValue))
             },
-            label = "Choose a training name",
-            placeholder = "Choose a training name",
+            label = stringResource(SharedRes.strings.choose_training_name),
+            placeholder = stringResource(SharedRes.strings.choose_training_name),
             modifier = Modifier.fillMaxWidth(),
             isError = state.invalidNameInput,
-            errorText = if (state.invalidNameInput) "Invalid or duplicate training name" else ""
+            errorText = if (state.invalidNameInput) stringResource(SharedRes.strings.invalid_or_duplicate_training_name) else ""
         )
 
         SelectableGroups(
@@ -50,7 +52,7 @@ fun CreateTrainingScreen(
                 }))
             },
         ) {
-            TextMedium(text = "Add Training")
+            TextMedium(text = stringResource(SharedRes.strings.add_training))
         }
     }
 }

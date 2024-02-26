@@ -21,7 +21,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,10 +29,8 @@ import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
-import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenEvent
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -62,7 +59,7 @@ fun TrainingScreen(
             TextLarge(text = state.greeting)
 
             if (state.lastTrainings?.isNotEmpty() == true) {
-                TextLarge(text = "Last training:".uppercase())
+                TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
                 val lastTraining = state.lastTrainings.last()
                 TrainingItem(
                     training = lastTraining,
@@ -75,7 +72,7 @@ fun TrainingScreen(
             }
 
             state.availableTrainings?.let { trainings ->
-                TextLarge(text = "Choose your training:".uppercase())
+                TextLarge(text = stringResource(SharedRes.strings.choose_your_training))
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -134,7 +131,7 @@ fun TrainingScreen(
                 LazyRow {
                     items(colorEntries) { entity ->
                         Column {
-                            Text(text = entity.name + " /")
+                            TextMedium(text = entity.name + " /")
                             Box(
                                 modifier = Modifier.height(50.dp).width(20.dp)
                                     .background(entity.color)

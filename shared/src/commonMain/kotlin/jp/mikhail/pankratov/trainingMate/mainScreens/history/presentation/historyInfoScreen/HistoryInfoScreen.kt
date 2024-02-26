@@ -17,6 +17,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -30,16 +32,33 @@ fun HistoryInfoScreen(
 ) {
     Column(modifier = Modifier.fillMaxSize().padding(all = Dimens.Padding16)) {
         state.training?.let { training ->
-            TextLarge(text = "Training name: ${training.name}")
+            TextLarge(
+                text = stringResource(
+                    SharedRes.strings.training_name_with_arg,
+                    training.name
+                )
+            )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = "Training groups: ${training.groups}")
+            TextLarge(
+                text = stringResource(
+                    SharedRes.strings.training_groups_with_arg, training.groups
+                )
+            )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = "Training duration: ${Utils.countTrainingTime(training)}")
+            TextLarge(
+                text = stringResource(
+                    SharedRes.strings.training_duration_with_arg, Utils.countTrainingTime(training)
+                )
+            )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = "Total Lifted weight: ${training.totalWeightLifted}")
+            TextLarge(
+                text = stringResource(
+                    SharedRes.strings.total_weight_lifted_with_arg, training.totalWeightLifted
+                )
+            )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
         }
@@ -47,14 +66,22 @@ fun HistoryInfoScreen(
             Button(onClick = {
                 navigator.popBackStack()
             }, modifier = Modifier.weight(1f)) {
-                TextMedium(text = "Back")
+                TextMedium(
+                    text = stringResource(
+                        SharedRes.strings.back_btn
+                    )
+                )
             }
             Button(onClick = {
                 onEvent(HistoryInfoEvent.OnContinueTraining {
                     navigator.popBackStack()
                 })
             }, modifier = Modifier.weight(1f)) {
-                TextMedium(text = "Continue training")
+                TextMedium(
+                    text = stringResource(
+                        SharedRes.strings.continue_training
+                    )
+                )
             }
         }
         state.exercises?.let { exercises ->
@@ -67,9 +94,18 @@ fun HistoryInfoScreen(
 
                         Column(modifier = Modifier.padding(all = Dimens.Padding16)) {
                             TextMedium(text = exercise?.name.toString())
-                            TextMedium(text = "Lifted weight: ${exercise?.totalLiftedWeight.toString()}")
+                            TextMedium(
+                                text = stringResource(
+                                    SharedRes.strings.lifted_weight_with_arg,
+                                    exercise?.totalLiftedWeight ?: 0.0
+                                )
+                            )
                             Spacer(modifier = Modifier.height(Dimens.Padding8))
-                            TextMedium(text = "Sets: ")
+                            TextMedium(
+                                text = stringResource(
+                                    SharedRes.strings.sets
+                                )
+                            )
                             exercise?.sets?.let { sets ->
                                 sets.forEach { set ->
                                     TextMedium(text = set)

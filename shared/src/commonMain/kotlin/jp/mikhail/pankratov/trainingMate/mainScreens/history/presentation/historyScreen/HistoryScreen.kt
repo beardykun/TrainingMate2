@@ -1,7 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,18 +9,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingItem
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreenEvent
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
-fun HistiryScreen(
+fun HistoryScreen(
     state: HistoryScreenState,
     onEvent: (HistoryScreenEvent) -> Unit,
     navigator: Navigator
@@ -33,7 +30,7 @@ fun HistiryScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    TextLarge("You don't have a training history yet...")
+                    TextLarge(stringResource(SharedRes.strings.no_history))
                 }
             } else
                 LazyColumn {

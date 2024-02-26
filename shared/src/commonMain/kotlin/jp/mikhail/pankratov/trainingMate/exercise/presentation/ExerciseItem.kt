@@ -14,6 +14,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.data.painterResource
@@ -45,8 +46,18 @@ fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit)
 
             Column {
                 TextMedium(text = exerciseLocal.name)
-                TextMedium(text = "Group: ${exerciseLocal.group.uppercase()}")
-                TextMedium(text = "Best weight: ${exerciseLocal.bestLiftedWeight} kg")
+                TextMedium(
+                    text = stringResource(
+                        SharedRes.strings.group,
+                        exerciseLocal.group.uppercase()
+                    )
+                )
+                TextMedium(
+                    text = stringResource(
+                        SharedRes.strings.best_weight,
+                        exerciseLocal.bestLiftedWeight
+                    )
+                )
             }
         }
     }

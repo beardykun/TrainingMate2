@@ -53,7 +53,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.Analy
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoViewModel
-import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistiryScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
@@ -258,7 +258,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     HistoryScreenViewModel(trainingHistoryDataSource = appModule.trainingHistoryDataSource)
                 })
             val state by viewModel.state.collectAsState()
-            HistiryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
+            HistoryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
         scene(route = Routs.TrainingScreens.createTraining, navTransition = NavTransition()) {
             val viewModel = getViewModel(

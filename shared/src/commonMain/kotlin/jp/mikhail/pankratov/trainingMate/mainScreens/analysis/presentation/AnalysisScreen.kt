@@ -1,24 +1,17 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseItem
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.LocalTrainingItem
@@ -69,7 +62,7 @@ fun AnalysisScreen(
 @Composable
 fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TextLarge(text = "Select Exercise")
+        TextLarge(text = stringResource(SharedRes.strings.select_exercise))
         LazyColumn {
             items(localExercises) { exercise ->
                 ExerciseItem(exerciseLocal = exercise, onClick = {
@@ -82,7 +75,7 @@ fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String
 
 @Composable
 fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long) -> Unit) {
-    TextLarge(text = "Choose your training:".uppercase())
+    TextLarge(text = stringResource(SharedRes.strings.choose_your_training).uppercase())
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
     ) {

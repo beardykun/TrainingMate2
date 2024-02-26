@@ -84,7 +84,7 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     tint = Color.Red,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(SharedRes.strings.cd_delete),
                     modifier = Modifier.clickable {
                         training.id?.let { onDeleteClick.invoke(it) }
                     })
@@ -92,11 +92,11 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
             TextLarge(text = training.name.uppercase())
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
-                text = "Exercises:\n" + training.exercises.toString()
+                text = stringResource(SharedRes.strings.exercises_with_new_line) + training.exercises.toString()
                     .substring(1, training.exercises.toString().length - 1)
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = "Total lifted weight:\n" + training.totalWeightLifted.toString())
+            TextLarge(text = stringResource(SharedRes.strings.total_lifted_weight_with_new_line) + training.totalWeightLifted.toString())
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = stringResource(SharedRes.strings.groups))
             OverlappingImagesBackground(
