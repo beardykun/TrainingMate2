@@ -3,7 +3,7 @@ object Deps {
     private const val activityComposeVersion = "1.7.2"
     const val activityCompose = "androidx.activity:activity-compose:$activityComposeVersion"
 
-    const val composeVersion = "1.5.3"
+    const val composeVersion = "1.5.10"
     const val composeUi = "androidx.compose.ui:ui:$composeVersion"
     const val composeUiTooling = "androidx.compose.ui:ui-tooling:$composeVersion"
     const val composeUiToolingPreview = "androidx.compose.ui:ui-tooling-preview:$composeVersion"
@@ -63,7 +63,7 @@ object Deps {
     private const val permissionsVersion = "0.31.0-alpha"
     const val permissions = "com.google.accompanist:accompanist-permissions:$permissionsVersion"
 
-    private const val kammelVersion = "0.7.1"
+    private const val kammelVersion = "0.9.3"
     const val kammel = "media.kamel:kamel-image:$kammelVersion"
 
     //CHARTS
@@ -79,7 +79,7 @@ object Deps {
     const val ktorIOS = "io.ktor:ktor-client-ios:$ktorVersion"
 
     // GRADLE PLUGINS
-    const val kotlinVersion = "1.9.10"
+    const val kotlinVersion = "1.9.22"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
     private const val gradleVersion = "7.2.2"
@@ -115,15 +115,13 @@ object Deps {
     const val bom = "com.google.firebase:firebase-bom:$bomVersion"
     const val firebaseAuthAndroid = "com.google.firebase:firebase-auth-ktx"
     const val firebaseStorageAndroid = "com.google.firebase:firebase-storage-ktx"
-    const val firebaseStorageAndroidMain = "com.google.firebase:firebase-storage-ktx:20.1.0"
     const val firebaseCrashlyticsKtx = "com.google.firebase:firebase-crashlytics-ktx"
-    const val firebaseAnalyticsKtx = "com.google.firebase:firebase-crashlytics-ktx"
     const val firebaseMessagingKtx = "com.google.firebase:firebase-messaging-ktx"
 
     const val androidXCore = "androidx.core:core:1.12.0"
 
     //PRECOMPOSE for navigation
-    private const val precomposeVersion = "1.5.0"
+    private const val precomposeVersion = "1.5.10"
     const val precompose = "moe.tlaster:precompose:$precomposeVersion"
 
     //MOKO MVVM

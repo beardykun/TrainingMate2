@@ -29,8 +29,8 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic = true
-            export(Deps.mokoSharedRes)
-            export(Deps.mokoSharedGraphics)
+            export(libs.moko.resources)
+            export(libs.moko.graphics)
         }
         extraSpecAttributes["resources"] =
             "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
@@ -47,24 +47,24 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.ui)
 
-                implementation(Deps.ktorCore)
-                implementation(Deps.ktorSerialization)
-                implementation(Deps.ktorSerializationJson)
-                implementation(Deps.sqlDelightRuntime)
-                implementation(Deps.sqlDelightCoroutinesExtensions)
-                implementation(Deps.kotlinDateTime)
-                implementation(Deps.firebaseAuth)
-                implementation(Deps.firebaseFirestore)
-                implementation(Deps.firebaseRemoteConfig)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.runtime)
+                implementation(libs.coroutines.extensions)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.firebase.auth)
+                implementation(libs.firebase.firestore)
+                implementation(libs.firebase.config)
 
-                api(Deps.mokoSharedRes)
-                api(Deps.mokoSharedResCompose)
+                api(libs.moko.resources)
+                api(libs.moko.resources.compose)
 
-                api(Deps.precompose)
+                api(libs.precompose)
 
-                implementation(Deps.kammel)
+                implementation(libs.kamel.image)
 
-                implementation(Deps.chart)
+                implementation(libs.chart)
             }
         }
         val commonTest by getting {
@@ -75,13 +75,12 @@ kotlin {
         val androidMain by getting {
             dependsOn(commonMain)
             dependencies {
-                api(Deps.activityCompose)
-                api(Deps.apcompat)
-                api(Deps.coreKtx)
+                api(libs.androidx.activity.compose)
+                api(libs.androidx.appcompat)
+                api(libs.androidx.core.ktx)
 
-                implementation(Deps.sqlDelightAndroidDriver)
-                implementation(Deps.ktorAndroid)
-                implementation(Deps.firebaseStorageAndroidMain)
+                implementation(libs.android.driver)
+                implementation(libs.ktor.client.android)
             }
         }
         val iosX64Main by getting
@@ -94,8 +93,8 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation(Deps.ktorIOS)
-                implementation(Deps.sqlDelightNativeDriver)
+                implementation(libs.ktor.client.ios)
+                implementation(libs.native.driver)
             }
         }
     }
@@ -127,9 +126,9 @@ multiplatformResources {
 }
 
 dependencies {
-    implementation(Deps.androidXCore)
-    commonMainApi(Deps.mokoMvvmCore)
-    commonMainApi(Deps.mokoMvvmCompose)
-    commonMainApi(Deps.mokoMvvmFlow)
-    commonMainApi(Deps.mokoMvvmFlowCompose)
+    implementation(libs.androidx.core.ktx)
+    commonMainApi(libs.mvvm.core)
+    commonMainApi(libs.mvvm.compose)
+    commonMainApi(libs.mvvm.flow)
+    commonMainApi(libs.mvvm.flow.compose)
 }

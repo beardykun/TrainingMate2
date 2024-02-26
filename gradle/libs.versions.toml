@@ -1,5 +1,60 @@
 [versions]
+activity-compose = "1.8.2"
+appcompat = "1.6.1"
+chart = "Beta-0.0.5"
+compose-version = "1.6.2"
+core-ktx = "1.12.0"
+gitlive-firebase-versions = "1.11.1"
+kamel-image = "0.9.3"
+kotlinx-datetime = "0.5.0"
+ktor-version = "2.3.8"
+moko-version = "0.23.0"
+moko-graphics-version = "0.9.0"
+mvvm-version = "0.16.1"
+precompose = "1.5.6"
+sql-delight-version = "1.5.5"
+odyssey-core = "1.3.20"
+firebase-bom-version = "32.7.2"
 
 [libraries]
+android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sql-delight-version" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose-version" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "compose-version" }
+androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-version" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-version" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-version" }
+chart = { module = "io.github.thechance101:chart", version.ref = "chart" }
+coroutines-extensions = { module = "com.squareup.sqldelight:coroutines-extensions", version.ref = "sql-delight-version" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "gitlive-firebase-versions" }
+firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "gitlive-firebase-versions" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "gitlive-firebase-versions" }
+kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel-image" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-version" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor-version" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor-version" }
+ktor-client-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor-version" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-version" }
+mvvm-compose = { module = "dev.icerock.moko:mvvm-compose", version.ref = "mvvm-version" }
+mvvm-core = { module = "dev.icerock.moko:mvvm-core", version.ref = "mvvm-version" }
+mvvm-flow = { module = "dev.icerock.moko:mvvm-flow", version.ref = "mvvm-version" }
+mvvm-flow-compose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "mvvm-version" }
+native-driver = { module = "com.squareup.sqldelight:native-driver", version.ref = "sql-delight-version" }
+odyssey-compose = { module = "io.github.alexgladkov:odyssey-compose", version.ref = "odyssey-core" }
+odyssey-core = { module = "io.github.alexgladkov:odyssey-core", version.ref = "odyssey-core" }
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-version" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-version" }
+moko-resources-generator = { module = "dev.icerock.moko:resources-generator", version.ref = "moko-version" }
+moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics-version" }
+precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sql-delight-version" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
+firebase-auth-ktx = { group = "com.google.firebase:firebase-auth-ktx", name = "firebase-auth-ktx" }
+firebase-storage-ktx = { group = "com.google.firebase:firebase-storage-ktx", name = "firebase-storage-ktx" }
+firebase-crashlytics-ktx = { group = "com.google.firebase:firebase-crashlytics-ktx", name = "firebase-crashlytics-ktx" }
+firebase-messaging-ktx = { group = "com.google.firebase:firebase-messaging-ktx", name = "firebase-messaging-ktx" }
 
 [plugins]

@@ -10,7 +10,7 @@ buildscript {
         classpath(Deps.sqlDelightGradlePlugin)
         classpath(Deps.googleServices)
         classpath(Deps.crashlyticsGradlePlugin)
-        classpath(Deps.mokoRes)
+        classpath(libs.moko.resources.generator)
     }
 }
 
