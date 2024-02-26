@@ -25,6 +25,8 @@ object Dimens {
     val selectTextOuterCircle = 30.dp
     val selectTextInnerCircle = 20.dp
 
+    val tabHeight = 60.dp
+
 
     val selectableGroupImageSize = 48.dp
     val standardIcon = 24.dp

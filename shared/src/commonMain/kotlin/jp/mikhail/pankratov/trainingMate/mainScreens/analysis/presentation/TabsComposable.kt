@@ -24,7 +24,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -61,12 +60,12 @@ fun TabsComposable(
                 }) {
                 TextMedium(
                     text = category.name,
-                    modifier = Modifier.padding(Dimens.Padding8.dp)
+                    modifier = Modifier.padding(Dimens.Padding8)
                 )
             }
         }
     }
-    Row(modifier = Modifier.fillMaxWidth().height(60.dp)) {
+    Row(modifier = Modifier.fillMaxWidth().height(Dimens.tabHeight)) {
         Spacer(modifier = Modifier.weight(1f))
         DropDown(
             initValue = analysisMode,
@@ -76,7 +75,7 @@ fun TabsComposable(
             onSelectedValue = { value ->
                 onEvent(AnalysisScreenEvent.OnAnalysisModeChanged(value))
             },
-            values = AnalysisMode.values().map { it.name },
+            values = AnalysisMode.entries.map { it.name },
             modifier = Modifier.clip(
                 RoundedCornerShape(percent = 50)
             ).background(color = MaterialTheme.colorScheme.primaryContainer)
