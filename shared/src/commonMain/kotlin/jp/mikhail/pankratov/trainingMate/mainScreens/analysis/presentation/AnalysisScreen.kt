@@ -99,6 +99,8 @@ fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long) -> U
                 onClick = {
                     training.id?.let { onItemClick.invoke(it) }
                 },
+                onDeleteClick = {},
+                isDeletable = false,
                 modifier = Modifier.animateItemPlacement()
             )
         }

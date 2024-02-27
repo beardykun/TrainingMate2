@@ -98,6 +98,9 @@ fun TrainingScreen(
                                     )
                                 )
                             },
+                            onDeleteClick = { id ->
+                                onEvent(TrainingScreenEvent.OnTrainingTemplateDelete(id))
+                            },
                             modifier = Modifier.animateItemPlacement()
                         )
                     }
@@ -173,6 +176,18 @@ fun TrainingScreen(
                     },
                     onDenny = {
                         onEvent(TrainingScreenEvent.OnDeleteDenyClick)
+                    }
+                )
+            }
+            AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
+                DialogPopup(
+                    title = stringResource(SharedRes.strings.delete_training),
+                    description = stringResource(SharedRes.strings.want_to_delete_training),
+                    onAccept = {
+                        onEvent(TrainingScreenEvent.OnDeleteTemplateConfirmClick)
+                    },
+                    onDenny = {
+                        onEvent(TrainingScreenEvent.OnDeleteTemplateDenyClick)
                     }
                 )
             }

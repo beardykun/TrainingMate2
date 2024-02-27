@@ -45,3 +45,8 @@ updateExercises:
 UPDATE TrainingTemplate
 SET exercises = ?
 WHERE id = ?;
+
+deleteTrainingTemplate:
+DELETE
+FROM TrainingTemplate
+WHERE id = ?;

@@ -36,7 +36,13 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 
 @Composable
-fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun LocalTrainingItem(
+    training: TrainingLocal,
+    onClick: () -> Unit,
+    onDeleteClick: (id: Long) -> Unit,
+    isDeletable: Boolean = true,
+    modifier: Modifier = Modifier
+) {
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = modifier
@@ -50,7 +56,21 @@ fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Mo
                 .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(Dimens.Padding16)
         ) {
-            TextLarge(text = stringResource(SharedRes.strings.training_name))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextLarge(text = stringResource(SharedRes.strings.training_name))
+                if (isDeletable) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        tint = Color.Red,
+                        contentDescription = stringResource(SharedRes.strings.cd_delete),
+                        modifier = Modifier.clickable {
+                            training.id?.let { onDeleteClick.invoke(it) }
+                        })
+                }
+            }
             TextLarge(text = training.name.uppercase())
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = stringResource(SharedRes.strings.groups))

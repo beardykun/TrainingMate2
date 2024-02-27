@@ -26,9 +26,9 @@
 
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>
-    <string name="delete_last_training">Delete Last Training</string>
     <string name="last_training">Last training:</string>
     <string name="are_you_ready_to_start">Ready to start a new training?\nOther ongoing trainings will be finished.</string>
+    <string name="delete_last_training">Delete Last Training</string>
     <string name="want_to_delete_last_training">Want to delete last training?</string>
 
 
@@ -72,6 +72,8 @@
 
     <!-- HistoryScreen -->
     <string name="no_history">You don\'t have a training history yet...</string>
+    <string name="delete_training">Delete Training</string>
+    <string name="want_to_delete_training">Want to delete this training?</string>
 
     <!-- HistoryInfoScreen -->
     <string name="training_name_with_arg">Training name: %1$s</string>

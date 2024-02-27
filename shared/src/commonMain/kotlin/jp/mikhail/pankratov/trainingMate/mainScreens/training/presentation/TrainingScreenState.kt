@@ -11,5 +11,6 @@ data class TrainingScreenState(
     val ongoingTraining: Training? = null,
     val lastTrainings: List<Training>? = null,
     val showDeleteDialog: Boolean = false,
-    val lastTrainingId: Long? = null
+    val showDeleteTemplateDialog: Boolean = false,
+    val trainingId: Long? = null
 )

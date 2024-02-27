@@ -86,7 +86,7 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
     override suspend fun insertExercise(exerciseLocal: ExerciseLocal) {
         queries.insertExercise(
             id = exerciseLocal.id,
-            name = exerciseLocal.name.lowercase(),
+            name = exerciseLocal.name.lowercase().trim(),
             image = exerciseLocal.image,
             best_lifted_weight = exerciseLocal.bestLiftedWeight,
             exercise_group = exerciseLocal.group,
@@ -99,7 +99,7 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
     }
 
     override suspend fun isExerciseExists(name: String): Boolean {
-        return queries.isExerciseExists(name.lowercase()).executeAsOne() != 0L
+        return queries.isExerciseExists(name.lowercase().trim()).executeAsOne() != 0L
     }
 
     override suspend fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double) {

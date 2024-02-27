@@ -34,9 +34,11 @@ fun HistoryScreen(
                 }
             } else
                 LazyColumn {
-                    items(items = list, key = { training ->
-                        training.name
-                    }) { training ->
+                    items(
+                        items = list,
+                        key = { training ->
+                            training.id ?: -1
+                        }) { training ->
                         TrainingItem(training = training, onClick = {
                             navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${training.id}")
                         }, onDeleteClick = { trainingId ->
@@ -47,8 +49,8 @@ fun HistoryScreen(
 
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
-                    title = stringResource(SharedRes.strings.start_training),
-                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
+                    title = stringResource(SharedRes.strings.delete_training),
+                    description = stringResource(SharedRes.strings.want_to_delete_training),
                     onAccept = {
                         onEvent(HistoryScreenEvent.OnDeleteConfirmClick)
                         navigator.navigate(Routs.TrainingScreens.trainingGroupRout)

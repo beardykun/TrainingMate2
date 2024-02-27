@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
@@ -76,7 +77,7 @@ fun HistoryInfoScreen(
             }
             Button(onClick = {
                 onEvent(HistoryInfoEvent.OnContinueTraining {
-                    navigator.popBackStack()
+                    navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
                 })
             }, modifier = Modifier.weight(1f)) {
                 TextMedium(

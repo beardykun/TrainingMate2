@@ -10,4 +10,5 @@ interface ITrainingDataSource {
     fun getTrainingById(trainingId: Long): Flow<TrainingLocal>
     suspend fun updateExercises(exercises: List<String>, id: Long)
     suspend fun isTrainingExists(name: String) : Boolean
+    suspend fun deleteTrainingTemplate(id: Long)
 }

@@ -17,7 +17,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
     override suspend fun insertTraining(training: TrainingLocal) {
         queries.insertTraining(
             id = training.id,
-            name = training.name,
+            name = training.name.trim(),
             groups = training.groups,
             exercises = training.exercises.listToString(),
             description = training.description
@@ -47,6 +47,10 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
     }
 
     override suspend fun isTrainingExists(name: String): Boolean {
-        return queries.isTrainingExists(name = name.uppercase()).executeAsOne() != 0L
+        return queries.isTrainingExists(name = name.uppercase().trim()).executeAsOne() != 0L
+    }
+
+    override suspend fun deleteTrainingTemplate(id: Long) {
+        queries.deleteTrainingTemplate(id)
     }
 }

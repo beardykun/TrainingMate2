@@ -26,7 +26,7 @@ fun ExerciseAtWorkHistoryScreen(
             items(
                 items = exercises,
                 key = { item ->
-                    item.name
+                    item.id ?: -1
                 }) { exercise ->
                 val sets = exercise.sets.listToString()
                 if (sets.isBlank()) return@items

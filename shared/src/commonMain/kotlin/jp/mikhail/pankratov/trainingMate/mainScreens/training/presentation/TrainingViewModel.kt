@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
 class TrainingViewModel(
-    trainingDataSource: ITrainingDataSource,
+    private val trainingDataSource: ITrainingDataSource,
     private val trainingHistoryDataSource: ITrainingHistoryDataSource
 ) : ViewModel() {
 
@@ -93,26 +93,55 @@ class TrainingViewModel(
             is TrainingScreenEvent.OnLastTrainingDelete -> {
                 _state.update {
                     it.copy(
-                        lastTrainingId = event.trainingId,
+                        trainingId = event.trainingId,
                         showDeleteDialog = true
                     )
                 }
             }
 
             TrainingScreenEvent.OnDeleteConfirmClick -> {
+                state.value.trainingId?.let { deleteLastTraining(trainingId = it) }
                 _state.update {
                     it.copy(
-                        lastTrainingId = null,
+                        trainingId = null,
                         showDeleteDialog = false
                     )
                 }
-                state.value.lastTrainingId?.let { deleteLastTraining(trainingId = it) }
             }
+
             TrainingScreenEvent.OnDeleteDenyClick -> {
                 _state.update {
                     it.copy(
-                        lastTrainingId = null,
+                        trainingId = null,
                         showDeleteDialog = false
+                    )
+                }
+            }
+
+            is TrainingScreenEvent.OnTrainingTemplateDelete -> {
+                _state.update {
+                    it.copy(
+                        trainingId = event.id,
+                        showDeleteTemplateDialog = true
+                    )
+                }
+            }
+
+            TrainingScreenEvent.OnDeleteTemplateConfirmClick -> {
+                state.value.trainingId?.let { deleteTemplateTraining(trainingId = it) }
+                _state.update {
+                    it.copy(
+                        showDeleteTemplateDialog = false,
+                        trainingId = null
+                    )
+                }
+            }
+
+            TrainingScreenEvent.OnDeleteTemplateDenyClick -> {
+                _state.update {
+                    it.copy(
+                        showDeleteTemplateDialog = false,
+                        trainingId = null
                     )
                 }
             }
@@ -121,6 +150,10 @@ class TrainingViewModel(
 
     private fun deleteLastTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
         trainingHistoryDataSource.deleteTrainingRecord(trainingId = trainingId)
+    }
+
+    private fun deleteTemplateTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
+        trainingDataSource.deleteTrainingTemplate(id = trainingId)
     }
 
     private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {
