@@ -34,7 +34,9 @@ fun HistoryScreen(
                 }
             } else
                 LazyColumn {
-                    items(list) { training ->
+                    items(items = list, key = { training ->
+                        training.name
+                    }) { training ->
                         TrainingItem(training = training, onClick = {
                             navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${training.id}")
                         }, onDeleteClick = { trainingId ->

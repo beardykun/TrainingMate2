@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -59,32 +60,46 @@ fun AnalysisScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
         TextLarge(text = stringResource(SharedRes.strings.select_exercise))
         LazyColumn {
-            items(localExercises) { exercise ->
-                ExerciseItem(exerciseLocal = exercise, onClick = {
-                    onItemClick.invoke(it.name)
-                })
+            items(
+                items = localExercises,
+                key = { item ->
+                    item.name
+                }) { exercise ->
+                ExerciseItem(
+                    exerciseLocal = exercise,
+                    onClick = {
+                        onItemClick.invoke(it.name)
+                    }, modifier = Modifier.animateItemPlacement()
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long) -> Unit) {
     TextLarge(text = stringResource(SharedRes.strings.choose_your_training).uppercase())
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        items(localTrainings) { training ->
+        items(
+            items = localTrainings,
+            key = { item ->
+                item.name
+            }) { training ->
             LocalTrainingItem(
                 training = training,
                 onClick = {
                     training.id?.let { onItemClick.invoke(it) }
-                }
+                },
+                modifier = Modifier.animateItemPlacement()
             )
         }
     }

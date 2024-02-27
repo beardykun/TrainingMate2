@@ -22,10 +22,10 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLoca
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 
 @Composable
-fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit) {
+fun ExerciseItem(exerciseLocal: ExerciseLocal, onClick: (ExerciseLocal) -> Unit, modifier: Modifier) {
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
             .padding(all = Dimens.Padding8)
             .clickable {
                 onClick.invoke(exerciseLocal)

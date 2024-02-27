@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen
 
 import Dimens
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryInfoScreen(
     state: HistoryInfoState,
@@ -86,18 +88,25 @@ fun HistoryInfoScreen(
         }
         state.exercises?.let { exercises ->
             LazyColumn {
-                items(exercises) { exercise ->
+                items(
+                    items = exercises,
+                    key = { item ->
+                        item.name
+                    }) { exercise ->
                     Card(
                         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-                        modifier = Modifier.padding(all = Dimens.Padding8).fillParentMaxWidth()
+                        modifier = Modifier
+                            .padding(all = Dimens.Padding8)
+                            .fillParentMaxWidth()
+                            .animateItemPlacement()
                     ) {
 
                         Column(modifier = Modifier.padding(all = Dimens.Padding16)) {
-                            TextMedium(text = exercise?.name.toString())
+                            TextMedium(text = exercise.name)
                             TextMedium(
                                 text = stringResource(
                                     SharedRes.strings.lifted_weight_with_arg,
-                                    exercise?.totalLiftedWeight ?: 0.0
+                                    exercise.totalLiftedWeight
                                 )
                             )
                             Spacer(modifier = Modifier.height(Dimens.Padding8))
@@ -106,10 +115,8 @@ fun HistoryInfoScreen(
                                     SharedRes.strings.sets
                                 )
                             )
-                            exercise?.sets?.let { sets ->
-                                sets.forEach { set ->
-                                    TextMedium(text = set)
-                                }
+                            exercise.sets.forEach { set ->
+                                TextMedium(text = set)
                             }
                         }
                     }

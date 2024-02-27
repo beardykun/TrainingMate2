@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SelectableGroups(
     groups: List<String>,
@@ -44,8 +46,12 @@ fun SelectableGroups(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding16),
         modifier = modifier
     ) {
-        items(groups) { item ->
-            SelectableGroupItem(item, selected, onClick)
+        items(
+            items = groups,
+            key = { group ->
+                group
+            }) { item ->
+            SelectableGroupItem(item, selected, onClick, modifier.animateItemPlacement())
         }
     }
 }
@@ -55,10 +61,11 @@ fun SelectableGroupItem(
     group: String,
     selected: List<String>,
     onClick: (String) -> Unit,
+    modifier: Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.selectable(
+        modifier = modifier.selectable(
             selected = selected.contains(group),
             onClick = {
                 onClick.invoke(group)
@@ -98,6 +105,7 @@ fun SelectableGroupItem(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SelectableExercises(
     exerciseLocals: List<ExerciseListItem>,
@@ -110,7 +118,14 @@ fun SelectableExercises(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding16),
         modifier = modifier
     ) {
-        items(exerciseLocals) { item ->
+        items(
+            items = exerciseLocals,
+            key = { item ->
+                when (item) {
+                    is ExerciseListItem.Header -> item.muscleGroup
+                    is ExerciseListItem.ExerciseItem -> item.exercise.name
+                }
+            }) { item ->
             when (item) {
                 is ExerciseListItem.Header -> {
                     TextLarge(
@@ -122,7 +137,13 @@ fun SelectableExercises(
                 }
 
                 is ExerciseListItem.ExerciseItem -> {
-                    SelectableExerciseItem(item.exercise, isSelected, onClick, onDeleteClick)
+                    SelectableExerciseItem(
+                        item.exercise,
+                        isSelected,
+                        onClick,
+                        onDeleteClick,
+                        modifier.animateItemPlacement()
+                    )
                 }
             }
         }
@@ -135,11 +156,12 @@ fun SelectableExerciseItem(
     item: ExerciseLocal,
     isSelected: List<String>,
     onClick: (ExerciseLocal) -> Unit,
-    onDeleteClick: (ExerciseLocal) -> Unit
+    onDeleteClick: (ExerciseLocal) -> Unit,
+    modifier: Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.selectable(
+        modifier = modifier.selectable(
             selected = isSelected.contains(item.name),
             onClick = {
                 onClick.invoke(item)

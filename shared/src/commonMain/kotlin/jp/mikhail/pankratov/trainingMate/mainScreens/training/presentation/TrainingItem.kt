@@ -39,7 +39,7 @@ import jp.mikhail.pankratov.trainingMate.core.stringToList
 fun LocalTrainingItem(training: TrainingLocal, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-        modifier = Modifier
+        modifier = modifier
             .clickable { onClick.invoke() }
             .padding(Dimens.Padding8)
             .widthIn(min = Dimens.cardMinWidth, max = Dimens.cardMaxWidth)

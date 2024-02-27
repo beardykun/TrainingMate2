@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.thisTraining.presentation
 
 import Dimens
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.exercise.presentation.ExerciseItem
 import moe.tlaster.precompose.navigation.Navigator
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ThisTrainingScreen(
     state: ThisTrainingState, onEvent: (ThisTrainingEvent) -> Unit, navigator: Navigator
@@ -64,7 +66,14 @@ fun ThisTrainingScreen(
                     }
                 }
                 LazyColumn(modifier = Modifier.weight(1f)) {
-                    items(exercises) { item ->
+                    items(
+                        items = exercises,
+                        key = { item ->
+                            when (item) {
+                                is ExerciseListItem.Header -> item.muscleGroup
+                                is ExerciseListItem.ExerciseItem -> item.exercise.name
+                            }
+                        }) { item ->
                         when (item) {
                             is ExerciseListItem.Header -> {
                                 TextLarge(
@@ -77,7 +86,7 @@ fun ThisTrainingScreen(
                             }
 
                             is ExerciseListItem.ExerciseItem -> {
-                                ExerciseItem(exerciseLocal = item.exercise) {
+                                ExerciseItem(exerciseLocal = item.exercise, onClick = {
                                     onEvent(
                                         ThisTrainingEvent.OnExerciseClick(
                                             it,
@@ -87,7 +96,7 @@ fun ThisTrainingScreen(
                                                 )
                                             })
                                     )
-                                }
+                                }, modifier = Modifier.animateItemPlacement())
                             }
                         }
                     }

@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrainingScreen(
     state: TrainingScreenState,
@@ -76,7 +78,11 @@ fun TrainingScreen(
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    items(trainings) { training ->
+                    items(trainings,
+                        key = { item ->
+                            item.name
+                        }
+                    ) { training ->
                         LocalTrainingItem(
                             training = training,
                             onClick = {
@@ -91,7 +97,8 @@ fun TrainingScreen(
                                         training = training
                                     )
                                 )
-                            }
+                            },
+                            modifier = Modifier.animateItemPlacement()
                         )
                     }
                 }

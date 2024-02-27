@@ -2,7 +2,6 @@ package jp.mikhail.pankratov.trainingMate.exerciseAtWorkHistory.presentation
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import dev.icerock.moko.resources.compose.stringResource
@@ -24,7 +23,11 @@ fun ExerciseAtWorkHistoryScreen(
 
     state.historyList?.let { exercises ->
         LazyColumn {
-            items(exercises) { exercise ->
+            items(
+                items = exercises,
+                key = { item ->
+                    item.name
+                }) { exercise ->
                 val sets = exercise.sets.listToString()
                 if (sets.isBlank()) return@items
                 TextMedium(text = stringResource(SharedRes.strings.date, exercise.date))
