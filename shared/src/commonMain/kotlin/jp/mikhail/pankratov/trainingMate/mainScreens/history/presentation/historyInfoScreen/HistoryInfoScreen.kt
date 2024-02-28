@@ -22,6 +22,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
@@ -76,9 +77,13 @@ fun HistoryInfoScreen(
                 )
             }
             Button(onClick = {
-                onEvent(HistoryInfoEvent.OnContinueTraining {
-                    navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
-                })
+                onEvent(HistoryInfoEvent.OnContinueTraining(
+                    onSuccess = {
+                        navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
+                    }, onError = {
+                        onEvent(HistoryInfoEvent.OnError)
+                    })
+                )
             }, modifier = Modifier.weight(1f)) {
                 TextMedium(
                     text = stringResource(
@@ -123,6 +128,19 @@ fun HistoryInfoScreen(
                     }
                 }
             }
+        }
+        if (state.isError) {
+            DialogPopup(
+                title = "Ongoing training already exists",
+                description = "Finish ongoing training and continue this one?",
+                onAccept = {
+                    onEvent(HistoryInfoEvent.OnFinishOngoingAndContinue {
+                        navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
+                    })
+                },
+                onDenny = {
+                    onEvent(HistoryInfoEvent.OnFinishDeny)
+                })
         }
     }
 }

@@ -5,5 +5,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
 data class HistoryInfoState(
     val training: Training? = null,
-    val exercises: List<Exercise>? = null
+    val ongoingTraining: Training? = null,
+    val exercises: List<Exercise>? = null,
+    val isError: Boolean = false,
 )
