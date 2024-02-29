@@ -131,8 +131,8 @@ fun HistoryInfoScreen(
         }
         if (state.isError) {
             DialogPopup(
-                title = "Ongoing training already exists",
-                description = "Finish ongoing training and continue this one?",
+                title = stringResource(SharedRes.strings.training_ongoing),
+                description = stringResource(SharedRes.strings.finish_ongoing_and_continue),
                 onAccept = {
                     onEvent(HistoryInfoEvent.OnFinishOngoingAndContinue {
                         navigator.navigate(route = Routs.TrainingScreens.trainingExercises)

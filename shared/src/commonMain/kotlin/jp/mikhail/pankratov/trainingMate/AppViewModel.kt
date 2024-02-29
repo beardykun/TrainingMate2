@@ -5,7 +5,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.listToString
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

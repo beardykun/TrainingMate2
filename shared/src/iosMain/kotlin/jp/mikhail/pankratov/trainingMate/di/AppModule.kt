@@ -3,10 +3,10 @@ package jp.mikhail.pankratov.trainingMate.di
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.data.local.DatabaseDriverFactory
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
-import jp.mikhail.pankratov.trainingMate.exercise.data.local.ExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.exercise.data.local.ExerciseHistoryDatasource
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.local.ExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.local.ExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource

@@ -4,8 +4,8 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers

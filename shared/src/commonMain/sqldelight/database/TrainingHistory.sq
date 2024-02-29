@@ -80,9 +80,16 @@ SELECT *
 FROM TrainingHistory
 WHERE name = ?;
 
-deleteTrainigRecord:
+deleteTrainingRecord:
 DELETE
 FROM TrainingHistory
 WHERE id = ?;
+
+getLastTraining:
+SELECT * FROM TrainingHistory
+WHERE status = 'COMPLETED' AND training_template_id = ?
+ORDER BY id DESC
+LIMIT 1;
+
 
 

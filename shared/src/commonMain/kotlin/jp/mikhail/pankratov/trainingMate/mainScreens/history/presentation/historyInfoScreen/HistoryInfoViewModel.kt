@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.exercise.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

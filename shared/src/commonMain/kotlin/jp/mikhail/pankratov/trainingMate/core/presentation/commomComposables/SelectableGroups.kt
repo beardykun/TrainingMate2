@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.addExercises.presentation.ExerciseListItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 
 @OptIn(ExperimentalFoundationApi::class)

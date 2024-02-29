@@ -103,6 +103,13 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     }
 
     override suspend fun deleteTrainingRecord(trainingId: Long) {
-        query.deleteTrainigRecord(id = trainingId)
+        query.deleteTrainingRecord(id = trainingId)
+    }
+
+    override fun getLastTraining(trainingTemplateId: Long): Flow<Training?> {
+        return query.getLastTraining(training_template_id = trainingTemplateId).asFlow()
+            .map { trainingHistory ->
+                trainingHistory.executeAsOneOrNull()?.toTraining()
+            }
     }
 }

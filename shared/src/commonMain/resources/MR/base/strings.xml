@@ -83,7 +83,9 @@
     <string name="lifted_weight_with_arg">Lifted weight: %1$.2f</string>
     <string name="back_btn">Back</string>
     <string name="continue_training">Continue training</string>
-    <string name="sets">"Sets: "</string>
+    <string name="sets">Sets: </string>
+    <string name="training_ongoing">Ongoing training already exists</string>
+    <string name="finish_ongoing_and_continue">Finish ongoing training and continue this one?</string>
 
     <!-- TrainingItem -->
     <string name="cd_delete">Delete</string>
@@ -94,5 +96,7 @@
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
     <string name="no_exercises_in_training">No exercises in this training yet</string>
     <string name="finish_training">Finish Training</string>
+    <string name="last_training_lifted_weight">Last training lifted: %1$.2f kg</string>
+    <string name="this_training_lifted_weight">This training lifted: %1$.2f kg</string>
 
 </resources>
