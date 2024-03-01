@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
@@ -52,29 +54,7 @@ fun ThisTrainingScreen(
         Column(
             modifier = Modifier.fillMaxSize().padding(padding)
         ) {
-            TextLarge(
-                state.trainingTime,
-                modifier = Modifier.padding(horizontal = Dimens.Padding16)
-            )
-            state.lastTraining?.let { lastTraining ->
-                TextLarge(
-                    stringResource(
-                        SharedRes.strings.last_training_lifted_weight,
-                        lastTraining.totalWeightLifted
-                    ),
-                    modifier = Modifier.padding(horizontal = Dimens.Padding16)
-                )
-            }
-
-            state.ongoingTraining?.let { ongoingTraining ->
-                TextLarge(
-                    stringResource(
-                        SharedRes.strings.this_training_lifted_weight,
-                        ongoingTraining.totalWeightLifted
-                    ),
-                    modifier = Modifier.padding(horizontal = Dimens.Padding16)
-                )
-            }
+            TrainingComparison(state)
 
             state.exerciseLocals?.let { exercises ->
                 if (exercises.isEmpty()) {
@@ -133,6 +113,44 @@ fun ThisTrainingScreen(
                         color = Color.White
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun TrainingComparison(state: ThisTrainingState) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
+            .clip(RoundedCornerShape(percent = 30))
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .padding(vertical = Dimens.Padding8)
+
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            state.lastTraining?.let { lastTraining ->
+                TextLarge(
+                    stringResource(
+                        SharedRes.strings.last_training_lifted_weight,
+                        lastTraining.totalWeightLifted,
+                        Utils.countTrainingTime(lastTraining)
+                    ),
+                    modifier = Modifier.padding(horizontal = Dimens.Padding16)
+                )
+            }
+        }
+
+        Column(modifier = Modifier.weight(1f)) {
+            state.ongoingTraining?.let { ongoingTraining ->
+                TextLarge(
+                    stringResource(
+                        SharedRes.strings.this_training_lifted_weight,
+                        ongoingTraining.totalWeightLifted,
+                        state.trainingTime
+                    ),
+                    modifier = Modifier.padding(horizontal = Dimens.Padding16)
+                )
             }
         }
     }

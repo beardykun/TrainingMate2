@@ -59,6 +59,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.Train
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
+import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.RouteBuilder
@@ -98,7 +99,7 @@ fun App(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            val current by navigator.currentEntry.collectAsState(null)
+            val current by navigator.currentEntry.collectAsStateWithLifecycle(null)
 
             Scaffold(
                 topBar = {
@@ -226,7 +227,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     )
                 })
 
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             TrainingScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
@@ -245,7 +246,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                         exerciseHistoryDatasource = appModule.exerciseHistoryDataSource
                     )
                 })
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             AnalysisScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
         scene(route = Routs.MainScreens.achievement.title, navTransition = NavTransition()) {
@@ -257,7 +258,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                 factory = viewModelFactory {
                     HistoryScreenViewModel(trainingHistoryDataSource = appModule.trainingHistoryDataSource)
                 })
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             HistoryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
         scene(route = Routs.TrainingScreens.createTraining, navTransition = NavTransition()) {
@@ -267,7 +268,7 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                     CreateTrainingViewModel(trainingDataSource = appModule.trainingDataSource)
                 }
             )
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             CreateTrainingScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
 
@@ -299,7 +300,7 @@ private fun RouteBuilder.historyScreens(
                     )
                 }
             )
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             HistoryInfoScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
     }
@@ -328,7 +329,7 @@ private fun RouteBuilder.trainingScreens(
                     )
                 }
             )
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
 
             ThisTrainingScreen(
                 state = state,
@@ -350,7 +351,7 @@ private fun RouteBuilder.trainingScreens(
                         trainingHistoryDataSource = appModule.trainingHistoryDataSource
                     )
                 })
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             AddExercisesScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
@@ -370,7 +371,7 @@ private fun RouteBuilder.trainingScreens(
                         trainingHistoryDataSource = appModule.trainingHistoryDataSource
                     )
                 })
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             CreateExerciseScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
@@ -397,7 +398,7 @@ private fun RouteBuilder.trainingScreens(
                     )
                 }
             )
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             ExerciseAtWorkScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
@@ -419,7 +420,7 @@ private fun RouteBuilder.trainingScreens(
                     )
                 }
             )
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             ExerciseAtWorkHistoryScreen(
                 state = state,
                 onEvent = viewModel::onEvent,

@@ -90,7 +90,7 @@ fun ExerciseAtWorkScreen(
             onClick = {
                 navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/${state.exercise?.name}")
             },
-            modifier = Modifier.padding(bottom = Dimens.Padding64)
+            modifier = Modifier.padding(bottom = Dimens.historyFabPadding)
         ) {
             Icon(
                 imageVector = Icons.Default.History,

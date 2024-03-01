@@ -165,7 +165,7 @@ class ThisTrainingViewModel(
             val minutes = (totalSeconds % 3600) / 60
             val seconds = totalSeconds % 60
             kotlinx.coroutines.delay(1000L)
-            emit("Training time: ${hours}h:${minutes}m:${seconds}s")
+            emit("${hours}h:${minutes}m:${seconds}s")
         }
     }.flowOn(Dispatchers.Default)
 

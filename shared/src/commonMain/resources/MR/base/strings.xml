@@ -96,7 +96,7 @@
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
     <string name="no_exercises_in_training">No exercises in this training yet</string>
     <string name="finish_training">Finish Training</string>
-    <string name="last_training_lifted_weight">Last training lifted: %1$.2f kg</string>
-    <string name="this_training_lifted_weight">This training lifted: %1$.2f kg</string>
+    <string name="last_training_lifted_weight">Last training\nLifted: %1$.2f kg\nLength: %2$s</string>
+    <string name="this_training_lifted_weight">This training\nLifted: %1$.2f kg\nLength: %2$s</string>
 
 </resources>
