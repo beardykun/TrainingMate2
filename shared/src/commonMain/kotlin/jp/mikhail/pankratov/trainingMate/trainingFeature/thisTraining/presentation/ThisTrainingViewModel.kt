@@ -57,7 +57,6 @@ class ThisTrainingViewModel(
     }
 
     private suspend fun loadLastTrainingData(ongoingTrainingId: Long) {
-        println("TAGGER $ongoingTrainingId")
         val lastTraining =
             trainingHistoryDataSource.getLastTraining(trainingTemplateId = ongoingTrainingId)
                 .first()

@@ -33,11 +33,11 @@ class ExerciseAtWorkViewModel(
         exerciseDataSource.getExerciseById(exerciseTemplateId),
         trainingHistoryDataSource.getOngoingTraining(),
         exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId)
-    ) { state, exerciseLocal, training, exercise ->
+    ) { state, exerciseLocal, ongoingTraining, exercise ->
         state.copy(
             exercise = exercise,
             exerciseLocal = exerciseLocal,
-            training = training
+            ongoingTraining = ongoingTraining
         )
     }.stateIn(
         scope = viewModelScope,
@@ -48,10 +48,6 @@ class ExerciseAtWorkViewModel(
     private var timerJob: Job? = null
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
-            is ExerciseAtWorkEvent.OnAddNewSet -> {
-                handleAddSetEvent()
-            }
-
             ExerciseAtWorkEvent.OnTimerStart -> {
                 runTimerJob()
             }
@@ -124,6 +120,10 @@ class ExerciseAtWorkViewModel(
                     )
                 }
             }
+
+            is ExerciseAtWorkEvent.OnAddNewSet -> {
+                handleAddSetEvent()
+            }
         }
     }
 
@@ -167,18 +167,20 @@ class ExerciseAtWorkViewModel(
 
     private fun updateSets(sets: List<String>, weight: Double) =
         viewModelScope.launch(Dispatchers.IO) {
-            val totalLiftedWeight = (state.value.training?.totalWeightLifted ?: 0.0) + weight
+            val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
             updateTrainingTime(trainingId, totalLiftedWeight)
+
+            val exerciseTotalLifted = (state.value.exercise?.totalLiftedWeight ?: 0.0) + weight
             exerciseHistoryDatasource.updateExerciseSets(
                 sets = sets,
-                totalLiftedWeight = weight,
+                totalLiftedWeight = exerciseTotalLifted,
                 trainingHistoryId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
             )
         }
 
     private suspend fun updateTrainingTime(trainingId: Long, totalLiftedWeight: Double) {
-        if (state.value.training?.startTime == 0L) {
+        if (state.value.ongoingTraining?.startTime == 0L) {
             trainingHistoryDataSource.updateStartTime(trainingId, totalLiftedWeight)
         } else {
             trainingHistoryDataSource.updateEndTime(trainingId, totalLiftedWeight)

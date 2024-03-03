@@ -6,7 +6,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLoca
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
 data class ExerciseAtWorkState(
-    val training: Training? = null,
+    val ongoingTraining: Training? = null,
     val exercise: Exercise? = null,
     val exerciseLocal: ExerciseLocal? = null,
     val timerValue: Int = 60,
