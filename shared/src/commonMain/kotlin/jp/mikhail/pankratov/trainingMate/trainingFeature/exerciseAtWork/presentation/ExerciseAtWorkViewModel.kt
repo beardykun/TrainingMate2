@@ -2,9 +2,9 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -230,15 +230,15 @@ class ExerciseAtWorkViewModel(
         try {
             weight.toDouble()
         } catch (e: NumberFormatException) {
-            return "w1"
+            return WEIGHT_ERROR_1
         }
 
         if (weight == "0.0" || weight == "0") {
-            return "w2"
+            return WEIGHT_ERROR_2
         } else if (weight.contains(",")) {
-            return "w3"
+            return WEIGHT_ERROR_3
         } else if (weight.isBlank()) {
-            return "w4"
+            return WEIGHT_ERROR_4
         }
         return null
     }
@@ -247,14 +247,14 @@ class ExerciseAtWorkViewModel(
         try {
             reps.toInt()
         } catch (e: NumberFormatException) {
-            return "w1"
+            return WEIGHT_ERROR_1
         }
         return if (reps.isBlank()) {
-            "r1"
+            REPS_ERROR_1
         } else if (reps.contains(",") || reps.contains(".")) {
-            "r2"
+            REPS_ERROR_2
         } else if (reps == "0") {
-            "r3"
+            REPS_ERROR_3
         } else null
     }
 }
