@@ -1,10 +1,12 @@
 package jp.mikhail.pankratov.trainingMate
 
+import Dimens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.History
@@ -26,28 +28,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
-import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesScreen
-import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
-import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.CreateExerciseScreen
-import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.CreateExerciseViewModel
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingScreen
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingViewModel
 import jp.mikhail.pankratov.trainingMate.di.AppModule
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkScreen
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryScreen
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisViewModel
@@ -57,6 +51,14 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesScreen
+import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.CreateExerciseScreen
+import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.CreateExerciseViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkScreen
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryScreen
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
@@ -103,7 +105,13 @@ fun App(
 
             Scaffold(
                 topBar = {
-                    TopAppBar(title = { Text(text = current?.route?.route ?: "") },
+                    TopAppBar(title = {
+                        Text(
+                            text = current?.route?.route?.split("/")?.first() ?: "",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(end = Dimens.Padding32)
+                        )
+                    },
                         navigationIcon = {
                             if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) {
 
@@ -111,7 +119,7 @@ fun App(
                                     navigator.popBackStack()
                                 }) {
                                     Icon(
-                                        imageVector = Icons.Default.ArrowBack,
+                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
                                         contentDescription = null
                                     )
                                 }

@@ -11,21 +11,21 @@ object Routs {
     }
 
     object TrainingScreens {
-        val trainingGroupRout = "TrainingGroupRout"
-        val trainingExercises = "TrainingExercises"
-        val createTraining = "CreateTraining"
-        val addExercises = "AddExercises"
-        val createExercise = "CreateExercise"
+        val trainingGroupRout = "This Training"
+        val trainingExercises = "Training Exercises"
+        val createTraining = "Create Training"
+        val addExercises = "Add Exercises"
+        val createExercise = "Create Exercise"
     }
 
     object HistoryScreens {
-        val historyGroupRoot = "HistoryGroupRoot"
-        val historyInfo = "HistoryInfo"
+        val historyGroupRoot = "History Group"
+        val historyInfo = "History Info"
     }
 
     object ExerciseScreens {
-        val exerciseAtWork = "ExerciseAtWork"
-        val exerciseAtWorkHistory = "ExerciseAtWorkHistory"
+        val exerciseAtWork = "Exercise At Work"
+        val exerciseAtWorkHistory = "Exercise History"
     }
 }
 
