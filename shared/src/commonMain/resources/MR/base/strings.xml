@@ -80,8 +80,8 @@
     <string name="training_name_with_arg">Training name: %1$s</string>
     <string name="training_groups_with_arg">Training groups: %1$s</string>
     <string name="training_duration_with_arg">Training duration: %1$s</string>
-    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$.2f</string>
-    <string name="lifted_weight_with_arg">Lifted weight: %1$.2f</string>
+    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$.2f kg</string>
+    <string name="lifted_weight_with_arg">Lifted weight: %1$.2f kg</string>
     <string name="back_btn">Back</string>
     <string name="continue_training">Continue training</string>
     <string name="sets">Sets: </string>

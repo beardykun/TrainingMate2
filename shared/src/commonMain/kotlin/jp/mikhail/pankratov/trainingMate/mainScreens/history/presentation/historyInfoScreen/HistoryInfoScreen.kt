@@ -136,22 +136,24 @@ fun ExerciseHistoryItem(exercise: Exercise, modifier: Modifier) {
     ) {
 
         Column(modifier = Modifier.padding(all = Dimens.Padding16)) {
-            TextMedium(text = exercise.name)
-            TextMedium(
-                text = stringResource(
-                    SharedRes.strings.lifted_weight_with_arg,
-                    exercise.totalLiftedWeight
-                )
-            )
+            TextMedium(text = exercise.name.uppercase())
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextMedium(
                 text = stringResource(
                     SharedRes.strings.sets
                 )
             )
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
             exercise.sets.forEach { set ->
                 TextMedium(text = set)
             }
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
+            TextMedium(
+                text = stringResource(
+                    SharedRes.strings.lifted_weight_with_arg,
+                    exercise.totalLiftedWeight
+                )
+            )
         }
     }
 }

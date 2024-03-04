@@ -50,6 +50,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
@@ -57,6 +58,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
 
@@ -99,6 +101,13 @@ fun ExerciseAtWorkScreen(
         }
     }, modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            state.exercise?.name?.let {
+                TextLarge(
+                    text = it.uppercase(),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
                     value = state.weight,

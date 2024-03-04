@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
@@ -41,6 +42,7 @@ fun TextSmall(text: String, modifier: Modifier = Modifier) {
 fun TextLarge(
     text: String,
     fontWeight: FontWeight = FontWeight.Bold,
+    textAlign: TextAlign = TextAlign.Unspecified,
     color: Color = Color.Unspecified,
     modifier: Modifier = Modifier
 ) {
@@ -49,6 +51,7 @@ fun TextLarge(
         style = MaterialTheme.typography.bodyLarge,
         fontWeight = fontWeight,
         color = color,
+        textAlign = textAlign,
         modifier = modifier
     )
 }
