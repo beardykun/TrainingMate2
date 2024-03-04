@@ -23,11 +23,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -60,21 +63,27 @@ fun TrainingScreen(
         ) {
             TextLarge(text = state.greeting)
 
-            if (state.lastTrainings?.isNotEmpty() == true) {
-                TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
-                val lastTraining = state.lastTrainings.last()
-                TrainingItem(
-                    training = lastTraining,
-                    onClick = {
-                        navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
-                    },
-                    onDeleteClick = {
-                        onEvent(TrainingScreenEvent.OnLastTrainingDelete(lastTraining.id!!))
-                    })
+            state.ongoingTraining?.let { ongoingTraining ->
+                TextLarge(text = stringResource(SharedRes.strings.current_training).uppercase())
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    LocalTrainingItem(
+                        training = TrainingLocal(
+                            id = ongoingTraining.id,
+                            name = ongoingTraining.name,
+                            groups = ongoingTraining.groups
+                        ),
+                        onClick = {
+                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                        },
+                        onDeleteClick = {},
+                        isDeletable = false,
+                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+                    )
+                }
             }
 
             state.availableTrainings?.let { trainings ->
-                TextLarge(text = stringResource(SharedRes.strings.choose_your_training))
+                TextLarge(text = stringResource(SharedRes.strings.start_new_training).uppercase())
                 LazyRow(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -106,6 +115,20 @@ fun TrainingScreen(
                     }
                 }
             }
+
+            if (state.lastTrainings?.isNotEmpty() == true) {
+                TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
+                val lastTraining = state.lastTrainings.last()
+                TrainingItem(
+                    training = lastTraining,
+                    onClick = {
+                        navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
+                    },
+                    onDeleteClick = {
+                        onEvent(TrainingScreenEvent.OnLastTrainingDelete(lastTraining.id!!))
+                    })
+            }
+
             MaterialTheme.colorScheme.apply {
                 val colorEntries = listOf(
                     ColorEntry("primary", primary),

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
@@ -101,33 +102,11 @@ fun HistoryInfoScreen(
                     key = { item ->
                         item.name
                     }) { exercise ->
-                    Card(
-                        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-                        modifier = Modifier
-                            .padding(all = Dimens.Padding8)
+                    ExerciseHistoryItem(
+                        exercise, modifier = Modifier
                             .fillParentMaxWidth()
                             .animateItemPlacement()
-                    ) {
-
-                        Column(modifier = Modifier.padding(all = Dimens.Padding16)) {
-                            TextMedium(text = exercise.name)
-                            TextMedium(
-                                text = stringResource(
-                                    SharedRes.strings.lifted_weight_with_arg,
-                                    exercise.totalLiftedWeight
-                                )
-                            )
-                            Spacer(modifier = Modifier.height(Dimens.Padding8))
-                            TextMedium(
-                                text = stringResource(
-                                    SharedRes.strings.sets
-                                )
-                            )
-                            exercise.sets.forEach { set ->
-                                TextMedium(text = set)
-                            }
-                        }
-                    }
+                    )
                 }
             }
         }
@@ -143,6 +122,36 @@ fun HistoryInfoScreen(
                 onDenny = {
                     onEvent(HistoryInfoEvent.OnFinishDeny)
                 })
+        }
+    }
+}
+
+@Composable
+fun ExerciseHistoryItem(exercise: Exercise, modifier: Modifier) {
+    Card(
+        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
+        modifier = modifier
+            .padding(all = Dimens.Padding8)
+
+    ) {
+
+        Column(modifier = Modifier.padding(all = Dimens.Padding16)) {
+            TextMedium(text = exercise.name)
+            TextMedium(
+                text = stringResource(
+                    SharedRes.strings.lifted_weight_with_arg,
+                    exercise.totalLiftedWeight
+                )
+            )
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
+            TextMedium(
+                text = stringResource(
+                    SharedRes.strings.sets
+                )
+            )
+            exercise.sets.forEach { set ->
+                TextMedium(text = set)
+            }
         }
     }
 }

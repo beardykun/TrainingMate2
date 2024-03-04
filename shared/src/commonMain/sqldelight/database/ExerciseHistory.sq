@@ -35,7 +35,8 @@ WHERE training_template_id = ?;
 getExercisesWithName:
 SELECT *
 FROM ExerciseHistory
-WHERE name = ?;
+WHERE name = ?
+ORDER BY id DESC;
 
 updateExerciseSets:
 UPDATE ExerciseHistory

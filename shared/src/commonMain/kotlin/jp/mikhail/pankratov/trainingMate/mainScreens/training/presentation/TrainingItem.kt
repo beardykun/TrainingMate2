@@ -41,6 +41,7 @@ fun LocalTrainingItem(
     onClick: () -> Unit,
     onDeleteClick: (id: Long) -> Unit,
     isDeletable: Boolean = true,
+    backgroundColor: Color = MaterialTheme.colorScheme.inversePrimary,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -53,7 +54,7 @@ fun LocalTrainingItem(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.inversePrimary)
+                .background(backgroundColor)
                 .padding(Dimens.Padding16)
         ) {
             Row(

@@ -109,7 +109,9 @@ fun App(
                         Text(
                             text = current?.route?.route?.split("/")?.first() ?: "",
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(end = Dimens.Padding32)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = Dimens.Padding32)
                         )
                     },
                         navigationIcon = {

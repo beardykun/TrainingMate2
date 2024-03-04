@@ -27,10 +27,11 @@
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>
     <string name="last_training">Last training:</string>
+    <string name="current_training">Ongoing training:</string>
     <string name="are_you_ready_to_start">Ready to start a new training?\nOther ongoing trainings will be finished.</string>
     <string name="delete_last_training">Delete Last Training</string>
     <string name="want_to_delete_last_training">Want to delete last training?</string>
-
+    <string name="start_new_training">Start new training:</string>
 
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>
@@ -64,7 +65,7 @@
     <string name="best_weight">Best weight: %1$.2f kg</string>
 
     <!-- ExerciseAtWorkHistoryScreen -->
-    <string name="date">Date %1$s</string>
+    <string name="date">Date: %1$s</string>
 
     <!-- AnalysisScreen -->
     <string name="select_exercise">Select Exercise</string>
