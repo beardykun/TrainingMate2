@@ -7,6 +7,6 @@ sealed class AnalysisScreenEvent {
     data object OnDropdownOpen : AnalysisScreenEvent()
     data object OnDropdownClosed : AnalysisScreenEvent()
     data class OnExerciseNameSelected(val exerciseName: String) : AnalysisScreenEvent()
-    data class OnTrainingIdSelected(val trainingId: Long) : AnalysisScreenEvent()
+    data class OnTrainingIdSelected(val trainingId: Long, val name: String) : AnalysisScreenEvent()
 
 }

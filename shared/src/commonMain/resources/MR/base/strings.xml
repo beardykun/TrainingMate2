@@ -91,7 +91,7 @@
     <!-- TrainingItem -->
     <string name="cd_delete">Delete</string>
     <string name="exercises_with_new_line">Exercises:\n</string>
-    <string name="total_lifted_weight_with_new_line">Total lifted weight:\n</string>
+    <string name="total_lifted_weight">Total lifted weight: </string>
 
     <!-- ThisTrainingScreen -->
     <string name="cd_add_new_exercises_button">Add new exercises button</string>

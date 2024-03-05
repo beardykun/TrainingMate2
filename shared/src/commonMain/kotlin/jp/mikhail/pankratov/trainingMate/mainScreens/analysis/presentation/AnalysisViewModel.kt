@@ -4,10 +4,10 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AnalysisViewModel(
     trainingDataSource: ITrainingDataSource,
@@ -55,7 +54,9 @@ class AnalysisViewModel(
                     it.copy(
                         metricsMode = event.metricsMode,
                         graphDisplayed = false,
-                        metricsData = null
+                        metricsData = null,
+                        historyExercises = null,
+                        historyTrainings = null
                     )
                 }
                 if (event.metricsMode == MetricsMode.GENERAL) {
@@ -65,7 +66,10 @@ class AnalysisViewModel(
 
             is AnalysisScreenEvent.OnExerciseNameSelected -> {
                 _state.update {
-                    it.copy(graphDisplayed = true)
+                    it.copy(
+                        graphDisplayed = true,
+                        chartLabel = event.exerciseName
+                    )
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     getExercisesWithName(event.exerciseName)
@@ -74,7 +78,10 @@ class AnalysisViewModel(
 
             AnalysisScreenEvent.OnGeneralSelected -> {
                 _state.update {
-                    it.copy(graphDisplayed = true)
+                    it.copy(
+                        graphDisplayed = true,
+                        chartLabel = MetricsMode.GENERAL.name
+                    )
                 }
                 viewModelScope.launch(Dispatchers.IO) {
                     getGeneralTrainings()
@@ -83,10 +90,13 @@ class AnalysisViewModel(
 
             is AnalysisScreenEvent.OnTrainingIdSelected -> {
                 _state.update {
-                    it.copy(graphDisplayed = true)
+                    it.copy(
+                        graphDisplayed = true,
+                        chartLabel = event.name
+                    )
                 }
                 viewModelScope.launch(Dispatchers.IO) {
-                    getExercisesForTraining(trainingId = event.trainingId)
+                    getParticularTrainings(trainingId = event.trainingId)
                 }
             }
 
@@ -104,10 +114,16 @@ class AnalysisViewModel(
                     )
                 }
                 viewModelScope.launch(Dispatchers.Default) {
-                    prepareMetricsDataBasedOnAnalysisMode(
-                        trainings = _state.value.historyTrainings,
-                        analysisMode = analysisMode
-                    )
+                    if (state.value.metricsMode == MetricsMode.EXERCISE) {
+                        prepareMetricsDataBasedOnAnalysisModeExercise(
+                            exercises = _state.value.historyExercises,
+                            analysisMode = analysisMode
+                        )
+                    } else
+                        prepareMetricsDataBasedOnAnalysisModeTraining(
+                            trainings = _state.value.historyTrainings,
+                            analysisMode = analysisMode
+                        )
                 }
             }
 
@@ -125,15 +141,13 @@ class AnalysisViewModel(
         }
     }
 
-    private suspend fun prepareMetricsDataBasedOnAnalysisMode(
+    private fun prepareMetricsDataBasedOnAnalysisModeTraining(
         analysisMode: AnalysisMode,
-        exercises: List<Exercise>? = null,
         trainings: List<Training>? = null
     ) {
         when (analysisMode) {
             AnalysisMode.WEIGHT -> {
-                prepareWeightData(
-                    historyExercises = exercises,
+                prepareWeightDataTrainings(
                     historyTrainings = trainings
                 )
             }
@@ -145,19 +159,37 @@ class AnalysisViewModel(
             }
 
             AnalysisMode.PROGRESS -> {
-                if (state.value.metricsMode == MetricsMode.EXERCISE) {
-                    prepareProgressDataExercises(
-                        historyExercises = exercises
-                    )
-                } else
-                    prepareProgressDataTrainings(
-                        historyTrainings = trainings
-                    )
+                prepareProgressDataTrainings(
+                    historyTrainings = trainings
+                )
             }
         }
     }
 
-    private suspend fun prepareProgressDataTrainings(
+    private fun prepareMetricsDataBasedOnAnalysisModeExercise(
+        analysisMode: AnalysisMode,
+        exercises: List<Exercise>? = null,
+    ) {
+        when (analysisMode) {
+            AnalysisMode.WEIGHT -> {
+                exercises?.let {
+                    prepareWeightDataExercises(
+                        historyExercises = it
+                    )
+                }
+            }
+
+            AnalysisMode.LENGTH -> {}
+
+            AnalysisMode.PROGRESS -> {
+                prepareProgressDataExercises(
+                    historyExercises = exercises
+                )
+            }
+        }
+    }
+
+    private fun prepareProgressDataTrainings(
         historyTrainings: List<Training>? = null
     ) {
         historyTrainings?.let { trainings ->
@@ -165,7 +197,7 @@ class AnalysisViewModel(
             val weightBaseline = weightList.sum().div(weightList.size)
             val weightFivePercent = weightBaseline.div(20)
 
-            val durationsList = trainings.map { Utils.trainingLengthInMin(it) }
+            val durationsList = trainings.map { Utils.trainingLengthToMin(it) }
             val durationsBaseline = durationsList.sum().div(durationsList.size)
             val durationFivePercent = durationsBaseline.div(20)
 
@@ -173,8 +205,9 @@ class AnalysisViewModel(
                 val weightScore =
                     (training.totalWeightLifted - weightBaseline) / weightFivePercent
 
+
                 val durationScore =
-                    (Utils.trainingLengthInMin(training) - durationsBaseline) / durationFivePercent
+                    -((Utils.trainingLengthToMin(training) - durationsBaseline) / durationFivePercent)
 
                 weightScore + durationScore
             }
@@ -184,20 +217,17 @@ class AnalysisViewModel(
 
             // Shift all values up so that the minimum value becomes zero
             val adjustedData = data.map { it - minValue }
-
-            withContext(Dispatchers.Main) {
-                _state.update {
-                    it.copy(
-                        metricsData = adjustedData,
-                        metricsXAxisData = trainings.map { tr -> tr.name }
-                    )
-                }
+            _state.update {
+                it.copy(
+                    metricsData = adjustedData,
+                    metricsXAxisData = trainings.map { tr -> tr.name }
+                )
             }
         }
     }
 
-    private suspend fun prepareProgressDataExercises(
-        historyExercises: List<Exercise>? = null,
+    private fun prepareProgressDataExercises(
+        historyExercises: List<Exercise>?,
     ) {
         historyExercises?.let { exercises ->
             val weightList = exercises.map { it.totalLiftedWeight }
@@ -222,53 +252,59 @@ class AnalysisViewModel(
             // Shift all values up so that the minimum value becomes zero
             val adjustedData = data.map { it - minValue }
 
-            withContext(Dispatchers.Main) {
-                _state.update {
-                    it.copy(
-                        metricsData = adjustedData,
-                        metricsXAxisData = exercises.map { tr -> tr.name }
-                    )
-                }
+            _state.update {
+                it.copy(
+                    metricsData = adjustedData,
+                    metricsXAxisData = exercises.map { tr -> tr.name }
+                )
             }
         }
     }
 
 
-    private suspend fun prepareLengthData(
+    private fun prepareLengthData(
         historyTrainings: List<Training>? = null
     ) {
-        val data = historyTrainings?.map { Utils.trainingLengthInMin(it) }
+        val trainings = historyTrainings?.filter { it.endTime != 0L }
+        val data = trainings?.map { Utils.trainingLengthToMin(it) }
+        val xAxisData = trainings?.map { it.name }
+
+        _state.update {
+            it.copy(
+                metricsData = data,
+                metricsXAxisData = xAxisData
+            )
+        }
+    }
+
+    private fun prepareWeightDataTrainings(
+        historyTrainings: List<Training>?
+    ) {
+        val data = historyTrainings?.map { it.totalWeightLifted }
         val xAxisData = historyTrainings?.map { it.name }
 
-        withContext(Dispatchers.Main) {
-            _state.update {
-                it.copy(
-                    metricsData = data,
-                    metricsXAxisData = xAxisData
-                )
-            }
+        _state.update {
+            it.copy(
+                metricsData = data,
+                metricsXAxisData = xAxisData
+            )
         }
     }
 
-    private suspend fun prepareWeightData(
-        historyExercises: List<Exercise>? = null,
-        historyTrainings: List<Training>? = null
+    private fun prepareWeightDataExercises(
+        historyExercises: List<Exercise>
     ) {
-        val data = if (state.value.metricsMode == MetricsMode.EXERCISE) {
-            historyExercises?.filter { it.totalLiftedWeight != 0.0 }?.map { it.totalLiftedWeight }
-        } else historyTrainings?.map { it.totalWeightLifted }
-        val xAxisData = if (state.value.metricsMode == MetricsMode.EXERCISE) {
-            historyExercises?.filter { it.totalLiftedWeight != 0.0 }?.map { it.name }
-        } else historyTrainings?.map { it.name }
+        val data =
+            historyExercises.filter { it.totalLiftedWeight != 0.0 }.map { it.totalLiftedWeight }
 
-        withContext(Dispatchers.Main) {
+        val xAxisData =
+            historyExercises.filter { it.totalLiftedWeight != 0.0 }.map { it.name }
 
-            _state.update {
-                it.copy(
-                    metricsData = data,
-                    metricsXAxisData = xAxisData
-                )
-            }
+        _state.update {
+            it.copy(
+                metricsData = data,
+                metricsXAxisData = xAxisData
+            )
         }
     }
 
@@ -277,15 +313,25 @@ class AnalysisViewModel(
         _state.update {
             it.copy(historyTrainings = trainings)
         }
-        prepareMetricsDataBasedOnAnalysisMode(state.value.analysisMode, trainings = trainings)
+        prepareMetricsDataBasedOnAnalysisModeTraining(
+            state.value.analysisMode,
+            trainings = trainings
+        )
     }
 
     private suspend fun getExercisesWithName(exerciseName: String) {
-        val exercises = exerciseHistoryDatasource.getExercisesWithName(exerciseName).first()
-        prepareMetricsDataBasedOnAnalysisMode(state.value.analysisMode, exercises = exercises)
+        val exercises =
+            exerciseHistoryDatasource.getExercisesWithName(exerciseName).first().reversed()
+        prepareMetricsDataBasedOnAnalysisModeExercise(
+            state.value.analysisMode,
+            exercises = exercises
+        )
+        _state.update {
+            it.copy(historyExercises = exercises)
+        }
     }
 
-    private suspend fun getExercisesForTraining(trainingId: Long) {
+    private suspend fun getParticularTrainings(trainingId: Long) {
         val trainings =
             trainingHistoryDataSource.getParticularTrainings(trainingTemplateId = trainingId)
                 .first()
@@ -294,11 +340,8 @@ class AnalysisViewModel(
             it.copy(historyTrainings = trainings)
         }
 
-        val exercises =
-            exerciseHistoryDatasource.getExercisesForTrainingWithId(trainingId = trainingId).first()
-        prepareMetricsDataBasedOnAnalysisMode(
+        prepareMetricsDataBasedOnAnalysisModeTraining(
             state.value.analysisMode,
-            exercises = exercises,
             trainings = trainings
         )
     }

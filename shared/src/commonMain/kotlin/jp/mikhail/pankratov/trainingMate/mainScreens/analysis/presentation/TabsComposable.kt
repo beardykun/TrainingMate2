@@ -32,7 +32,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsComposable(
+    chartLabel: String,
     categories: List<MetricsMode>,
+    metricsMode: MetricsMode,
     metricsData: List<Double>?,
     metricsXAxisData: List<String>?,
     analysisMode: String,
@@ -51,7 +53,8 @@ fun TabsComposable(
 
     TabRow(selectedTabIndex = selectedTabIndex) {
         categories.forEachIndexed { index, category ->
-            Tab(selected = selectedTabIndex == index,
+            Tab(
+                selected = selectedTabIndex == index,
                 onClick = {
                     selectedTabIndex = index
                     coroutineScope.launch {
@@ -75,7 +78,11 @@ fun TabsComposable(
             onSelectedValue = { value ->
                 onEvent(AnalysisScreenEvent.OnAnalysisModeChanged(value))
             },
-            values = AnalysisMode.entries.map { it.name },
+            values = if (metricsMode == MetricsMode.EXERCISE) AnalysisMode.entries.minus(
+                AnalysisMode.LENGTH
+            )
+                .map { it.name }
+            else AnalysisMode.entries.map { it.name },
             modifier = Modifier.clip(
                 RoundedCornerShape(percent = 50)
             ).background(color = MaterialTheme.colorScheme.primaryContainer)
@@ -85,6 +92,7 @@ fun TabsComposable(
         AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
             metricsData?.let {
                 CommonLineChart(
+                    label = chartLabel,
                     data = metricsData,
                     xAxisData = metricsXAxisData!!
                 )

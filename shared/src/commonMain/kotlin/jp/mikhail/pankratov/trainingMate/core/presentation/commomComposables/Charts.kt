@@ -1,7 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
+import Dimens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,12 +17,13 @@ import com.aay.compose.lineChart.model.LineType
 
 @Composable
 fun CommonLineChart(
+    label: String,
     data: List<Double>,
     xAxisData: List<String>
 ) {
 
     val lineParameters = LineParameters(
-        label = "Trainings",
+        label = label,
         data = data,
         lineColor = Color.Gray,
         lineType = LineType.CURVED_LINE,
@@ -29,7 +32,7 @@ fun CommonLineChart(
 
     Box(Modifier.fillMaxSize()) {
         LineChart(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier,
             linesParameters = listOf(lineParameters),
             isGrid = true,
             gridColor = Color.Blue,

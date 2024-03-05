@@ -32,6 +32,7 @@ import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 
@@ -117,7 +118,15 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
                     .substring(1, training.exercises.toString().length - 1)
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = stringResource(SharedRes.strings.total_lifted_weight_with_new_line) + training.totalWeightLifted.toString())
+            TextLarge(text = stringResource(SharedRes.strings.total_lifted_weight) + training.totalWeightLifted.toString())
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
+            TextLarge(
+                text = stringResource(
+                    SharedRes.strings.training_duration_with_arg, Utils.trainingLengthToMin(
+                        training
+                    ).toString()
+                )
+            )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = stringResource(SharedRes.strings.groups))
             OverlappingImagesBackground(

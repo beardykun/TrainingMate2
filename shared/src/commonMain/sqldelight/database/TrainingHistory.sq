@@ -72,8 +72,7 @@ WHERE groups = ?;
 getParticularTrainings:
 SELECT *
 FROM TrainingHistory
-WHERE training_template_id = ?
-ORDER BY id DESC;
+WHERE training_template_id = ?;
 
 getTrainingsWithExercise:
 SELECT *

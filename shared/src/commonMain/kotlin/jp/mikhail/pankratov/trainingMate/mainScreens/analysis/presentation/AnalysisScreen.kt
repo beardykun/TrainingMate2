@@ -31,11 +31,13 @@ fun AnalysisScreen(
     }
     Column(modifier = Modifier.fillMaxSize()) {
         TabsComposable(
+            chartLabel = state.chartLabel,
             categories = listOf(
                 MetricsMode.GENERAL,
                 MetricsMode.TRAINING,
                 MetricsMode.EXERCISE
             ),
+            metricsMode = state.metricsMode,
             metricsData = state.metricsData,
             metricsXAxisData = state.metricsXAxisData,
             analysisMode = state.analysisMode.name,
@@ -45,8 +47,8 @@ fun AnalysisScreen(
 
         if (state.metricsMode == MetricsMode.TRAINING && !state.graphDisplayed) {
             state.localTrainings?.let { localTrainings ->
-                TrainingChoice(localTrainings) { trainingId ->
-                    onEvent(AnalysisScreenEvent.OnTrainingIdSelected(trainingId))
+                TrainingChoice(localTrainings) { trainingId, name ->
+                    onEvent(AnalysisScreenEvent.OnTrainingIdSelected(trainingId, name))
                 }
             }
         }
@@ -84,7 +86,7 @@ fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long) -> Unit) {
+fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long, String) -> Unit) {
     TextLarge(text = stringResource(SharedRes.strings.choose_your_training).uppercase())
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -97,7 +99,7 @@ fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long) -> U
             LocalTrainingItem(
                 training = training,
                 onClick = {
-                    training.id?.let { onItemClick.invoke(it) }
+                    training.id?.let { onItemClick.invoke(it, training.name) }
                 },
                 onDeleteClick = {},
                 isDeletable = false,

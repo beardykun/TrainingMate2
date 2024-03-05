@@ -23,7 +23,7 @@ object Utils {
         return "${hours}h:${minutes}m:${seconds}s"
     }
 
-    fun trainingLengthInMin(training: Training): Double {
+    fun trainingLengthToMin(training: Training): Double {
         val durationMillis =
             training.endTime?.minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
         val totalSeconds = durationMillis?.div(1000)
