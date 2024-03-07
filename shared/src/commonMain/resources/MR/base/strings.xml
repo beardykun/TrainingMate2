@@ -70,6 +70,8 @@
     <!-- AnalysisScreen -->
     <string name="select_exercise">Select Exercise</string>
     <string name="choose_your_training">Choose your training:</string>
+    <string name="another_training">Another Training </string>
+    <string name="another_exercise">Another Exercise </string>
 
     <!-- HistoryScreen -->
     <string name="no_history">You don\'t have a training history yet...</string>

@@ -50,13 +50,19 @@ class AnalysisViewModel(
     fun onEvent(event: AnalysisScreenEvent) {
         when (event) {
             is AnalysisScreenEvent.OnMetricsModeChanged -> {
+                val analysisMode =
+                    if (event.metricsMode == MetricsMode.EXERCISE &&
+                        state.value.analysisMode == AnalysisMode.LENGTH)
+                        AnalysisMode.WEIGHT else state.value.analysisMode
+
                 _state.update {
                     it.copy(
                         metricsMode = event.metricsMode,
                         graphDisplayed = false,
                         metricsData = null,
                         historyExercises = null,
-                        historyTrainings = null
+                        historyTrainings = null,
+                        analysisMode = analysisMode
                     )
                 }
                 if (event.metricsMode == MetricsMode.GENERAL) {

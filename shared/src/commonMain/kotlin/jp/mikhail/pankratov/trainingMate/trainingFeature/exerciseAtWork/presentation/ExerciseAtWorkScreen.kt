@@ -148,7 +148,7 @@ fun ExerciseAtWorkScreen(
             state.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = 3)) {
                     items(sets) { item ->
-                        Text(item, modifier = Modifier.pointerInput(Unit) {
+                        AnimatedTextSizeItem(item, modifier = Modifier.pointerInput(Unit) {
                             detectTapGestures(onLongPress = {
                                 onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, item))
                             })
@@ -236,5 +236,7 @@ fun CountdownAnimation(
         )
     }
 }
+
+
 
 
