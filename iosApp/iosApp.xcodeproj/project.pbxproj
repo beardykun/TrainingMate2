@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,7 +14,6 @@
 		004DD01F2A9D79BA0005D3A7 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 004DD01E2A9D79BA0005D3A7 /* FirebaseFunctions */; };
 		004DD0212A9D79BA0005D3A7 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 004DD0202A9D79BA0005D3A7 /* FirebaseRemoteConfig */; };
 		004DD0232A9D79BA0005D3A7 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 004DD0222A9D79BA0005D3A7 /* FirebaseStorage */; };
-		00F244A72A9C994F007AE07A /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F244A62A9C994F007AE07A /* ComposeView.swift */; };
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
@@ -23,7 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		00F244A62A9C994F007AE07A /* ComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
@@ -105,7 +103,6 @@
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
-				00F244A62A9C994F007AE07A /* ComposeView.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -236,7 +233,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00F244A72A9C994F007AE07A /* ComposeView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 			);

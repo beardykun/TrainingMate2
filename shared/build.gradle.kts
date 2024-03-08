@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform")
+    alias(libs.plugins.kotlinMultiplatform)
     kotlin("native.cocoapods")
     alias(libs.plugins.android.library)
     alias(libs.plugins.sqldelight.plugin)
@@ -12,7 +12,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "17"
+                jvmTarget = "11"
             }
         }
     }
@@ -98,6 +98,8 @@ kotlin {
             }
         }
     }
+
+    task("testClasses")
 }
 
 android {
@@ -108,8 +110,8 @@ android {
     }
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
