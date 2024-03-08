@@ -17,5 +17,6 @@ data class ExerciseAtWorkState(
     val errorReps: String? = null,
     val errorWeight: String? = null,
     val isDeleteDialogVisible: Boolean = false,
-    val deleteItem: String? = null
+    val deleteItem: String? = null,
+    val isAnimating: Boolean = false
 )

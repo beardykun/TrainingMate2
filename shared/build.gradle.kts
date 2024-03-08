@@ -77,7 +77,6 @@ kotlin {
             dependencies {
                 api(libs.androidx.activity.compose)
                 api(libs.androidx.appcompat)
-                api(libs.androidx.core.ktx)
 
                 implementation(libs.android.driver)
                 implementation(libs.ktor.client.android)

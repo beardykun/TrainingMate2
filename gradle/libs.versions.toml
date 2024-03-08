@@ -41,7 +41,6 @@ firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = 
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
 tools-build-gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle-tools-version" }
-sql-delight-gradle-plugin = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sql-delight-version" }
 kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamel-image" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor-version" }

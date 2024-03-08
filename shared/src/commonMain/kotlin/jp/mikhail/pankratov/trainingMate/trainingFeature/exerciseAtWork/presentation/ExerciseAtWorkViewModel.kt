@@ -122,7 +122,20 @@ class ExerciseAtWorkViewModel(
             }
 
             is ExerciseAtWorkEvent.OnAddNewSet -> {
+                _state.update {
+                    it.copy(
+                        isAnimating = true
+                    )
+                }
                 handleAddSetEvent()
+            }
+
+            ExerciseAtWorkEvent.OnAnimationSeen -> {
+                _state.update {
+                    it.copy(
+                        isAnimating = false
+                    )
+                }
             }
         }
     }

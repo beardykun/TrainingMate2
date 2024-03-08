@@ -1,4 +1,5 @@
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 object Dimens {
     val Padding2 = 2.dp
@@ -33,4 +34,8 @@ object Dimens {
     val timerIcon = 60.dp
 
     val historyFabPadding = 256.dp
+
+    //text sizes
+    val normalTextSize = 16.sp
+    val animationTextSize = 50.sp
 }

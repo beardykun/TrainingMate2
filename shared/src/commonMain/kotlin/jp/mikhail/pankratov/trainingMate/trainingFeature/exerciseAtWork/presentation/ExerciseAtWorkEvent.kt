@@ -11,5 +11,7 @@ sealed class ExerciseAtWorkEvent {
     data class OnWeightChanged(val newWeight: TextFieldValue) : ExerciseAtWorkEvent()
     data class OnRepsChanged(val newReps: TextFieldValue) : ExerciseAtWorkEvent()
     data object OnSetDelete : ExerciseAtWorkEvent()
-    data class OnDisplayDeleteDialog(val display: Boolean = false, val item: String? = null) : ExerciseAtWorkEvent()
+    data object OnAnimationSeen : ExerciseAtWorkEvent()
+    data class OnDisplayDeleteDialog(val display: Boolean = false, val item: String? = null) :
+        ExerciseAtWorkEvent()
 }
