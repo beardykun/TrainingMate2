@@ -14,6 +14,8 @@ import kotlinx.datetime.Clock
 class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSource {
 
     private val query = db.trainingHistoryQueries
+    private val exerciseQuery = db.exerciseHistoryQueries
+
     override fun getTrainingRecordById(id: Long): Flow<Training> {
         return query.getTrainingRecordById(id).asFlow().map { trainingHistory ->
             trainingHistory.executeAsOne().toTraining()
@@ -104,6 +106,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
 
     override suspend fun deleteTrainingRecord(trainingId: Long) {
         query.deleteTrainingRecord(id = trainingId)
+        exerciseQuery.deleteTrainingExercisesRecords(training_history_id = trainingId)
     }
 
     override fun getLastTraining(trainingTemplateId: Long): Flow<Training?> {

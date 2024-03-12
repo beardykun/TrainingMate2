@@ -50,6 +50,11 @@ WHERE exercise_template_id = ? AND training_history_id != ?
 ORDER BY id DESC
 LIMIT 1;
 
+deleteTrainingExercisesRecords:
+DELETE
+FROM ExerciseHistory
+WHERE training_history_id = ?;
+
 insertExerciseHistory:
 INSERT OR REPLACE
 INTO ExerciseHistory(

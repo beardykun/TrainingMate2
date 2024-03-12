@@ -37,5 +37,5 @@ object Dimens {
 
     //text sizes
     val normalTextSize = 16.sp
-    val animationTextSize = 50.sp
+    val animationTextSize = 32.sp
 }
