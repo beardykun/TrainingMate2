@@ -8,6 +8,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 data class ExerciseAtWorkState(
     val ongoingTraining: Training? = null,
     val exercise: Exercise? = null,
+    val lastSameExercise: Exercise? = null,
     val exerciseLocal: ExerciseLocal? = null,
     val timerValue: Int = 60,
     val timer: Int = 60,

@@ -32,12 +32,17 @@ class ExerciseAtWorkViewModel(
         _state,
         exerciseDataSource.getExerciseById(exerciseTemplateId),
         trainingHistoryDataSource.getOngoingTraining(),
-        exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId)
-    ) { state, exerciseLocal, ongoingTraining, exercise ->
+        exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId),
+        exerciseHistoryDatasource.getLatsSameExercise(
+            exerciseTemplateId = exerciseTemplateId,
+            trainingHistoryId = trainingId
+        )
+    ) { state, exerciseLocal, ongoingTraining, exercise, lastExercise ->
         state.copy(
             exercise = exercise,
             exerciseLocal = exerciseLocal,
-            ongoingTraining = ongoingTraining
+            ongoingTraining = ongoingTraining,
+            lastSameExercise = lastExercise
         )
     }.stateIn(
         scope = viewModelScope,

@@ -90,4 +90,16 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             exercise_template_id = exerciseTemplateId
         )
     }
+
+    override fun getLatsSameExercise(
+        exerciseTemplateId: Long,
+        trainingHistoryId: Long
+    ): Flow<Exercise?> {
+        return query.getLastSameExercise(
+            exercise_template_id = exerciseTemplateId,
+            training_history_id = trainingHistoryId
+        ).asFlow().map {
+            it.executeAsOneOrNull()?.toExercise()
+        }
+    }
 }

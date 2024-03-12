@@ -10,7 +10,7 @@ fun List<String>.listToString(): String {
 }
 
 fun String.stringToList(): List<String> {
-    return this.split(", ")
+    return this.split(", ").map { it.trim() }.filterNot { it.isEmpty() }
 }
 
 @OptIn(ExperimentalResourceApi::class)

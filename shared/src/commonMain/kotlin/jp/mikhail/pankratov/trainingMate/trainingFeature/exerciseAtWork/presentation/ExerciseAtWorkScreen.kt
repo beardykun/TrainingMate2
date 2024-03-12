@@ -28,6 +28,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
@@ -106,6 +109,11 @@ fun ExerciseAtWorkScreen(
                     textAlign = TextAlign.Center
                 )
             }
+
+            if (state.exercise != null) {
+                ExerciseComparison(lastExercise = state.lastSameExercise, exercise = state.exercise)
+            }
+
             Row(modifier = Modifier.fillMaxWidth()) {
                 InputField(
                     value = state.weight,
@@ -233,6 +241,59 @@ fun CountdownAnimation(
             fontSize = 120.sp, // or whatever size is appropriate
             modifier = Modifier.scale(scale) // applying the scale modifier
         )
+    }
+}
+
+@Composable
+fun ExerciseComparison(lastExercise: Exercise?, exercise: Exercise) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
+            .clip(RoundedCornerShape(percent = 30))
+            .padding(vertical = Dimens.Padding8)
+
+    ) {
+        lastExercise?.let {
+            Card(
+                modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
+                elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextLarge(
+                        text =
+                        stringResource(
+                            SharedRes.strings.last_exercise,
+                            lastExercise.totalLiftedWeight,
+                            lastExercise.sets.size
+                        ),
+                        modifier = Modifier.padding(all = Dimens.Padding8)
+                    )
+                }
+            }
+        }
+
+        Card(
+            modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
+            elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TextLarge(
+                    text =
+                    stringResource(
+                        SharedRes.strings.this_exercise,
+                        exercise.totalLiftedWeight,
+                        exercise.sets.size
+                    ),
+                    modifier = Modifier.padding(all = Dimens.Padding8)
+                )
+            }
+        }
     }
 }
 

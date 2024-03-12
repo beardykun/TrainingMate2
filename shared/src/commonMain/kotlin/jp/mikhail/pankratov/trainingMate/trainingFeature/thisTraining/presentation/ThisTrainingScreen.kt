@@ -15,6 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -54,7 +57,11 @@ fun ThisTrainingScreen(
         Column(
             modifier = Modifier.fillMaxSize().padding(padding)
         ) {
-            TrainingComparison(state)
+            TrainingComparison(
+                lastTraining = state.lastTraining,
+                ongoingTraining = state.ongoingTraining,
+                trainingTime = state.trainingTime
+            )
 
             state.exerciseLocals?.let { exercises ->
                 if (exercises.isEmpty()) {
@@ -119,38 +126,52 @@ fun ThisTrainingScreen(
 }
 
 @Composable
-fun TrainingComparison(state: ThisTrainingState) {
+fun TrainingComparison(lastTraining: Training?, ongoingTraining: Training?, trainingTime: String) {
     Row(
         modifier = Modifier.fillMaxWidth()
             .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
             .clip(RoundedCornerShape(percent = 30))
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(vertical = Dimens.Padding8)
 
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            state.lastTraining?.let { lastTraining ->
-                TextLarge(
-                    stringResource(
-                        SharedRes.strings.last_training_lifted_weight,
-                        lastTraining.totalWeightLifted,
-                        Utils.countTrainingTime(lastTraining)
-                    ),
-                    modifier = Modifier.padding(horizontal = Dimens.Padding16)
-                )
+        lastTraining?.let { lastTraining ->
+            Card(
+                modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
+                elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextLarge(
+                        stringResource(
+                            SharedRes.strings.last_training_lifted_weight,
+                            lastTraining.totalWeightLifted,
+                            Utils.countTrainingTime(lastTraining)
+                        ),
+                        modifier = Modifier.padding(all = Dimens.Padding8)
+                    )
+                }
             }
         }
-
-        Column(modifier = Modifier.weight(1f)) {
-            state.ongoingTraining?.let { ongoingTraining ->
-                TextLarge(
-                    stringResource(
-                        SharedRes.strings.this_training_lifted_weight,
-                        ongoingTraining.totalWeightLifted,
-                        state.trainingTime
-                    ),
-                    modifier = Modifier.padding(horizontal = Dimens.Padding16)
-                )
+        ongoingTraining?.let { ongoingTraining ->
+            Card(
+                modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
+                elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextLarge(
+                        stringResource(
+                            SharedRes.strings.this_training_lifted_weight,
+                            ongoingTraining.totalWeightLifted,
+                            trainingTime
+                        ),
+                        modifier = Modifier.padding(all = Dimens.Padding8)
+                    )
+                }
             }
         }
     }
