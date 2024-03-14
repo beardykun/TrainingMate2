@@ -93,17 +93,24 @@ fun ThisTrainingScreen(
                             }
 
                             is ExerciseListItem.ExerciseItem -> {
-                                ExerciseItem(exerciseLocal = item.exercise, onClick = {
-                                    onEvent(
-                                        ThisTrainingEvent.OnExerciseClick(
-                                            it,
-                                            navigateToExercise = { exerciseId ->
-                                                navigator.navigate(
-                                                    "${Routs.ExerciseScreens.exerciseAtWork}/${state.ongoingTraining?.id}/${exerciseId}"
-                                                )
-                                            })
-                                    )
-                                }, modifier = Modifier.animateItemPlacement())
+                                println("TAGGER ${state.ongoingTraining?.doneExercises}")
+
+                                ExerciseItem(
+                                    exerciseLocal = item.exercise,
+                                    onClick = {
+                                        onEvent(
+                                            ThisTrainingEvent.OnExerciseClick(
+                                                it,
+                                                navigateToExercise = { exerciseId ->
+                                                    navigator.navigate(
+                                                        "${Routs.ExerciseScreens.exerciseAtWork}/${state.ongoingTraining?.id}/${exerciseId}"
+                                                    )
+                                                })
+                                        )
+                                    },
+                                    isDone = state.ongoingTraining?.doneExercises?.contains(item.exercise.name) == true,
+                                    modifier = Modifier.animateItemPlacement()
+                                )
                             }
                         }
                     }

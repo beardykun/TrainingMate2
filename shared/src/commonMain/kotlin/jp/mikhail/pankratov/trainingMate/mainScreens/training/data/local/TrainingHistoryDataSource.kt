@@ -37,6 +37,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             name = training.name,
             groups = training.groups,
             exercises = training.exercises.listToString(),
+            done_exercises = training.doneExercises.listToString(),
             start_time = training.startTime ?: 0,
             end_time = training.endTime ?: 0,
             total_lifted_weight = training.totalWeightLifted,
@@ -56,19 +57,29 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         }
     }
 
-    override suspend fun updateEndTime(trainingId: Long, totalLiftedWeight: Double) {
+    override suspend fun updateEndTime(
+        trainingId: Long,
+        totalLiftedWeight: Double,
+        doneExercised: List<String>
+    ) {
         query.updateEndTime(
             end_time = Clock.System.now().toEpochMilliseconds(),
             id = trainingId,
-            total_lifted_weight = totalLiftedWeight
+            total_lifted_weight = totalLiftedWeight,
+            done_exercises = doneExercised.listToString()
         )
     }
 
-    override suspend fun updateStartTime(trainingId: Long, totalLiftedWeight: Double) {
+    override suspend fun updateStartTime(
+        trainingId: Long,
+        totalLiftedWeight: Double,
+        doneExercised: List<String>
+    ) {
         query.updateStartTime(
             start_time = Clock.System.now().toEpochMilliseconds(),
             id = trainingId,
-            total_lifted_weight = totalLiftedWeight
+            total_lifted_weight = totalLiftedWeight,
+            done_exercises = doneExercised.listToString()
         )
     }
 

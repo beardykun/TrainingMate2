@@ -66,6 +66,7 @@
     <!-- ExerciseItem -->
     <string name="group">Group: %1$s</string>
     <string name="best_weight">Best weight: %1$.2f kg</string>
+    <string name="cd_done_icon">Done icon</string>
 
     <!-- ExerciseAtWorkHistoryScreen -->
     <string name="date">Date: %1$s</string>

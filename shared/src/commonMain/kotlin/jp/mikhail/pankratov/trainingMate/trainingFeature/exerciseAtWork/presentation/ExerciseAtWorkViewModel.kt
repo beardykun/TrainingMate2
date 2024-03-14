@@ -185,8 +185,7 @@ class ExerciseAtWorkViewModel(
 
     private fun updateSets(sets: List<String>, weight: Double) =
         viewModelScope.launch(Dispatchers.IO) {
-            val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
-            updateTrainingTime(trainingId, totalLiftedWeight)
+            updateTrainingTime(trainingId, weight, sets)
 
             val exerciseTotalLifted = (state.value.exercise?.totalLiftedWeight ?: 0.0) + weight
             exerciseHistoryDatasource.updateExerciseSets(
@@ -197,11 +196,30 @@ class ExerciseAtWorkViewModel(
             )
         }
 
-    private suspend fun updateTrainingTime(trainingId: Long, totalLiftedWeight: Double) {
+    private suspend fun updateTrainingTime(trainingId: Long, weight: Double, sets: List<String>) {
+        val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
+        val doneExercises =
+            state.value.ongoingTraining?.doneExercises?.toMutableList() ?: mutableListOf()
+        val exerciseName = state.value.exercise?.name ?: ""
+
+
+        if (!doneExercises.contains(exerciseName) && sets.isNotEmpty()) {
+            doneExercises.add(exerciseName)
+        } else if (doneExercises.contains(exerciseName) && sets.isEmpty()) {
+            doneExercises.remove(exerciseName)
+        }
         if (state.value.ongoingTraining?.startTime == 0L) {
-            trainingHistoryDataSource.updateStartTime(trainingId, totalLiftedWeight)
+            trainingHistoryDataSource.updateStartTime(
+                trainingId = trainingId,
+                totalLiftedWeight = totalLiftedWeight,
+                doneExercised = doneExercises
+            )
         } else {
-            trainingHistoryDataSource.updateEndTime(trainingId, totalLiftedWeight)
+            trainingHistoryDataSource.updateEndTime(
+                trainingId = trainingId,
+                totalLiftedWeight = totalLiftedWeight,
+                doneExercised = doneExercises
+            )
         }
     }
 

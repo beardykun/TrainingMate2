@@ -23,6 +23,7 @@ fun TrainingHistory.toTraining(): Training {
         name = name,
         groups = groups,
         exercises = exercises.stringToList(),
+        doneExercises = done_exercises.stringToList(),
         userId = user_id,
         startTime = start_time,
         endTime = end_time,

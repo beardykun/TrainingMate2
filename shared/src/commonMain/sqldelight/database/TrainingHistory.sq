@@ -5,6 +5,7 @@ CREATE TABLE TrainingHistory (
     name TEXT NOT NULL,
     groups TEXT NOT NULL,
     exercises TEXT NOT NULL,
+    done_exercises TEXT NOT NULL,
     start_time INTEGER NOT NULL,
     end_time INTEGER NOT NULL,
     total_lifted_weight REAL NOT NULL, -- changed to REAL to match Kotlin's Double
@@ -21,11 +22,12 @@ INTO TrainingHistory(
     name,
     groups,
     exercises,
+    done_exercises,
     start_time,
     end_time,
     total_lifted_weight
 )
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 getTrainingRecordById:
 SELECT *
@@ -44,12 +46,12 @@ WHERE status = 'ONGOING';
 
 updateEndTime:
 UPDATE TrainingHistory
-SET end_time = ?, total_lifted_weight = ?
+SET end_time = ?, total_lifted_weight = ?, done_exercises = ?
 WHERE id = ?;
 
 updateStartTime:
 UPDATE TrainingHistory
-SET start_time = ?, total_lifted_weight = ?
+SET start_time = ?, total_lifted_weight = ?, done_exercises = ?
 WHERE id = ?;
 
 updateStatus:
