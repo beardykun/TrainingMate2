@@ -4,7 +4,7 @@ data class Exercise(
     val id: Long? = null, // Unique identifier for the exercise
     val name: String, // Name of the exercise, e.g., "Bench Press"
     val group: String,
-    val sets: List<String> = emptyList(), // List of sets performed in the exercise
+    val sets: List<ExerciseSet> = emptyList(), // List of sets performed in the exercise
     val reps: Int = 0, // List of sets performed in the exercise
     val date: String = "Unknown",
     val trainingHistoryId: Long,

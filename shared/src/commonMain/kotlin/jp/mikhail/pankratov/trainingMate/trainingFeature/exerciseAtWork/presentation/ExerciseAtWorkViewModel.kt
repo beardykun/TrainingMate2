@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
@@ -105,10 +106,9 @@ class ExerciseAtWorkViewModel(
             }
 
             is ExerciseAtWorkEvent.OnSetDelete -> {
-                state.value.deleteItem?.let {
-                    val sets = state.value.exercise?.sets?.minus(it) ?: emptyList()
-                    val setData = it.split(SET_DIVIDER)
-                    val minusWeight = setData.first().toDouble() * setData.last().toInt()
+                state.value.deleteItem?.let { deleteItem ->
+                    val sets = state.value.exercise?.sets?.minus(deleteItem) ?: emptyList()
+                    val minusWeight = deleteItem.weight.toDouble() * deleteItem.reps.toInt()
                     updateSets(sets, -minusWeight)
                 }
                 _state.update {
@@ -150,7 +150,7 @@ class ExerciseAtWorkViewModel(
     private fun handleAddSetEvent() {
         if (invalidInput()) return
 
-        val newInput = "${state.value.weight.text}$SET_DIVIDER${state.value.reps.text}"
+        val newInput = ExerciseSet(weight = state.value.weight.text, reps = state.value.reps.text)
         val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
 
         updateBestLiftedWeightIfNeeded(state.value.weight.text.toDouble())
@@ -185,7 +185,7 @@ class ExerciseAtWorkViewModel(
         }
     }
 
-    private fun updateSets(sets: List<String>, weight: Double) =
+    private fun updateSets(sets: List<ExerciseSet>, weight: Double) =
         viewModelScope.launch(Dispatchers.IO) {
             updateTrainingTime(trainingId, weight, sets)
 
@@ -199,7 +199,11 @@ class ExerciseAtWorkViewModel(
             )
         }
 
-    private suspend fun updateTrainingTime(trainingId: Long, weight: Double, sets: List<String>) {
+    private suspend fun updateTrainingTime(
+        trainingId: Long,
+        weight: Double,
+        sets: List<ExerciseSet>
+    ) {
         val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
         val doneExercises =
             state.value.ongoingTraining?.doneExercises?.toMutableList() ?: mutableListOf()

@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 import androidx.compose.ui.text.input.TextFieldValue
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
 data class ExerciseAtWorkState(
@@ -18,6 +19,6 @@ data class ExerciseAtWorkState(
     val errorReps: String? = null,
     val errorWeight: String? = null,
     val isDeleteDialogVisible: Boolean = false,
-    val deleteItem: String? = null,
+    val deleteItem: ExerciseSet? = null,
     val isAnimating: Boolean = false
 )

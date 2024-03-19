@@ -20,16 +20,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 
 @Composable
 fun AnimatedTextSizeItem(
-    text: String,
+    set: ExerciseSet,
     targetSize: TextUnit = Dimens.normalTextSize,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     modifier: Modifier,
     isAnimating: Boolean
 ) {
-    AnimatedVisibility(visible = text.isNotBlank()) {
+    AnimatedVisibility(visible = set.weight.isNotBlank()) {
         // Remember animatable to animate font size
         val size = if (isAnimating) Dimens.animationTextSize.value else Dimens.normalTextSize.value
         val animatedFontSize = remember { Animatable(initialValue = size) }
@@ -49,7 +50,7 @@ fun AnimatedTextSizeItem(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
             modifier = modifier.pointerInput(Unit) {
                 detectTapGestures(onLongPress = {
-                    onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, text))
+                    onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, set))
                 })
             }
                 .padding(all = Dimens.Padding16)
@@ -59,7 +60,7 @@ fun AnimatedTextSizeItem(
             // Text composable with animated fontSize
             Box(modifier = Modifier.padding(all = Dimens.Padding8)) {
                 Text(
-                    text = text,
+                    text = "${set.weight} * ${set.reps}" ,
                     style = TextStyle(
                         fontSize = animatedFontSize.value.sp,
                         textAlign = TextAlign.Center

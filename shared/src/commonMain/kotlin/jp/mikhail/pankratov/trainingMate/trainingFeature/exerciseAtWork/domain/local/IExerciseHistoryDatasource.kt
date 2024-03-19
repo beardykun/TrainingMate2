@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import kotlinx.coroutines.flow.Flow
 
 interface IExerciseHistoryDatasource {
@@ -11,11 +12,12 @@ interface IExerciseHistoryDatasource {
     fun countExerciseInHistory(trainingHistoryId: Long, exerciseTemplateId: Long): Flow<Long>
     suspend fun insertExerciseHistory(exercise: Exercise)
     suspend fun updateExerciseSets(
-        sets: List<String>,
+        sets: List<ExerciseSet>,
         totalLiftedWeight: Double,
         trainingHistoryId: Long,
         exerciseTemplateId: Long,
         reps: Int
     )
+
     fun getLatsSameExercise(exerciseTemplateId: Long, trainingHistoryId: Long): Flow<Exercise?>
 }

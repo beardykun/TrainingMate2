@@ -5,6 +5,7 @@ import database.ExerciseTemplate
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.stringToList
+import jp.mikhail.pankratov.trainingMate.core.stringToSetList
 
 fun ExerciseTemplate.toExerciseLocal(): ExerciseLocal {
     return ExerciseLocal(
@@ -24,7 +25,7 @@ fun ExerciseHistory.toExercise(): Exercise {
         group = exercise_group,
         trainingHistoryId = training_history_id,
         trainingTemplateId = training_template_id,
-        sets = sets.stringToList(),
+        sets = sets.stringToSetList(),
         date = date,
         exerciseTemplateId = exercise_template_id,
         totalLiftedWeight = total_lifted_weight

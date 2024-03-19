@@ -333,13 +333,6 @@ class AppViewModel(
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
-                name = "Wide grip lat pull-down",
-                group = DatabaseContract.BACK_GROUP,
-                image = "wide_grip_lat_pulldown"
-            )
-        )
-        exerciseDataSource.insertExercise(
-            ExerciseLocal(
                 name = "One arm dumbbell row",
                 group = DatabaseContract.BACK_GROUP,
                 image = "one_arm_dumbbell_row"

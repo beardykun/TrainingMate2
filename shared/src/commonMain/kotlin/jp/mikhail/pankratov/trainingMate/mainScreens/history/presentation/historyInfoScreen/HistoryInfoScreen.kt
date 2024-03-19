@@ -145,7 +145,7 @@ fun ExerciseHistoryItem(exercise: Exercise, modifier: Modifier) {
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             exercise.sets.forEach { set ->
-                TextMedium(text = set)
+                TextMedium(text = "${set.weight} * ${set.reps}")
             }
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextMedium(

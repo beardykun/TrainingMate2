@@ -155,7 +155,7 @@ fun ExerciseAtWorkScreen(
                 LazyVerticalGrid(columns = GridCells.Fixed(count = 3)) {
                     items(sets) { item ->
                         AnimatedTextSizeItem(
-                            text = item,
+                            set = item,
                             onEvent = onEvent,
                             isAnimating = state.isAnimating,
                             modifier = Modifier

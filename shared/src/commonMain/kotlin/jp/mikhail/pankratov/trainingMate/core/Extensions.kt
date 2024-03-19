@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.core
 
 import androidx.compose.runtime.Composable
 import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
 
@@ -12,6 +13,19 @@ fun List<String>.listToString(): String {
 
 fun String.stringToList(): List<String> {
     return this.split(", ").map { it.trim() }.filterNot { it.isEmpty() }
+}
+
+fun List<ExerciseSet>.setListToString(): String {
+    return this.filterNot { it.weight.isEmpty() }.joinToString(separator = ", ") {
+        "${it.weight};${it.reps};${it.difficulty}"
+    }
+}
+
+fun String.stringToSetList(): List<ExerciseSet> {
+    return this.split(", ").map { it.trim() }.filterNot { it.isEmpty() }.map {
+        val (weight, reps, difficulty) = it.split(";")
+        ExerciseSet(weight = weight, reps = reps, difficulty = difficulty)
+    }
 }
 
 @Composable

@@ -3,7 +3,8 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.lo
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
-import jp.mikhail.pankratov.trainingMate.core.listToString
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.setListToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.toExercise
@@ -67,7 +68,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         query.insertExerciseHistory(
             id = exercise.id,
             name = exercise.name,
-            sets = exercise.sets.listToString(),
+            sets = exercise.sets.setListToString(),
             reps = exercise.reps.toLong(),
             date = exercise.date,
             exercise_group = exercise.group,
@@ -79,14 +80,14 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
     }
 
     override suspend fun updateExerciseSets(
-        sets: List<String>,
+        sets: List<ExerciseSet>,
         totalLiftedWeight: Double,
         trainingHistoryId: Long,
         exerciseTemplateId: Long,
         reps: Int
     ) {
         query.updateExerciseSets(
-            sets = sets.listToString(),
+            sets = sets.setListToString(),
             total_lifted_weight = totalLiftedWeight,
             training_history_id = trainingHistoryId,
             exercise_template_id = exerciseTemplateId,

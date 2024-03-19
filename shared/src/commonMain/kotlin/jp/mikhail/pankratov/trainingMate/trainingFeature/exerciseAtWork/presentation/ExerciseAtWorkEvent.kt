@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 
 sealed class ExerciseAtWorkEvent {
     data object OnTimerStart : ExerciseAtWorkEvent()
@@ -12,6 +13,6 @@ sealed class ExerciseAtWorkEvent {
     data class OnRepsChanged(val newReps: TextFieldValue) : ExerciseAtWorkEvent()
     data object OnSetDelete : ExerciseAtWorkEvent()
     data object OnAnimationSeen : ExerciseAtWorkEvent()
-    data class OnDisplayDeleteDialog(val display: Boolean = false, val item: String? = null) :
+    data class OnDisplayDeleteDialog(val display: Boolean = false, val item: ExerciseSet? = null) :
         ExerciseAtWorkEvent()
 }
