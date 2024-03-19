@@ -14,7 +14,8 @@ interface IExerciseHistoryDatasource {
         sets: List<String>,
         totalLiftedWeight: Double,
         trainingHistoryId: Long,
-        exerciseTemplateId: Long
+        exerciseTemplateId: Long,
+        reps: Int
     )
     fun getLatsSameExercise(exerciseTemplateId: Long, trainingHistoryId: Long): Flow<Exercise?>
 }

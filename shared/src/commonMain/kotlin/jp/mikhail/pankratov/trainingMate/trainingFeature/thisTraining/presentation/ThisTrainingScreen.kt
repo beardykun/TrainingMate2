@@ -93,8 +93,6 @@ fun ThisTrainingScreen(
                             }
 
                             is ExerciseListItem.ExerciseItem -> {
-                                println("TAGGER ${state.ongoingTraining?.doneExercises}")
-
                                 ExerciseItem(
                                     exerciseLocal = item.exercise,
                                     onClick = {

@@ -38,6 +38,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             groups = training.groups,
             exercises = training.exercises.listToString(),
             done_exercises = training.doneExercises.listToString(),
+            total_sets = training.totalSets.toLong(),
+            total_reps = training.totalReps.toLong(),
             start_time = training.startTime ?: 0,
             end_time = training.endTime ?: 0,
             total_lifted_weight = training.totalWeightLifted,
@@ -60,13 +62,17 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     override suspend fun updateEndTime(
         trainingId: Long,
         totalLiftedWeight: Double,
-        doneExercised: List<String>
+        doneExercised: List<String>,
+        sets: Int,
+        reps: Int
     ) {
         query.updateEndTime(
             end_time = Clock.System.now().toEpochMilliseconds(),
             id = trainingId,
             total_lifted_weight = totalLiftedWeight,
-            done_exercises = doneExercised.listToString()
+            done_exercises = doneExercised.listToString(),
+            total_sets = sets.toLong(),
+            total_reps = reps.toLong()
         )
     }
 

@@ -1,0 +1,58 @@
+CREATE TABLE IF NOT EXISTS WeeklySummary (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    week_number INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    training_duration INTEGER NOT NULL, -- Total duration spent on training activities during the week (in minutes)
+    total_lifted_weight REAL NOT NULL, -- Sum of the weights lifted across all exercises during the week
+    num_workouts INTEGER NOT NULL, -- Total number of training sessions completed during the week
+    num_exercises INTEGER NOT NULL, -- Total number of unique exercises performed during the week
+    num_sets INTEGER NOT NULL,
+    num_reps INTEGER NOT NULL,
+    avg_duration_per_workout REAL NOT NULL, -- Average duration of each training session during the week (in minutes)
+    avg_lifted_weight_per_exercise REAL NOT NULL, -- Average weight lifted per exercise during the week
+    -- intensity_distribution TEXT, -- Distribution of training intensity levels across workouts during the week
+    -- calories_burned INTEGER, -- Estimated calories burned during training sessions throughout the week
+    -- progress_metrics TEXT, -- Specific progress metrics tracked by the user
+    UNIQUE(week_number, year) -- Ensure uniqueness for each week in a year
+);
+
+insertWeeklySummary:
+INSERT OR IGNORE
+INTO WeeklySummary(
+id,
+week_number,
+year,
+training_duration,
+total_lifted_weight,
+num_workouts,
+num_exercises,
+num_sets,
+num_reps,
+avg_duration_per_workout,
+avg_lifted_weight_per_exercise
+)
+VALUES(?,?,?,?,?,?,?,?,?,?,?);
+
+updateWeeklyDuration:
+UPDATE WeeklySummary
+SET
+    num_workouts = num_workouts + 1,
+    training_duration = training_duration + ?,
+    avg_duration_per_workout = (training_duration + ?) / (num_workouts + 1)
+WHERE week_number = ? AND year = ?;
+
+updateWeeklyTotalWeight:
+UPDATE WeeklySummary
+SET
+    num_exercises = num_exercises + ?,
+    num_sets = num_sets + ?,
+    num_reps = num_reps + ?,
+    total_lifted_weight = total_lifted_weight + ?,
+    avg_lifted_weight_per_exercise = (total_lifted_weight + ?) / (num_exercises + ?)
+WHERE week_number = ? AND year = ?;
+
+getWeeklySummary:
+SELECT *
+FROM WeeklySummary
+WHERE year =? AND week_number = ?;
+

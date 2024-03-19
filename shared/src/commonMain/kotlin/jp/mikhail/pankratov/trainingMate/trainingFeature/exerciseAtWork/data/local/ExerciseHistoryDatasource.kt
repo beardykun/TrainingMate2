@@ -68,6 +68,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             id = exercise.id,
             name = exercise.name,
             sets = exercise.sets.listToString(),
+            reps = exercise.reps.toLong(),
             date = exercise.date,
             exercise_group = exercise.group,
             training_history_id = exercise.trainingHistoryId,
@@ -81,13 +82,15 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         sets: List<String>,
         totalLiftedWeight: Double,
         trainingHistoryId: Long,
-        exerciseTemplateId: Long
+        exerciseTemplateId: Long,
+        reps: Int
     ) {
         query.updateExerciseSets(
             sets = sets.listToString(),
             total_lifted_weight = totalLiftedWeight,
             training_history_id = trainingHistoryId,
-            exercise_template_id = exerciseTemplateId
+            exercise_template_id = exerciseTemplateId,
+            reps = reps.toLong()
         )
     }
 

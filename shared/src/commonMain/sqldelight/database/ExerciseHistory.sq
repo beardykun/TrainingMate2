@@ -2,6 +2,7 @@ CREATE TABLE ExerciseHistory (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       sets TEXT NOT NULL,
+      reps INTEGER NOT NULL,
       date TEXT NOT NULL,
       exercise_group TEXT NOT NULL,
       training_history_id INTEGER NOT NULL,
@@ -40,7 +41,7 @@ ORDER BY id DESC;
 
 updateExerciseSets:
 UPDATE ExerciseHistory
-SET sets = ?, total_lifted_weight = ?
+SET sets = ?, total_lifted_weight = ?, reps = ?
 WHERE training_history_id = ? AND exercise_template_id = ?;
 
 getLastSameExercise:
@@ -61,6 +62,7 @@ INTO ExerciseHistory(
 id,
 name,
 sets,
+reps,
 date,
 exercise_group,
 training_history_id,
@@ -68,4 +70,4 @@ training_template_id,
 exercise_template_id,
 total_lifted_weight
 )
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?,?);

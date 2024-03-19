@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,7 @@ private const val SET_DIVIDER = " x "
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
+    private val summaryDatasource: ISummaryDatasource,
     private val exerciseDataSource: IExerciseDatasource,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
@@ -193,6 +195,7 @@ class ExerciseAtWorkViewModel(
                 totalLiftedWeight = exerciseTotalLifted,
                 trainingHistoryId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
+                reps = state.value.reps.text.toInt()
             )
         }
 
@@ -215,10 +218,13 @@ class ExerciseAtWorkViewModel(
                 doneExercised = doneExercises
             )
         } else {
+
             trainingHistoryDataSource.updateEndTime(
                 trainingId = trainingId,
                 totalLiftedWeight = totalLiftedWeight,
-                doneExercised = doneExercises
+                doneExercised = doneExercises,
+                sets = sets.size,
+                reps = state.value.reps.text.toInt()
             )
         }
     }

@@ -6,6 +6,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLoca
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
@@ -26,7 +27,8 @@ import kotlin.time.Duration.Companion.seconds
 class ThisTrainingViewModel(
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
     private val exerciseDatasource: IExerciseDatasource,
-    private val exerciseHistoryDatasource: IExerciseHistoryDatasource
+    private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
+    private val summaryDatasource: ISummaryDatasource
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
@@ -48,7 +50,7 @@ class ThisTrainingViewModel(
         newState
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(3000L),
+        started = SharingStarted.WhileSubscribed(1000L),
         ThisTrainingState()
     )
 
@@ -114,6 +116,20 @@ class ThisTrainingViewModel(
                 return@let
             }
             trainingHistoryDataSource.updateStatus(trainingId = ongoingTrainingId)
+            updateSummaries()
+        }
+    }
+
+    private suspend fun updateSummaries() {
+        state.value.ongoingTraining?.let { ongoingTraining ->
+            val duration = Utils.trainingLengthToMin(ongoingTraining)
+            summaryDatasource.updateDuration(additionalDuration = duration)
+            summaryDatasource.updateTotalWeight(
+                additionalWeight = ongoingTraining.totalWeightLifted,
+                numExercises = ongoingTraining.doneExercises.size,
+                numSets = ongoingTraining.totalSets,
+                numReps = ongoingTraining.totalReps
+            )
         }
     }
 

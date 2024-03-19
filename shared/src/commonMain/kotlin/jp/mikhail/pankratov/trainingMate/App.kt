@@ -233,7 +233,8 @@ fun NavHost(navigator: Navigator, appModule: AppModule) {
                 factory = viewModelFactory {
                     TrainingViewModel(
                         trainingDataSource = appModule.trainingDataSource,
-                        trainingHistoryDataSource = appModule.trainingHistoryDataSource
+                        trainingHistoryDataSource = appModule.trainingHistoryDataSource,
+                        summaryDataSource = appModule.summaryDataSource
                     )
                 })
 
@@ -336,6 +337,7 @@ private fun RouteBuilder.trainingScreens(
                         trainingHistoryDataSource = appModule.trainingHistoryDataSource,
                         exerciseDatasource = appModule.exerciseDataSource,
                         exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
+                        summaryDatasource = appModule.summaryDataSource
                     )
                 }
             )
@@ -401,6 +403,7 @@ private fun RouteBuilder.trainingScreens(
                     ExerciseAtWorkViewModel(
                         exerciseHistoryDatasource = appModule.exerciseHistoryDataSource,
                         trainingHistoryDataSource = appModule.trainingHistoryDataSource,
+                        summaryDatasource = appModule.summaryDataSource,
                         exerciseDataSource = appModule.exerciseDataSource,
                         trainingId = trainingId,
                         exerciseTemplateId = exerciseTemplateId,

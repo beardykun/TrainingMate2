@@ -5,6 +5,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,8 @@ import kotlinx.datetime.Clock
 
 class TrainingViewModel(
     private val trainingDataSource: ITrainingDataSource,
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource
+    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
+    private val summaryDataSource: ISummaryDatasource
 ) : ViewModel() {
 
     private val motivationalPhrases = listOf(
@@ -53,19 +55,37 @@ class TrainingViewModel(
         "It always seems impossible until it's done."
     )
 
+    private val summaries =
+        combine(
+            summaryDataSource.getMonthlySummary(),
+            summaryDataSource.getWeeklySummary()
+        ) { monthly, weekly ->
+            Pair(monthly, weekly)
+        }
+
+    private val trainingData = combine(
+        trainingDataSource.getTrainings(),
+        trainingHistoryDataSource.getOngoingTraining(),
+        trainingHistoryDataSource.getLatestHistoryTrainings()
+    ) { trainings, ongoingTraining, trainingsHistory ->
+        Triple(trainings, ongoingTraining, trainingsHistory)
+    }
 
     private val _state = MutableStateFlow(TrainingScreenState())
     val state = combine(
         _state,
-        trainingDataSource.getTrainings(),
-        trainingHistoryDataSource.getOngoingTraining(),
-        trainingHistoryDataSource.getLatestHistoryTrainings()
-    ) { state, trainings, ongoingTraining, trainingsHistory ->
+        trainingData,
+        summaries
+    ) { state, trainingData, summaries ->
+        val (trainings, ongoingTraining, trainingsHistory) = trainingData
+        val (monthly, weekly) = summaries
         state.copy(
             availableTrainings = trainings,
             greeting = motivationalPhrases.random(),
             ongoingTraining = ongoingTraining,
-            lastTrainings = trainingsHistory
+            lastTrainings = trainingsHistory,
+            monthlySummary = monthly,
+            weeklySummary = weekly
         )
     }.stateIn(
         scope = viewModelScope,
@@ -169,6 +189,7 @@ class TrainingViewModel(
                 exercises = training.exercises
             )
         )
+        summaryDataSource.insetSummary()
     }
 
     private suspend fun finishLastTrainingWhenStartingNew() {

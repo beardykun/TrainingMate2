@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
+import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
@@ -62,6 +64,19 @@ fun TrainingScreen(
             verticalArrangement = Arrangement.spacedBy(Dimens.Padding16)
         ) {
             TextLarge(text = state.greeting)
+
+            if (state.lastTrainings?.isNotEmpty() == true) {
+                TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
+                val lastTraining = state.lastTrainings.last()
+                TrainingItem(
+                    training = lastTraining,
+                    onClick = {
+                        navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
+                    },
+                    onDeleteClick = {
+                        onEvent(TrainingScreenEvent.OnLastTrainingDelete(lastTraining.id!!))
+                    })
+            }
 
             state.ongoingTraining?.let { ongoingTraining ->
                 TextLarge(text = stringResource(SharedRes.strings.current_training).uppercase())
@@ -115,18 +130,9 @@ fun TrainingScreen(
                     }
                 }
             }
-
-            if (state.lastTrainings?.isNotEmpty() == true) {
-                TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
-                val lastTraining = state.lastTrainings.last()
-                TrainingItem(
-                    training = lastTraining,
-                    onClick = {
-                        navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
-                    },
-                    onDeleteClick = {
-                        onEvent(TrainingScreenEvent.OnLastTrainingDelete(lastTraining.id!!))
-                    })
+            if (state.monthlySummary != null && state.weeklySummary != null) {
+                SummaryMonthly(state.monthlySummary)
+                SummaryWeekly(state.weeklySummary)
             }
 
             MaterialTheme.colorScheme.apply {
@@ -216,6 +222,16 @@ fun TrainingScreen(
             }
         }
     }
+}
+
+@Composable
+fun SummaryWeekly(weeklySummary: WeeklySummary) {
+    TextMedium(text = weeklySummary.toString())
+}
+
+@Composable
+fun SummaryMonthly(monthlySummary: MonthlySummary) {
+    TextMedium(text = monthlySummary.toString())
 }
 
 data class ColorEntry(
