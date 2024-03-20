@@ -12,3 +12,7 @@ data class Exercise(
     val exerciseTemplateId: Long,
     val totalLiftedWeight: Double = 0.0
 )
+
+enum class SetDifficulty {
+    Light, Medium, Hard
+}

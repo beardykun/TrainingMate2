@@ -33,22 +33,17 @@ avg_lifted_weight_per_exercise
 )
 VALUES(?,?,?,?,?,?,?,?,?,?,?);
 
-updateWeeklyDuration:
-UPDATE WeeklySummary
-SET
-    num_workouts = num_workouts + 1,
-    training_duration = training_duration + ?,
-    avg_duration_per_workout = (training_duration + ?) / (num_workouts + 1)
-WHERE week_number = ? AND year = ?;
-
-updateWeeklyTotalWeight:
+updateWeeklySummary:
 UPDATE WeeklySummary
 SET
     num_exercises = num_exercises + ?,
     num_sets = num_sets + ?,
     num_reps = num_reps + ?,
     total_lifted_weight = total_lifted_weight + ?,
-    avg_lifted_weight_per_exercise = (total_lifted_weight + ?) / (num_exercises + ?)
+    avg_lifted_weight_per_exercise = (total_lifted_weight + ?) / (num_exercises + ?),
+    num_workouts = num_workouts + 1,
+    training_duration = training_duration + ?,
+    avg_duration_per_workout = (training_duration + ?) / (num_workouts + 1)
 WHERE week_number = ? AND year = ?;
 
 getWeeklySummary:

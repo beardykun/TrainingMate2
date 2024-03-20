@@ -4,6 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
 data class ExerciseAtWorkState(
@@ -20,5 +21,6 @@ data class ExerciseAtWorkState(
     val errorWeight: String? = null,
     val isDeleteDialogVisible: Boolean = false,
     val deleteItem: ExerciseSet? = null,
-    val isAnimating: Boolean = false
+    val isAnimating: Boolean = false,
+    val setDifficulty: String = SetDifficulty.Light.name
 )

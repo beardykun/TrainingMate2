@@ -123,8 +123,8 @@ class ThisTrainingViewModel(
     private suspend fun updateSummaries() {
         state.value.ongoingTraining?.let { ongoingTraining ->
             val duration = Utils.trainingLengthToMin(ongoingTraining)
-            summaryDatasource.updateDuration(additionalDuration = duration)
-            summaryDatasource.updateTotalWeight(
+            summaryDatasource.updateSummaries(
+                additionalDuration = duration,
                 additionalWeight = ongoingTraining.totalWeightLifted,
                 numExercises = ongoingTraining.doneExercises.size,
                 numSets = ongoingTraining.totalSets,

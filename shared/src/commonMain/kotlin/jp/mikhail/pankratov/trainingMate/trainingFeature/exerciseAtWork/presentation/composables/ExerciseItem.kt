@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
+package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables
 
 import Dimens
 import androidx.compose.foundation.Image

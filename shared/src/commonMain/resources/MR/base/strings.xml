@@ -70,6 +70,9 @@
 
     <!-- ExerciseAtWorkHistoryScreen -->
     <string name="date">Date: %1$s</string>
+    <string name="light">Light</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
 
     <!-- AnalysisScreen -->
     <string name="select_exercise">Select Exercise</string>

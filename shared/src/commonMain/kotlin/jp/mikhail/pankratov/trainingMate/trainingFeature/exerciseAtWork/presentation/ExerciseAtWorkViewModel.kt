@@ -144,13 +144,25 @@ class ExerciseAtWorkViewModel(
                     )
                 }
             }
+
+            is ExerciseAtWorkEvent.OnSetDifficultySelected -> {
+                _state.update {
+                    it.copy(
+                        setDifficulty = event.difficulty
+                    )
+                }
+            }
         }
     }
 
     private fun handleAddSetEvent() {
         if (invalidInput()) return
 
-        val newInput = ExerciseSet(weight = state.value.weight.text, reps = state.value.reps.text)
+        val newInput = ExerciseSet(
+            weight = state.value.weight.text,
+            reps = state.value.reps.text,
+            difficulty = state.value.setDifficulty
+        )
         val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
 
         updateBestLiftedWeightIfNeeded(state.value.weight.text.toDouble())

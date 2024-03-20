@@ -15,4 +15,5 @@ sealed class ExerciseAtWorkEvent {
     data object OnAnimationSeen : ExerciseAtWorkEvent()
     data class OnDisplayDeleteDialog(val display: Boolean = false, val item: ExerciseSet? = null) :
         ExerciseAtWorkEvent()
+    data class OnSetDifficultySelected(val difficulty: String) : ExerciseAtWorkEvent()
 }

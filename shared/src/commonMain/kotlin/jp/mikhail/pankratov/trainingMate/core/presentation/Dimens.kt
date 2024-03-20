@@ -33,7 +33,7 @@ object Dimens {
     val standardIcon = 24.dp
     val timerIcon = 60.dp
 
-    val historyFabPadding = 256.dp
+    val historyFabPadding = 128.dp
 
     //text sizes
     val normalTextSize = 16.sp

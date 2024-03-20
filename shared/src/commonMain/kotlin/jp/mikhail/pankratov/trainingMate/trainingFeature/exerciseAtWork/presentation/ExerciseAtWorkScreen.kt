@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
@@ -61,6 +62,8 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Dro
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
 import moe.tlaster.precompose.navigation.Navigator
 
 
@@ -114,43 +117,20 @@ fun ExerciseAtWorkScreen(
                 ExerciseComparison(lastExercise = state.lastSameExercise, exercise = state.exercise)
             }
 
-            Row(modifier = Modifier.fillMaxWidth()) {
-                InputField(
-                    value = state.weight,
-                    placeholder = stringResource(SharedRes.strings.select_weight),
-                    label = stringResource(SharedRes.strings.weight),
-                    onValueChanged = { value ->
-                        onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
-                    },
-                    keyboardType = KeyboardType.Decimal,
-                    isError = state.errorWeight != null,
-                    errorText = getErrorMessage(state.errorWeight),
-                    keyboardActions = KeyboardActions(onDone = {
-                        focus.clearFocus()
-                    }),
-                    modifier = Modifier.weight(1f)
-                        .focusRequester(focusRequesterWeight)
-                        .onFocusChanged(onFocusChangedWeight)
-                )
-                Spacer(modifier = Modifier.padding(Dimens.Padding32))
-                InputField(
-                    value = state.reps,
-                    placeholder = stringResource(SharedRes.strings.select_reps),
-                    label = stringResource(SharedRes.strings.reps),
-                    onValueChanged = { value ->
-                        onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
-                    },
-                    keyboardType = KeyboardType.Number,
-                    isError = state.errorReps != null,
-                    errorText = getErrorMessage(state.errorReps),
-                    keyboardActions = KeyboardActions(onDone = {
-                        focus.clearFocus()
-                    }),
-                    modifier = Modifier.weight(1f)
-                        .focusRequester(focusRequesterReps)
-                        .onFocusChanged(onFocusChangedReps)
-                )
-            }
+            InputFields(
+                state = state,
+                onEvent = onEvent,
+                focus = focus,
+                focusRequesterWeight = focusRequesterWeight,
+                onFocusChangedWeight = onFocusChangedWeight,
+                focusRequesterReps = focusRequesterReps,
+                onFocusChangedReps = onFocusChangedReps
+            )
+
+            DifficultySelection(selected = state.setDifficulty, onSelect = { difficulty ->
+                onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
+            })
+
             state.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = 3)) {
                     items(sets) { item ->
@@ -218,6 +198,55 @@ fun ExerciseAtWorkScreen(
                 CountdownAnimation(currentTimerValue = state.timer)
             }
         }
+    }
+}
+
+@Composable
+fun InputFields(
+    state: ExerciseAtWorkState,
+    onEvent: (ExerciseAtWorkEvent) -> Unit,
+    focus: FocusManager,
+    focusRequesterWeight: FocusRequester,
+    onFocusChangedWeight: (FocusState) -> Unit,
+    focusRequesterReps: FocusRequester,
+    onFocusChangedReps: (FocusState) -> Unit
+) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        InputField(
+            value = state.weight,
+            placeholder = stringResource(SharedRes.strings.select_weight),
+            label = stringResource(SharedRes.strings.weight),
+            onValueChanged = { value ->
+                onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
+            },
+            keyboardType = KeyboardType.Decimal,
+            isError = state.errorWeight != null,
+            errorText = getErrorMessage(state.errorWeight),
+            keyboardActions = KeyboardActions(onDone = {
+                focus.clearFocus()
+            }),
+            modifier = Modifier.weight(1f)
+                .focusRequester(focusRequesterWeight)
+                .onFocusChanged(onFocusChangedWeight)
+        )
+        Spacer(modifier = Modifier.padding(Dimens.Padding32))
+        InputField(
+            value = state.reps,
+            placeholder = stringResource(SharedRes.strings.select_reps),
+            label = stringResource(SharedRes.strings.reps),
+            onValueChanged = { value ->
+                onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
+            },
+            keyboardType = KeyboardType.Number,
+            isError = state.errorReps != null,
+            errorText = getErrorMessage(state.errorReps),
+            keyboardActions = KeyboardActions(onDone = {
+                focus.clearFocus()
+            }),
+            modifier = Modifier.weight(1f)
+                .focusRequester(focusRequesterReps)
+                .onFocusChanged(onFocusChangedReps)
+        )
     }
 }
 
@@ -296,6 +325,7 @@ fun ExerciseComparison(lastExercise: Exercise?, exercise: Exercise) {
         }
     }
 }
+
 
 
 

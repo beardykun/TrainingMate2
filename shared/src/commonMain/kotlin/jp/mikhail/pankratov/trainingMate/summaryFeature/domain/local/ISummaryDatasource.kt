@@ -8,11 +8,11 @@ interface ISummaryDatasource {
     suspend fun insetSummary()
     fun getWeeklySummary(): Flow<WeeklySummary?>
     fun getMonthlySummary(): Flow<MonthlySummary?>
-    suspend fun updateTotalWeight(
+    suspend fun updateSummaries(
+        additionalDuration: Double,
         additionalWeight: Double,
         numExercises: Int,
         numSets: Int,
         numReps: Int
     )
-    suspend fun updateDuration(additionalDuration: Double)
 }

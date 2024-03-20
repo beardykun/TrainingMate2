@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
+package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
@@ -15,12 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
 
 @Composable
 fun AnimatedTextSizeItem(
@@ -45,22 +48,27 @@ fun AnimatedTextSizeItem(
                 onEvent(ExerciseAtWorkEvent.OnAnimationSeen)
             }
         }
+        val textColor = when (set.difficulty) {
+            SetDifficulty.Light.name -> Color(0xFFE8F5E9)
+            SetDifficulty.Medium.name -> Color(0xFFFFF9C4)
+            SetDifficulty.Hard.name -> Color(0xFFFFEBEE)
+            else -> Color.Unspecified
+        }
 
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
+            colors = CardDefaults.cardColors(containerColor = textColor),
             modifier = modifier.pointerInput(Unit) {
                 detectTapGestures(onLongPress = {
                     onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, set))
                 })
-            }
-                .padding(all = Dimens.Padding16)
+            }.padding(all = Dimens.Padding16)
 
         ) {
-
             // Text composable with animated fontSize
             Box(modifier = Modifier.padding(all = Dimens.Padding8)) {
                 Text(
-                    text = "${set.weight} * ${set.reps}" ,
+                    text = "${set.weight} x ${set.reps}",
                     style = TextStyle(
                         fontSize = animatedFontSize.value.sp,
                         textAlign = TextAlign.Center

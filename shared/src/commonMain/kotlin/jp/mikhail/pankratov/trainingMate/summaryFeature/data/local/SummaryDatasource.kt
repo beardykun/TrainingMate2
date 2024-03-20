@@ -85,33 +85,18 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             }
     }
 
-    override suspend fun updateDuration(
-        additionalDuration: Double
-    ) {
-        monthlyQuery.updateMonthlyDuration(
-            year = currentYear,
-            month_number = currentMonthNumber,
-            training_duration = additionalDuration.toLong(),
-            training_duration_ = additionalDuration.toLong()
-        )
-
-        weeklyQuery.updateWeeklyDuration(
-            year = currentYear,
-            week_number = currentWeekNumber,
-            training_duration = additionalDuration.toLong(),
-            training_duration_ = additionalDuration.toLong()
-        )
-    }
-
-    override suspend fun updateTotalWeight(
+    override suspend fun updateSummaries(
+        additionalDuration: Double,
         additionalWeight: Double,
         numExercises: Int,
         numSets: Int,
         numReps: Int
     ) {
-        monthlyQuery.updateMonthlyTotalWeight(
+        monthlyQuery.updateMonthlySummary(
             year = currentYear,
             month_number = currentMonthNumber,
+            training_duration = additionalDuration.toLong(),
+            training_duration_ = additionalDuration.toLong(),
             total_lifted_weight = additionalWeight,
             total_lifted_weight_ = additionalWeight,
             num_exercises = numExercises.toLong(),
@@ -119,9 +104,12 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             num_sets = numSets.toLong(),
             num_reps = numReps.toLong()
         )
-        weeklyQuery.updateWeeklyTotalWeight(
+
+        weeklyQuery.updateWeeklySummary(
             year = currentYear,
             week_number = currentWeekNumber,
+            training_duration = additionalDuration.toLong(),
+            training_duration_ = additionalDuration.toLong(),
             total_lifted_weight = additionalWeight,
             total_lifted_weight_ = additionalWeight,
             num_exercises = numExercises.toLong(),

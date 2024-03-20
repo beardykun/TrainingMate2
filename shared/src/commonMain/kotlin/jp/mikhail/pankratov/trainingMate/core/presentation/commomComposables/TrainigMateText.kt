@@ -15,6 +15,7 @@ fun TextMedium(
     fontWeight: FontWeight = FontWeight.Bold,
     color: Color = Color.Unspecified,
     maxLines: Int = 10,
+    textAlign: TextAlign = TextAlign.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     modifier: Modifier = Modifier
 ) {
@@ -23,6 +24,7 @@ fun TextMedium(
         style = MaterialTheme.typography.bodyMedium,
         fontWeight = fontWeight,
         color = color,
+        textAlign = textAlign,
         maxLines = maxLines,
         overflow = overflow,
         modifier = modifier
