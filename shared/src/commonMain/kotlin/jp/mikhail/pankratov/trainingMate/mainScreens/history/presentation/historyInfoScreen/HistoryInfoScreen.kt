@@ -2,6 +2,8 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histo
 
 import Dimens
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +24,13 @@ import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -144,9 +148,7 @@ fun ExerciseHistoryItem(exercise: Exercise, modifier: Modifier) {
                 )
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            exercise.sets.forEach { set ->
-                TextMedium(text = "${set.weight} * ${set.reps}")
-            }
+            FixedGrid(columns = 3, items = exercise.sets)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextMedium(
                 text = stringResource(
@@ -157,3 +159,41 @@ fun ExerciseHistoryItem(exercise: Exercise, modifier: Modifier) {
         }
     }
 }
+
+@Composable
+fun FixedGrid(
+    columns: Int = 3, // Number of columns in the grid
+    items: List<ExerciseSet>
+) {
+    val rows = (items.size + columns - 1) / columns // Calculate the required number of rows
+
+    Column {
+        for (row in 0 until rows) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                for (col in 0 until columns) {
+                    val index = row * columns + col
+                    if (index < items.size) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(Dimens.Padding4) // Adjust padding as needed
+                        ) {
+                            AnimatedTextSizeItem(
+                                set = items[index],
+                                onEvent = {},
+                                isAnimating = false,
+                                modifier = Modifier
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.weight(1f)) // Empty space for missing items
+                    }
+                }
+            }
+        }
+    }
+}
+

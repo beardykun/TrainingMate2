@@ -234,7 +234,6 @@ class ExerciseAtWorkViewModel(
                 doneExercised = doneExercises
             )
         } else {
-
             trainingHistoryDataSource.updateEndTime(
                 trainingId = trainingId,
                 totalLiftedWeight = totalLiftedWeight,

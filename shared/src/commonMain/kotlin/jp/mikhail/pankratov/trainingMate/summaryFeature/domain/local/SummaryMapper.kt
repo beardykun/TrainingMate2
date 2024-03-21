@@ -15,7 +15,8 @@ fun MonthlySummary.toMonthlySummary(): jp.mikhail.pankratov.trainingMate.core.do
         numSets = num_sets.toInt(),
         numReps = num_reps.toInt(),
         avgDurationPerWorkout = avg_duration_per_workout,
-        avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise
+        avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise,
+        avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout
     )
 }
 
@@ -31,6 +32,7 @@ fun WeeklySummary.toWeeklySummary(): jp.mikhail.pankratov.trainingMate.core.doma
         numSets = num_sets.toInt(),
         numReps = num_reps.toInt(),
         avgDurationPerWorkout = avg_duration_per_workout,
-        avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise
+        avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise,
+        avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout
     )
 }

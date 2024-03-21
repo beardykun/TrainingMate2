@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS WeeklySummary (
     num_sets INTEGER NOT NULL,
     num_reps INTEGER NOT NULL,
     avg_duration_per_workout REAL NOT NULL, -- Average duration of each training session during the week (in minutes)
+    avg_lifted_weight_per_workout REAL NOT NULL, -- Average weight lifted per exercise during the week
     avg_lifted_weight_per_exercise REAL NOT NULL, -- Average weight lifted per exercise during the week
     -- intensity_distribution TEXT, -- Distribution of training intensity levels across workouts during the week
     -- calories_burned INTEGER, -- Estimated calories burned during training sessions throughout the week
@@ -29,9 +30,10 @@ num_exercises,
 num_sets,
 num_reps,
 avg_duration_per_workout,
+avg_lifted_weight_per_workout,
 avg_lifted_weight_per_exercise
 )
-VALUES(?,?,?,?,?,?,?,?,?,?,?);
+VALUES(?,?,?,?,?,?,?,?,?,?,?, ?);
 
 updateWeeklySummary:
 UPDATE WeeklySummary
@@ -40,6 +42,7 @@ SET
     num_sets = num_sets + ?,
     num_reps = num_reps + ?,
     total_lifted_weight = total_lifted_weight + ?,
+    avg_lifted_weight_per_workout = (total_lifted_weight + ?) / (num_workouts + 1),
     avg_lifted_weight_per_exercise = (total_lifted_weight + ?) / (num_exercises + ?),
     num_workouts = num_workouts + 1,
     training_duration = training_duration + ?,

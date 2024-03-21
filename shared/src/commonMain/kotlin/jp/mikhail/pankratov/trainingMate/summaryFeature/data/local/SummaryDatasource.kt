@@ -41,6 +41,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             num_sets = monthlySummary.numSets.toLong(),
             num_reps = monthlySummary.numReps.toLong(),
             total_lifted_weight = monthlySummary.totalLiftedWeight,
+            avg_lifted_weight_per_workout = monthlySummary.avgLiftedWeightPerWorkout,
             avg_duration_per_workout = monthlySummary.avgDurationPerWorkout,
             avg_lifted_weight_per_exercise = monthlySummary.avgLiftedWeightPerExercise,
             training_duration = monthlySummary.trainingDuration.toLong()
@@ -58,6 +59,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             total_lifted_weight = weeklySummary.totalLiftedWeight,
             year = weeklySummary.year.toLong(),
             avg_duration_per_workout = weeklySummary.avgDurationPerWorkout,
+            avg_lifted_weight_per_workout = weeklySummary.avgLiftedWeightPerWorkout,
             avg_lifted_weight_per_exercise = weeklySummary.avgLiftedWeightPerExercise,
             training_duration = weeklySummary.trainingDuration.toLong()
         )
@@ -99,6 +101,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             training_duration_ = additionalDuration.toLong(),
             total_lifted_weight = additionalWeight,
             total_lifted_weight_ = additionalWeight,
+            total_lifted_weight__ = additionalWeight,
             num_exercises = numExercises.toLong(),
             num_exercises_ = numExercises.toLong(),
             num_sets = numSets.toLong(),
@@ -112,6 +115,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             training_duration_ = additionalDuration.toLong(),
             total_lifted_weight = additionalWeight,
             total_lifted_weight_ = additionalWeight,
+            total_lifted_weight__ = additionalWeight,
             num_exercises = numExercises.toLong(),
             num_exercises_ = numExercises.toLong(),
             num_sets = numSets.toLong(),

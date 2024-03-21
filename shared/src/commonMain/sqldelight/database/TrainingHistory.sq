@@ -50,7 +50,7 @@ WHERE status = 'ONGOING';
 
 updateEndTime:
 UPDATE TrainingHistory
-SET end_time = ?, total_lifted_weight = ?, done_exercises = ?, total_sets = ?, total_reps = total_reps + ?
+SET end_time = ?, total_lifted_weight = ?, done_exercises = ?, total_sets =  total_sets + ?, total_reps = total_reps + ?
 WHERE id = ?;
 
 updateStartTime:

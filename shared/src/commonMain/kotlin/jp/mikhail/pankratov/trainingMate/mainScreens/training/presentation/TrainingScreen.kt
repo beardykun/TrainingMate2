@@ -18,7 +18,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -29,9 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
@@ -96,43 +97,45 @@ fun TrainingScreen(
                     )
                 }
             }
-
-            state.availableTrainings?.let { trainings ->
-                TextLarge(text = stringResource(SharedRes.strings.start_new_training).uppercase())
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    items(trainings,
-                        key = { item ->
-                            item.name
-                        }
-                    ) { training ->
-                        LocalTrainingItem(
-                            training = training,
-                            onClick = {
-                                if (state.ongoingTraining?.trainingTemplateId == training.id) {
-
-                                    navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-                                    return@LocalTrainingItem
+            AnimatedVisibility(state.ongoingTraining == null) {
+                state.availableTrainings?.let { trainings ->
+                    Column {
+                        TextLarge(text = stringResource(SharedRes.strings.start_new_training).uppercase())
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            items(trainings,
+                                key = { item ->
+                                    item.name
                                 }
-                                onEvent(
-                                    TrainingScreenEvent.OnTrainingItemClick(
-                                        shouldShowDialog = true,
-                                        training = training
-                                    )
+                            ) { training ->
+                                LocalTrainingItem(
+                                    training = training,
+                                    onClick = {
+                                        if (state.ongoingTraining?.trainingTemplateId == training.id) {
+
+                                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                                            return@LocalTrainingItem
+                                        }
+                                        onEvent(
+                                            TrainingScreenEvent.OnTrainingItemClick(
+                                                shouldShowDialog = true,
+                                                training = training
+                                            )
+                                        )
+                                    },
+                                    onDeleteClick = { id ->
+                                        onEvent(TrainingScreenEvent.OnTrainingTemplateDelete(id))
+                                    },
+                                    modifier = Modifier.animateItemPlacement()
                                 )
-                            },
-                            onDeleteClick = { id ->
-                                onEvent(TrainingScreenEvent.OnTrainingTemplateDelete(id))
-                            },
-                            modifier = Modifier.animateItemPlacement()
-                        )
+                            }
+                        }
                     }
                 }
             }
             if (state.monthlySummary != null && state.weeklySummary != null) {
-                SummaryMonthly(state.monthlySummary)
-                SummaryWeekly(state.weeklySummary)
+                SummaryWeekly(state.weeklySummary, modifier = Modifier.padding(Dimens.Padding16))
             }
 
             MaterialTheme.colorScheme.apply {
@@ -225,13 +228,48 @@ fun TrainingScreen(
 }
 
 @Composable
-fun SummaryWeekly(weeklySummary: WeeklySummary) {
-    TextMedium(text = weeklySummary.toString())
-}
-
-@Composable
-fun SummaryMonthly(monthlySummary: MonthlySummary) {
-    TextMedium(text = monthlySummary.toString())
+fun SummaryWeekly(weeklySummary: WeeklySummary, modifier: Modifier) {
+    Card(elevation = CardDefaults.cardElevation(Dimens.cardElevation)) {
+        Column(modifier = modifier) {
+            TextLarge("This Week Summary")
+            TextMedium(
+                text = "Number of workouts: ${weeklySummary.numWorkouts}"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Total training duration: ${weeklySummary.trainingDuration} min"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Total lifted weight: ${weeklySummary.totalLiftedWeight} kg"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Number of done exercises: ${weeklySummary.numExercises}"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Number of done sets: ${weeklySummary.numSets}"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Total reps number: ${weeklySummary.numReps}"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Average weight per exercise: ${weeklySummary.avgLiftedWeightPerExercise} kg"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Average weight per workout: ${weeklySummary.avgLiftedWeightPerWorkout} kg"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+            TextMedium(
+                text = "Average workout time: ${weeklySummary.avgDurationPerWorkout} min"
+            )
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+        }
+    }
 }
 
 data class ColorEntry(
