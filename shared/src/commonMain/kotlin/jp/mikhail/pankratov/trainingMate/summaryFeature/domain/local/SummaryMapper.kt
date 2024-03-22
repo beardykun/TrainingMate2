@@ -1,10 +1,11 @@
 package jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local
 
-import database.MonthlySummary
-import database.WeeklySummary
+import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
+import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 
-fun MonthlySummary.toMonthlySummary(): jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary {
-    return jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary(
+
+fun database.MonthlySummary.toMonthlySummary(): MonthlySummary {
+    return MonthlySummary(
         id = id,
         monthNumber = month_number,
         year = year,
@@ -20,8 +21,8 @@ fun MonthlySummary.toMonthlySummary(): jp.mikhail.pankratov.trainingMate.core.do
     )
 }
 
-fun WeeklySummary.toWeeklySummary(): jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary {
-    return jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary(
+fun database.WeeklySummary.toWeeklySummary(): WeeklySummary {
+    return WeeklySummary(
         id = id,
         weekNumber = week_number,
         year = year,

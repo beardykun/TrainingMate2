@@ -134,7 +134,7 @@ fun TrainingScreen(
                     }
                 }
             }
-            if (state.monthlySummary != null && state.weeklySummary != null) {
+            if (state.monthlySummary != null && state.weeklySummary != null && state.weeklySummary.totalLiftedWeight != 0.0) {
                 SummaryWeekly(state.weeklySummary, modifier = Modifier.padding(Dimens.Padding16))
             }
 
