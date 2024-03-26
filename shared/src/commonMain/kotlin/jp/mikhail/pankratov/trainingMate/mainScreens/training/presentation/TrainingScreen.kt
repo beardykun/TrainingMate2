@@ -134,8 +134,12 @@ fun TrainingScreen(
                     }
                 }
             }
-            if (state.monthlySummary != null && state.weeklySummary != null && state.weeklySummary.totalLiftedWeight != 0.0) {
-                SummaryWeekly(state.weeklySummary, modifier = Modifier.padding(Dimens.Padding16))
+            if (state.weeklySummary != null && state.weeklySummary[0]?.totalLiftedWeight != 0.0) {
+                LazyRow {
+                    items(state.weeklySummary) {
+                        SummaryWeekly(it!!, modifier = Modifier.padding(Dimens.Padding16))
+                    }
+                }
             }
 
             MaterialTheme.colorScheme.apply {

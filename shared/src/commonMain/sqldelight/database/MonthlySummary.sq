@@ -53,3 +53,9 @@ getMonthlySummary:
 SELECT *
 FROM MonthlySummary
 WHERE year =? AND month_number = ?;
+
+getTwoLastMonthlySummaries:
+SELECT *
+FROM MonthlySummary
+ORDER BY id DESC
+LIMIT 2;

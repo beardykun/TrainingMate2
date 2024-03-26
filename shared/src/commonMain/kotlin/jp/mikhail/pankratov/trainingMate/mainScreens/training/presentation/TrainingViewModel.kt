@@ -57,8 +57,8 @@ class TrainingViewModel(
 
     private val summaries =
         combine(
-            summaryDataSource.getMonthlySummary(),
-            summaryDataSource.getWeeklySummary()
+            summaryDataSource.getTwoLastMonthlySummary(),
+            summaryDataSource.getTwoLastWeeklySummary()
         ) { monthly, weekly ->
             Pair(monthly, weekly)
         }

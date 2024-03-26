@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 interface ISummaryDatasource {
     suspend fun insetSummary()
     fun getWeeklySummary(): Flow<WeeklySummary?>
+    fun getTwoLastWeeklySummary(): Flow<List<WeeklySummary?>>
     fun getMonthlySummary(): Flow<MonthlySummary?>
+    fun getTwoLastMonthlySummary(): Flow<List<MonthlySummary?>>
     suspend fun updateSummaries(
         additionalDuration: Double,
         additionalWeight: Double,

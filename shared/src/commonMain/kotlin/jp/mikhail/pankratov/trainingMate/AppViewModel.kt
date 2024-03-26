@@ -62,7 +62,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Overhead cable curl",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "overhead_cable_curl"
+                image = "overhead_cable_curl",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -92,7 +93,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Concentration curls",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "concentration_curls"
+                image = "concentration_curls",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -115,7 +117,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Cross body hammer curl",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "cross_body_hammer_curl"
+                image = "cross_body_hammer_curl",
+                usesTwoDumbbells = true
             )
         )
         //triceps
@@ -187,14 +190,16 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Cable one arm triceps extension",
                 group = DatabaseContract.TRICEPS_GROUP,
-                image = "cable_one_arm_triceps_extension"
+                image = "cable_one_arm_triceps_extension",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
             ExerciseLocal(
                 name = "Dumbbell one arm triceps extension",
                 group = DatabaseContract.TRICEPS_GROUP,
-                image = "dumbbell_one_arm_triceps_extension"
+                image = "dumbbell_one_arm_triceps_extension",
+                usesTwoDumbbells = true
             )
         )
 
@@ -247,7 +252,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Cable rear delt fly",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "cable_rear_delt_fly"
+                image = "cable_rear_delt_fly",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(
@@ -277,7 +283,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Alternating deltoid raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "alternating_deltoid_raise"
+                image = "alternating_deltoid_raise",
+                usesTwoDumbbells = true
             )
         )
 
@@ -335,7 +342,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "One arm dumbbell row",
                 group = DatabaseContract.BACK_GROUP,
-                image = "one_arm_dumbbell_row"
+                image = "one_arm_dumbbell_row",
+                usesTwoDumbbells = true
             )
         )
         exerciseDataSource.insertExercise(

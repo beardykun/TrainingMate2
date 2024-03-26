@@ -238,7 +238,7 @@ class ExerciseAtWorkViewModel(
                 trainingId = trainingId,
                 totalLiftedWeight = totalLiftedWeight,
                 doneExercised = doneExercises,
-                sets = sets.size,
+                sets = if (weight < 0) -1 else 1,
                 reps = state.value.reps.text.toInt()
             )
         }

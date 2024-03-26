@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.summaryFeature.data.local
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.getIsoWeekNumber
@@ -76,6 +77,17 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             }
     }
 
+    override fun getTwoLastWeeklySummary(): Flow<List<WeeklySummary?>> {
+        return weeklyQuery.getTwoLastWeeklySummaries()
+            .asFlow()
+            .mapToList()
+            .map { summaries ->
+                summaries.map {
+                    it.toWeeklySummary()
+                }
+            }
+    }
+
     override fun getMonthlySummary(): Flow<MonthlySummary?> {
         return monthlyQuery.getMonthlySummary(
             year = currentYear,
@@ -84,6 +96,17 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             .asFlow()
             .map {
                 it.executeAsOneOrNull()?.toMonthlySummary()
+            }
+    }
+
+    override fun getTwoLastMonthlySummary(): Flow<List<MonthlySummary?>> {
+        return monthlyQuery.getTwoLastMonthlySummaries()
+            .asFlow()
+            .mapToList()
+            .map { summaries ->
+                summaries.map {
+                    it.toMonthlySummary()
+                }
             }
     }
 
