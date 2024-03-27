@@ -18,10 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,12 +29,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.SummaryMonthly
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.SummaryWeekly
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -134,10 +132,29 @@ fun TrainingScreen(
                     }
                 }
             }
-            if (state.weeklySummary != null && state.weeklySummary[0]?.totalLiftedWeight != 0.0) {
+            state.weeklySummary?.let { weeklyList ->
+                if (weeklyList.first()?.totalLiftedWeight == 0.0) return@let
+                TextLarge(text = stringResource(SharedRes.strings.summaries).uppercase())
                 LazyRow {
-                    items(state.weeklySummary) {
-                        SummaryWeekly(it!!, modifier = Modifier.padding(Dimens.Padding16))
+                    items(weeklyList.size) { counter ->
+                        SummaryWeekly(
+                            weeklySummary = weeklyList[counter],
+                            counter = counter,
+                            modifier = Modifier.padding(Dimens.Padding16)
+                        )
+                    }
+                }
+            }
+
+            state.monthlySummary?.let { monthlyList ->
+                if (monthlyList.first()?.totalLiftedWeight == 0.0) return@let
+                LazyRow {
+                    items(monthlyList.size) { counter ->
+                        SummaryMonthly(
+                            monthlySummary = monthlyList[counter],
+                            counter = counter,
+                            modifier = Modifier.padding(Dimens.Padding16)
+                        )
                     }
                 }
             }
@@ -187,9 +204,6 @@ fun TrainingScreen(
                 }
             }
 
-
-            TextMedium(text = "Maybe a mini progress bar to next achievement?")
-
             AnimatedVisibility(visible = state.showStartTrainingDialog) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.start_training),
@@ -227,51 +241,6 @@ fun TrainingScreen(
                     }
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun SummaryWeekly(weeklySummary: WeeklySummary, modifier: Modifier) {
-    Card(elevation = CardDefaults.cardElevation(Dimens.cardElevation)) {
-        Column(modifier = modifier) {
-            TextLarge("This Week Summary")
-            TextMedium(
-                text = "Number of workouts: ${weeklySummary.numWorkouts}"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Total training duration: ${weeklySummary.trainingDuration} min"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Total lifted weight: ${weeklySummary.totalLiftedWeight} kg"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Number of done exercises: ${weeklySummary.numExercises}"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Number of done sets: ${weeklySummary.numSets}"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Total reps number: ${weeklySummary.numReps}"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Average weight per exercise: ${weeklySummary.avgLiftedWeightPerExercise} kg"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Average weight per workout: ${weeklySummary.avgLiftedWeightPerWorkout} kg"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            TextMedium(
-                text = "Average workout time: ${weeklySummary.avgDurationPerWorkout} min"
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
         }
     }
 }
