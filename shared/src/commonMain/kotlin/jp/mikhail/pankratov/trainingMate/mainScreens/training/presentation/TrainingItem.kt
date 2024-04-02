@@ -98,6 +98,8 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
                 .padding(Dimens.Padding16)
 
         ) {
+            training.startTime?.let { TextLarge(text = Utils.formatEpochMillisToDate(it)) }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween

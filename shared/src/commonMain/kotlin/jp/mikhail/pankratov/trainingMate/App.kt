@@ -207,12 +207,6 @@ private fun bottomNavigationItems() = listOf(
         hasNews = false
     ),
     BottomNavigationItem(
-        title = Routs.MainScreens.achievement.title,
-        selectedIcon = Icons.Filled.EmojiEvents,
-        unselectedIcon = Icons.Outlined.EmojiEvents,
-        hasNews = false
-    ),
-    BottomNavigationItem(
         title = Routs.MainScreens.history.title,
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Outlined.History,

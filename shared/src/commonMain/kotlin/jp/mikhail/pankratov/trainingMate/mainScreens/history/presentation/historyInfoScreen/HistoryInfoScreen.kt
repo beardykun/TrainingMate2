@@ -72,7 +72,7 @@ fun HistoryInfoScreen(
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
+        /*Row(modifier = Modifier.fillMaxWidth()) {
             Button(onClick = {
                 navigator.popBackStack()
             }, modifier = Modifier.weight(1f)) {
@@ -98,7 +98,7 @@ fun HistoryInfoScreen(
                     )
                 )
             }
-        }
+        }*/
         state.exercises?.let { exercises ->
             LazyColumn {
                 items(
