@@ -4,9 +4,10 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
-import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 
 class ExerciseAtWorkViewModel(
@@ -39,10 +41,12 @@ class ExerciseAtWorkViewModel(
         )
     ) { state, exerciseLocal, ongoingTraining, exercise, lastExercise ->
         state.copy(
-            exercise = exercise,
-            exerciseLocal = exerciseLocal,
-            ongoingTraining = ongoingTraining,
-            lastSameExercise = lastExercise
+            exerciseDetails = state.exerciseDetails.copy(
+                exercise = exercise,
+                exerciseLocal = exerciseLocal,
+                lastSameExercise = lastExercise
+            ),
+            ongoingTraining = ongoingTraining
         )
     }.stateIn(
         scope = viewModelScope,
@@ -58,28 +62,30 @@ class ExerciseAtWorkViewModel(
             }
 
             ExerciseAtWorkEvent.OnDropdownOpen -> {
-                _state.update {
-                    it.copy(
-                        isExpanded = true
+                _state.update { currentState ->
+                    currentState.copy(
+                        timerState = currentState.timerState.copy(isExpanded = true)
                     )
                 }
             }
 
             ExerciseAtWorkEvent.OnDropdownClosed -> {
-                _state.update {
-                    it.copy(
-                        isExpanded = false
+                _state.update { currentState ->
+                    currentState.copy(
+                        timerState = currentState.timerState.copy(isExpanded = false)
                     )
                 }
             }
 
             is ExerciseAtWorkEvent.OnDropdownItemSelected -> {
                 timerJob?.cancel()
-                _state.update {
-                    it.copy(
-                        timerValue = event.item.toInt(),
-                        timer = event.item.toInt(),
-                        isExpanded = false
+                _state.update { currentState ->
+                    currentState.copy(
+                        timerState = currentState.timerState.copy(
+                            timerValue = event.item.toInt(),
+                            timer = event.item.toInt(),
+                            isExpanded = false
+                        )
                     )
                 }
             }
@@ -87,8 +93,11 @@ class ExerciseAtWorkViewModel(
             is ExerciseAtWorkEvent.OnRepsChanged -> {
                 _state.update {
                     it.copy(
-                        reps = event.newReps,
-                        errorReps = null
+                        exerciseDetails =
+                        it.exerciseDetails.copy(
+                            reps = event.newReps,
+                            errorReps = null
+                        )
                     )
                 }
             }
@@ -96,22 +105,29 @@ class ExerciseAtWorkViewModel(
             is ExerciseAtWorkEvent.OnWeightChanged -> {
                 _state.update {
                     it.copy(
-                        weight = event.newWeight,
-                        errorWeight = null
+                        exerciseDetails =
+                        it.exerciseDetails.copy(
+                            weight = event.newWeight,
+                            errorWeight = null
+                        )
                     )
                 }
             }
 
             is ExerciseAtWorkEvent.OnSetDelete -> {
-                state.value.deleteItem?.let { deleteItem ->
-                    val sets = state.value.exercise?.sets?.minus(deleteItem) ?: emptyList()
+                state.value.uiState.deleteItem?.let { deleteItem ->
+                    val sets =
+                        state.value.exerciseDetails.exercise?.sets?.minus(deleteItem) ?: emptyList()
                     val minusWeight = deleteItem.weight.toDouble() * deleteItem.reps.toInt()
                     updateSets(sets, -minusWeight)
                 }
                 _state.update {
                     it.copy(
-                        deleteItem = null,
-                        isDeleteDialogVisible = false
+                        uiState =
+                        it.uiState.copy(
+                            deleteItem = null,
+                            isDeleteDialogVisible = false
+                        )
                     )
                 }
             }
@@ -119,8 +135,11 @@ class ExerciseAtWorkViewModel(
             is ExerciseAtWorkEvent.OnDisplayDeleteDialog -> {
                 _state.update {
                     it.copy(
-                        isDeleteDialogVisible = event.display,
-                        deleteItem = event.item
+                        uiState =
+                        it.uiState.copy(
+                            isDeleteDialogVisible = event.display,
+                            deleteItem = event.item
+                        )
                     )
                 }
             }
@@ -128,26 +147,37 @@ class ExerciseAtWorkViewModel(
             is ExerciseAtWorkEvent.OnAddNewSet -> {
                 _state.update {
                     it.copy(
-                        isAnimating = true
+                        uiState =
+                        it.uiState.copy(
+                            isAnimating = true
+                        )
                     )
                 }
                 handleAddSetEvent()
             }
 
             ExerciseAtWorkEvent.OnAnimationSeen -> {
-                _state.update {
-                    it.copy(
-                        isAnimating = false
+                _state.update { currentState ->
+                    currentState.copy(
+                        uiState =
+                        currentState.uiState.copy(
+                            isAnimating = false
+                        )
                     )
                 }
             }
 
             is ExerciseAtWorkEvent.OnSetDifficultySelected -> {
-                _state.update {
-                    it.copy(
-                        setDifficulty = event.difficulty
+                println("TAGGER ${event.difficulty}")
+
+                val state = _state.updateAndGet { currentState ->
+                    currentState.copy(
+                        exerciseDetails =
+                        currentState.exerciseDetails.copy(setDifficulty = event.difficulty)
                     )
                 }
+                println("TAGGER ${state.exerciseDetails.setDifficulty}")
+
             }
         }
     }
@@ -155,37 +185,38 @@ class ExerciseAtWorkViewModel(
     private fun handleAddSetEvent() {
         if (invalidInput()) return
 
+        val exerciseDetails = state.value.exerciseDetails
         val newInput = ExerciseSet(
-            weight = state.value.weight.text,
-            reps = state.value.reps.text,
-            difficulty = state.value.setDifficulty
+            weight = exerciseDetails.weight.text,
+            reps = exerciseDetails.reps.text,
+            difficulty = exerciseDetails.setDifficulty
         )
-        val sets = state.value.exercise?.sets?.plus(newInput) ?: emptyList()
+        val sets = exerciseDetails.exercise?.sets?.plus(newInput) ?: emptyList()
 
-        updateBestLiftedWeightIfNeeded(state.value.weight.text.toDouble())
+        updateBestLiftedWeightIfNeeded(exerciseDetails.weight.text.toDouble())
 
         val weight =
-            if (state.value.exerciseLocal?.usesTwoDumbbells == true)
-                state.value.weight.text.toDouble() * 2
+            if (exerciseDetails.exerciseLocal?.usesTwoDumbbells == true)
+                exerciseDetails.weight.text.toDouble() * 2
             else
-                state.value.weight.text.toDouble()
-        updateSets(sets, weight * state.value.reps.text.toInt())
+                exerciseDetails.weight.text.toDouble()
+        updateSets(sets, weight * exerciseDetails.reps.text.toInt())
         runTimerJob()
     }
 
     private fun runTimerJob() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {
-            startTimer(state.value.timerValue).collect { counter ->
+            startTimer(state.value.timerState.timerValue).collect { counter ->
                 _state.update {
                     it.copy(
-                        timer = counter
+                        timerState = it.timerState.copy(timer = counter),
                     )
                 }
                 if (counter == 0) {
                     _state.update {
                         it.copy(
-                            timer = state.value.timerValue
+                            timerState = it.timerState.copy(timer = state.value.timerState.timerValue),
                         )
                     }
                     notificationUtils.sendNotification()
@@ -198,13 +229,14 @@ class ExerciseAtWorkViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             updateTrainingTime(trainingId, weight, sets)
 
-            val exerciseTotalLifted = (state.value.exercise?.totalLiftedWeight ?: 0.0) + weight
+            val exerciseDetails = state.value.exerciseDetails
+            val exerciseTotalLifted = (exerciseDetails.exercise?.totalLiftedWeight ?: 0.0) + weight
             exerciseHistoryDatasource.updateExerciseSets(
                 sets = sets,
                 totalLiftedWeight = exerciseTotalLifted,
                 trainingHistoryId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
-                reps = state.value.reps.text.toInt()
+                reps = exerciseDetails.reps.text.toInt()
             )
         }
 
@@ -213,10 +245,13 @@ class ExerciseAtWorkViewModel(
         weight: Double,
         sets: List<ExerciseSet>
     ) {
+
+        val exerciseDetails = state.value.exerciseDetails
+
         val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
         val doneExercises =
             state.value.ongoingTraining?.doneExercises?.toMutableList() ?: mutableListOf()
-        val exerciseName = state.value.exercise?.name ?: ""
+        val exerciseName = exerciseDetails.exercise?.name ?: ""
 
 
         if (!doneExercises.contains(exerciseName) && sets.isNotEmpty()) {
@@ -236,7 +271,7 @@ class ExerciseAtWorkViewModel(
                 totalLiftedWeight = totalLiftedWeight,
                 doneExercised = doneExercises,
                 sets = if (weight < 0) -1 else 1,
-                reps = state.value.reps.text.toInt()
+                reps = exerciseDetails.reps.text.toInt()
             )
         }
     }
@@ -250,12 +285,15 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun invalidInput(): Boolean {
-        val weightError = validateWeight(state.value.weight.text)
-        val repsError = validateReps(state.value.reps.text)
+        val exerciseDetails = state.value.exerciseDetails
+
+        val weightError = validateWeight(exerciseDetails.weight.text)
+        val repsError = validateReps(exerciseDetails.reps.text)
         if (weightError != null) {
             _state.update {
                 it.copy(
-                    errorWeight = weightError
+                    exerciseDetails =
+                    it.exerciseDetails.copy(errorWeight = weightError)
                 )
             }
             return true
@@ -264,7 +302,8 @@ class ExerciseAtWorkViewModel(
         if (repsError != null) {
             _state.update {
                 it.copy(
-                    errorReps = repsError
+                    exerciseDetails =
+                    it.exerciseDetails.copy(errorReps = repsError)
                 )
             }
             return true
@@ -274,9 +313,11 @@ class ExerciseAtWorkViewModel(
 
     private fun updateBestLiftedWeightIfNeeded(currentLiftedWeight: Double) =
         viewModelScope.launch(Dispatchers.IO) {
-            if (currentLiftedWeight > (state.value.exerciseLocal?.bestLiftedWeight ?: 0.0)) {
+            val exerciseDetails = state.value.exerciseDetails
+
+            if (currentLiftedWeight > (exerciseDetails.exerciseLocal?.bestLiftedWeight ?: 0.0)) {
                 exerciseDataSource.updateBestLiftedWeightById(
-                    id = state.value.exerciseLocal?.id ?: -1,
+                    id = exerciseDetails.exerciseLocal?.id ?: -1,
                     newBestWeight = currentLiftedWeight
                 )
             }

@@ -64,6 +64,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import moe.tlaster.precompose.navigation.Navigator
 
 //Use same weights as before, increase or decrease selection
@@ -94,7 +95,7 @@ fun ExerciseAtWorkScreen(
     Scaffold(floatingActionButton = {
         FloatingActionButton(
             onClick = {
-                navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/${state.exercise?.name}")
+                navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/${state.exerciseDetails.exercise?.name}")
             },
             modifier = Modifier.padding(bottom = Dimens.historyFabPadding)
         ) {
@@ -105,7 +106,7 @@ fun ExerciseAtWorkScreen(
         }
     }, modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            state.exercise?.name?.let {
+            state.exerciseDetails.exercise?.name?.let {
                 TextLarge(
                     text = it.uppercase(),
                     modifier = Modifier.fillMaxWidth(),
@@ -113,12 +114,18 @@ fun ExerciseAtWorkScreen(
                 )
             }
 
-            if (state.exercise != null) {
-                ExerciseComparison(lastExercise = state.lastSameExercise, exercise = state.exercise)
+            if (state.exerciseDetails.exercise != null) {
+                ExerciseComparison(
+                    lastExercise = state.exerciseDetails.lastSameExercise,
+                    exercise = state.exerciseDetails.exercise
+                )
             }
 
             InputFields(
-                state = state,
+                weight = state.exerciseDetails.weight,
+                reps = state.exerciseDetails.reps,
+                errorWeight = state.exerciseDetails.errorWeight,
+                errorReps = state.exerciseDetails.errorReps,
                 onEvent = onEvent,
                 focus = focus,
                 focusRequesterWeight = focusRequesterWeight,
@@ -126,18 +133,20 @@ fun ExerciseAtWorkScreen(
                 focusRequesterReps = focusRequesterReps,
                 onFocusChangedReps = onFocusChangedReps
             )
+            println("TAGGER1 ${state.exerciseDetails.setDifficulty}")
+            DifficultySelection(
+                selected = state.exerciseDetails.setDifficulty,
+                onSelect = { difficulty ->
+                    onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
+                })
 
-            DifficultySelection(selected = state.setDifficulty, onSelect = { difficulty ->
-                onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
-            })
-
-            state.exercise?.sets?.let { sets ->
+            state.exerciseDetails.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = 3)) {
                     items(sets) { item ->
                         AnimatedTextSizeItem(
                             set = item,
                             onEvent = onEvent,
-                            isAnimating = state.isAnimating,
+                            isAnimating = state.uiState.isAnimating,
                             modifier = Modifier
                         )
                     }
@@ -146,8 +155,8 @@ fun ExerciseAtWorkScreen(
             Spacer(modifier = Modifier.weight(1f))
             Row(modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon)) {
                 DropDown(
-                    initValue = state.timer.toString(),
-                    isOpen = state.isExpanded,
+                    initValue = state.timerState.timer.toString(),
+                    isOpen = state.timerState.isExpanded,
                     onClick = { onEvent(ExerciseAtWorkEvent.OnDropdownOpen) },
                     onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
                     onSelectedValue = { value ->
@@ -180,7 +189,7 @@ fun ExerciseAtWorkScreen(
                 )
             }
 
-            AnimatedVisibility(visible = state.isDeleteDialogVisible) {
+            AnimatedVisibility(visible = state.uiState.isDeleteDialogVisible) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.delete_set),
                     description = stringResource(SharedRes.strings.sure_delete_set),
@@ -193,9 +202,9 @@ fun ExerciseAtWorkScreen(
                 )
             }
         }
-        AnimatedVisibility(visible = state.timer <= 10) {
-            if (state.timer <= 10) {
-                CountdownAnimation(currentTimerValue = state.timer)
+        AnimatedVisibility(visible = state.timerState.timer <= 10) {
+            if (state.timerState.timer <= 10) {
+                CountdownAnimation(currentTimerValue = state.timerState.timer)
             }
         }
     }
@@ -203,7 +212,10 @@ fun ExerciseAtWorkScreen(
 
 @Composable
 fun InputFields(
-    state: ExerciseAtWorkState,
+    weight: TextFieldValue,
+    reps: TextFieldValue,
+    errorWeight: String?,
+    errorReps: String?,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     focus: FocusManager,
     focusRequesterWeight: FocusRequester,
@@ -213,15 +225,15 @@ fun InputFields(
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         InputField(
-            value = state.weight,
+            value = weight,
             placeholder = stringResource(SharedRes.strings.select_weight),
             label = stringResource(SharedRes.strings.weight),
             onValueChanged = { value ->
                 onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
             },
             keyboardType = KeyboardType.Decimal,
-            isError = state.errorWeight != null,
-            errorText = getErrorMessage(state.errorWeight),
+            isError = errorWeight != null,
+            errorText = getErrorMessage(errorWeight),
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
             }),
@@ -231,15 +243,15 @@ fun InputFields(
         )
         Spacer(modifier = Modifier.padding(Dimens.Padding32))
         InputField(
-            value = state.reps,
+            value = reps,
             placeholder = stringResource(SharedRes.strings.select_reps),
             label = stringResource(SharedRes.strings.reps),
             onValueChanged = { value ->
                 onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
             },
             keyboardType = KeyboardType.Number,
-            isError = state.errorReps != null,
-            errorText = getErrorMessage(state.errorReps),
+            isError = errorReps != null,
+            errorText = getErrorMessage(errorReps),
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
             }),
