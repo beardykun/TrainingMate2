@@ -66,7 +66,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presenta
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
 import moe.tlaster.precompose.navigation.Navigator
 
-
+//Use same weights as before, increase or decrease selection
 @Composable
 fun ExerciseAtWorkScreen(
     state: ExerciseAtWorkState,

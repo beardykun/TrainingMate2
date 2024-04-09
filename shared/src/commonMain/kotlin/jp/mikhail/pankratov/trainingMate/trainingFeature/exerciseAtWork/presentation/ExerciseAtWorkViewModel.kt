@@ -18,12 +18,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private const val SET_DIVIDER = " x "
-
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
     private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val summaryDatasource: ISummaryDatasource,
     private val exerciseDataSource: IExerciseDatasource,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
