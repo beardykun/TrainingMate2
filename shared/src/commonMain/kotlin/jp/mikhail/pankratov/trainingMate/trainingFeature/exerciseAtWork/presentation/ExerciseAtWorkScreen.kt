@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -120,6 +122,18 @@ fun ExerciseAtWorkScreen(
                     exercise = state.exerciseDetails.exercise
                 )
             }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextMedium(text = "Auto Input")
+                Checkbox(
+                    checked = state.uiState.isAutoInputEnabled,
+                    onCheckedChange = { checkState ->
+                        onEvent(ExerciseAtWorkEvent.OnAutoInputToggled(checkState))
+                    })
+            }
 
             InputFields(
                 weight = state.exerciseDetails.weight,
@@ -133,7 +147,6 @@ fun ExerciseAtWorkScreen(
                 focusRequesterReps = focusRequesterReps,
                 onFocusChangedReps = onFocusChangedReps
             )
-            println("TAGGER1 ${state.exerciseDetails.setDifficulty}")
             DifficultySelection(
                 selected = state.exerciseDetails.setDifficulty,
                 onSelect = { difficulty ->

@@ -79,7 +79,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         )
     }
 
-    override suspend fun updateExerciseSets(
+    override suspend fun updateExerciseData(
         sets: List<ExerciseSet>,
         totalLiftedWeight: Double,
         trainingHistoryId: Long,

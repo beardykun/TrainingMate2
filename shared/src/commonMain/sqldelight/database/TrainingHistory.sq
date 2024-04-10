@@ -48,14 +48,9 @@ SELECT COUNT(*)
 FROM TrainingHistory
 WHERE status = 'ONGOING';
 
-updateEndTime:
+updateTrainingData:
 UPDATE TrainingHistory
-SET end_time = ?, total_lifted_weight = ?, done_exercises = ?, total_sets = total_sets + ?, total_reps = total_reps + ?
-WHERE id = ?;
-
-updateStartTime:
-UPDATE TrainingHistory
-SET start_time = ?, total_lifted_weight = ?, done_exercises = ?
+SET start_time = ?, end_time = ?, total_lifted_weight = ?, done_exercises = ?, total_sets = total_sets + ?, total_reps = total_reps + ?
 WHERE id = ?;
 
 updateStatus:

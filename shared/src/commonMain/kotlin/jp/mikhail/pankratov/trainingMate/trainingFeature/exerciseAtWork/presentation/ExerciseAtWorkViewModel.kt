@@ -1,13 +1,14 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
 
+import androidx.compose.ui.text.input.TextFieldValue
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -17,8 +18,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 class ExerciseAtWorkViewModel(
     private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
@@ -119,7 +120,7 @@ class ExerciseAtWorkViewModel(
                     val sets =
                         state.value.exerciseDetails.exercise?.sets?.minus(deleteItem) ?: emptyList()
                     val minusWeight = deleteItem.weight.toDouble() * deleteItem.reps.toInt()
-                    updateSets(sets, -minusWeight)
+                    updateSets(sets, -minusWeight, -deleteItem.reps.toInt())
                 }
                 _state.update {
                     it.copy(
@@ -153,6 +154,9 @@ class ExerciseAtWorkViewModel(
                         )
                     )
                 }
+                if (state.value.uiState.isAutoInputEnabled) {
+                    updateAutoInput()
+                }
                 handleAddSetEvent()
             }
 
@@ -168,17 +172,50 @@ class ExerciseAtWorkViewModel(
             }
 
             is ExerciseAtWorkEvent.OnSetDifficultySelected -> {
-                println("TAGGER ${event.difficulty}")
-
-                val state = _state.updateAndGet { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         exerciseDetails =
                         currentState.exerciseDetails.copy(setDifficulty = event.difficulty)
                     )
                 }
-                println("TAGGER ${state.exerciseDetails.setDifficulty}")
-
             }
+
+            is ExerciseAtWorkEvent.OnAutoInputToggled -> {
+                _state.update {
+                    it.copy(
+                        uiState = it.uiState.copy(isAutoInputEnabled = event.checked)
+                    )
+                }
+                if (event.checked) {
+                    updateAutoInput()
+                }
+            }
+        }
+    }
+
+    private fun updateAutoInput() {
+        val sets = state.value.exerciseDetails.exercise?.sets ?: listOf()
+        val pastSets = state.value.exerciseDetails.lastSameExercise?.sets ?: listOf()
+        if (pastSets.isEmpty()) {
+            println("No data available error")
+            return
+        }
+        var counter = sets.size
+        if (counter > pastSets.size) {
+            counter = sets.size
+        }
+        val increment = when(pastSets[counter].difficulty) {
+            SetDifficulty.Hard.name -> 0.0
+            else -> 2.5
+        }
+        val weight = pastSets[counter].weight.toDouble() + increment
+        _state.update { currentState ->
+            currentState.copy(
+                exerciseDetails = currentState.exerciseDetails.copy(
+                    weight = TextFieldValue(weight.toString()),
+                    reps = TextFieldValue(pastSets[counter].reps)
+                )
+            )
         }
     }
 
@@ -200,7 +237,8 @@ class ExerciseAtWorkViewModel(
                 exerciseDetails.weight.text.toDouble() * 2
             else
                 exerciseDetails.weight.text.toDouble()
-        updateSets(sets, weight * exerciseDetails.reps.text.toInt())
+        val reps = exerciseDetails.reps.text.toInt()
+        updateSets(sets = sets, weight = weight * reps, reps = reps)
         runTimerJob()
     }
 
@@ -225,27 +263,27 @@ class ExerciseAtWorkViewModel(
         }
     }
 
-    private fun updateSets(sets: List<ExerciseSet>, weight: Double) =
+    private fun updateSets(sets: List<ExerciseSet>, weight: Double, reps: Int) =
         viewModelScope.launch(Dispatchers.IO) {
-            updateTrainingTime(trainingId, weight, sets)
+            updateTrainingData(trainingId, weight, reps, sets)
 
             val exerciseDetails = state.value.exerciseDetails
             val exerciseTotalLifted = (exerciseDetails.exercise?.totalLiftedWeight ?: 0.0) + weight
-            exerciseHistoryDatasource.updateExerciseSets(
+            exerciseHistoryDatasource.updateExerciseData(
                 sets = sets,
                 totalLiftedWeight = exerciseTotalLifted,
                 trainingHistoryId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
-                reps = exerciseDetails.reps.text.toInt()
+                reps = reps
             )
         }
 
-    private suspend fun updateTrainingTime(
+    private suspend fun updateTrainingData(
         trainingId: Long,
         weight: Double,
+        reps: Int,
         sets: List<ExerciseSet>
     ) {
-
         val exerciseDetails = state.value.exerciseDetails
 
         val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
@@ -253,27 +291,20 @@ class ExerciseAtWorkViewModel(
             state.value.ongoingTraining?.doneExercises?.toMutableList() ?: mutableListOf()
         val exerciseName = exerciseDetails.exercise?.name ?: ""
 
-
         if (!doneExercises.contains(exerciseName) && sets.isNotEmpty()) {
             doneExercises.add(exerciseName)
         } else if (doneExercises.contains(exerciseName) && sets.isEmpty()) {
             doneExercises.remove(exerciseName)
         }
-        if (state.value.ongoingTraining?.startTime == 0L) {
-            trainingHistoryDataSource.updateStartTime(
-                trainingId = trainingId,
-                totalLiftedWeight = totalLiftedWeight,
-                doneExercised = doneExercises
-            )
-        } else {
-            trainingHistoryDataSource.updateEndTime(
-                trainingId = trainingId,
-                totalLiftedWeight = totalLiftedWeight,
-                doneExercised = doneExercises,
-                sets = if (weight < 0) -1 else 1,
-                reps = exerciseDetails.reps.text.toInt()
-            )
-        }
+        trainingHistoryDataSource.updateTrainingData(
+            startTime = state.value.ongoingTraining?.startTime ?: Clock.System.now()
+                .toEpochMilliseconds(),
+            trainingId = trainingId,
+            totalLiftedWeight = totalLiftedWeight,
+            doneExercised = doneExercises,
+            sets = if (weight < 0) -1 else 1,
+            reps = reps
+        )
     }
 
     private fun startTimer(initValue: Int) = flow {

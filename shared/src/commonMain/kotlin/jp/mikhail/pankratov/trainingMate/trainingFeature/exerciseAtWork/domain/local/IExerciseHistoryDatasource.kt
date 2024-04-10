@@ -11,7 +11,7 @@ interface IExerciseHistoryDatasource {
     fun getExercisesWithName(name: String): Flow<List<Exercise>>
     fun countExerciseInHistory(trainingHistoryId: Long, exerciseTemplateId: Long): Flow<Long>
     suspend fun insertExerciseHistory(exercise: Exercise)
-    suspend fun updateExerciseSets(
+    suspend fun updateExerciseData(
         sets: List<ExerciseSet>,
         totalLiftedWeight: Double,
         trainingHistoryId: Long,

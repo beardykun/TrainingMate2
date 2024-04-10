@@ -9,18 +9,13 @@ interface ITrainingHistoryDataSource {
     suspend fun insertTrainingRecord(training: Training)
     fun getOngoingTraining(): Flow<Training?>
     fun countOngoingTraining(): Flow<Long>
-    suspend fun updateEndTime(
+    suspend fun updateTrainingData(
+        startTime: Long,
         trainingId: Long,
         totalLiftedWeight: Double,
         doneExercised: List<String>,
         sets: Int,
         reps: Int
-    )
-
-    suspend fun updateStartTime(
-        trainingId: Long,
-        totalLiftedWeight: Double,
-        doneExercised: List<String>
     )
 
     suspend fun updateStatus(trainingId: Long, status: String = "COMPLETED")
