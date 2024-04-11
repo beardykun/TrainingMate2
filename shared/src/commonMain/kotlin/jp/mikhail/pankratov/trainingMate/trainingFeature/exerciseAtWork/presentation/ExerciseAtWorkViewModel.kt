@@ -3,8 +3,12 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 import androidx.compose.ui.text.input.TextFieldValue
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
+import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
+import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError.InputErrorWeight
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Result
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
@@ -194,6 +198,7 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun updateAutoInput() {
+        val exerciseLocal = state.value.exerciseDetails.exerciseLocal
         val sets = state.value.exerciseDetails.exercise?.sets ?: listOf()
         val pastSets = state.value.exerciseDetails.lastSameExercise?.sets ?: listOf()
         if (pastSets.isEmpty()) {
@@ -201,19 +206,23 @@ class ExerciseAtWorkViewModel(
             return
         }
         var counter = sets.size
-        if (counter > pastSets.size) {
-            counter = sets.size
+        if (counter >= pastSets.size) {
+            counter = sets.size -1
         }
-        val increment = when(pastSets[counter].difficulty) {
+        val increment = when (pastSets[counter].difficulty) {
             SetDifficulty.Hard.name -> 0.0
-            else -> 2.5
+            else -> if (exerciseLocal?.usesTwoDumbbells == true) {
+                2.0
+            } else 2.5
         }
         val weight = pastSets[counter].weight.toDouble() + increment
         _state.update { currentState ->
             currentState.copy(
                 exerciseDetails = currentState.exerciseDetails.copy(
                     weight = TextFieldValue(weight.toString()),
-                    reps = TextFieldValue(pastSets[counter].reps)
+                    reps = TextFieldValue(pastSets[counter].reps),
+                    errorReps = null,
+                    errorWeight = null
                 )
             )
         }
@@ -318,26 +327,31 @@ class ExerciseAtWorkViewModel(
     private fun invalidInput(): Boolean {
         val exerciseDetails = state.value.exerciseDetails
 
-        val weightError = validateWeight(exerciseDetails.weight.text)
-        val repsError = validateReps(exerciseDetails.reps.text)
-        if (weightError != null) {
-            _state.update {
-                it.copy(
-                    exerciseDetails =
-                    it.exerciseDetails.copy(errorWeight = weightError)
-                )
+        when (val weightError = validateWeight(exerciseDetails.weight.text)) {
+            is Result.Error -> {
+                _state.update {
+                    it.copy(
+                        exerciseDetails =
+                        it.exerciseDetails.copy(errorWeight = weightError.error.asResId())
+                    )
+                }
+                return true
             }
-            return true
-        }
 
-        if (repsError != null) {
-            _state.update {
-                it.copy(
-                    exerciseDetails =
-                    it.exerciseDetails.copy(errorReps = repsError)
-                )
+            is Result.Success -> {}
+        }
+        when (val repsError = validateReps(exerciseDetails.reps.text)) {
+            is Result.Error -> {
+                _state.update {
+                    it.copy(
+                        exerciseDetails =
+                        it.exerciseDetails.copy(errorWeight = repsError.error.asResId())
+                    )
+                }
+                return true
             }
-            return true
+
+            is Result.Success -> {}
         }
         return false
     }
@@ -354,35 +368,34 @@ class ExerciseAtWorkViewModel(
             }
         }
 
-    private fun validateWeight(weight: String): String? {
+    private fun validateWeight(weight: String): Result<Unit, InputError> {
         try {
             weight.toDouble()
         } catch (e: NumberFormatException) {
-            return WEIGHT_ERROR_1
+            return Result.Error(InputErrorWeight.INVALID_FORMAT)
         }
 
-        if (weight == "0.0" || weight == "0") {
-            return WEIGHT_ERROR_2
+        return if (weight == "0.0" || weight == "0") {
+            Result.Error(InputErrorWeight.WEIGHT_CANT_BE_0)
         } else if (weight.contains(",")) {
-            return WEIGHT_ERROR_3
+            Result.Error(InputErrorWeight.USE_DOT_IN_WEIGHT)
         } else if (weight.isBlank()) {
-            return WEIGHT_ERROR_4
-        }
-        return null
+            Result.Error(InputErrorWeight.EMPTY_WEIGHT)
+        } else Result.Success(Unit)
     }
 
-    private fun validateReps(reps: String): String? {
+    private fun validateReps(reps: String): Result<Unit, InputError> {
         try {
             reps.toInt()
         } catch (e: NumberFormatException) {
-            return WEIGHT_ERROR_1
+            return Result.Error(InputError.InputErrorReps.INVALID_FORMAT)
         }
         return if (reps.isBlank()) {
-            REPS_ERROR_1
+            Result.Error(InputError.InputErrorReps.EMPTY_REPS)
         } else if (reps.contains(",") || reps.contains(".")) {
-            REPS_ERROR_2
+            Result.Error(InputError.InputErrorReps.REPS_IS_FLOAT)
         } else if (reps == "0") {
-            REPS_ERROR_3
-        } else null
+            Result.Error(InputError.InputErrorReps.REPS_CANT_BE_0)
+        } else Result.Success(Unit)
     }
 }

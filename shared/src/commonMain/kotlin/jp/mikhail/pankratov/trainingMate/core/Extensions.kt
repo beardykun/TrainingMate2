@@ -1,8 +1,11 @@
 package jp.mikhail.pankratov.trainingMate.core
 
 import androidx.compose.runtime.Composable
+import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
 
@@ -40,5 +43,19 @@ fun LocalDate.getIsoWeekNumber(): Long {
     val weekNumber: Long = (dayOfYear + weekStartOffset - 1L) / 7
     return if (weekStartOffset >= 4) weekNumber + 1L else weekNumber
 }
+
+fun InputError.asResId(): StringResource {
+    return when (this) {
+        InputError.InputErrorReps.INVALID_FORMAT -> SharedRes.strings.invalid_input_format
+        InputError.InputErrorReps.EMPTY_REPS -> SharedRes.strings.reps_should_not_be_empty
+        InputError.InputErrorReps.REPS_IS_FLOAT -> SharedRes.strings.not_a_float
+        InputError.InputErrorReps.REPS_CANT_BE_0 -> SharedRes.strings.not_a_0
+        InputError.InputErrorWeight.INVALID_FORMAT -> SharedRes.strings.invalid_input_format
+        InputError.InputErrorWeight.WEIGHT_CANT_BE_0 -> SharedRes.strings.weight_cant_be_0
+        InputError.InputErrorWeight.USE_DOT_IN_WEIGHT -> SharedRes.strings.use_dot
+        InputError.InputErrorWeight.EMPTY_WEIGHT -> SharedRes.strings.weight_should_not_be_empty
+    }
+}
+
 
 

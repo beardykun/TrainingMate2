@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
@@ -68,7 +69,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presenta
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import moe.tlaster.precompose.navigation.Navigator
-
+const val COLUMNS_NUM = 3
 //Use same weights as before, increase or decrease selection
 @Composable
 fun ExerciseAtWorkScreen(
@@ -122,24 +123,26 @@ fun ExerciseAtWorkScreen(
                     exercise = state.exerciseDetails.exercise
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextMedium(text = "Auto Input")
-                Checkbox(
-                    checked = state.uiState.isAutoInputEnabled,
-                    onCheckedChange = { checkState ->
-                        onEvent(ExerciseAtWorkEvent.OnAutoInputToggled(checkState))
-                    })
+            AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextMedium(text = SharedRes.strings.auto_input.getString())
+                    Checkbox(
+                        checked = state.uiState.isAutoInputEnabled,
+                        onCheckedChange = { checkState ->
+                            onEvent(ExerciseAtWorkEvent.OnAutoInputToggled(checkState))
+                        })
+                }
             }
 
             InputFields(
                 weight = state.exerciseDetails.weight,
                 reps = state.exerciseDetails.reps,
-                errorWeight = state.exerciseDetails.errorWeight,
-                errorReps = state.exerciseDetails.errorReps,
+                errorWeight = state.exerciseDetails.errorWeight?.getString(),
+                errorReps = state.exerciseDetails.errorReps?.getString(),
                 onEvent = onEvent,
                 focus = focus,
                 focusRequesterWeight = focusRequesterWeight,
@@ -154,7 +157,7 @@ fun ExerciseAtWorkScreen(
                 })
 
             state.exerciseDetails.exercise?.sets?.let { sets ->
-                LazyVerticalGrid(columns = GridCells.Fixed(count = 3)) {
+                LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMNS_NUM)) {
                     items(sets) { item ->
                         AnimatedTextSizeItem(
                             set = item,
@@ -246,7 +249,7 @@ fun InputFields(
             },
             keyboardType = KeyboardType.Decimal,
             isError = errorWeight != null,
-            errorText = getErrorMessage(errorWeight),
+            errorText = errorWeight,
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
             }),
@@ -264,7 +267,7 @@ fun InputFields(
             },
             keyboardType = KeyboardType.Number,
             isError = errorReps != null,
-            errorText = getErrorMessage(errorReps),
+            errorText = errorReps,
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
             }),
