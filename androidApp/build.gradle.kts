@@ -49,4 +49,5 @@ dependencies {
 
     implementation(libs.odyssey.core)
     implementation(libs.odyssey.compose)
+    implementation(libs.koin.android)
 }

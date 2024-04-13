@@ -6,12 +6,16 @@ import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.GetExerciseByTemplateIdUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.GetExerciseFromHistoryUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.GetLatsSameExerciseUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.GetOngoingTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError.InputErrorWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Result
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateBestLiftedWeightUseCase
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateExerciseDataUseCase
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateTrainingDataUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -23,12 +27,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 
 class ExerciseAtWorkViewModel(
-    private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val exerciseDataSource: IExerciseDatasource,
+    getOngoingTrainingUseCase: GetOngoingTrainingUseCase,
+    getExerciseFromHistoryUseCase: GetExerciseFromHistoryUseCase,
+    getLatsSameExerciseUseCase: GetLatsSameExerciseUseCase,
+    getExerciseByTemplateIdUseCase: GetExerciseByTemplateIdUseCase,
+    private val updateBestLiftedWeightUseCase: UpdateBestLiftedWeightUseCase,
+    private val updateExerciseDataUseCase: UpdateExerciseDataUseCase,
+    private val updateTrainingDataUseCase: UpdateTrainingDataUseCase,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
     private val notificationUtils: NotificationUtils
@@ -37,12 +44,12 @@ class ExerciseAtWorkViewModel(
     private val _state = MutableStateFlow(ExerciseAtWorkState())
     val state = combine(
         _state,
-        exerciseDataSource.getExerciseById(exerciseTemplateId),
-        trainingHistoryDataSource.getOngoingTraining(),
-        exerciseHistoryDatasource.getExerciseFromHistory(trainingId, exerciseTemplateId),
-        exerciseHistoryDatasource.getLatsSameExercise(
+        getExerciseByTemplateIdUseCase(exerciseTemplateId),
+        getOngoingTrainingUseCase(),
+        getExerciseFromHistoryUseCase(trainingId, exerciseTemplateId),
+        getLatsSameExerciseUseCase(
             exerciseTemplateId = exerciseTemplateId,
-            trainingHistoryId = trainingId
+            trainingId = trainingId
         )
     ) { state, exerciseLocal, ongoingTraining, exercise, lastExercise ->
         state.copy(
@@ -207,7 +214,7 @@ class ExerciseAtWorkViewModel(
         }
         var counter = sets.size
         if (counter >= pastSets.size) {
-            counter = sets.size -1
+            counter = sets.size - 1
         }
         val increment = when (pastSets[counter].difficulty) {
             SetDifficulty.Hard.name -> 0.0
@@ -239,7 +246,7 @@ class ExerciseAtWorkViewModel(
         )
         val sets = exerciseDetails.exercise?.sets?.plus(newInput) ?: emptyList()
 
-        updateBestLiftedWeightIfNeeded(exerciseDetails.weight.text.toDouble())
+        updateBestLiftedWeightIfNeeded()
 
         val weight =
             if (exerciseDetails.exerciseLocal?.usesTwoDumbbells == true)
@@ -277,13 +284,13 @@ class ExerciseAtWorkViewModel(
             updateTrainingData(trainingId, weight, reps, sets)
 
             val exerciseDetails = state.value.exerciseDetails
-            val exerciseTotalLifted = (exerciseDetails.exercise?.totalLiftedWeight ?: 0.0) + weight
-            exerciseHistoryDatasource.updateExerciseData(
+            updateExerciseDataUseCase.invoke(
+                exerciseDetails = exerciseDetails,
                 sets = sets,
-                totalLiftedWeight = exerciseTotalLifted,
-                trainingHistoryId = trainingId,
-                exerciseTemplateId = exerciseTemplateId,
-                reps = reps
+                weight = weight,
+                reps = reps,
+                trainingId = trainingId,
+                exerciseTemplateId = exerciseTemplateId
             )
         }
 
@@ -294,26 +301,16 @@ class ExerciseAtWorkViewModel(
         sets: List<ExerciseSet>
     ) {
         val exerciseDetails = state.value.exerciseDetails
-
-        val totalLiftedWeight = (state.value.ongoingTraining?.totalWeightLifted ?: 0.0) + weight
-        val doneExercises =
-            state.value.ongoingTraining?.doneExercises?.toMutableList() ?: mutableListOf()
-        val exerciseName = exerciseDetails.exercise?.name ?: ""
-
-        if (!doneExercises.contains(exerciseName) && sets.isNotEmpty()) {
-            doneExercises.add(exerciseName)
-        } else if (doneExercises.contains(exerciseName) && sets.isEmpty()) {
-            doneExercises.remove(exerciseName)
+        state.value.ongoingTraining?.let {
+            updateTrainingDataUseCase.invoke(
+                exerciseDetails = exerciseDetails,
+                ongoingTraining = it,
+                reps = reps,
+                sets = sets,
+                trainingId = trainingId,
+                weight = weight
+            )
         }
-        trainingHistoryDataSource.updateTrainingData(
-            startTime = state.value.ongoingTraining?.startTime ?: Clock.System.now()
-                .toEpochMilliseconds(),
-            trainingId = trainingId,
-            totalLiftedWeight = totalLiftedWeight,
-            doneExercised = doneExercises,
-            sets = if (weight < 0) -1 else 1,
-            reps = reps
-        )
     }
 
     private fun startTimer(initValue: Int) = flow {
@@ -356,16 +353,10 @@ class ExerciseAtWorkViewModel(
         return false
     }
 
-    private fun updateBestLiftedWeightIfNeeded(currentLiftedWeight: Double) =
+    private fun updateBestLiftedWeightIfNeeded() =
         viewModelScope.launch(Dispatchers.IO) {
             val exerciseDetails = state.value.exerciseDetails
-
-            if (currentLiftedWeight > (exerciseDetails.exerciseLocal?.bestLiftedWeight ?: 0.0)) {
-                exerciseDataSource.updateBestLiftedWeightById(
-                    id = exerciseDetails.exerciseLocal?.id ?: -1,
-                    newBestWeight = currentLiftedWeight
-                )
-            }
+            updateBestLiftedWeightUseCase.invoke(exerciseDetails = exerciseDetails)
         }
 
     private fun validateWeight(weight: String): Result<Unit, InputError> {

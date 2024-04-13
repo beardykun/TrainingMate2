@@ -20,6 +20,7 @@ odyssey-core = "1.3.20"
 firebase-bom-version = "32.8.0"
 agp = "8.3.1"
 jetbrains-compose-version = "1.6.0"
+koin-bom = "3.5.0"
 
 [libraries]
 android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sql-delight-version" }
@@ -55,12 +56,18 @@ moko-resources-compose = { module = "dev.icerock.moko:resources-compose", versio
 moko-resources-generator = { module = "dev.icerock.moko:resources-generator", version.ref = "moko-version" }
 moko-graphics = { module = "dev.icerock.moko:graphics", version.ref = "moko-graphics-version" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
+moe-precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
 runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sql-delight-version" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
 firebase-auth-ktx = { group = "com.google.firebase:firebase-auth-ktx", name = "firebase-auth-ktx" }
 firebase-storage-ktx = { group = "com.google.firebase:firebase-storage-ktx", name = "firebase-storage-ktx" }
 firebase-crashlytics-ktx = { group = "com.google.firebase:firebase-crashlytics-ktx", name = "firebase-crashlytics-ktx" }
 firebase-messaging-ktx = { group = "com.google.firebase:firebase-messaging-ktx", name = "firebase-messaging-ktx" }
+
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

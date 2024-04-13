@@ -61,10 +61,15 @@ kotlin {
                 api(libs.moko.resources.compose)
 
                 api(libs.precompose)
+                api(libs.moe.precompose.koin)
 
                 implementation(libs.kamel.image)
 
                 implementation(libs.chart)
+
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
             }
         }
         val commonTest by getting {
@@ -80,6 +85,7 @@ kotlin {
 
                 implementation(libs.android.driver)
                 implementation(libs.ktor.client.android)
+                implementation(libs.koin.android)
             }
         }
         val iosX64Main by getting
