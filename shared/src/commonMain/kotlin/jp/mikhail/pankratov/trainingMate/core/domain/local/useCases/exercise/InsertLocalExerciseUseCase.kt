@@ -1,4 +1,10 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise
 
-class InsertLocalExerciseUseCase {
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
+
+class InsertLocalExerciseUseCase(private val exerciseDatasource: IExerciseDatasource) {
+    suspend operator fun invoke(exerciseLocal: ExerciseLocal) {
+        exerciseDatasource.insertExercise(exerciseLocal)
+    }
 }

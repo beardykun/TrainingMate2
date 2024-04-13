@@ -4,7 +4,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 
-class UpdateExerciseDataUseCase(private val exerciseHistoryDatasource: IExerciseHistoryDatasource) {
+class UpdateHistoryExerciseDataUseCase(private val exerciseHistoryDatasource: IExerciseHistoryDatasource) {
     suspend operator fun invoke(
         exerciseDetails: ExerciseDetails,
         sets: List<ExerciseSet>,

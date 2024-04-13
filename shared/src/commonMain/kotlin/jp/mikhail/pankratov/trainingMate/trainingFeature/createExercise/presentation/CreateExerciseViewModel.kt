@@ -1,8 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.UseCaseProvider
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,13 +15,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CreateExerciseViewModel(
-    private val provider: UseCaseProvider,
-    trainingHistoryDataSource: ITrainingHistoryDataSource
+    trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CreateExerciseState())
     val state =
-        combine(_state, trainingHistoryDataSource.getOngoingTraining()) { state, ongoingTraining ->
+        combine(
+            _state,
+            trainingUseCaseProvider.getOngoingTrainingUseCase().invoke()
+        ) { state, ongoingTraining ->
             state.copy(ongoingTraining = ongoingTraining)
         }.stateIn(
             scope = viewModelScope,
@@ -62,7 +66,9 @@ class CreateExerciseViewModel(
 
     private fun validateItNotInDbAndInsert(event: CreateExerciseEvent.OnExerciseCreate) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (provider.getIsExerciseExistsUseCase().invoke(state.value.exerciseName.text)) {
+            if (exerciseUseCaseProvider.getIsLocalExerciseExistsUseCase()
+                    .invoke(state.value.exerciseName.text)
+            ) {
                 _state.update {
                     it.copy(invalidNameInput = true)
                 }
@@ -92,10 +98,14 @@ class CreateExerciseViewModel(
 
 
     private suspend fun insertNewExercise(onSuccess: () -> Unit) {
-        provider.getInsertExerciseUseCase().invoke(
-            exerciseName = state.value.exerciseName.text,
-            exerciseGroup = state.value.exerciseGroup,
-            usesTwoDumbbell = state.value.usesTwoDumbbell
+        val stateValue = state.value
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
+            ExerciseLocal(
+                name = stateValue.exerciseName.text,
+                group = stateValue.exerciseGroup,
+                image = stateValue.exerciseGroup.lowercase(),
+                usesTwoDumbbells = stateValue.usesTwoDumbbell
+            )
         )
         withContext(Dispatchers.Main) {
             onSuccess.invoke()

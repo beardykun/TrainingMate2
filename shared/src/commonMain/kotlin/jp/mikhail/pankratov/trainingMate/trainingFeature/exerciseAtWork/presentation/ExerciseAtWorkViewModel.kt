@@ -6,7 +6,8 @@ import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
-import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.UseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError.InputErrorWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Result
@@ -23,7 +24,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ExerciseAtWorkViewModel(
-    private val useCaseProvider: UseCaseProvider,
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
     private val notificationUtils: NotificationUtils
@@ -32,11 +34,12 @@ class ExerciseAtWorkViewModel(
     private val _state = MutableStateFlow(ExerciseAtWorkState())
     val state = combine(
         _state,
-        useCaseProvider.getExerciseByTemplateIdUseCase()
+        exerciseUseCaseProvider.getExerciseByTemplateIdUseCase()
             .invoke(exerciseTemplateId = exerciseTemplateId),
-        useCaseProvider.getOngoingTrainingUseCase().invoke(),
-        useCaseProvider.getExerciseFromHistoryUseCase().invoke(trainingId, exerciseTemplateId),
-        useCaseProvider.getLatsSameExerciseUseCase().invoke(
+        trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
+        exerciseUseCaseProvider.getExerciseFromHistoryUseCase()
+            .invoke(trainingId, exerciseTemplateId),
+        exerciseUseCaseProvider.getLatsSameExerciseUseCase().invoke(
             exerciseTemplateId = exerciseTemplateId,
             trainingId = trainingId
         )
@@ -271,7 +274,7 @@ class ExerciseAtWorkViewModel(
             updateTrainingData(trainingId, weight, reps, sets)
 
             val exerciseDetails = state.value.exerciseDetails
-            useCaseProvider.getUpdateExerciseDataUseCase().invoke(
+            exerciseUseCaseProvider.getUpdateHistoryExerciseDataUseCase().invoke(
                 exerciseDetails = exerciseDetails,
                 sets = sets,
                 weight = weight,
@@ -289,7 +292,7 @@ class ExerciseAtWorkViewModel(
     ) {
         val exerciseDetails = state.value.exerciseDetails
         state.value.ongoingTraining?.let {
-            useCaseProvider.getUpdateTrainingDataUseCase().invoke(
+            trainingUseCaseProvider.getUpdateTrainingHistoryDataUseCase().invoke(
                 exerciseDetails = exerciseDetails,
                 ongoingTraining = it,
                 reps = reps,
@@ -343,7 +346,7 @@ class ExerciseAtWorkViewModel(
     private fun updateBestLiftedWeightIfNeeded() =
         viewModelScope.launch(Dispatchers.IO) {
             val exerciseDetails = state.value.exerciseDetails
-            useCaseProvider.getUpdateBestLiftedWeightUseCase()
+            exerciseUseCaseProvider.getUpdateBestLiftedWeightUseCase()
                 .invoke(exerciseDetails = exerciseDetails)
         }
 

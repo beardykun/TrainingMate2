@@ -3,7 +3,8 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentat
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.UseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddExercisesViewModel(
-    private val useCaseProvider: UseCaseProvider
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
@@ -46,13 +48,13 @@ class AddExercisesViewModel(
 
     private fun loadTrainingAndExercises() =
         viewModelScope.launch(Dispatchers.IO) {
-            val training = useCaseProvider.getOngoingTrainingUseCase().invoke().first()
+            val training = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
             training?.let { trainingNotNull ->
                 _training.update {
                     trainingNotNull
                 }
                 val exercises =
-                    useCaseProvider.getExerciseByGroupUseCase()
+                    exerciseUseCaseProvider.getLocalExerciseByGroupUseCase()
                         .invoke(groupNames = trainingNotNull.groups)
                         .first()
                 _selectedExercises.update { trainingNotNull.exercises }
@@ -84,7 +86,7 @@ class AddExercisesViewModel(
             AddExercisesEvent.OnDeleteExercise -> {
                 viewModelScope.launch {
                     state.value.selectedForDelete?.id?.let {
-                        useCaseProvider.getDeleteLocalExerciseByIdUseCase().invoke(it)
+                        exerciseUseCaseProvider.getDeleteLocalExerciseByIdUseCase().invoke(it)
                         loadTrainingAndExercises()
                     }
                 }
@@ -108,9 +110,9 @@ class AddExercisesViewModel(
     }
 
     private fun updateTraining(oldTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
-        useCaseProvider.getInsertTrainingRecordUseCase()
+        trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase()
             .invoke(oldTraining.copy(exercises = _selectedExercises.value))
-        useCaseProvider.getUpdateTrainingExerciseUseCase().invoke(
+        trainingUseCaseProvider.getUpdateTrainingLocalExerciseUseCase().invoke(
             exercises = _selectedExercises.value,
             id = oldTraining.trainingTemplateId
         )
@@ -128,6 +130,5 @@ private fun getExerciseListWithHeaders(exercises: List<ExerciseLocal>): List<Exe
         }
         items.add(ExerciseListItem.ExerciseItem(exercise))
     }
-
     return items
 }

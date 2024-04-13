@@ -3,9 +3,8 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
-import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,9 +16,8 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
 class TrainingViewModel(
-    private val trainingDataSource: ITrainingDataSource,
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val summaryDataSource: ISummaryDatasource
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val summaryUseCaseProvider: SummaryUseCaseProvider
 ) : ViewModel() {
 
     private val motivationalPhrases = listOf(
@@ -57,16 +55,16 @@ class TrainingViewModel(
 
     private val summaries =
         combine(
-            summaryDataSource.getTwoLastMonthlySummary(),
-            summaryDataSource.getTwoLastWeeklySummary()
+            summaryUseCaseProvider.getTwoLastMonthlySummaryUseCase().invoke(),
+            summaryUseCaseProvider.getTwoLastWeeklySummaryUseCase().invoke()
         ) { monthly, weekly ->
             Pair(monthly, weekly)
         }
 
     private val trainingData = combine(
-        trainingDataSource.getTrainings(),
-        trainingHistoryDataSource.getOngoingTraining(),
-        trainingHistoryDataSource.getLatestHistoryTrainings()
+        trainingUseCaseProvider.getLocalTrainingsUseCase().invoke(),
+        trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
+        trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke()
     ) { trainings, ongoingTraining, trainingsHistory ->
         Triple(trainings, ongoingTraining, trainingsHistory)
     }
@@ -169,16 +167,17 @@ class TrainingViewModel(
     }
 
     private fun deleteLastTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
-        trainingHistoryDataSource.deleteTrainingRecord(trainingId = trainingId)
+        trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
+            .invoke(trainingId = trainingId)
     }
 
     private fun deleteTemplateTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
-        trainingDataSource.deleteTrainingTemplate(id = trainingId)
+        trainingUseCaseProvider.getDeleteTrainingTemplateUseCase().invoke(trainingId)
     }
 
     private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {
         finishLastTrainingWhenStartingNew()
-        trainingHistoryDataSource.insertTrainingRecord(
+        trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase().invoke(
             Training(
                 trainingTemplateId = training.id!!,
                 name = training.name,
@@ -189,16 +188,18 @@ class TrainingViewModel(
                 exercises = training.exercises
             )
         )
-        summaryDataSource.insetSummary()
+        summaryUseCaseProvider.getInsetSummaryUseCase()
     }
 
     private suspend fun finishLastTrainingWhenStartingNew() {
         state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
             if (state.value.ongoingTraining?.totalWeightLifted == 0.0) {
-                trainingHistoryDataSource.deleteTrainingRecord(ongoingTrainingId)
+                trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
+                    .invoke(trainingId = ongoingTrainingId)
                 return@let
             }
-            trainingHistoryDataSource.updateStatus(trainingId = ongoingTrainingId)
+            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
+                .invoke(trainingId = ongoingTrainingId)
         }
     }
 }
