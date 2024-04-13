@@ -11,7 +11,9 @@ import androidx.compose.ui.Modifier
 import jp.mikhail.pankratov.trainingMate.App
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.di.dataSourcesModule
-import jp.mikhail.pankratov.trainingMate.di.useCasesModel
+import jp.mikhail.pankratov.trainingMate.di.exerciseUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.summaryUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.trainingUseCaseModule
 import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +21,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val appModule = AppModule(context = this.applicationContext)
         startKoin {
-            modules(dataSourcesModule(appModule), useCasesModel())
+            modules(
+                dataSourcesModule(appModule),
+                trainingUseCaseModule(),
+                exerciseUseCaseModule(),
+                summaryUseCaseModule()
+            )
         }
         setContent {
             MyApplicationTheme {

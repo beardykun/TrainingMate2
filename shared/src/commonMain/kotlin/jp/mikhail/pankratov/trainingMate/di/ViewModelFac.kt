@@ -17,14 +17,18 @@ import org.koin.core.component.get
 
 object ViewModelsFac : KoinComponent {
     fun getAppViewModelFactory() =
-        viewModelFactory { AppViewModel(trainingDataSource = get(), exerciseDataSource = get()) }
+        viewModelFactory {
+            AppViewModel(
+                trainingUseCaseProvider = get(),
+                exerciseUseCaseProvider = get()
+            )
+        }
 
     fun getTrainingViewModelFactory() =
         viewModelFactory {
             TrainingViewModel(
-                trainingDataSource = get(),
-                trainingHistoryDataSource = get(),
-                summaryDataSource = get()
+                trainingUseCaseProvider = get(),
+                summaryUseCaseProvider = get()
             )
         }
 
@@ -70,22 +74,24 @@ object ViewModelsFac : KoinComponent {
     fun getAddExercisesViewModelFactory() =
         viewModelFactory {
             AddExercisesViewModel(
-                useCaseProvider = get()
+                trainingUseCaseProvider = get(),
+                exerciseUseCaseProvider = get()
             )
         }
 
     fun getCreateExerciseViewModelFactory() =
         viewModelFactory {
             CreateExerciseViewModel(
-                provider = get(),
-                trainingHistoryDataSource = get()
+                exerciseUseCaseProvider = get(),
+                trainingUseCaseProvider = get()
             )
         }
 
     fun getExerciseAtWorkViewModelFactory(trainingId: Long, exerciseTemplateId: Long) =
         viewModelFactory {
             ExerciseAtWorkViewModel(
-                useCaseProvider = get(),
+                trainingUseCaseProvider = get(),
+                exerciseUseCaseProvider = get(),
                 trainingId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
                 notificationUtils = get()
@@ -95,7 +101,7 @@ object ViewModelsFac : KoinComponent {
     fun getExerciseAtWorkHistoryViewModelFactory(exerciseName: String) =
         viewModelFactory {
             ExerciseAtWorkHistoryViewModel(
-                useCaseProvider = get(),
+                exerciseUseCaseProvider = get(),
                 exerciseName = exerciseName
             )
         }

@@ -6,7 +6,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.datetime.Clock
 
-class UpdateTrainingDataUseCase(private val trainingHistoryDataSource: ITrainingHistoryDataSource) {
+class UpdateTrainingHistoryDataUseCase(private val trainingHistoryDataSource: ITrainingHistoryDataSource) {
     suspend operator fun invoke(
         exerciseDetails: ExerciseDetails,
         ongoingTraining: Training,

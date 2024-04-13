@@ -32,7 +32,9 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.di.ViewModelsFac
 import jp.mikhail.pankratov.trainingMate.di.dataSourcesModule
-import jp.mikhail.pankratov.trainingMate.di.useCasesModel
+import jp.mikhail.pankratov.trainingMate.di.exerciseUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.summaryUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.trainingUseCaseModule
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
 import moe.tlaster.precompose.navigation.rememberNavigator
@@ -47,7 +49,14 @@ fun App(
 ) {
     PreComposeApp {
         KoinApplication(application = {
-            modules(listOf(dataSourcesModule(appModule), useCasesModel()))
+            modules(
+                listOf(
+                    dataSourcesModule(appModule),
+                    trainingUseCaseModule(),
+                    exerciseUseCaseModule(),
+                    summaryUseCaseModule()
+                )
+            )
         }) {
             TrainingMateTheme(
                 darkTheme = darkTheme,

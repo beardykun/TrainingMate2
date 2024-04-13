@@ -4,21 +4,21 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.listToString
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 
 class AppViewModel(
-    private val trainingDataSource: ITrainingDataSource,
-    private val exerciseDataSource: IExerciseDatasource
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider
 ) : ViewModel() {
 
     fun insertDefaultTraining() = viewModelScope.launch(Dispatchers.IO) {
-        if (!trainingDataSource.trainingTableEmpty()) return@launch
-        trainingDataSource.insertTraining(
+        if (!trainingUseCaseProvider.getTrainingTableEmptyUseCase()()) return@launch
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
             TrainingLocal(
                 id = null,
                 name = "Full Body",
@@ -37,28 +37,28 @@ class AppViewModel(
 
     private fun insertDefaultExercises() = viewModelScope.launch(Dispatchers.IO) {
         //biceps
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell curls",
                 group = DatabaseContract.BICEPS_GROUP,
                 image = "barbell_curl"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Standing reverse curl",
                 group = DatabaseContract.BICEPS_GROUP,
                 image = "standing_reverse_curl"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Standing biceps cable curl",
                 group = DatabaseContract.BICEPS_GROUP,
                 image = "standing_biceps_cable_curl"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Overhead cable curl",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -66,7 +66,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Seated dumbbell curls",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -74,7 +74,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell preacher curl",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -82,14 +82,14 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Preacher curl",
                 group = DatabaseContract.BICEPS_GROUP,
                 image = "preacher_curl"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Concentration curls",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -97,7 +97,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell bicep curl",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -105,7 +105,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell alternate bicep curl",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -113,7 +113,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Cross body hammer curl",
                 group = DatabaseContract.BICEPS_GROUP,
@@ -122,21 +122,21 @@ class AppViewModel(
             )
         )
         //triceps
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Lying Triceps Press",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "lying_triceps_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Standing triceps press",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "standing_triceps_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Triceps dumbbell kickback",
                 group = DatabaseContract.TRICEPS_GROUP,
@@ -144,49 +144,49 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Triceps push-down",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "triceps_pushdown"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Push ups close triceps position",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "push_ups_close_triceps_position"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dips triceps",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "dips_triceps"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Close grip barbell press",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "close_grip_barbell_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Cable rope overhead extension",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "cable_rope_overhead_extention"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Bench dips",
                 group = DatabaseContract.TRICEPS_GROUP,
                 image = "bench_dips"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Cable one arm triceps extension",
                 group = DatabaseContract.TRICEPS_GROUP,
@@ -194,7 +194,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell one arm triceps extension",
                 group = DatabaseContract.TRICEPS_GROUP,
@@ -204,28 +204,28 @@ class AppViewModel(
         )
 
         //Shoulders
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell Shoulder Press",
                 group = DatabaseContract.SHOULDERS_GROUP,
                 image = "barbell_shoulder_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Shoulder Press",
                 group = DatabaseContract.SHOULDERS_GROUP,
                 image = "shoulder_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Reverse machine flyes",
                 group = DatabaseContract.SHOULDERS_GROUP,
                 image = "reverse_machine_flyes"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Front dumbbell raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
@@ -233,14 +233,14 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Side lateral raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
                 image = "side_lateral_raise"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell shoulder press",
                 group = DatabaseContract.SHOULDERS_GROUP,
@@ -248,7 +248,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Cable rear delt fly",
                 group = DatabaseContract.SHOULDERS_GROUP,
@@ -256,7 +256,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Bent over dumbbell rear delt raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
@@ -264,14 +264,14 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell rea delt rows",
                 group = DatabaseContract.SHOULDERS_GROUP,
                 image = "barbell_rea_delt_rows"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Arnold dumbbell press",
                 group = DatabaseContract.SHOULDERS_GROUP,
@@ -279,7 +279,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Alternating deltoid raise",
                 group = DatabaseContract.SHOULDERS_GROUP,
@@ -289,56 +289,56 @@ class AppViewModel(
         )
 
         //back
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Chin ups",
                 group = DatabaseContract.BACK_GROUP,
                 image = "chin_up"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Reverse grip bent over rows",
                 group = DatabaseContract.BACK_GROUP,
                 image = "reverse_grip_bent_over_rows"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Lying T-bar row",
                 group = DatabaseContract.BACK_GROUP,
                 image = "lying_t_bar_row"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Close grip front lat pull-down",
                 group = DatabaseContract.BACK_GROUP,
                 image = "close_grip_front_lat_pulldown"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Bent over barbell row",
                 group = DatabaseContract.BACK_GROUP,
                 image = "bent_over_barbell_row"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Wide grip lat pull-down",
                 group = DatabaseContract.BACK_GROUP,
                 image = "wide_grip_lat_pulldown"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Underhand cable pull-down",
                 group = DatabaseContract.BACK_GROUP,
                 image = "underhand_cable_pulldown"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "One arm dumbbell row",
                 group = DatabaseContract.BACK_GROUP,
@@ -346,7 +346,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Seated cable row",
                 group = DatabaseContract.BACK_GROUP,
@@ -355,28 +355,28 @@ class AppViewModel(
         )
 
         //chest
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Bench Press",
                 group = DatabaseContract.CHEST_GROUP,
                 image = "bench_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Machine flye",
                 group = DatabaseContract.CHEST_GROUP,
                 image = "machine_flye"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Machine bench press",
                 group = DatabaseContract.CHEST_GROUP,
                 image = "machine_bench_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell flyes",
                 group = DatabaseContract.CHEST_GROUP,
@@ -384,7 +384,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Decline dumbbell bench press",
                 group = DatabaseContract.CHEST_GROUP,
@@ -392,21 +392,21 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Decline bench press",
                 group = DatabaseContract.CHEST_GROUP,
                 image = "decline_bench_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell incline bench",
                 group = DatabaseContract.CHEST_GROUP,
                 image = "barbell_incline_bench"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Incline dumbbell bench press",
                 group = DatabaseContract.CHEST_GROUP,
@@ -414,7 +414,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Incline dumbbell flyes",
                 group = DatabaseContract.CHEST_GROUP,
@@ -422,7 +422,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Low cable crossover",
                 group = DatabaseContract.CHEST_GROUP,
@@ -431,77 +431,77 @@ class AppViewModel(
         )
 
         //legs
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Squats",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "squat"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Romanian deadlift from deficit",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "romanian_deadlift_from_deficit"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Romanian deadlift",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "romanian_deadlift"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Leg press",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "leg_press"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Machine squat",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "machine_squat"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Leg extensions",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "leg_extensions"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Glute ham raise",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "glute_ham_raise"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Good mornings",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "good_morning"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell squat",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "barbell_squat"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell lunge",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "barbell_lunge"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell lunges",
                 group = DatabaseContract.LEGS_GROUP,
@@ -509,7 +509,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell step ups",
                 group = DatabaseContract.LEGS_GROUP,
@@ -517,14 +517,14 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Smith machine squat",
                 group = DatabaseContract.LEGS_GROUP,
                 image = "smith_machine_squat"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Smith machine front squat",
                 group = DatabaseContract.LEGS_GROUP,
@@ -533,63 +533,63 @@ class AppViewModel(
         )
 
         //abs
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Oblique crunches on the flor",
                 group = DatabaseContract.ABS_GROUP,
                 image = "oblique_crunches_on_the_flor"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Legs rise on bars",
                 group = DatabaseContract.ABS_GROUP,
                 image = "legs_rise_on_bars"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Flat bench leg pull in",
                 group = DatabaseContract.ABS_GROUP,
                 image = "flat_bench_leg_pull_in"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Hanging pike",
                 group = DatabaseContract.ABS_GROUP,
                 image = "hanging_pike"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Janda sit up",
                 group = DatabaseContract.ABS_GROUP,
                 image = "janda_sit_up"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Knee hip raise on bars",
                 group = DatabaseContract.ABS_GROUP,
                 image = "knee_hip_raise_on_bars"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Kneeling rope crunch",
                 group = DatabaseContract.ABS_GROUP,
                 image = "kneeling_rope_crunch"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Seated leg tucks",
                 group = DatabaseContract.ABS_GROUP,
                 image = "seated_leg_tucks"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Tuck crunch",
                 group = DatabaseContract.ABS_GROUP,
@@ -598,21 +598,21 @@ class AppViewModel(
         )
 
         //traps
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell shrugs behind the back",
                 group = DatabaseContract.TRAPS_GROUP,
                 image = "barbell_shrag_behind_the_back"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Barbell shrug",
                 group = DatabaseContract.TRAPS_GROUP,
                 image = "barbell_shrug"
             )
         )
-        exerciseDataSource.insertExercise(
+        exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Dumbbell shrug",
                 group = DatabaseContract.TRAPS_GROUP,
