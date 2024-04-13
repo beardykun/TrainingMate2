@@ -4,7 +4,6 @@ import database.ExerciseHistory
 import database.ExerciseTemplate
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.core.stringToList
 import jp.mikhail.pankratov.trainingMate.core.stringToSetList
 
 fun ExerciseTemplate.toExerciseLocal(): ExerciseLocal {

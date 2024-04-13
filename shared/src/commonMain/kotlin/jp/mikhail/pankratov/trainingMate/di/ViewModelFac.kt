@@ -8,7 +8,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
-import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.CreateExerciseViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
@@ -70,16 +70,14 @@ object ViewModelsFac : KoinComponent {
     fun getAddExercisesViewModelFactory() =
         viewModelFactory {
             AddExercisesViewModel(
-                trainingDataSource = get(),
-                exerciseDatasource = get(),
-                trainingHistoryDataSource = get()
+                useCaseProvider = get()
             )
         }
 
     fun getCreateExerciseViewModelFactory() =
         viewModelFactory {
             CreateExerciseViewModel(
-                exerciseDatasource = get(),
+                provider = get(),
                 trainingHistoryDataSource = get()
             )
         }
@@ -87,13 +85,7 @@ object ViewModelsFac : KoinComponent {
     fun getExerciseAtWorkViewModelFactory(trainingId: Long, exerciseTemplateId: Long) =
         viewModelFactory {
             ExerciseAtWorkViewModel(
-                updateBestLiftedWeightUseCase = get(),
-                updateExerciseDataUseCase = get(),
-                updateTrainingDataUseCase = get(),
-                getExerciseByTemplateIdUseCase = get(),
-                getExerciseFromHistoryUseCase = get(),
-                getLatsSameExerciseUseCase = get(),
-                getOngoingTrainingUseCase = get(),
+                useCaseProvider = get(),
                 trainingId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
                 notificationUtils = get()
@@ -103,7 +95,7 @@ object ViewModelsFac : KoinComponent {
     fun getExerciseAtWorkHistoryViewModelFactory(exerciseName: String) =
         viewModelFactory {
             ExerciseAtWorkHistoryViewModel(
-                exerciseHistoryDatasource = get(),
+                useCaseProvider = get(),
                 exerciseName = exerciseName
             )
         }

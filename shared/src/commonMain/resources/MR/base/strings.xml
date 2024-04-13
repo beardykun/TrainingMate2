@@ -23,6 +23,9 @@
     <string name="not_a_0">Reps should not be 0</string>
     <string name="delete_set">Delete set?</string>
     <string name="sure_delete_set">Do you want to delete last set?</string>
+    <string name="hint_light">Completed comfortably.</string>
+    <string name="hint_medium">Challenging but manageable.</string>
+    <string name="hint_hard">Couldn\'t complete as intended due to difficulty.</string>
 
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>

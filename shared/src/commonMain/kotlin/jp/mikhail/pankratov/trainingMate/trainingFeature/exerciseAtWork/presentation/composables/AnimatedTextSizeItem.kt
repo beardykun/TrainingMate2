@@ -49,10 +49,9 @@ fun AnimatedTextSizeItem(
             }
         }
         val textColor = when (set.difficulty) {
-            SetDifficulty.Light.name -> Color(0xFFE8F5E9)
-            SetDifficulty.Medium.name -> Color(0xFFFFF9C4)
-            SetDifficulty.Hard.name -> Color(0xFFFFEBEE)
-            else -> Color.Unspecified
+            SetDifficulty.Light -> Color(0xFFE8F5E9)
+            SetDifficulty.Medium -> Color(0xFFFFF9C4)
+            SetDifficulty.Hard -> Color(0xFFFFEBEE)
         }
 
         Card(

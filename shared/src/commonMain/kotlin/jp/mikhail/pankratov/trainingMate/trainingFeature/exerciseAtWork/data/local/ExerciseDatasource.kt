@@ -98,8 +98,8 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
         return queries.countExerciseTemplates().executeAsOne() == 0L
     }
 
-    override suspend fun isExerciseExists(name: String): Boolean {
-        return queries.isExerciseExists(name.lowercase().trim()).executeAsOne() != 0L
+    override suspend fun isExerciseExists(name: String): Long {
+        return queries.isExerciseExists(name.lowercase().trim()).executeAsOne()
     }
 
     override suspend fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double) {

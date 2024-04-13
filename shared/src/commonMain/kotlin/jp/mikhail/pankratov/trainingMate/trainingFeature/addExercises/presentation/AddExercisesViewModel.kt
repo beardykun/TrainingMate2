@@ -3,9 +3,7 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentat
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.UseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,9 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AddExercisesViewModel(
-    private val trainingDataSource: ITrainingDataSource,
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val exerciseDatasource: IExerciseDatasource
+    private val useCaseProvider: UseCaseProvider
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
@@ -48,20 +44,22 @@ class AddExercisesViewModel(
         loadTrainingAndExercises()
     }
 
-    private fun loadTrainingAndExercises() {
+    private fun loadTrainingAndExercises() =
         viewModelScope.launch(Dispatchers.IO) {
-            trainingHistoryDataSource.getOngoingTraining().collect { training ->
-                training?.let { trainingNotNull ->
-                    _training.value = trainingNotNull
-
-                    val exercises =
-                        exerciseDatasource.getExercisesByGroups(trainingNotNull.groups).first()
-                    _selectedExercises.value = trainingNotNull.exercises
-                    _availableExercises.value = exercises
+            val training = useCaseProvider.getOngoingTrainingUseCase().invoke().first()
+            training?.let { trainingNotNull ->
+                _training.update {
+                    trainingNotNull
                 }
+                val exercises =
+                    useCaseProvider.getExerciseByGroupUseCase()
+                        .invoke(groupNames = trainingNotNull.groups)
+                        .first()
+                _selectedExercises.update { trainingNotNull.exercises }
+                _availableExercises.update { exercises }
             }
         }
-    }
+
 
     fun onEvent(event: AddExercisesEvent) {
         when (event) {
@@ -86,7 +84,7 @@ class AddExercisesViewModel(
             AddExercisesEvent.OnDeleteExercise -> {
                 viewModelScope.launch {
                     state.value.selectedForDelete?.id?.let {
-                        exerciseDatasource.deleteExerciseById(it)
+                        useCaseProvider.getDeleteLocalExerciseByIdUseCase().invoke(it)
                         loadTrainingAndExercises()
                     }
                 }
@@ -110,10 +108,11 @@ class AddExercisesViewModel(
     }
 
     private fun updateTraining(oldTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
-        trainingHistoryDataSource.insertTrainingRecord(oldTraining.copy(exercises = _selectedExercises.value))
-        trainingDataSource.updateExercises(
-            _selectedExercises.value,
-            oldTraining.trainingTemplateId
+        useCaseProvider.getInsertTrainingRecordUseCase()
+            .invoke(oldTraining.copy(exercises = _selectedExercises.value))
+        useCaseProvider.getUpdateTrainingExerciseUseCase().invoke(
+            exercises = _selectedExercises.value,
+            id = oldTraining.trainingTemplateId
         )
     }
 }

@@ -14,6 +14,6 @@ data class ExerciseDetails(
     val reps: TextFieldValue = TextFieldValue(""),
     val errorReps: StringResource? = null,
     val errorWeight: StringResource? = null,
-    val setDifficulty: String = SetDifficulty.Light.name
+    val setDifficulty: SetDifficulty = SetDifficulty.Light
 )
 

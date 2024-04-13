@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables
 
+import Dimens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,13 +21,13 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 @Composable
 fun DifficultySelection(
     selected: String,
-    onSelect: (String) -> Unit
+    onSelect: (SetDifficulty) -> Unit
 ) {
     val light = SharedRes.strings.light.getString()
     val medium = SharedRes.strings.medium.getString()
     val hard = SharedRes.strings.hard.getString()
     Row(
-        modifier = Modifier.fillMaxWidth().padding(bottom = Dimens.Padding16),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Padding16)
     ) {
         val textModifier = Modifier
@@ -41,7 +42,7 @@ fun DifficultySelection(
                     else Color.Unspecified
                 )
                 .clickable {
-                    onSelect.invoke(SetDifficulty.Light.name)
+                    onSelect.invoke(SetDifficulty.Light)
                 }
                 .padding(vertical = Dimens.Padding8)
         )
@@ -54,7 +55,7 @@ fun DifficultySelection(
                     else Color.Unspecified
                 )
                 .clickable {
-                    onSelect.invoke(SetDifficulty.Medium.name)
+                    onSelect.invoke(SetDifficulty.Medium)
                 }
                 .padding(vertical = Dimens.Padding8)
         )
@@ -67,7 +68,7 @@ fun DifficultySelection(
                     else Color.Unspecified
                 )
                 .clickable {
-                    onSelect.invoke(SetDifficulty.Hard.name)
+                    onSelect.invoke(SetDifficulty.Hard)
                 }
                 .padding(vertical = Dimens.Padding8)
         )

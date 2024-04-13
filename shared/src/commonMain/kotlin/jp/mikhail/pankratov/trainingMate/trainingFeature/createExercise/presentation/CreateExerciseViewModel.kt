@@ -1,8 +1,7 @@
-package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise
+package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.UseCaseProvider
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -15,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CreateExerciseViewModel(
-    private val exerciseDatasource: IExerciseDatasource,
+    private val provider: UseCaseProvider,
     trainingHistoryDataSource: ITrainingHistoryDataSource
 ) : ViewModel() {
 
@@ -62,8 +61,8 @@ class CreateExerciseViewModel(
     }
 
     private fun validateItNotInDbAndInsert(event: CreateExerciseEvent.OnExerciseCreate) {
-        viewModelScope.launch {
-            if (exerciseDatasource.isExerciseExists(state.value.exerciseName.text)) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (provider.getIsExerciseExistsUseCase().invoke(state.value.exerciseName.text)) {
                 _state.update {
                     it.copy(invalidNameInput = true)
                 }
@@ -92,14 +91,11 @@ class CreateExerciseViewModel(
     }
 
 
-    private fun insertNewExercise(onSuccess: () -> Unit) = viewModelScope.launch(Dispatchers.IO) {
-        exerciseDatasource.insertExercise(
-            ExerciseLocal(
-                name = state.value.exerciseName.text,
-                group = state.value.exerciseGroup,
-                usesTwoDumbbells = state.value.usesTwoDumbbell,
-                image = state.value.exerciseGroup.lowercase()
-            )
+    private suspend fun insertNewExercise(onSuccess: () -> Unit) {
+        provider.getInsertExerciseUseCase().invoke(
+            exerciseName = state.value.exerciseName.text,
+            exerciseGroup = state.value.exerciseGroup,
+            usesTwoDumbbell = state.value.usesTwoDumbbell
         )
         withContext(Dispatchers.Main) {
             onSuccess.invoke()

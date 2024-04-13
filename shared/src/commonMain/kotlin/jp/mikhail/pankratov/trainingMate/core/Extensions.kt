@@ -5,6 +5,7 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
@@ -20,19 +21,25 @@ fun String.stringToList(): List<String> {
 
 fun List<ExerciseSet>.setListToString(): String {
     return this.filterNot { it.weight.isEmpty() }.joinToString(separator = ", ") {
-        "${it.weight};${it.reps};${it.difficulty}"
+        "${it.weight};${it.reps};${it.difficulty.name}"
     }
 }
 
 fun String.stringToSetList(): List<ExerciseSet> {
     return this.split(", ").map { it.trim() }.filterNot { it.isEmpty() }.map {
         val (weight, reps, difficulty) = it.split(";")
-        ExerciseSet(weight = weight, reps = reps, difficulty = difficulty)
+        val dif = when (difficulty) {
+            SetDifficulty.Light.name -> SetDifficulty.Light
+            SetDifficulty.Medium.name -> SetDifficulty.Medium
+            SetDifficulty.Hard.name -> SetDifficulty.Hard
+            else -> SetDifficulty.Light
+        }
+        ExerciseSet(weight = weight, reps = reps, difficulty = dif)
     }
 }
 
 @Composable
-fun dev.icerock.moko.resources.StringResource.getString(): String {
+fun StringResource.getString(): String {
     return stringResource(this)
 }
 

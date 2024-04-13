@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.UseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ExerciseAtWorkHistoryViewModel(
-    private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
+    private val useCaseProvider: UseCaseProvider,
     private val exerciseName: String
 ) :
     ViewModel() {
@@ -33,7 +33,8 @@ class ExerciseAtWorkHistoryViewModel(
     }
 
     private fun loadExerciseHistory(exerciseName: String) = viewModelScope.launch(Dispatchers.IO) {
-        val exercisesHistory = exerciseHistoryDatasource.getExercisesWithName(exerciseName).first()
+        val exercisesHistory =
+            useCaseProvider.getExercisesWithNameUseCase().invoke(exerciseName).first()
         _state.update {
             it.copy(
                 historyList = exercisesHistory

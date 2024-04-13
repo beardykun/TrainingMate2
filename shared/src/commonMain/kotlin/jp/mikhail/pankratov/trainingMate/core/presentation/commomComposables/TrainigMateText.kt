@@ -32,10 +32,15 @@ fun TextMedium(
 }
 
 @Composable
-fun TextSmall(text: String, modifier: Modifier = Modifier) {
+fun TextSmall(
+    text: String,
+    textAlign: TextAlign = TextAlign.Unspecified,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodySmall,
+        textAlign = textAlign,
         modifier = modifier
     )
 }

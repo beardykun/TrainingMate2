@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 
 import androidx.compose.ui.text.input.TextFieldValue
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 
 sealed class ExerciseAtWorkEvent {
     data object OnTimerStart : ExerciseAtWorkEvent()
@@ -16,6 +17,6 @@ sealed class ExerciseAtWorkEvent {
     data class OnDisplayDeleteDialog(val display: Boolean = false, val item: ExerciseSet? = null) :
         ExerciseAtWorkEvent()
 
-    data class OnSetDifficultySelected(val difficulty: String) : ExerciseAtWorkEvent()
+    data class OnSetDifficultySelected(val difficulty: SetDifficulty) : ExerciseAtWorkEvent()
     data class OnAutoInputToggled(val checked: Boolean) : ExerciseAtWorkEvent()
 }

@@ -12,7 +12,7 @@ interface IExerciseDatasource {
     fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal>
     suspend fun insertExercise(exerciseLocal: ExerciseLocal)
     suspend fun exerciseTableEmpty(): Boolean
-    suspend fun isExerciseExists(name: String): Boolean
+    suspend fun isExerciseExists(name: String): Long
     suspend fun updateBestLiftedWeightById(id: ExerciseId, newBestWeight: Double)
     suspend fun deleteExerciseById(id: ExerciseId)
 }

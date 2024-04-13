@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise
+package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation
 
 import androidx.compose.ui.text.input.TextFieldValue
 

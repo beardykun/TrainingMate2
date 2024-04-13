@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
@@ -65,11 +66,14 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Dro
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import moe.tlaster.precompose.navigation.Navigator
+
 const val COLUMNS_NUM = 3
+
 //Use same weights as before, increase or decrease selection
 @Composable
 fun ExerciseAtWorkScreen(
@@ -123,7 +127,7 @@ fun ExerciseAtWorkScreen(
                     exercise = state.exerciseDetails.exercise
                 )
             }
-            AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise != null) {
+            AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise?.sets?.isEmpty() == false) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
@@ -151,10 +155,16 @@ fun ExerciseAtWorkScreen(
                 onFocusChangedReps = onFocusChangedReps
             )
             DifficultySelection(
-                selected = state.exerciseDetails.setDifficulty,
+                selected = state.exerciseDetails.setDifficulty.name,
                 onSelect = { difficulty ->
                     onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
                 })
+            val hint = when (state.exerciseDetails.setDifficulty) {
+                SetDifficulty.Light -> SharedRes.strings.hint_light.getString()
+                SetDifficulty.Medium -> SharedRes.strings.hint_medium.getString()
+                SetDifficulty.Hard -> SharedRes.strings.hint_hard.getString()
+            }
+            TextSmall(hint, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
             state.exerciseDetails.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMNS_NUM)) {
