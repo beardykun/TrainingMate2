@@ -4,6 +4,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 
 class UpdateTrainingHistoryStatusUseCase(private val trainingHistoryDataSource: ITrainingHistoryDataSource) {
     suspend operator fun invoke(trainingId: Long, status: String = "COMPLETED") {
-        trainingHistoryDataSource.updateTainingHistoryStatus(trainingId = trainingId, status = status)
+        trainingHistoryDataSource.updateTrainingHistoryStatus(trainingId = trainingId, status = status)
     }
 }

@@ -81,7 +81,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         )
     }
 
-    override suspend fun updateTainingHistoryStatus(trainingId: Long, status: String) {
+    override suspend fun updateTrainingHistoryStatus(trainingId: Long, status: String) {
         query.updateStatus(
             status = status,
             id = trainingId
