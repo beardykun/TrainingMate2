@@ -7,7 +7,10 @@ import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTrainingLocal
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
@@ -29,7 +32,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
             trainings.map { training ->
                 training.toTrainingLocal()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun trainingTableEmpty(): Boolean {
@@ -39,7 +42,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
     override fun getTrainingById(trainingId: Long): Flow<TrainingLocal> {
         return queries.getTrainingsById(trainingId).asFlow().map {
             it.executeAsOne().toTrainingLocal()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun updateExercises(exercises: List<String>, id: Long) {

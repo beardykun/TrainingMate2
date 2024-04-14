@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCaseProvider) :
     ViewModel() {
@@ -74,7 +75,7 @@ class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCa
         } else true
     }
 
-    private fun addNewTraining() = viewModelScope.launch(Dispatchers.IO) {
+    private fun addNewTraining() = viewModelScope.launch {
         val training = TrainingLocal(
             id = null,
             name = state.value.trainingName.text.uppercase(),
@@ -82,6 +83,8 @@ class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCa
             exercises = emptyList(),
             description = state.value.trainingDescription
         )
-        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(trainingLocal = training)
+        withContext(Dispatchers.IO) {
+            trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(trainingLocal = training)
+        }
     }
 }

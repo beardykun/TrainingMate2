@@ -7,7 +7,10 @@ import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTraining
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 
@@ -19,7 +22,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     override fun getHistoryTrainingRecordById(id: Long): Flow<Training> {
         return query.getTrainingRecordById(id).asFlow().map { trainingHistory ->
             trainingHistory.executeAsOne().toTraining()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun getLatestHistoryTrainings(): Flow<List<Training>> {
@@ -27,7 +30,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             trainings.map {
                 it.toTraining()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun insertTrainingRecord(training: Training) {
@@ -50,13 +53,13 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     override fun getOngoingTraining(): Flow<Training?> {
         return query.getOngoingTraining().asFlow().map {
             it.executeAsOneOrNull()?.toTraining()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun countOngoingTraining(): Flow<Long> {
         return query.countOngoingTraining().asFlow().map {
             it.executeAsOne()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun updateTrainingData(
@@ -90,7 +93,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             trainings.map { training ->
                 training.toTraining()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun getParticularHistoryTrainings(trainingTemplateId: Long): Flow<List<Training>> {
@@ -99,7 +102,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
                 trainings.map { training ->
                     training.toTraining()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>> {
@@ -107,7 +110,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             trainings.map { training ->
                 training.toTraining()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun deleteTrainingHistoryRecord(trainingId: Long) {
@@ -119,6 +122,6 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         return query.getLastTraining(training_template_id = trainingTemplateId).asFlow()
             .map { trainingHistory ->
                 trainingHistory.executeAsOneOrNull()?.toTraining()
-            }
+            }.flowOn(Dispatchers.IO)
     }
 }

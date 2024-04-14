@@ -68,7 +68,7 @@ class ThisTrainingViewModel(
         }
     }
 
-    private fun loadTrainingAndExercises() = viewModelScope.launch(Dispatchers.IO) {
+    private fun loadTrainingAndExercises() = viewModelScope.launch {
         val ongoingTraining = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
         ongoingTraining?.let { trainingNotNull ->
             _training.value = trainingNotNull
@@ -94,24 +94,31 @@ class ThisTrainingViewModel(
     fun onEvent(event: ThisTrainingEvent) {
         when (event) {
             is ThisTrainingEvent.OnExerciseClick -> {
-                viewModelScope.launch(Dispatchers.IO) {
-                    insertExerciseHistory(exercise = event.exercise) { exerciseId ->
-                        viewModelScope.launch(Dispatchers.Main) {
-                            event.navigateToExercise(exerciseId)
+                state.value.ongoingTraining?.let { training ->
+                    viewModelScope.launch(Dispatchers.IO) {
+                        insertExerciseHistory(
+                            exercise = event.exercise,
+                            training = training
+                        ) { exerciseId ->
+                            viewModelScope.launch(Dispatchers.Main) {
+                                event.navigateToExercise(exerciseId)
+                            }
                         }
                     }
                 }
             }
 
             ThisTrainingEvent.EndTraining -> {
-                endLastTraining()
+                state.value.ongoingTraining?.let { ongoingTraining ->
+                    endLastTraining(ongoingTraining)
+                }
             }
         }
     }
 
-    private fun endLastTraining() = viewModelScope.launch(Dispatchers.IO) {
-        state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
-            if (state.value.ongoingTraining?.totalWeightLifted == 0.0) {
+    private fun endLastTraining(ongoingTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
+        ongoingTraining.id?.let { ongoingTrainingId ->
+            if (ongoingTraining.totalWeightLifted == 0.0) {
                 trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
                     .invoke(ongoingTrainingId)
                 return@let
@@ -130,27 +137,26 @@ class ThisTrainingViewModel(
 
     private suspend fun insertExerciseHistory(
         exercise: ExerciseLocal,
+        training: Training,
         navigateToExercise: (Long) -> Unit
     ) {
-        state.value.ongoingTraining?.let { training ->
-            val (exerciseId, exerciseExists) = isExerciseExists(training, exercise)
-            if (exerciseExists == 0L) {
-                exerciseUseCaseProvider.getInsertExerciseHistoryUseCase().invoke(
-                    Exercise(
-                        id = null,
-                        name = exercise.name,
-                        group = exercise.group,
-                        date = Utils.formatEpochMillisToDate(
-                            Clock.System.now().toEpochMilliseconds()
-                        ),
-                        trainingHistoryId = training.id ?: 0,
-                        trainingTemplateId = training.trainingTemplateId,
-                        exerciseTemplateId = exerciseId,
-                    )
+        val (exerciseId, exerciseExists) = isExerciseExists(training, exercise)
+        if (exerciseExists == 0L) {
+            exerciseUseCaseProvider.getInsertExerciseHistoryUseCase().invoke(
+                Exercise(
+                    id = null,
+                    name = exercise.name,
+                    group = exercise.group,
+                    date = Utils.formatEpochMillisToDate(
+                        Clock.System.now().toEpochMilliseconds()
+                    ),
+                    trainingHistoryId = training.id ?: 0,
+                    trainingTemplateId = training.trainingTemplateId,
+                    exerciseTemplateId = exerciseId,
                 )
-            }
-            navigateToExercise.invoke(exerciseId)
+            )
         }
+        navigateToExercise.invoke(exerciseId)
     }
 
     private suspend fun isExerciseExists(

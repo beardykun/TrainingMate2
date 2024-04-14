@@ -47,7 +47,7 @@ class AddExercisesViewModel(
     }
 
     private fun loadTrainingAndExercises() =
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val training = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
             training?.let { trainingNotNull ->
                 _training.update {

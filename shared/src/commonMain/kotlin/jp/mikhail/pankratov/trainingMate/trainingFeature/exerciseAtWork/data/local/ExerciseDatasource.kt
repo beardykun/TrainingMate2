@@ -7,7 +7,10 @@ import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.ExerciseId
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.toExerciseLocal
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
@@ -18,7 +21,7 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
             exercises.map {
                 it.toExerciseLocal()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun getExercisesByGroups(groups: String): Flow<List<ExerciseLocal>> {
@@ -40,13 +43,13 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
             exercises.map {
                 it.toExerciseLocal()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal> {
         return queries.getExerciseById(exerciseId).asFlow().map {
             it.executeAsOne().toExerciseLocal()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun getExercisesByNames(exerciseList: List<String>): Flow<List<ExerciseLocal>> {
@@ -80,7 +83,7 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
             exercises.map { exercise ->
                 exercise.toExerciseLocal()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun insertExercise(exerciseLocal: ExerciseLocal) {

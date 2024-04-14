@@ -8,7 +8,10 @@ import jp.mikhail.pankratov.trainingMate.core.setListToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.toExercise
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasource {
@@ -23,7 +26,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             exercise_template_id = exerciseTemplateId
         ).asFlow().map { exerciseHistory ->
             exerciseHistory.executeAsOneOrNull()?.toExercise()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun getExercisesForTrainingHistory(trainingHistoryId: Long): Flow<List<Exercise>> {
@@ -32,7 +35,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
                 exercises.map { exercise ->
                     exercise.toExercise()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getExercisesForTrainingWithId(trainingId: Long): Flow<List<Exercise>> {
@@ -41,7 +44,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
                 exercises.map { exercise ->
                     exercise.toExercise()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getHistoryExercisesWithName(name: String): Flow<List<Exercise>> {
@@ -49,7 +52,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             exercises.map { exercise ->
                 exercise.toExercise()
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override fun countExerciseInHistory(
@@ -61,7 +64,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             exercise_template_id = exerciseTemplateId
         ).asFlow().map { count ->
             count.executeAsOne()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun insertExerciseHistory(exercise: Exercise) {
@@ -104,6 +107,6 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             training_history_id = trainingHistoryId
         ).asFlow().map {
             it.executeAsOneOrNull()?.toExercise()
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

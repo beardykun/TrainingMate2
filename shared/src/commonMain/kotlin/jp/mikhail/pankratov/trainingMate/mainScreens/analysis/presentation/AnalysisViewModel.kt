@@ -7,7 +7,6 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseC
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -73,7 +72,7 @@ class AnalysisViewModel(
                         chartLabel = event.exerciseName
                     )
                 }
-                viewModelScope.launch(Dispatchers.IO) {
+                viewModelScope.launch {
                     getExercisesWithName(event.exerciseName)
                 }
             }
@@ -85,9 +84,7 @@ class AnalysisViewModel(
                         chartLabel = MetricsMode.GENERAL.name
                     )
                 }
-                viewModelScope.launch(Dispatchers.IO) {
-                    getGeneralTrainings()
-                }
+                getGeneralTrainings()
             }
 
             is AnalysisScreenEvent.OnTrainingIdSelected -> {
@@ -97,7 +94,7 @@ class AnalysisViewModel(
                         chartLabel = event.name
                     )
                 }
-                viewModelScope.launch(Dispatchers.IO) {
+                viewModelScope.launch {
                     getParticularTrainings(trainingId = event.trainingId)
                 }
             }
@@ -310,7 +307,7 @@ class AnalysisViewModel(
         }
     }
 
-    private suspend fun getGeneralTrainings() = viewModelScope.launch(Dispatchers.IO) {
+    private fun getGeneralTrainings() = viewModelScope.launch {
         val trainings = trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke().first()
         _state.update {
             it.copy(historyTrainings = trainings)

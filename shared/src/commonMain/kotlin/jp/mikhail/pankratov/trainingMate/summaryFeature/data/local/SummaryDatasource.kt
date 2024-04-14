@@ -9,7 +9,10 @@ import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.toMonthlySummary
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.toWeeklySummary
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
@@ -74,7 +77,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             .asFlow()
             .map {
                 it.executeAsOneOrNull()?.toWeeklySummary()
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getTwoLastWeeklySummary(): Flow<List<WeeklySummary?>> {
@@ -85,7 +88,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
                 summaries.map {
                     it.toWeeklySummary()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getMonthlySummary(): Flow<MonthlySummary?> {
@@ -96,7 +99,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             .asFlow()
             .map {
                 it.executeAsOneOrNull()?.toMonthlySummary()
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getTwoLastMonthlySummary(): Flow<List<MonthlySummary?>> {
@@ -107,7 +110,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
                 summaries.map {
                     it.toMonthlySummary()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun updateSummaries(

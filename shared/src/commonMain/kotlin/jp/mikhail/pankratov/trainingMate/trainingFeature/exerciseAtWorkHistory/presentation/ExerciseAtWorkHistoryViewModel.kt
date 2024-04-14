@@ -2,8 +2,6 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
@@ -32,7 +30,7 @@ class ExerciseAtWorkHistoryViewModel(
         }
     }
 
-    private fun loadExerciseHistory(exerciseName: String) = viewModelScope.launch(Dispatchers.IO) {
+    private fun loadExerciseHistory(exerciseName: String) = viewModelScope.launch {
         val exercisesHistory =
             exerciseUseCaseProvider.getHistoryExercisesWithNameUseCase().invoke(exerciseName)
                 .first()

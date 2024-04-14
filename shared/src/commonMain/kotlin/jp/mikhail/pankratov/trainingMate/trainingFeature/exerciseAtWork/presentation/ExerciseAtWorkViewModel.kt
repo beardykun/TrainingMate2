@@ -6,12 +6,14 @@ import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError.InputErrorWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Result
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ExerciseAtWorkViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
@@ -270,37 +273,47 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun updateSets(sets: List<ExerciseSet>, weight: Double, reps: Int) =
-        viewModelScope.launch(Dispatchers.IO) {
-            updateTrainingData(trainingId, weight, reps, sets)
-
+        viewModelScope.launch {
             val exerciseDetails = state.value.exerciseDetails
-            exerciseUseCaseProvider.getUpdateHistoryExerciseDataUseCase().invoke(
-                exerciseDetails = exerciseDetails,
-                sets = sets,
-                weight = weight,
-                reps = reps,
-                trainingId = trainingId,
-                exerciseTemplateId = exerciseTemplateId
-            )
+
+            state.value.ongoingTraining?.let { ongoingTraining ->
+                withContext(Dispatchers.IO) {
+                    updateTrainingData(
+                        trainingId,
+                        weight,
+                        reps,
+                        sets,
+                        exerciseDetails,
+                        ongoingTraining
+                    )
+                    exerciseUseCaseProvider.getUpdateHistoryExerciseDataUseCase().invoke(
+                        exerciseDetails = exerciseDetails,
+                        sets = sets,
+                        weight = weight,
+                        reps = reps,
+                        trainingId = trainingId,
+                        exerciseTemplateId = exerciseTemplateId
+                    )
+                }
+            }
         }
 
     private suspend fun updateTrainingData(
         trainingId: Long,
         weight: Double,
         reps: Int,
-        sets: List<ExerciseSet>
+        sets: List<ExerciseSet>,
+        exerciseDetails: ExerciseDetails,
+        ongoingTraining: Training
     ) {
-        val exerciseDetails = state.value.exerciseDetails
-        state.value.ongoingTraining?.let {
-            trainingUseCaseProvider.getUpdateTrainingHistoryDataUseCase().invoke(
-                exerciseDetails = exerciseDetails,
-                ongoingTraining = it,
-                reps = reps,
-                sets = sets,
-                trainingId = trainingId,
-                weight = weight
-            )
-        }
+        trainingUseCaseProvider.getUpdateTrainingHistoryDataUseCase().invoke(
+            exerciseDetails = exerciseDetails,
+            ongoingTraining = ongoingTraining,
+            reps = reps,
+            sets = sets,
+            trainingId = trainingId,
+            weight = weight
+        )
     }
 
     private fun startTimer(initValue: Int) = flow {
@@ -344,10 +357,12 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun updateBestLiftedWeightIfNeeded() =
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val exerciseDetails = state.value.exerciseDetails
-            exerciseUseCaseProvider.getUpdateBestLiftedWeightUseCase()
-                .invoke(exerciseDetails = exerciseDetails)
+            withContext(Dispatchers.IO) {
+                exerciseUseCaseProvider.getUpdateBestLiftedWeightUseCase()
+                    .invoke(exerciseDetails = exerciseDetails)
+            }
         }
 
     private fun validateWeight(weight: String): Result<Unit, InputError> {
