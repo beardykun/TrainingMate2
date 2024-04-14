@@ -2,11 +2,15 @@ package jp.mikhail.pankratov.trainingMate.core.domain.local.useCases
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.DeleteTrainingHistoryRecordUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.DeleteTrainingTemplateUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.GetLastSameTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.GetLatestHistoryTrainingsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.GetLocalTrainingsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.GetOngoingTrainingUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.GetParticularHistoryTrainingsUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.GetTrainingHistoryRecordByIdUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.InsertLocalTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.InsertTrainingHistoryRecordUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.IsLocalTrainingExistsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.TrainingTableEmptyUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.UpdateTrainingHistoryStatusUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.UpdateTrainingLocalExerciseUseCase
@@ -22,6 +26,7 @@ class TrainingUseCaseProvider(val koin: Koin) {
     fun getLocalTrainingsUseCase(): GetLocalTrainingsUseCase = get()
     fun getUpdateTrainingLocalExerciseUseCase(): UpdateTrainingLocalExerciseUseCase = get()
     fun getDeleteTrainingTemplateUseCase(): DeleteTrainingTemplateUseCase = get()
+    fun getIsLocalTrainingExistsUseCase(): IsLocalTrainingExistsUseCase = get()
 
     //History
     fun getInsertTrainingHistoryRecordUseCase(): InsertTrainingHistoryRecordUseCase = get()
@@ -30,5 +35,8 @@ class TrainingUseCaseProvider(val koin: Koin) {
     fun getOngoingTrainingUseCase(): GetOngoingTrainingUseCase = get()
     fun getUpdateTrainingHistoryDataUseCase(): UpdateTrainingHistoryDataUseCase = get()
     fun getUpdateTrainingHistoryStatusUseCase(): UpdateTrainingHistoryStatusUseCase = get()
+    fun getGetLastSameTrainingUseCase(): GetLastSameTrainingUseCase = get()
+    fun getGetHistoryTrainingRecordByIdUseCase(): GetTrainingHistoryRecordByIdUseCase = get()
+    fun getParticularHistoryTrainingsUseCase(): GetParticularHistoryTrainingsUseCase = get()
 
 }

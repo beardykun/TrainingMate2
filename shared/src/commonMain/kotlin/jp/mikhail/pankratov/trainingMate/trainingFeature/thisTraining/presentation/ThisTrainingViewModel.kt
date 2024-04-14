@@ -4,12 +4,11 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
-import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,10 +24,9 @@ import kotlinx.datetime.Clock
 import kotlin.time.Duration.Companion.seconds
 
 class ThisTrainingViewModel(
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    private val exerciseDatasource: IExerciseDatasource,
-    private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
-    private val summaryDatasource: ISummaryDatasource
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
+    private val summaryUseCaseProvider: SummaryUseCaseProvider
 ) : ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
@@ -58,9 +56,10 @@ class ThisTrainingViewModel(
         loadTrainingAndExercises()
     }
 
-    private suspend fun loadLastTrainingData(ongoingTrainingId: Long) {
+    private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
         val lastTraining =
-            trainingHistoryDataSource.getLastTraining(trainingTemplateId = ongoingTrainingId)
+            trainingUseCaseProvider.getGetLastSameTrainingUseCase()
+                .invoke(trainingTemplateId = ongoingTrainingTemplateId)
                 .first()
         _state.update {
             it.copy(
@@ -70,14 +69,15 @@ class ThisTrainingViewModel(
     }
 
     private fun loadTrainingAndExercises() = viewModelScope.launch(Dispatchers.IO) {
-        val ongoingTraining = trainingHistoryDataSource.getOngoingTraining().first()
+        val ongoingTraining = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
         ongoingTraining?.let { trainingNotNull ->
             _training.value = trainingNotNull
             val exercises =
-                exerciseDatasource.getExercisesByNames(trainingNotNull.exercises).first()
+                exerciseUseCaseProvider.getLocalExercisesByNamesUseCase()
+                    .invoke(trainingNotNull.exercises).first()
             _exercises.value = exercises
             startTimer(trainingNotNull)
-            loadLastTrainingData(ongoingTrainingId = trainingNotNull.trainingTemplateId)
+            loadLastSameTrainingData(ongoingTrainingTemplateId = trainingNotNull.trainingTemplateId)
         }
     }
 
@@ -112,24 +112,19 @@ class ThisTrainingViewModel(
     private fun endLastTraining() = viewModelScope.launch(Dispatchers.IO) {
         state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
             if (state.value.ongoingTraining?.totalWeightLifted == 0.0) {
-                trainingHistoryDataSource.deleteTrainingRecord(ongoingTrainingId)
+                trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
+                    .invoke(ongoingTrainingId)
                 return@let
             }
-            trainingHistoryDataSource.updateStatus(trainingId = ongoingTrainingId)
+            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
+                .invoke(trainingId = ongoingTrainingId)
             updateSummaries()
         }
     }
 
     private suspend fun updateSummaries() {
         state.value.ongoingTraining?.let { ongoingTraining ->
-            val duration = Utils.trainingLengthToMin(ongoingTraining)
-            summaryDatasource.updateSummaries(
-                additionalDuration = duration,
-                additionalWeight = ongoingTraining.totalWeightLifted,
-                numExercises = ongoingTraining.doneExercises.size,
-                numSets = ongoingTraining.totalSets,
-                numReps = ongoingTraining.totalReps
-            )
+            summaryUseCaseProvider.getUpdateSummariesUseCase().invoke(ongoingTraining)
         }
     }
 
@@ -140,7 +135,7 @@ class ThisTrainingViewModel(
         state.value.ongoingTraining?.let { training ->
             val (exerciseId, exerciseExists) = isExerciseExists(training, exercise)
             if (exerciseExists == 0L) {
-                exerciseHistoryDatasource.insertExerciseHistory(
+                exerciseUseCaseProvider.getInsertExerciseHistoryUseCase().invoke(
                     Exercise(
                         id = null,
                         name = exercise.name,
@@ -164,7 +159,7 @@ class ThisTrainingViewModel(
     ): Pair<Long, Long> {
         val exerciseId = exercise.id!!
         val exerciseExists =
-            exerciseHistoryDatasource.countExerciseInHistory(
+            exerciseUseCaseProvider.getCountExerciseInHistoryUseCase().invoke(
                 trainingHistoryId = training.id ?: 0,
                 exerciseTemplateId = exerciseId
             ).first()

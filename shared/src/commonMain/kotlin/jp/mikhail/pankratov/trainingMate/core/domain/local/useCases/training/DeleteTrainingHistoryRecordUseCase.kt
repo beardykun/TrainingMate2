@@ -4,6 +4,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 
 class DeleteTrainingHistoryRecordUseCase(private val trainingHistoryDataSource: ITrainingHistoryDataSource) {
     suspend operator fun invoke(trainingId: Long) {
-        trainingHistoryDataSource.deleteTrainingRecord(trainingId = trainingId)
+        trainingHistoryDataSource.deleteTrainingHistoryRecord(trainingId = trainingId)
     }
 }

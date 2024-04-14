@@ -14,7 +14,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
 
     private val queries = db.trainingTemplateQueries
 
-    override suspend fun insertTraining(training: TrainingLocal) {
+    override suspend fun insertLocalTraining(training: TrainingLocal) {
         queries.insertTraining(
             id = training.id,
             name = training.name.trim(),
@@ -24,7 +24,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
         )
     }
 
-    override fun getTrainings(): Flow<List<TrainingLocal>> {
+    override fun getLocalTrainings(): Flow<List<TrainingLocal>> {
         return queries.getTrainings().asFlow().mapToList().map { trainings ->
             trainings.map { training ->
                 training.toTrainingLocal()
@@ -46,7 +46,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
         queries.updateExercises(exercises = exercises.listToString(), id = id)
     }
 
-    override suspend fun isTrainingExists(name: String): Boolean {
+    override suspend fun isLocalTrainingExists(name: String): Boolean {
         return queries.isTrainingExists(name = name.uppercase().trim()).executeAsOne() != 0L
     }
 

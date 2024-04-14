@@ -3,11 +3,9 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,12 +17,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AnalysisViewModel(
-    trainingDataSource: ITrainingDataSource,
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    exerciseDataSource: IExerciseDatasource,
-    private val exerciseHistoryDatasource: IExerciseHistoryDatasource,
-
-    ) : ViewModel() {
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider
+) : ViewModel() {
 
     private val trainingsData: MutableStateFlow<List<Training>?> = MutableStateFlow(null)
     private val _state: MutableStateFlow<AnalysisScreenSate> =
@@ -33,8 +28,8 @@ class AnalysisViewModel(
         combine(
             _state,
             trainingsData,
-            trainingDataSource.getTrainings(),
-            exerciseDataSource.getAllExercises()
+            trainingUseCaseProvider.getLocalTrainingsUseCase().invoke(),
+            exerciseUseCaseProvider.getAllLocalExercisesUseCase().invoke()
         ) { state, historyTrainings, localTrainings, localExercises ->
             state.copy(
                 historyTrainings = historyTrainings,
@@ -52,7 +47,8 @@ class AnalysisViewModel(
             is AnalysisScreenEvent.OnMetricsModeChanged -> {
                 val analysisMode =
                     if (event.metricsMode == MetricsMode.EXERCISE &&
-                        state.value.analysisMode == AnalysisMode.LENGTH)
+                        state.value.analysisMode == AnalysisMode.LENGTH
+                    )
                         AnalysisMode.WEIGHT else state.value.analysisMode
 
                 _state.update {
@@ -315,7 +311,7 @@ class AnalysisViewModel(
     }
 
     private suspend fun getGeneralTrainings() = viewModelScope.launch(Dispatchers.IO) {
-        val trainings = trainingHistoryDataSource.getLatestHistoryTrainings().first()
+        val trainings = trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke().first()
         _state.update {
             it.copy(historyTrainings = trainings)
         }
@@ -327,7 +323,8 @@ class AnalysisViewModel(
 
     private suspend fun getExercisesWithName(exerciseName: String) {
         val exercises =
-            exerciseHistoryDatasource.getExercisesWithName(exerciseName).first().reversed()
+            exerciseUseCaseProvider.getHistoryExercisesWithNameUseCase().invoke(exerciseName)
+                .first().reversed()
         prepareMetricsDataBasedOnAnalysisModeExercise(
             state.value.analysisMode,
             exercises = exercises
@@ -339,7 +336,8 @@ class AnalysisViewModel(
 
     private suspend fun getParticularTrainings(trainingId: Long) {
         val trainings =
-            trainingHistoryDataSource.getParticularTrainings(trainingTemplateId = trainingId)
+            trainingUseCaseProvider.getParticularHistoryTrainingsUseCase()
+                .invoke(trainingTemplateId = trainingId)
                 .first()
 
         _state.update {

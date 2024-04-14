@@ -44,7 +44,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
             }
     }
 
-    override fun getExercisesWithName(name: String): Flow<List<Exercise>> {
+    override fun getHistoryExercisesWithName(name: String): Flow<List<Exercise>> {
         return query.getExercisesWithName(name).asFlow().mapToList().map { exercises ->
             exercises.map { exercise ->
                 exercise.toExercise()

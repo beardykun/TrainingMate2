@@ -1,8 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,16 +15,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HistoryInfoViewModel(
-    private val trainingHistoryDataSource: ITrainingHistoryDataSource,
-    exerciseHistoryDatasource: IExerciseHistoryDatasource,
+    private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val trainingHistoryId: Long
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryInfoState())
     val state = combine(
-        trainingHistoryDataSource.getTrainingRecordById(trainingHistoryId),
-        trainingHistoryDataSource.getOngoingTraining(),
-        exerciseHistoryDatasource.getExercisesForTrainingHistory(trainingHistoryId = trainingHistoryId),
+        trainingUseCaseProvider.getGetHistoryTrainingRecordByIdUseCase().invoke(trainingHistoryId),
+        trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
+        exerciseUseCaseProvider.getGetExercisesForTrainingHistoryUseCase()
+            .invoke(trainingHistoryId = trainingHistoryId),
         _state
     ) { training, ongoingTraining, exercises, state ->
         state.copy(
@@ -75,7 +77,7 @@ class HistoryInfoViewModel(
 
     private fun updateTrainingStatus(onSuccess: () -> Unit) =
         viewModelScope.launch(Dispatchers.IO) {
-            trainingHistoryDataSource.updateStatus(
+            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()(
                 trainingId = trainingHistoryId,
                 status = "ONGOING"
             )
@@ -87,7 +89,7 @@ class HistoryInfoViewModel(
     private fun finishOngoingTraining(onSuccess: () -> Unit) =
         viewModelScope.launch(Dispatchers.IO) {
             state.value.ongoingTraining?.id?.let {
-                trainingHistoryDataSource.updateStatus(
+                trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase().invoke(
                     trainingId = it
                 )
             }

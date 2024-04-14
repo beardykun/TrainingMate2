@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 class GetLocalTrainingsUseCase(private val trainingDataSource: ITrainingDataSource) {
     operator fun invoke(): Flow<List<TrainingLocal>> {
-        return trainingDataSource.getTrainings()
+        return trainingDataSource.getLocalTrainings()
     }
 }

@@ -16,7 +16,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     private val query = db.trainingHistoryQueries
     private val exerciseQuery = db.exerciseHistoryQueries
 
-    override fun getTrainingRecordById(id: Long): Flow<Training> {
+    override fun getHistoryTrainingRecordById(id: Long): Flow<Training> {
         return query.getTrainingRecordById(id).asFlow().map { trainingHistory ->
             trainingHistory.executeAsOne().toTraining()
         }
@@ -78,7 +78,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         )
     }
 
-    override suspend fun updateStatus(trainingId: Long, status: String) {
+    override suspend fun updateTainingHistoryStatus(trainingId: Long, status: String) {
         query.updateStatus(
             status = status,
             id = trainingId
@@ -93,7 +93,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         }
     }
 
-    override fun getParticularTrainings(trainingTemplateId: Long): Flow<List<Training>> {
+    override fun getParticularHistoryTrainings(trainingTemplateId: Long): Flow<List<Training>> {
         return query.getParticularTrainings(trainingTemplateId).asFlow().mapToList()
             .map { trainings ->
                 trainings.map { training ->
@@ -110,12 +110,12 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         }
     }
 
-    override suspend fun deleteTrainingRecord(trainingId: Long) {
+    override suspend fun deleteTrainingHistoryRecord(trainingId: Long) {
         query.deleteTrainingRecord(id = trainingId)
         exerciseQuery.deleteTrainingExercisesRecords(training_history_id = trainingId)
     }
 
-    override fun getLastTraining(trainingTemplateId: Long): Flow<Training?> {
+    override fun getLastSameTraining(trainingTemplateId: Long): Flow<Training?> {
         return query.getLastTraining(training_template_id = trainingTemplateId).asFlow()
             .map { trainingHistory ->
                 trainingHistory.executeAsOneOrNull()?.toTraining()

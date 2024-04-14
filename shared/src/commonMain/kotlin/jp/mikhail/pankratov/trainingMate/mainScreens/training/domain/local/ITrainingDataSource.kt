@@ -4,11 +4,11 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLoca
 import kotlinx.coroutines.flow.Flow
 
 interface ITrainingDataSource {
-    suspend fun insertTraining(training: TrainingLocal)
-    fun getTrainings(): Flow<List<TrainingLocal>>
+    suspend fun insertLocalTraining(training: TrainingLocal)
+    fun getLocalTrainings(): Flow<List<TrainingLocal>>
     suspend fun trainingTableEmpty(): Boolean
     fun getTrainingById(trainingId: Long): Flow<TrainingLocal>
     suspend fun updateExercises(exercises: List<String>, id: Long)
-    suspend fun isTrainingExists(name: String): Boolean
+    suspend fun isLocalTrainingExists(name: String): Boolean
     suspend fun deleteTrainingTemplate(id: Long)
 }

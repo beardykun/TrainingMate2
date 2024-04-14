@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
 
     private val queries = db.exerciseTemplateQueries
-    override fun getAllExercises(): Flow<List<ExerciseLocal>> {
+    override fun getAllLocalExercises(): Flow<List<ExerciseLocal>> {
         return queries.getExercises().asFlow().mapToList().map { exercises ->
             exercises.map {
                 it.toExerciseLocal()

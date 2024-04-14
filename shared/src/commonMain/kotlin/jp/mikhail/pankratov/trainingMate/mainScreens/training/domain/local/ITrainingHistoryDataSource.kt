@@ -4,7 +4,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import kotlinx.coroutines.flow.Flow
 
 interface ITrainingHistoryDataSource {
-    fun getTrainingRecordById(id: Long): Flow<Training>
+    fun getHistoryTrainingRecordById(id: Long): Flow<Training>
     fun getLatestHistoryTrainings(): Flow<List<Training>>
     suspend fun insertTrainingRecord(training: Training)
     fun getOngoingTraining(): Flow<Training?>
@@ -18,10 +18,10 @@ interface ITrainingHistoryDataSource {
         reps: Int
     )
 
-    suspend fun updateStatus(trainingId: Long, status: String = "COMPLETED")
+    suspend fun updateTainingHistoryStatus(trainingId: Long, status: String = "COMPLETED")
     fun getGroupTrainings(group: String): Flow<List<Training>>
-    fun getParticularTrainings(trainingTemplateId: Long): Flow<List<Training>>
+    fun getParticularHistoryTrainings(trainingTemplateId: Long): Flow<List<Training>>
     fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>>
-    suspend fun deleteTrainingRecord(trainingId: Long)
-    fun getLastTraining(trainingTemplateId: Long): Flow<Training?>
+    suspend fun deleteTrainingHistoryRecord(trainingId: Long)
+    fun getLastSameTraining(trainingTemplateId: Long): Flow<Training?>
 }

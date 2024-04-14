@@ -35,28 +35,26 @@ object ViewModelsFac : KoinComponent {
     fun getAnalysisViewModelFactory() =
         viewModelFactory {
             AnalysisViewModel(
-                trainingDataSource = get(),
-                trainingHistoryDataSource = get(),
-                exerciseDataSource = get(),
-                exerciseHistoryDatasource = get()
+                trainingUseCaseProvider = get(),
+                exerciseUseCaseProvider = get()
             )
         }
 
     fun getHistoryScreenViewModelFactory() =
         viewModelFactory {
-            HistoryScreenViewModel(trainingHistoryDataSource = get())
+            HistoryScreenViewModel(trainingUseCaseProvider = get())
         }
 
     fun getCreateTrainingViewModelFactory() =
         viewModelFactory {
-            CreateTrainingViewModel(trainingDataSource = get())
+            CreateTrainingViewModel(trainingUseCaseProvider = get())
         }
 
     fun getHistoryInfoViewModelFactory(trainingId: Long) =
         viewModelFactory {
             HistoryInfoViewModel(
-                trainingHistoryDataSource = get(),
-                exerciseHistoryDatasource = get(),
+                trainingUseCaseProvider = get(),
+                exerciseUseCaseProvider = get(),
                 trainingHistoryId = trainingId
             )
         }
@@ -64,10 +62,9 @@ object ViewModelsFac : KoinComponent {
     fun getThisTrainingViewModelFactory() =
         viewModelFactory {
             ThisTrainingViewModel(
-                trainingHistoryDataSource = get(),
-                exerciseDatasource = get(),
-                exerciseHistoryDatasource = get(),
-                summaryDatasource = get()
+                trainingUseCaseProvider = get(),
+                exerciseUseCaseProvider = get(),
+                summaryUseCaseProvider = get()
             )
         }
 

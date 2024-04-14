@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 typealias ExerciseId = Long
 
 interface IExerciseDatasource {
-    fun getAllExercises(): Flow<List<ExerciseLocal>>
+    fun getAllLocalExercises(): Flow<List<ExerciseLocal>>
     fun getExercisesByGroups(groups: String): Flow<List<ExerciseLocal>>
     fun getExercisesByNames(exerciseList: List<String>): Flow<List<ExerciseLocal>>
     fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal>

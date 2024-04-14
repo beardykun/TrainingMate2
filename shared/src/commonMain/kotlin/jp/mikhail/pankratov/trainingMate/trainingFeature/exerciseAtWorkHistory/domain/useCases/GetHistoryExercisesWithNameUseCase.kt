@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 class GetHistoryExercisesWithNameUseCase(private val exerciseHistoryDatasource: IExerciseHistoryDatasource) {
     operator fun invoke(name: String): Flow<List<Exercise>> {
-        return exerciseHistoryDatasource.getExercisesWithName(name)
+        return exerciseHistoryDatasource.getHistoryExercisesWithName(name)
     }
 }

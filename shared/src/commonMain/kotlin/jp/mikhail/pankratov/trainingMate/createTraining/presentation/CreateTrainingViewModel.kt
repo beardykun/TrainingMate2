@@ -2,8 +2,8 @@ package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.listToString
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSource) : ViewModel() {
+class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCaseProvider) :
+    ViewModel() {
 
     private val _state = MutableStateFlow(CreateTrainingState())
     val state = _state.stateIn(
@@ -45,7 +46,9 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
                 if (validNameInput().not()) return
 
                 viewModelScope.launch {
-                    if (trainingDataSource.isTrainingExists(state.value.trainingName.text)) {
+                    if (trainingUseCaseProvider.getIsLocalTrainingExistsUseCase()
+                            .invoke(state.value.trainingName.text)
+                    ) {
                         _state.update {
                             it.copy(invalidNameInput = true)
                         }
@@ -79,6 +82,6 @@ class CreateTrainingViewModel(private val trainingDataSource: ITrainingDataSourc
             exercises = emptyList(),
             description = state.value.trainingDescription
         )
-        trainingDataSource.insertTraining(training = training)
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(trainingLocal = training)
     }
 }

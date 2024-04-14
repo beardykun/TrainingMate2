@@ -6,6 +6,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 
 class InsertLocalTrainingUseCase(private val trainingDataSource: ITrainingDataSource) {
     suspend operator fun invoke(trainingLocal: TrainingLocal) {
-        trainingDataSource.insertTraining(trainingLocal)
+        trainingDataSource.insertLocalTraining(trainingLocal)
     }
 }

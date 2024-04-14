@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,12 +11,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HistoryScreenViewModel(private val trainingHistoryDataSource: ITrainingHistoryDataSource) :
+class HistoryScreenViewModel(
+    private val trainingUseCaseProvider: TrainingUseCaseProvider
+) :
     ViewModel() {
 
     private val _state = MutableStateFlow(HistoryScreenState())
     val state = combine(
-        trainingHistoryDataSource.getLatestHistoryTrainings(),
+        trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke(),
         _state
     ) { historyList, state ->
         if (state.historyList != historyList) {
@@ -47,7 +49,11 @@ class HistoryScreenViewModel(private val trainingHistoryDataSource: ITrainingHis
                     )
                 }
                 viewModelScope.launch(Dispatchers.IO) {
-                    state.value.trainingId?.let { trainingHistoryDataSource.deleteTrainingRecord(trainingId = it) }
+                    state.value.trainingId?.let {
+                        trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase().invoke(
+                            trainingId = it
+                        )
+                    }
                 }
             }
 
