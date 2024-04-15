@@ -12,7 +12,8 @@ import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import moe.tlaster.precompose.navigation.Navigator
 
@@ -38,12 +39,22 @@ fun CreateTrainingScreen(
             errorText = if (state.invalidNameInput) stringResource(SharedRes.strings.invalid_or_duplicate_training_name) else ""
         )
 
-        SelectableGroups(
-            groups = state.trainingGroups,
-            selected = state.selectedGroups
-        ) { selectedGroup ->
-            onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
-        }
+        SelectableGroupVertical(
+            items = state.trainingGroups,
+            selected = state.selectedGroups,
+            displayItem = { it },
+            onClick = { selectedGroup ->
+                onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
+            },
+            listItem = { item, isSelected, onClick, modifier ->
+                SelectableGroupItem(
+                    group = item,
+                    isSelected = isSelected,
+                    onClick = onClick,
+                    modifier = modifier
+                )
+            }
+        )
 
         Button(
             onClick = {

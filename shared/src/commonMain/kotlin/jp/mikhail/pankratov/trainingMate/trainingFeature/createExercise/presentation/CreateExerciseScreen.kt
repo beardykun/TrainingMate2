@@ -17,7 +17,8 @@ import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroups
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 import moe.tlaster.precompose.navigation.Navigator
@@ -52,13 +53,23 @@ fun CreateExerciseScreen(
                 }
             } else {
                 val selectedGroups = state.exerciseGroup.stringToList()
-                SelectableGroups(
-                    groups = groups,
+                SelectableGroupVertical(
+                    items = groups,
                     selected = selectedGroups,
-                    modifier = Modifier.weight(1f)
-                ) { selectedGroup ->
-                    onEvent(CreateExerciseEvent.OnExerciseGroupChanged(selectedGroup))
-                }
+                    modifier = Modifier.weight(1f),
+                    onClick = { selectedGroup ->
+                        onEvent(CreateExerciseEvent.OnExerciseGroupChanged(selectedGroup))
+                    },
+                    displayItem = { it },
+                    listItem = { item, isSelected, onClick, modifier ->
+                        SelectableGroupItem(
+                            group = item,
+                            isSelected = isSelected,
+                            onClick = onClick,
+                            modifier = modifier
+                        )
+                    }
+                )
             }
         }
         Row(verticalAlignment = Alignment.CenterVertically) {

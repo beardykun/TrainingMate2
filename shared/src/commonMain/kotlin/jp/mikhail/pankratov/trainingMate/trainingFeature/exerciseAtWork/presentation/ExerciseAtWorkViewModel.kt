@@ -6,6 +6,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateAutoInputUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.ValidateInputUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
@@ -158,10 +159,12 @@ class ExerciseAtWorkViewModel(
                         )
                     )
                 }
-                if (state.value.uiState.isAutoInputEnabled) {
-                    updateAutoInput()
+                val sets = handleAddSetEvent()
+
+                val autoInputMode = state.value.uiState.autoInputSelected
+                if (autoInputMode != AutoInputMode.NONE) {
+                    updateAutoInput(sets = sets ?: listOf(), autoInputMode)
                 }
-                handleAddSetEvent()
             }
 
             ExerciseAtWorkEvent.OnAnimationSeen -> {
@@ -184,38 +187,53 @@ class ExerciseAtWorkViewModel(
                 }
             }
 
-            is ExerciseAtWorkEvent.OnAutoInputToggled -> {
+            is ExerciseAtWorkEvent.OnAutoInputChanged -> {
+                val currentAutoInputInput = state.value.uiState.autoInputSelected
+                val selectedAutoInput = if (currentAutoInputInput == event.autoInputMode) {
+                    AutoInputMode.NONE
+                } else {
+                    event.autoInputMode
+                }
                 _state.update {
                     it.copy(
-                        uiState = it.uiState.copy(isAutoInputEnabled = event.checked)
+                        uiState = it.uiState.copy(autoInputSelected = selectedAutoInput)
                     )
                 }
-                if (event.checked) {
-                    updateAutoInput()
+                if (selectedAutoInput != AutoInputMode.NONE) {
+                    updateAutoInput(
+                        state.value.exerciseDetails.exercise?.sets ?: listOf(),
+                        selectedAutoInput
+                    )
                 }
             }
         }
     }
 
-    private fun updateAutoInput() {
+    private fun updateAutoInput(sets: List<ExerciseSet>, autoInputMode: AutoInputMode) {
         val exerciseLocal = state.value.exerciseDetails.exerciseLocal
-        val sets = state.value.exerciseDetails.exercise?.sets ?: listOf()
         val pastSets = state.value.exerciseDetails.lastSameExercise?.sets ?: listOf()
 
-        val autoInputResult = updateAutoInputUseCase(exerciseLocal, sets, pastSets)
-        _state.update { currentState ->
-            currentState.copy(
-                exerciseDetails = currentState.exerciseDetails.copy(
-                    weight = autoInputResult.weight,
-                    reps = autoInputResult.reps,
-                    inputError = null
+        val autoInputResult = updateAutoInputUseCase(
+            exerciseLocal = exerciseLocal,
+            currentSets = sets,
+            pastSets = pastSets,
+            autoInputMode = autoInputMode
+        )
+        autoInputResult?.let { autoInput ->
+            _state.update { currentState ->
+                currentState.copy(
+                    exerciseDetails = currentState.exerciseDetails.copy(
+                        weight = autoInput.weight,
+                        reps = autoInput.reps,
+                        inputError = null
+                    )
                 )
-            )
+            }
         }
     }
 
-    private fun handleAddSetEvent() {
-        if (invalidInput()) return
+    private fun handleAddSetEvent(): List<ExerciseSet>? {
+        if (invalidInput()) return null
 
         val exerciseDetails = state.value.exerciseDetails
         val newInput = ExerciseSet(
@@ -235,6 +253,7 @@ class ExerciseAtWorkViewModel(
         val reps = exerciseDetails.reps.text.toInt()
         updateSets(sets = sets, weight = weight * reps, reps = reps)
         runTimerJob()
+        return sets
     }
 
     private fun updateSets(sets: List<ExerciseSet>, weight: Double, reps: Int) =

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
@@ -36,22 +37,56 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentati
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SelectableGroups(
-    groups: List<String>,
+fun <T> SelectableGroupVertical(
+    items: List<T>,
     modifier: Modifier = Modifier,
-    selected: List<String>,
-    onClick: (String) -> Unit,
+    selected: List<T>,
+    onClick: (T) -> Unit,
+    displayItem: (T) -> String,
+    listItem: @Composable (
+        item: T,
+        selected: List<T>,
+        onClick: (T) -> Unit,
+        modifier: Modifier
+    ) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(Dimens.Padding16),
         modifier = modifier
     ) {
-        items(
-            items = groups,
-            key = { group ->
-                group
+        this.items(
+            items = items,
+            key = { item ->
+                displayItem(item)
             }) { item ->
-            SelectableGroupItem(item, selected, onClick, modifier.animateItemPlacement())
+            listItem(item, selected, onClick, modifier.animateItemPlacement())
+        }
+    }
+}
+
+@Composable
+fun <T> SelectableGroupHorizontal(
+    items: List<T>,
+    modifier: Modifier = Modifier,
+    selected: T,
+    onClick: (T) -> Unit,
+    displayItem: (T) -> String,
+    listItem: @Composable (
+        item: T,
+        selected: T,
+        onClick: (T) -> Unit
+    ) -> Unit
+) {
+    LazyRow(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+    ) {
+        this.items(
+            items = items,
+            key = { item ->
+                displayItem(item)
+            }) { item ->
+            listItem(item, selected, onClick)
         }
     }
 }
@@ -59,14 +94,14 @@ fun SelectableGroups(
 @Composable
 fun SelectableGroupItem(
     group: String,
-    selected: List<String>,
+    isSelected: List<String>,
     onClick: (String) -> Unit,
     modifier: Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.selectable(
-            selected = selected.contains(group),
+            selected = isSelected.contains(group),
             onClick = {
                 onClick.invoke(group)
             }
@@ -79,7 +114,7 @@ fun SelectableGroupItem(
                 .background(color = MaterialTheme.colorScheme.primary)
                 .clip(CircleShape)
         ) {
-            if (selected.contains(group))
+            if (isSelected.contains(group))
                 Box(
                     modifier = Modifier
                         .size(Dimens.selectTextInnerCircle)

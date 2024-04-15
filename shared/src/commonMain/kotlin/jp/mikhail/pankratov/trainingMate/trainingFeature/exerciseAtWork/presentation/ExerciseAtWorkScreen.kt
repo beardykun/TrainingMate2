@@ -26,14 +26,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -66,9 +63,11 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupHorizontal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
@@ -101,19 +100,7 @@ fun ExerciseAtWorkScreen(
         }
     }
     val focus = LocalFocusManager.current
-    Scaffold(floatingActionButton = {
-        FloatingActionButton(
-            onClick = {
-                navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/${state.exerciseDetails.exercise?.name}")
-            },
-            modifier = Modifier.padding(bottom = Dimens.historyFabPadding)
-        ) {
-            Icon(
-                imageVector = Icons.Default.History,
-                contentDescription = stringResource(SharedRes.strings.cd_exercise_history)
-            )
-        }
-    }, modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
+    Scaffold(modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             state.exerciseDetails.exercise?.name?.let {
                 TextLarge(
@@ -127,20 +114,37 @@ fun ExerciseAtWorkScreen(
                 ExerciseComparison(
                     lastExercise = state.exerciseDetails.lastSameExercise,
                     exercise = state.exerciseDetails.exercise
-                )
+                ) { exerciseName ->
+                    navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/$exerciseName")
+                }
             }
             AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise?.sets?.isEmpty() == false) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextMedium(text = SharedRes.strings.auto_input.getString())
-                    Checkbox(
-                        checked = state.uiState.isAutoInputEnabled,
-                        onCheckedChange = { checkState ->
-                            onEvent(ExerciseAtWorkEvent.OnAutoInputToggled(checkState))
-                        })
+                    SelectableGroupHorizontal(
+                        items = AutoInputMode.entries.minus(AutoInputMode.NONE),
+                        selected = state.uiState.autoInputSelected,
+                        onClick = { autoInputMode ->
+                            onEvent(ExerciseAtWorkEvent.OnAutoInputChanged(autoInputMode))
+                        },
+                        displayItem = { it.name },
+                        listItem = { item, selected, onClick ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                TextSmall(text = item.name)
+                                Checkbox(
+                                    checked = selected == item,
+                                    onCheckedChange = {
+                                        onClick.invoke(item)
+                                    })
+                            }
+                        }
+                    )
                 }
             }
 
@@ -316,7 +320,11 @@ fun CountdownAnimation(
 }
 
 @Composable
-fun ExerciseComparison(lastExercise: Exercise?, exercise: Exercise) {
+fun ExerciseComparison(
+    lastExercise: Exercise?,
+    exercise: Exercise,
+    onClick: (name: String) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth()
             .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
@@ -327,7 +335,8 @@ fun ExerciseComparison(lastExercise: Exercise?, exercise: Exercise) {
         lastExercise?.let {
             Card(
                 modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
-                elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+                elevation = CardDefaults.cardElevation(Dimens.cardElevation),
+                onClick = { onClick.invoke(it.name) }
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

@@ -61,7 +61,9 @@ fun ThisTrainingScreen(
                 lastTraining = state.lastTraining,
                 ongoingTraining = state.ongoingTraining,
                 trainingTime = state.trainingTime
-            )
+            ) { trainingId ->
+                navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${trainingId}")
+            }
 
             state.exerciseLocals?.let { exercises ->
                 if (exercises.isEmpty()) {
@@ -131,7 +133,12 @@ fun ThisTrainingScreen(
 }
 
 @Composable
-fun TrainingComparison(lastTraining: Training?, ongoingTraining: Training?, trainingTime: String) {
+fun TrainingComparison(
+    lastTraining: Training?,
+    ongoingTraining: Training?,
+    trainingTime: String,
+    onClick: (trainingId: Long) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth()
             .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
@@ -142,7 +149,10 @@ fun TrainingComparison(lastTraining: Training?, ongoingTraining: Training?, trai
         lastTraining?.let { lastTraining ->
             Card(
                 modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
-                elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+                elevation = CardDefaults.cardElevation(Dimens.cardElevation),
+                onClick = {
+                    lastTraining.id?.let { onClick.invoke(it) }
+                }
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
