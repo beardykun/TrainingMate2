@@ -5,6 +5,7 @@ import dev.icerock.moko.resources.StringResource
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 
 data class ExerciseDetails(
     val exercise: Exercise? = null,
@@ -12,8 +13,7 @@ data class ExerciseDetails(
     val exerciseLocal: ExerciseLocal? = null,
     val weight: TextFieldValue = TextFieldValue(""),
     val reps: TextFieldValue = TextFieldValue(""),
-    val errorReps: StringResource? = null,
-    val errorWeight: StringResource? = null,
+    val inputError: InputError? = null,
     val setDifficulty: SetDifficulty = SetDifficulty.Light
 )
 

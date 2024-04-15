@@ -89,6 +89,8 @@ object ViewModelsFac : KoinComponent {
             ExerciseAtWorkViewModel(
                 trainingUseCaseProvider = get(),
                 exerciseUseCaseProvider = get(),
+                updateAutoInputUseCase = get(),
+                validateInputUseCase = get(),
                 trainingId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
                 notificationUtils = get()

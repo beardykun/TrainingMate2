@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.di
+package jp.mikhail.pankratov.trainingMate.di.local
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.DeleteTrainingHistoryRecordUseCase

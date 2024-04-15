@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.di
+package jp.mikhail.pankratov.trainingMate.di.local
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.summary.GetTwoLastMonthlySummaryUseCase

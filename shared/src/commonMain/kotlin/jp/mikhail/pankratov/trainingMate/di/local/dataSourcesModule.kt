@@ -1,6 +1,7 @@
-package jp.mikhail.pankratov.trainingMate.di
+package jp.mikhail.pankratov.trainingMate.di.local
 
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
+import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource

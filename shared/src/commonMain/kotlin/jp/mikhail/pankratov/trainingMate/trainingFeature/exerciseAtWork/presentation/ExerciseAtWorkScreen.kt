@@ -57,8 +57,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
@@ -145,8 +147,7 @@ fun ExerciseAtWorkScreen(
             InputFields(
                 weight = state.exerciseDetails.weight,
                 reps = state.exerciseDetails.reps,
-                errorWeight = state.exerciseDetails.errorWeight?.getString(),
-                errorReps = state.exerciseDetails.errorReps?.getString(),
+                inputError = state.exerciseDetails.inputError,
                 onEvent = onEvent,
                 focus = focus,
                 focusRequesterWeight = focusRequesterWeight,
@@ -240,8 +241,7 @@ fun ExerciseAtWorkScreen(
 fun InputFields(
     weight: TextFieldValue,
     reps: TextFieldValue,
-    errorWeight: String?,
-    errorReps: String?,
+    inputError: InputError?,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     focus: FocusManager,
     focusRequesterWeight: FocusRequester,
@@ -249,6 +249,10 @@ fun InputFields(
     focusRequesterReps: FocusRequester,
     onFocusChangedReps: (FocusState) -> Unit
 ) {
+    val weightError =
+        if (inputError is InputError.InputErrorWeight) inputError.asResId().getString() else ""
+    val repsError =
+        if (inputError is InputError.InputErrorReps) inputError.asResId().getString() else ""
     Row(modifier = Modifier.fillMaxWidth()) {
         InputField(
             value = weight,
@@ -258,8 +262,8 @@ fun InputFields(
                 onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
             },
             keyboardType = KeyboardType.Decimal,
-            isError = errorWeight != null,
-            errorText = errorWeight,
+            isError = inputError is InputError.InputErrorWeight,
+            errorText = weightError,
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
             }),
@@ -276,8 +280,8 @@ fun InputFields(
                 onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
             },
             keyboardType = KeyboardType.Number,
-            isError = errorReps != null,
-            errorText = errorReps,
+            isError = inputError is InputError.InputErrorReps,
+            errorText = repsError,
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
             }),

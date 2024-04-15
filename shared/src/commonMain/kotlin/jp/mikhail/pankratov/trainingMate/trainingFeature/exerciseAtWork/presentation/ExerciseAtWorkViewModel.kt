@@ -1,17 +1,13 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
 
-import androidx.compose.ui.text.input.TextFieldValue
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
-import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
-import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
-import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError.InputErrorWeight
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Result
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateAutoInputUseCase
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.ValidateInputUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +25,8 @@ import kotlinx.coroutines.withContext
 class ExerciseAtWorkViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
+    private val updateAutoInputUseCase: UpdateAutoInputUseCase,
+    private val validateInputUseCase: ValidateInputUseCase,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
     private val notificationUtils: NotificationUtils
@@ -103,7 +101,7 @@ class ExerciseAtWorkViewModel(
                         exerciseDetails =
                         it.exerciseDetails.copy(
                             reps = event.newReps,
-                            errorReps = null
+                            inputError = null
                         )
                     )
                 }
@@ -115,7 +113,7 @@ class ExerciseAtWorkViewModel(
                         exerciseDetails =
                         it.exerciseDetails.copy(
                             weight = event.newWeight,
-                            errorWeight = null
+                            inputError = null
                         )
                     )
                 }
@@ -204,25 +202,13 @@ class ExerciseAtWorkViewModel(
         val sets = state.value.exerciseDetails.exercise?.sets ?: listOf()
         val pastSets = state.value.exerciseDetails.lastSameExercise?.sets ?: listOf()
 
-        var counter = sets.size
-        if (counter >= pastSets.size) {
-            counter = sets.size - 1
-        }
-        val increment = when (pastSets[counter].difficulty) {
-            SetDifficulty.Hard -> 0.0
-            else -> if (exerciseLocal?.usesTwoDumbbells == true) {
-                2.0
-            } else
-                2.5
-        }
-        val weight = pastSets[counter].weight.toDouble() + increment
+        val autoInputResult = updateAutoInputUseCase(exerciseLocal, sets, pastSets)
         _state.update { currentState ->
             currentState.copy(
                 exerciseDetails = currentState.exerciseDetails.copy(
-                    weight = TextFieldValue(weight.toString()),
-                    reps = TextFieldValue(pastSets[counter].reps),
-                    errorReps = null,
-                    errorWeight = null
+                    weight = autoInputResult.weight,
+                    reps = autoInputResult.reps,
+                    inputError = null
                 )
             )
         }
@@ -326,32 +312,15 @@ class ExerciseAtWorkViewModel(
 
     private fun invalidInput(): Boolean {
         val exerciseDetails = state.value.exerciseDetails
-
-        when (val weightError = validateWeight(exerciseDetails.weight.text)) {
-            is Result.Error -> {
-                _state.update {
-                    it.copy(
-                        exerciseDetails =
-                        it.exerciseDetails.copy(errorWeight = weightError.error.asResId())
-                    )
-                }
-                return true
+        val inputError = validateInputUseCase.invoke(exerciseDetails)
+        inputError?.let { error ->
+            _state.update {
+                it.copy(
+                    exerciseDetails =
+                    state.value.exerciseDetails.copy(inputError = error)
+                )
             }
-
-            is Result.Success -> {}
-        }
-        when (val repsError = validateReps(exerciseDetails.reps.text)) {
-            is Result.Error -> {
-                _state.update {
-                    it.copy(
-                        exerciseDetails =
-                        it.exerciseDetails.copy(errorWeight = repsError.error.asResId())
-                    )
-                }
-                return true
-            }
-
-            is Result.Success -> {}
+            return true
         }
         return false
     }
@@ -364,35 +333,4 @@ class ExerciseAtWorkViewModel(
                     .invoke(exerciseDetails = exerciseDetails)
             }
         }
-
-    private fun validateWeight(weight: String): Result<Unit, InputError> {
-        try {
-            weight.toDouble()
-        } catch (e: NumberFormatException) {
-            return Result.Error(InputErrorWeight.INVALID_FORMAT)
-        }
-
-        return if (weight == "0.0" || weight == "0") {
-            Result.Error(InputErrorWeight.WEIGHT_CANT_BE_0)
-        } else if (weight.contains(",")) {
-            Result.Error(InputErrorWeight.USE_DOT_IN_WEIGHT)
-        } else if (weight.isBlank()) {
-            Result.Error(InputErrorWeight.EMPTY_WEIGHT)
-        } else Result.Success(Unit)
-    }
-
-    private fun validateReps(reps: String): Result<Unit, InputError> {
-        try {
-            reps.toInt()
-        } catch (e: NumberFormatException) {
-            return Result.Error(InputError.InputErrorReps.INVALID_FORMAT)
-        }
-        return if (reps.isBlank()) {
-            Result.Error(InputError.InputErrorReps.EMPTY_REPS)
-        } else if (reps.contains(",") || reps.contains(".")) {
-            Result.Error(InputError.InputErrorReps.REPS_IS_FLOAT)
-        } else if (reps == "0") {
-            Result.Error(InputError.InputErrorReps.REPS_CANT_BE_0)
-        } else Result.Success(Unit)
-    }
 }
