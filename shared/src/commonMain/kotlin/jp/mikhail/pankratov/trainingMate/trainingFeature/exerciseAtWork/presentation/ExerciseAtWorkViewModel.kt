@@ -237,27 +237,6 @@ class ExerciseAtWorkViewModel(
         runTimerJob()
     }
 
-    private fun runTimerJob() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            startTimer(state.value.timerState.timerValue).collect { counter ->
-                _state.update {
-                    it.copy(
-                        timerState = it.timerState.copy(timer = counter),
-                    )
-                }
-                if (counter == 0) {
-                    _state.update {
-                        it.copy(
-                            timerState = it.timerState.copy(timer = state.value.timerState.timerValue),
-                        )
-                    }
-                    notificationUtils.sendNotification()
-                }
-            }
-        }
-    }
-
     private fun updateSets(sets: List<ExerciseSet>, weight: Double, reps: Int) =
         viewModelScope.launch {
             val exerciseDetails = state.value.exerciseDetails
@@ -300,6 +279,27 @@ class ExerciseAtWorkViewModel(
             trainingId = trainingId,
             weight = weight
         )
+    }
+
+    private fun runTimerJob() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            startTimer(state.value.timerState.timerValue).collect { counter ->
+                _state.update {
+                    it.copy(
+                        timerState = it.timerState.copy(timer = counter),
+                    )
+                }
+                if (counter == 0) {
+                    _state.update {
+                        it.copy(
+                            timerState = it.timerState.copy(timer = state.value.timerState.timerValue),
+                        )
+                    }
+                    notificationUtils.sendNotification()
+                }
+            }
+        }
     }
 
     private fun startTimer(initValue: Int) = flow {
