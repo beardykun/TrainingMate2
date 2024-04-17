@@ -5,8 +5,7 @@ object Routs {
     object MainScreens {
         val training = Screen("Training", 0)
         val analysis = Screen("Analysis", 1)
-        val achievement = Screen("Achievement", 2)
-        val history = Screen("History", 3)
+        val history = Screen("History", 2)
         val mainScreens = listOf("Training", "Analysis", "Achievement", "History")
     }
 

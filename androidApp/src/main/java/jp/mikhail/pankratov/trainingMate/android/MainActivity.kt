@@ -9,27 +9,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import jp.mikhail.pankratov.trainingMate.App
-import jp.mikhail.pankratov.trainingMate.di.AppModule
-import jp.mikhail.pankratov.trainingMate.di.domainUseCasesModule
-import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
-import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
-import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
-import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
-import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appModule = AppModule(context = this.applicationContext)
-        startKoin {
-            modules(
-                dataSourcesModule(appModule),
-                trainingUseCaseModule(),
-                exerciseUseCaseModule(),
-                summaryUseCaseModule(),
-                domainUseCasesModule()
-            )
-        }
+
+        val appModule = TrainingMateApp.instance.appModule
         setContent {
             MyApplicationTheme {
                 Surface(

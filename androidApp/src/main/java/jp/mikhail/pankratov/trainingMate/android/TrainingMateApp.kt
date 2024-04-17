@@ -1,6 +1,13 @@
 package jp.mikhail.pankratov.trainingMate.android
 
 import android.app.Application
+import jp.mikhail.pankratov.trainingMate.di.AppModule
+import jp.mikhail.pankratov.trainingMate.di.domainUseCasesModule
+import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
+import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
+import org.koin.core.context.GlobalContext
 
 class TrainingMateApp : Application() {
     companion object {
@@ -8,8 +15,21 @@ class TrainingMateApp : Application() {
             private set
     }
 
+    lateinit var appModule: AppModule
+        private set
+
     override fun onCreate() {
         super.onCreate()
         instance = this
+        appModule = AppModule(context = this)
+        GlobalContext.startKoin {
+            modules(
+                dataSourcesModule(appModule),
+                trainingUseCaseModule(),
+                exerciseUseCaseModule(),
+                summaryUseCaseModule(),
+                domainUseCasesModule()
+            )
+        }
     }
 }

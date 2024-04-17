@@ -23,6 +23,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val ZERO = 0
+private const val SECOND = 1000L
+
 class ExerciseAtWorkViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
@@ -323,9 +326,9 @@ class ExerciseAtWorkViewModel(
 
     private fun startTimer(initValue: Int) = flow {
         var count = initValue
-        while (count >= 0) {
+        while (count >= ZERO) {
             emit(count--)
-            kotlinx.coroutines.delay(1000)
+            kotlinx.coroutines.delay(SECOND)
         }
     }
 

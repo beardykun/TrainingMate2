@@ -14,7 +14,6 @@ import dev.icerock.moko.mvvm.compose.getViewModel
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingScreen
 import jp.mikhail.pankratov.trainingMate.di.ViewModelsFac
-import jp.mikhail.pankratov.trainingMate.mainScreens.achivements.presentation.AchievementScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreen
@@ -58,9 +57,6 @@ fun NavHost(navigator: Navigator) {
             )
             val state by viewModel.state.collectAsStateWithLifecycle()
             AnalysisScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
-        }
-        scene(route = Routs.MainScreens.achievement.title, navTransition = NavTransition()) {
-            AchievementScreen(navigator = navigator)
         }
         scene(route = Routs.MainScreens.history.title, navTransition = NavTransition()) {
             val viewModel = getViewModel(
@@ -232,10 +228,6 @@ fun navigateOnTabClick(index: Int, navigator: Navigator) {
 
         Routs.MainScreens.analysis.position -> navigator.navigate(
             Routs.MainScreens.analysis.title
-        )
-
-        Routs.MainScreens.achievement.position -> navigator.navigate(
-            Routs.MainScreens.achievement.title
         )
 
         Routs.MainScreens.history.position -> navigator.navigate(
