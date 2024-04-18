@@ -1,10 +1,10 @@
-package jp.mikhail.pankratov.trainingMate.core.domain
+package jp.mikhail.pankratov.trainingMate.core.service
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.media.RingtoneManager
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -28,6 +28,7 @@ class TimerServiceImpl : LifecycleService() {
     private val notificationChannelId = "timer_channel_id"
     private val notificationChannelName = "Timer Service Channel"
     private val notificationId = 1
+    private val timerEndNotificationId = 2
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private var timerJob: Job? = null
 
@@ -36,8 +37,8 @@ class TimerServiceImpl : LifecycleService() {
         val initialCount = intent?.getIntExtra(INITIAL_COUNT, 60) ?: 60
 
         setupNotificationChannel()
-        initializeNotificationBuilder()
-        startForegroundServiceCompat(notificationBuilder.build())
+        notificationBuilder = initializeNotificationBuilder()
+        startForegroundServiceCompat()
         startTimerJob(initialCount)
 
         return START_STICKY
@@ -60,14 +61,15 @@ class TimerServiceImpl : LifecycleService() {
         }
     }
 
-    private fun initializeNotificationBuilder() {
-        notificationBuilder = NotificationCompat.Builder(this, notificationChannelId)
+    private fun initializeNotificationBuilder(): NotificationCompat.Builder {
+        return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Timer Running")
-            .setSmallIcon(R.drawable.incline_dumbbell_flyes)
+            .setSmallIcon(R.drawable.timer_on)
             .setOnlyAlertOnce(true) // Avoid notification sound on each update
     }
 
-    private fun startForegroundServiceCompat(notification: Notification) {
+    private fun startForegroundServiceCompat() {
+        val notification = notificationBuilder.build()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startForeground(
                 notificationId,
@@ -82,7 +84,12 @@ class TimerServiceImpl : LifecycleService() {
     private fun startTimerJob(initialCount: Int) {
         timerJob?.cancel() // Cancel any existing job
         timerJob = lifecycleScope.launch {
-            startTimer(initialCount).collect { updateNotification(it) }
+            startTimer(initialCount).collect { count ->
+                if (count == 0) {
+                    sendTimerEndNotification()
+                }
+                updateNotification(count)
+            }
         }
     }
 
@@ -93,6 +100,20 @@ class TimerServiceImpl : LifecycleService() {
         // Notify the NotificationManager to display the updated notification
         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
             .notify(notificationId, notificationBuilder.build())
+    }
+
+    private fun sendTimerEndNotification() {
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        val notificationBuilder = NotificationCompat.Builder(this, notificationChannelId)
+            .setSmallIcon(R.drawable.timer_off)
+            .setContentTitle("Rest is over!")
+            .setContentText("Return to your workout!")
+            .setVibrate(longArrayOf(0, 400, 200, 400))
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(timerEndNotificationId, notificationBuilder.build())
     }
 
     private fun startTimer(initValue: Int) = flow {

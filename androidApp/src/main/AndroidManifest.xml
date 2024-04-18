@@ -25,7 +25,7 @@
         </activity>
 
         <service
-            android:name="jp.mikhail.pankratov.trainingMate.core.domain.TimerServiceImpl"
+            android:name="jp.mikhail.pankratov.trainingMate.core.service.TimerServiceImpl"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <meta-data

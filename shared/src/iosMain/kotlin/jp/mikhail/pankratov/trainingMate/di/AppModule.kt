@@ -1,8 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.di
 
-import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.core.data.local.DatabaseDriverFactory
-import jp.mikhail.pankratov.trainingMate.core.domain.TimerServiceRep
+import jp.mikhail.pankratov.trainingMate.core.service.TimerServiceRep
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingHistoryDataSource
@@ -48,8 +47,6 @@ actual class AppModule {
             )
         )
     }
-    actual val notificationUtils: NotificationUtils
-        get() = NotificationUtils()
 
     actual val timerServiceRep: TimerServiceRep
         get() = TimerServiceRep()

@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.core.domain
+package jp.mikhail.pankratov.trainingMate.core.service
 
 actual class TimerServiceRep {
     actual fun startService(initCount: Int) {

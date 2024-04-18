@@ -334,7 +334,6 @@ class ExerciseAtWorkViewModel(
                             timerState = it.timerState.copy(timer = state.value.timerState.timerValue),
                         )
                     }
-                    utilsProvider.getNotificationUtils().sendNotification()
                 }
             }
         }
