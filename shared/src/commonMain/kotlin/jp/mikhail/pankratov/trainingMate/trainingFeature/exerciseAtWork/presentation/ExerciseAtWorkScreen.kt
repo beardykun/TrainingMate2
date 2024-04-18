@@ -62,6 +62,7 @@ import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.GlobalToastMessage
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupHorizontal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -188,7 +189,9 @@ fun ExerciseAtWorkScreen(
                 DropDown(
                     initValue = state.timerState.timer.toString(),
                     isOpen = state.timerState.isExpanded,
-                    onClick = { onEvent(ExerciseAtWorkEvent.OnDropdownOpen) },
+                    onClick = {
+                        onEvent(ExerciseAtWorkEvent.OnDropdownOpen)
+                    },
                     onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
                     onSelectedValue = { value ->
                         onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected(value))
@@ -238,6 +241,7 @@ fun ExerciseAtWorkScreen(
                 CountdownAnimation(currentTimerValue = state.timerState.timer)
             }
         }
+        GlobalToastMessage()
     }
 }
 

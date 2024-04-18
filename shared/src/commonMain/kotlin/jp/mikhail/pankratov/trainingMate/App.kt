@@ -36,6 +36,7 @@ import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
 import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.utilsModule
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
 import moe.tlaster.precompose.navigation.rememberNavigator
@@ -53,6 +54,7 @@ fun App(
             modules(
                 listOf(
                     dataSourcesModule(appModule),
+                    utilsModule(appModule),
                     trainingUseCaseModule(),
                     exerciseUseCaseModule(),
                     summaryUseCaseModule(),

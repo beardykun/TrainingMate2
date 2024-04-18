@@ -1,11 +1,17 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
+import dev.icerock.moko.permissions.DeniedAlwaysException
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
+import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.TimerDataHolder
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateAutoInputUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.ValidateInputUseCase
@@ -13,18 +19,15 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presenta
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val ZERO = 0
-private const val SECOND = 1000L
 
 class ExerciseAtWorkViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
@@ -33,7 +36,8 @@ class ExerciseAtWorkViewModel(
     private val validateInputUseCase: ValidateInputUseCase,
     private val trainingId: Long,
     private val exerciseTemplateId: Long,
-    private val notificationUtils: NotificationUtils
+    private val utilsProvider: UtilsProvider,
+    val permissionsController: PermissionsController
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ExerciseAtWorkState())
@@ -63,10 +67,22 @@ class ExerciseAtWorkViewModel(
         initialValue = ExerciseAtWorkState()
     )
 
-    private var timerJob: Job? = null
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
             ExerciseAtWorkEvent.OnTimerStart -> {
+                viewModelScope.launch {
+                    try {
+                        permissionsController.providePermission(Permission.REMOTE_NOTIFICATION)
+                        // Permission has been granted successfully.
+                    } catch (deniedAlways: DeniedAlwaysException) {
+                        // Permission is always denied.
+                        ToastManager.showToast("To receive rest time notifications, please enable them in your settings.")
+
+                    } catch (denied: DeniedException) {
+                        ToastManager.showToast("Permission denied. Enable notifications to be alerted when rest time ends")
+                        // Permission was denied.
+                    }
+                }
                 runTimerJob()
             }
 
@@ -87,7 +103,7 @@ class ExerciseAtWorkViewModel(
             }
 
             is ExerciseAtWorkEvent.OnDropdownItemSelected -> {
-                timerJob?.cancel()
+                utilsProvider.getTimerServiceRep().stopService()
                 _state.update { currentState ->
                     currentState.copy(
                         timerState = currentState.timerState.copy(
@@ -304,31 +320,23 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun runTimerJob() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
-            startTimer(state.value.timerState.timerValue).collect { counter ->
+        viewModelScope.launch {
+            utilsProvider.getTimerServiceRep().startService(state.value.timerState.timerValue)
+            TimerDataHolder.timerValue.collect { counter ->
                 _state.update {
                     it.copy(
-                        timerState = it.timerState.copy(timer = counter),
+                        timerState = it.timerState.copy(timer = counter ?: 0)
                     )
                 }
-                if (counter == 0) {
+                if (counter == ZERO) {
                     _state.update {
                         it.copy(
                             timerState = it.timerState.copy(timer = state.value.timerState.timerValue),
                         )
                     }
-                    notificationUtils.sendNotification()
+                    utilsProvider.getNotificationUtils().sendNotification()
                 }
             }
-        }
-    }
-
-    private fun startTimer(initValue: Int) = flow {
-        var count = initValue
-        while (count >= ZERO) {
-            emit(count--)
-            kotlinx.coroutines.delay(SECOND)
         }
     }
 

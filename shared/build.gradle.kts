@@ -70,6 +70,9 @@ kotlin {
                 implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
+                api(libs.permissions.compose) // permissions api + compose extensions
+
+                implementation(libs.permissions.test)
             }
         }
         val commonTest by getting {
@@ -134,6 +137,7 @@ multiplatformResources {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.service)
     commonMainApi(libs.mvvm.core)
     commonMainApi(libs.mvvm.compose)
     commonMainApi(libs.mvvm.flow)

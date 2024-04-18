@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.di
 
 import dev.icerock.moko.mvvm.compose.viewModelFactory
+import dev.icerock.moko.permissions.PermissionsController
 import jp.mikhail.pankratov.trainingMate.AppViewModel
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisViewModel
@@ -84,7 +85,10 @@ object ViewModelsFac : KoinComponent {
             )
         }
 
-    fun getExerciseAtWorkViewModelFactory(trainingId: Long, exerciseTemplateId: Long) =
+    fun getExerciseAtWorkViewModelFactory(
+        trainingId: Long, exerciseTemplateId: Long,
+        permissionsController: PermissionsController
+    ) =
         viewModelFactory {
             ExerciseAtWorkViewModel(
                 trainingUseCaseProvider = get(),
@@ -93,7 +97,8 @@ object ViewModelsFac : KoinComponent {
                 validateInputUseCase = get(),
                 trainingId = trainingId,
                 exerciseTemplateId = exerciseTemplateId,
-                notificationUtils = get()
+                utilsProvider = get(),
+                permissionsController = permissionsController
             )
         }
 

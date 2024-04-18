@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:allowBackup="false"
-        android:supportsRtl="true"
         android:name=".TrainingMateApp"
-        android:label="TrainingMate"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
+        android:label="TrainingMate"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -21,5 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="jp.mikhail.pankratov.trainingMate.core.domain.TimerServiceImpl"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <meta-data
+                android:name="android.app.property.SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Foreground service needed for accurate rest timers between exercises, ensuring users can effectively manage their workout sessions without keeping the app open." />
+        </service>
+
     </application>
 </manifest> 

@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.icerock.moko.mvvm.compose.getViewModel
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingScreen
 import jp.mikhail.pankratov.trainingMate.di.ViewModelsFac
@@ -165,13 +168,17 @@ private fun RouteBuilder.trainingScreens(
         ) { backStackEntry ->
             val trainingId: Long = backStackEntry.path("trainingId") ?: -1
             val exerciseTemplateId: Long = backStackEntry.path("exerciseTemplateId") ?: -1
+            val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+
             val viewModel = getViewModel(
                 key = Routs.ExerciseScreens.exerciseAtWork,
                 factory = ViewModelsFac.getExerciseAtWorkViewModelFactory(
                     trainingId = trainingId,
-                    exerciseTemplateId = exerciseTemplateId
+                    exerciseTemplateId = exerciseTemplateId,
+                    permissionsController = factory.createPermissionsController()
                 )
             )
+            BindEffect(viewModel.permissionsController)
             val state by viewModel.state.collectAsStateWithLifecycle()
             ExerciseAtWorkScreen(
                 state = state,

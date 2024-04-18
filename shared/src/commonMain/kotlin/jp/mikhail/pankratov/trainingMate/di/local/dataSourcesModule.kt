@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.di.local
 
-import jp.mikhail.pankratov.trainingMate.core.NotificationUtils
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
@@ -15,5 +14,4 @@ fun dataSourcesModule(appModule: AppModule) = module {
     single<ITrainingDataSource> { appModule.trainingDataSource }
     single<ITrainingHistoryDataSource> { appModule.trainingHistoryDataSource }
     single<ISummaryDatasource> { appModule.summaryDataSource }
-    single<NotificationUtils> { appModule.notificationUtils }
 }
