@@ -85,10 +85,11 @@ class TimerServiceImpl : LifecycleService() {
         timerJob?.cancel() // Cancel any existing job
         timerJob = lifecycleScope.launch {
             startTimer(initialCount).collect { count ->
-                if (count == 0) {
-                    sendTimerEndNotification()
-                }
                 updateNotification(count)
+                if (count == ZERO) {
+                    sendTimerEndNotification()
+                    stopSelf()
+                }
             }
         }
     }
