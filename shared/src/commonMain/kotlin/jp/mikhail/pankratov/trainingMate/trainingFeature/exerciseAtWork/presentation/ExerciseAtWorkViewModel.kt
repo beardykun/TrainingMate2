@@ -70,19 +70,6 @@ class ExerciseAtWorkViewModel(
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
             ExerciseAtWorkEvent.OnTimerStart -> {
-                viewModelScope.launch {
-                    try {
-                        permissionsController.providePermission(Permission.REMOTE_NOTIFICATION)
-                        // Permission has been granted successfully.
-                    } catch (deniedAlways: DeniedAlwaysException) {
-                        // Permission is always denied.
-                        ToastManager.showToast("To receive rest time notifications, please enable them in your settings.")
-
-                    } catch (denied: DeniedException) {
-                        ToastManager.showToast("Permission denied. Enable notifications to be alerted when rest time ends")
-                        // Permission was denied.
-                    }
-                }
                 runTimerJob()
             }
 
@@ -228,6 +215,20 @@ class ExerciseAtWorkViewModel(
         }
     }
 
+    private suspend fun requestNotificationPermission() {
+        try {
+            permissionsController.providePermission(Permission.REMOTE_NOTIFICATION)
+            // Permission has been granted successfully.
+        } catch (deniedAlways: DeniedAlwaysException) {
+            // Permission is always denied.
+            ToastManager.showToast("To receive rest time notifications, please enable them in your settings.")
+
+        } catch (denied: DeniedException) {
+            ToastManager.showToast("Permission denied. Enable notifications to be alerted when rest time ends")
+            // Permission was denied.
+        }
+    }
+
     private fun updateAutoInput(sets: List<ExerciseSet>, autoInputMode: AutoInputMode) {
         val exerciseLocal = state.value.exerciseDetails.exerciseLocal
         val pastSets = state.value.exerciseDetails.lastSameExercise?.sets ?: listOf()
@@ -321,6 +322,8 @@ class ExerciseAtWorkViewModel(
 
     private fun runTimerJob() {
         viewModelScope.launch {
+            requestNotificationPermission()
+
             utilsProvider.getTimerServiceRep().startService(state.value.timerState.timerValue)
             TimerDataHolder.timerValue.collect { counter ->
                 _state.update {

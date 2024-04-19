@@ -2,14 +2,10 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,57 +20,46 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.asResId
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
-import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.GlobalToastMessage
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupHorizontal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.CountdownAnimation
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseComparison
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.InputFields
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import moe.tlaster.precompose.navigation.Navigator
 
 const val COLUMNS_NUM = 3
+const val COUNTDOWN_ANIMATION = 10
 
 //Use same weights as before, increase or decrease selection
 @Composable
@@ -236,8 +221,8 @@ fun ExerciseAtWorkScreen(
                 )
             }
         }
-        AnimatedVisibility(visible = state.timerState.timer <= 10) {
-            if (state.timerState.timer <= 10) {
+        AnimatedVisibility(visible = state.timerState.timer <= COUNTDOWN_ANIMATION) {
+            if (state.timerState.timer <= COUNTDOWN_ANIMATION) {
                 CountdownAnimation(currentTimerValue = state.timerState.timer)
             }
         }
@@ -245,141 +230,8 @@ fun ExerciseAtWorkScreen(
     }
 }
 
-@Composable
-fun InputFields(
-    weight: TextFieldValue,
-    reps: TextFieldValue,
-    inputError: InputError?,
-    onEvent: (ExerciseAtWorkEvent) -> Unit,
-    focus: FocusManager,
-    focusRequesterWeight: FocusRequester,
-    onFocusChangedWeight: (FocusState) -> Unit,
-    focusRequesterReps: FocusRequester,
-    onFocusChangedReps: (FocusState) -> Unit
-) {
-    val weightError =
-        if (inputError is InputError.InputErrorWeight) inputError.asResId().getString() else ""
-    val repsError =
-        if (inputError is InputError.InputErrorReps) inputError.asResId().getString() else ""
-    Row(modifier = Modifier.fillMaxWidth()) {
-        InputField(
-            value = weight,
-            placeholder = stringResource(SharedRes.strings.select_weight),
-            label = stringResource(SharedRes.strings.weight),
-            onValueChanged = { value ->
-                onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
-            },
-            keyboardType = KeyboardType.Decimal,
-            isError = inputError is InputError.InputErrorWeight,
-            errorText = weightError,
-            keyboardActions = KeyboardActions(onDone = {
-                focus.clearFocus()
-            }),
-            modifier = Modifier.weight(1f)
-                .focusRequester(focusRequesterWeight)
-                .onFocusChanged(onFocusChangedWeight)
-        )
-        Spacer(modifier = Modifier.padding(Dimens.Padding32))
-        InputField(
-            value = reps,
-            placeholder = stringResource(SharedRes.strings.select_reps),
-            label = stringResource(SharedRes.strings.reps),
-            onValueChanged = { value ->
-                onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
-            },
-            keyboardType = KeyboardType.Number,
-            isError = inputError is InputError.InputErrorReps,
-            errorText = repsError,
-            keyboardActions = KeyboardActions(onDone = {
-                focus.clearFocus()
-            }),
-            modifier = Modifier.weight(1f)
-                .focusRequester(focusRequesterReps)
-                .onFocusChanged(onFocusChangedReps)
-        )
-    }
-}
 
-@Composable
-fun CountdownAnimation(
-    currentTimerValue: Int,
-) {
-    // This will hold the current scale of the animation.
-    val scale: Float by animateFloatAsState(
-        targetValue = 1f / (currentTimerValue * 0.1f),
-        animationSpec = tween(
-            durationMillis = 500, // duration of the animation
-            easing = LinearEasing
-        )
-    )
 
-    // We display the countdown text, making sure it's in the middle of the screen.
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = if (currentTimerValue > 0) currentTimerValue.toString() else "",
-            fontSize = 120.sp, // or whatever size is appropriate
-            modifier = Modifier.scale(scale) // applying the scale modifier
-        )
-    }
-}
-
-@Composable
-fun ExerciseComparison(
-    lastExercise: Exercise?,
-    exercise: Exercise,
-    onClick: (name: String) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
-            .clip(RoundedCornerShape(percent = 30))
-            .padding(vertical = Dimens.Padding8)
-
-    ) {
-        lastExercise?.let {
-            Card(
-                modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
-                elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-                onClick = { onClick.invoke(it.name) }
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextLarge(
-                        text =
-                        stringResource(
-                            SharedRes.strings.last_exercise,
-                            lastExercise.totalLiftedWeight,
-                            lastExercise.sets.size
-                        ),
-                        modifier = Modifier.padding(all = Dimens.Padding8)
-                    )
-                }
-            }
-        }
-
-        Card(
-            modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
-            elevation = CardDefaults.cardElevation(Dimens.cardElevation)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TextLarge(
-                    text =
-                    stringResource(
-                        SharedRes.strings.this_exercise,
-                        exercise.totalLiftedWeight,
-                        exercise.sets.size
-                    ),
-                    modifier = Modifier.padding(all = Dimens.Padding8)
-                )
-            }
-        }
-    }
-}
 
 
 

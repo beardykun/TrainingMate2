@@ -13,8 +13,7 @@ import kotlinx.coroutines.launch
 
 class HistoryScreenViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryScreenState())
     val state = combine(
