@@ -7,6 +7,7 @@ import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrain
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseViewModel
@@ -41,9 +42,9 @@ object ViewModelsFac : KoinComponent {
             )
         }
 
-    fun getHistoryScreenViewModelFactory() =
+    fun getHistoryScreenViewModelFactory(query: TrainingQuery) =
         viewModelFactory {
-            HistoryScreenViewModel(trainingUseCaseProvider = get())
+            HistoryScreenViewModel(trainingUseCaseProvider = get(), query)
         }
 
     fun getCreateTrainingViewModelFactory() =

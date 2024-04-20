@@ -16,12 +16,18 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 
 @Composable
-fun SummaryMonthly(monthlySummary: MonthlySummary?, modifier: Modifier, counter: Int) {
+fun SummaryMonthly(
+    monthlySummary: MonthlySummary?,
+    modifier: Modifier,
+    counter: Int,
+    onClick: (year: Long, month: Long) -> Unit
+) {
     monthlySummary?.let { summary ->
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.outlineVariant),
-            modifier = Modifier.padding(horizontal = Dimens.Padding8)
+            modifier = Modifier.padding(horizontal = Dimens.Padding8),
+            onClick = { onClick.invoke(summary.year, summary.monthNumber) }
         ) {
             Column(modifier = modifier) {
                 val topText =

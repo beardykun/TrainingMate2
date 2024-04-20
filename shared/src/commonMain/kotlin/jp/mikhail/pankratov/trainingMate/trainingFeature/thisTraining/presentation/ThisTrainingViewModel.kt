@@ -58,7 +58,7 @@ class ThisTrainingViewModel(
 
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
         val lastTraining =
-            trainingUseCaseProvider.getGetLastSameTrainingUseCase()
+            trainingUseCaseProvider.getGetLastSameHistoryTrainingUseCase()
                 .invoke(trainingTemplateId = ongoingTrainingTemplateId)
                 .first()
         _state.update {
@@ -70,6 +70,7 @@ class ThisTrainingViewModel(
 
     private fun loadTrainingAndExercises() = viewModelScope.launch {
         val ongoingTraining = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
+        println("TAGGER $ongoingTraining")
         ongoingTraining?.let { trainingNotNull ->
             _training.value = trainingNotNull
             val exercises =
@@ -110,13 +111,13 @@ class ThisTrainingViewModel(
 
             ThisTrainingEvent.EndTraining -> {
                 state.value.ongoingTraining?.let { ongoingTraining ->
-                    endLastTraining(ongoingTraining)
+                    endOngoingTraining(ongoingTraining)
                 }
             }
         }
     }
 
-    private fun endLastTraining(ongoingTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
+    private fun endOngoingTraining(ongoingTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
         ongoingTraining.id?.let { ongoingTrainingId ->
             if (ongoingTraining.totalWeightLifted == 0.0) {
                 trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()

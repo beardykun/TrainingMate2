@@ -1,5 +1,10 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation
-
+const val YEAR = "year"
+const val MONTH_NUM = "monthNum"
+const val WEEK_NUM = "weekNum"
+const val TRAINING_HISTORY_ID = "trainingHistoryId"
+const val EXERCISE_TEMPLATE_ID = "exerciseTemplateId"
+const val EXERCISE_NAME = "exerciseName"
 object Routs {
 
     object MainScreens {

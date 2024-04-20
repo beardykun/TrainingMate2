@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface ITrainingDataSource {
     suspend fun insertLocalTraining(training: TrainingLocal)
     fun getLocalTrainings(): Flow<List<TrainingLocal>>
-    suspend fun trainingTableEmpty(): Boolean
+    suspend fun isLocalTrainingTableEmpty(): Boolean
     fun getTrainingById(trainingId: Long): Flow<TrainingLocal>
     suspend fun updateExercises(exercises: List<String>, id: Long)
     suspend fun isLocalTrainingExists(name: String): Boolean

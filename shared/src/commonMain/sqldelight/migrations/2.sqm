@@ -1,0 +1,7 @@
+ALTER TABLE TrainingHistory ADD COLUMN year INTEGER;
+ALTER TABLE TrainingHistory ADD COLUMN week_number INTEGER;
+ALTER TABLE TrainingHistory ADD COLUMN month_number INTEGER;
+
+UPDATE TrainingHistory SET year = 2024 WHERE year IS NULL;
+UPDATE TrainingHistory SET week_number = 16 WHERE week_number IS NULL;
+UPDATE TrainingHistory SET month_number = 4 WHERE month_number IS NULL;

@@ -29,6 +29,9 @@ fun TrainingHistory.toTraining(): Training {
         userId = user_id,
         startTime = start_time,
         endTime = end_time,
+        weekNumber = week_number ?: 0L,
+        monthNumber = month_number ?: 0L,
+        year = year ?: 0L,
         status = status,
         totalWeightLifted = total_lifted_weight
     )

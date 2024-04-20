@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.util.DateUtils
 import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
@@ -33,6 +34,24 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         }.flowOn(Dispatchers.IO)
     }
 
+    override fun getParticularMonthTraining(year: Long, monthNum: Long): Flow<List<Training>> {
+        return query.getParticularMonthTraining(year = year, month_number = monthNum)
+            .asFlow().mapToList().map { trainings ->
+                trainings.map { training ->
+                    training.toTraining()
+                }
+            }
+    }
+
+    override fun getParticularWeekTraining(year: Long, weekNum: Long): Flow<List<Training>> {
+        return query.getParticularWeekTraining(year = year, week_number = weekNum)
+            .asFlow().mapToList().map { trainings ->
+                trainings.map { training ->
+                    training.toTraining()
+                }
+            }
+    }
+
     override suspend fun insertTrainingRecord(training: Training) {
         query.insertTrainingRecord(
             id = training.id,
@@ -46,6 +65,9 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             start_time = training.startTime ?: 0,
             end_time = training.endTime ?: 0,
             total_lifted_weight = training.totalWeightLifted,
+            week_number = DateUtils.currentWeekNumber,
+            month_number = DateUtils.currentMonthNumber,
+            year = DateUtils.currentYear,
             user_id = training.userId
         )
     }

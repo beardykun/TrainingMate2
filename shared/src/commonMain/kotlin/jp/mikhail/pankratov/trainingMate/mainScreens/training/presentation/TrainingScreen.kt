@@ -133,7 +133,7 @@ fun TrainingScreen(
                 }
             }
             state.weeklySummary?.let { weeklyList ->
-                if (weeklyList.first()?.totalLiftedWeight == 0.0) return@let
+                if (weeklyList.firstOrNull()?.totalLiftedWeight == 0.0) return@let
                 TextLarge(text = stringResource(SharedRes.strings.summaries).uppercase())
                 LazyRow {
                     items(weeklyList.size) { counter ->
@@ -147,13 +147,18 @@ fun TrainingScreen(
             }
 
             state.monthlySummary?.let { monthlyList ->
-                if (monthlyList.first()?.totalLiftedWeight == 0.0) return@let
+                if (monthlyList.firstOrNull()?.totalLiftedWeight == 0.0) return@let
                 LazyRow {
                     items(monthlyList.size) { counter ->
                         SummaryMonthly(
                             monthlySummary = monthlyList[counter],
                             counter = counter,
-                            modifier = Modifier.padding(Dimens.Padding16)
+                            modifier = Modifier.padding(Dimens.Padding16),
+                            onClick = { year, monthNum ->
+                                navigator.navigate(
+                                    "${Routs.MainScreens.history.title}/${year}/${monthNum}/${null}"
+                                )
+                            }
                         )
                     }
                 }

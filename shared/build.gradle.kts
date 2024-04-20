@@ -127,6 +127,7 @@ sqldelight {
     database("TrainingDatabase") {
         packageName = "jp.mikhail.pankratov.trainingMate.database"
         sourceFolders = listOf("sqldelight")
+        version = 2
     }
 }
 

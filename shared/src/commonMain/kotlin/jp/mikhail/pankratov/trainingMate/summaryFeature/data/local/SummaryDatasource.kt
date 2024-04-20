@@ -4,7 +4,7 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
-import jp.mikhail.pankratov.trainingMate.core.getIsoWeekNumber
+import jp.mikhail.pankratov.trainingMate.core.domain.util.DateUtils
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.toMonthlySummary
@@ -14,24 +14,19 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
 
     private val weeklyQuery = db.weeklySummaryQueries
     private val monthlyQuery = db.monthlySummaryQueries
 
-    private val currentDate: LocalDateTime
-        get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+
     private val currentYear: Long
-        get() = currentDate.year.toLong()
+        get() = DateUtils.currentYear
     private val currentWeekNumber: Long
-        get() = currentDate.date.getIsoWeekNumber()
+        get() = DateUtils.currentWeekNumber
     private val currentMonthNumber: Long
-        get() = currentDate.monthNumber.toLong()
+        get() = DateUtils.currentMonthNumber
 
     override suspend fun insetSummary() {
         val monthlySummary =
@@ -61,7 +56,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             num_sets = weeklySummary.numSets.toLong(),
             num_reps = weeklySummary.numReps.toLong(),
             total_lifted_weight = weeklySummary.totalLiftedWeight,
-            year = weeklySummary.year.toLong(),
+            year = weeklySummary.year,
             avg_duration_per_workout = weeklySummary.avgDurationPerWorkout,
             avg_lifted_weight_per_workout = weeklySummary.avgLiftedWeightPerWorkout,
             avg_lifted_weight_per_exercise = weeklySummary.avgLiftedWeightPerExercise,

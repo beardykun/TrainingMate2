@@ -14,12 +14,19 @@ import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import jp.mikhail.pankratov.trainingMate.core.presentation.EXERCISE_NAME
+import jp.mikhail.pankratov.trainingMate.core.presentation.EXERCISE_TEMPLATE_ID
+import jp.mikhail.pankratov.trainingMate.core.presentation.MONTH_NUM
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.TRAINING_HISTORY_ID
+import jp.mikhail.pankratov.trainingMate.core.presentation.WEEK_NUM
+import jp.mikhail.pankratov.trainingMate.core.presentation.YEAR
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingScreen
 import jp.mikhail.pankratov.trainingMate.di.ViewModelsFac
 import jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation.AnalysisScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.HistoryInfoScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseScreen
@@ -61,10 +68,26 @@ fun NavHost(navigator: Navigator) {
             val state by viewModel.state.collectAsStateWithLifecycle()
             AnalysisScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
-        scene(route = Routs.MainScreens.history.title, navTransition = NavTransition()) {
+        scene(
+            route = "${Routs.MainScreens.history.title}/{$YEAR}/{$MONTH_NUM}/{$WEEK_NUM}",
+            navTransition = NavTransition()
+        ) { backStackEntry ->
+            val year: Long = backStackEntry.path(YEAR) ?: -1
+            val monthNum: Long? = backStackEntry.path(MONTH_NUM)
+            val weekNum: Long? = backStackEntry.path(WEEK_NUM)
+            println("TAGGER year: $year month: $monthNum week: $weekNum")
+
+            var query: TrainingQuery = TrainingQuery.All
+            monthNum?.let {
+                query = TrainingQuery.Month(month = monthNum, year = year)
+            }
+            weekNum?.let {
+                query = TrainingQuery.Week(week = weekNum, year = year)
+            }
+            println("TAGGER $query")
             val viewModel = getViewModel(
                 key = Routs.MainScreens.history,
-                factory = ViewModelsFac.getHistoryScreenViewModelFactory()
+                factory = ViewModelsFac.getHistoryScreenViewModelFactory(query)
             )
             val state by viewModel.state.collectAsStateWithLifecycle()
             HistoryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
@@ -88,13 +111,13 @@ private fun RouteBuilder.historyScreens(
 ) {
     group(
         route = Routs.HistoryScreens.historyGroupRoot,
-        initialRoute = "${Routs.HistoryScreens.historyInfo}/{trainingHistoryId}"
+        initialRoute = "${Routs.HistoryScreens.historyInfo}/{$TRAINING_HISTORY_ID}"
     ) {
         scene(
-            route = "${Routs.HistoryScreens.historyInfo}/{trainingHistoryId}",
+            route = "${Routs.HistoryScreens.historyInfo}/{$TRAINING_HISTORY_ID}",
             navTransition = NavTransition()
         ) { backStackEntry ->
-            val trainingId: Long = backStackEntry.path("trainingHistoryId") ?: -1
+            val trainingId: Long = backStackEntry.path(TRAINING_HISTORY_ID) ?: -1
             val viewModel = getViewModel(
                 key = Routs.HistoryScreens.historyInfo,
                 factory = ViewModelsFac.getHistoryInfoViewModelFactory(trainingId = trainingId)
@@ -163,11 +186,11 @@ private fun RouteBuilder.trainingScreens(
         }
 
         scene(
-            route = "${Routs.ExerciseScreens.exerciseAtWork}/{trainingId}/{exerciseTemplateId}",
+            route = "${Routs.ExerciseScreens.exerciseAtWork}/{$TRAINING_HISTORY_ID}/{$EXERCISE_TEMPLATE_ID}",
             navTransition = NavTransition()
         ) { backStackEntry ->
-            val trainingId: Long = backStackEntry.path("trainingId") ?: -1
-            val exerciseTemplateId: Long = backStackEntry.path("exerciseTemplateId") ?: -1
+            val trainingId: Long = backStackEntry.path(TRAINING_HISTORY_ID) ?: -1
+            val exerciseTemplateId: Long = backStackEntry.path(EXERCISE_TEMPLATE_ID) ?: -1
             val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
 
             val viewModel = getViewModel(
@@ -188,10 +211,10 @@ private fun RouteBuilder.trainingScreens(
         }
 
         scene(
-            route = "${Routs.ExerciseScreens.exerciseAtWorkHistory}/{exerciseName}",
+            route = "${Routs.ExerciseScreens.exerciseAtWorkHistory}/{$EXERCISE_NAME}",
             navTransition = NavTransition()
         ) { backStackEntry ->
-            val exerciseName: String = backStackEntry.path("exerciseName") ?: ""
+            val exerciseName: String = backStackEntry.path(EXERCISE_NAME) ?: ""
             val viewModel = getViewModel(
                 key = Routs.ExerciseScreens.exerciseAtWorkHistory,
                 factory = ViewModelsFac.getExerciseAtWorkHistoryViewModelFactory(exerciseName = exerciseName)

@@ -14,5 +14,8 @@ data class Training(
     val totalWeightLifted: Double = 0.0, // Sum of weights lifted in all exercises in kilograms
     val startTime: Long? = null,
     val endTime: Long? = null,
+    val weekNumber: Long = 0,
+    val monthNumber: Long = 0,
+    val year: Long = 0,
     val status: String = "ONGOING"
 )

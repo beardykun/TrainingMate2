@@ -35,7 +35,7 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun trainingTableEmpty(): Boolean {
+    override suspend fun isLocalTrainingTableEmpty(): Boolean {
         return queries.countTrainingTemplates().executeAsOne() == 0L
     }
 

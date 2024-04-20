@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training
+package jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local
 
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 

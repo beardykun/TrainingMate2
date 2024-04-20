@@ -10,6 +10,9 @@ CREATE TABLE TrainingHistory (
     total_reps INTEGER NOT NULL,
     start_time INTEGER NOT NULL,
     end_time INTEGER NOT NULL,
+    week_number INTEGER,
+    month_number INTEGER,
+    year INTEGER,
     total_lifted_weight REAL NOT NULL, -- changed to REAL to match Kotlin's Double
     status TEXT NOT NULL DEFAULT 'ONGOING' CHECK (status IN ('ONGOING', 'COMPLETED')),
     FOREIGN KEY(user_id) REFERENCES User(id)
@@ -29,9 +32,12 @@ INTO TrainingHistory(
     total_reps,
     start_time,
     end_time,
+    week_number,
+    month_number,
+    year,
     total_lifted_weight
 )
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);
 
 getTrainingRecordById:
 SELECT *
@@ -90,6 +96,16 @@ SELECT * FROM TrainingHistory
 WHERE status = 'COMPLETED' AND training_template_id = ?
 ORDER BY id DESC
 LIMIT 1;
+
+getParticularMonthTraining:
+SELECT * FROM TrainingHistory
+WHERE year = ? AND month_number = ?
+ORDER BY id DESC;
+
+getParticularWeekTraining:
+SELECT * FROM TrainingHistory
+WHERE year = ? AND week_number = ?
+ORDER BY id DESC;
 
 
 
