@@ -73,6 +73,19 @@ class ExerciseAtWorkViewModel(
                 runTimerJob()
             }
 
+            ExerciseAtWorkEvent.OnTimerStop -> {
+                utilsProvider.getTimerServiceRep().stopService()
+                _state.update { currentState ->
+                    currentState.copy(
+                        timerState = currentState.timerState.copy(
+                            timerValue = currentState.timerState.timerValue,
+                            timer = currentState.timerState.timerValue,
+                            isCounting = false
+                        )
+                    )
+                }
+            }
+
             ExerciseAtWorkEvent.OnDropdownOpen -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -96,7 +109,8 @@ class ExerciseAtWorkViewModel(
                         timerState = currentState.timerState.copy(
                             timerValue = event.item.toInt(),
                             timer = event.item.toInt(),
-                            isExpanded = false
+                            isExpanded = false,
+                            isCounting = false
                         )
                     )
                 }
@@ -328,13 +342,16 @@ class ExerciseAtWorkViewModel(
             TimerDataHolder.timerValue.collect { counter ->
                 _state.update {
                     it.copy(
-                        timerState = it.timerState.copy(timer = counter ?: 0)
+                        timerState = it.timerState.copy(timer = counter ?: 0, isCounting = true)
                     )
                 }
                 if (counter == ZERO) {
                     _state.update {
                         it.copy(
-                            timerState = it.timerState.copy(timer = state.value.timerState.timerValue),
+                            timerState = it.timerState.copy(
+                                timer = state.value.timerState.timerValue,
+                                isCounting = false
+                            ),
                         )
                     }
                 }

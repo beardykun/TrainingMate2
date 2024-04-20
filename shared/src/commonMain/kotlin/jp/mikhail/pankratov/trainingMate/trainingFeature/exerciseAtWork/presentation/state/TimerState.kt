@@ -3,5 +3,6 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 data class TimerState(
     val timerValue: Int = 60,
     val timer: Int = 60,
-    val isExpanded: Boolean = false
+    val isExpanded: Boolean = false,
+    val isCounting: Boolean = false
 )

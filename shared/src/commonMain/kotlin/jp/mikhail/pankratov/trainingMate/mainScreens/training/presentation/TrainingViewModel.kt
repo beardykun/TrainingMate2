@@ -188,7 +188,7 @@ class TrainingViewModel(
                 exercises = training.exercises
             )
         )
-        summaryUseCaseProvider.getInsetSummaryUseCase()
+        summaryUseCaseProvider.getInsetSummaryUseCase().invoke()
     }
 
     private suspend fun finishLastTrainingWhenStartingNew() {

@@ -140,7 +140,12 @@ fun TrainingScreen(
                         SummaryWeekly(
                             weeklySummary = weeklyList[counter],
                             counter = counter,
-                            modifier = Modifier.padding(Dimens.Padding16)
+                            modifier = Modifier.padding(Dimens.Padding16),
+                            onClick = { year, weekNum ->
+                                navigator.navigate(
+                                    "${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
+                                )
+                            }
                         )
                     }
                 }

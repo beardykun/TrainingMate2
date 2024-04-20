@@ -72,10 +72,9 @@ fun NavHost(navigator: Navigator) {
             route = "${Routs.MainScreens.history.title}/{$YEAR}/{$MONTH_NUM}/{$WEEK_NUM}",
             navTransition = NavTransition()
         ) { backStackEntry ->
-            val year: Long = backStackEntry.path(YEAR) ?: -1
+            val year: Long = backStackEntry.path(YEAR) ?: 0
             val monthNum: Long? = backStackEntry.path(MONTH_NUM)
             val weekNum: Long? = backStackEntry.path(WEEK_NUM)
-            println("TAGGER year: $year month: $monthNum week: $weekNum")
 
             var query: TrainingQuery = TrainingQuery.All
             monthNum?.let {
@@ -84,7 +83,6 @@ fun NavHost(navigator: Navigator) {
             weekNum?.let {
                 query = TrainingQuery.Week(week = weekNum, year = year)
             }
-            println("TAGGER $query")
             val viewModel = getViewModel(
                 key = Routs.MainScreens.history,
                 factory = ViewModelsFac.getHistoryScreenViewModelFactory(query)
@@ -261,7 +259,7 @@ fun navigateOnTabClick(index: Int, navigator: Navigator) {
         )
 
         Routs.MainScreens.history.position -> navigator.navigate(
-            Routs.MainScreens.history.title
+            "${Routs.MainScreens.history.title}/${null}/${null}/${null}"
         )
 
         else -> {}

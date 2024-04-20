@@ -70,7 +70,6 @@ class ThisTrainingViewModel(
 
     private fun loadTrainingAndExercises() = viewModelScope.launch {
         val ongoingTraining = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
-        println("TAGGER $ongoingTraining")
         ongoingTraining?.let { trainingNotNull ->
             _training.value = trainingNotNull
             val exercises =
@@ -117,18 +116,19 @@ class ThisTrainingViewModel(
         }
     }
 
-    private fun endOngoingTraining(ongoingTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
-        ongoingTraining.id?.let { ongoingTrainingId ->
-            if (ongoingTraining.totalWeightLifted == 0.0) {
-                trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
-                    .invoke(ongoingTrainingId)
-                return@let
+    private fun endOngoingTraining(ongoingTraining: Training) =
+        viewModelScope.launch(Dispatchers.IO) {
+            ongoingTraining.id?.let { ongoingTrainingId ->
+                if (ongoingTraining.totalWeightLifted == 0.0) {
+                    trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
+                        .invoke(ongoingTrainingId)
+                    return@let
+                }
+                trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
+                    .invoke(trainingId = ongoingTrainingId)
+                updateSummaries()
             }
-            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
-                .invoke(trainingId = ongoingTrainingId)
-            updateSummaries()
         }
-    }
 
     private suspend fun updateSummaries() {
         state.value.ongoingTraining?.let { ongoingTraining ->

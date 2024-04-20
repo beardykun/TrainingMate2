@@ -7,6 +7,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.u
 
 sealed class ExerciseAtWorkEvent {
     data object OnTimerStart : ExerciseAtWorkEvent()
+    data object OnTimerStop : ExerciseAtWorkEvent()
     data object OnAddNewSet : ExerciseAtWorkEvent()
     data object OnDropdownOpen : ExerciseAtWorkEvent()
     data object OnDropdownClosed : ExerciseAtWorkEvent()

@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.TimerOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -194,13 +195,18 @@ fun ExerciseAtWorkScreen(
                 }
                 Spacer(modifier = Modifier.width(Dimens.Padding16))
 
+                val timerImage =
+                    if (state.timerState.isCounting) Icons.Default.TimerOff else Icons.Default.Timer
                 Image(
-                    imageVector = Icons.Default.Timer,
+                    imageVector = timerImage,
                     contentDescription = stringResource(SharedRes.strings.cd_start_timer),
                     contentScale = ContentScale.Inside,
                     modifier = Modifier.clip(CircleShape)
                         .clickable {
-                            onEvent(ExerciseAtWorkEvent.OnTimerStart)
+                            if (state.timerState.isCounting)
+                                onEvent(ExerciseAtWorkEvent.OnTimerStop)
+                            else
+                                onEvent(ExerciseAtWorkEvent.OnTimerStart)
                         }
                         .fillMaxHeight()
                         .width(Dimens.timerIcon)

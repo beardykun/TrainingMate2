@@ -16,12 +16,20 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 
 @Composable
-fun SummaryWeekly(weeklySummary: WeeklySummary?, modifier: Modifier, counter: Int) {
+fun SummaryWeekly(
+    weeklySummary: WeeklySummary?,
+    modifier: Modifier,
+    counter: Int,
+    onClick: (year: Long, week: Long) -> Unit
+) {
     weeklySummary?.let { summary ->
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.outlineVariant),
-            modifier = Modifier.padding(horizontal = Dimens.Padding8)
+            modifier = Modifier.padding(horizontal = Dimens.Padding8),
+            onClick = {
+                onClick.invoke(summary.year, summary.weekNumber)
+            }
         ) {
             Column(modifier = modifier) {
                 val topText =
