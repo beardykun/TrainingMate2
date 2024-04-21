@@ -74,7 +74,10 @@ fun TrainingScreen(
                     },
                     onDeleteClick = {
                         onEvent(TrainingScreenEvent.OnLastTrainingDelete(lastTraining.id!!))
-                    })
+                    },
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                )
             }
 
             state.ongoingTraining?.let { ongoingTraining ->
@@ -91,7 +94,8 @@ fun TrainingScreen(
                         },
                         onDeleteClick = {},
                         isDeletable = false,
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
             }
@@ -125,7 +129,9 @@ fun TrainingScreen(
                                     onDeleteClick = { id ->
                                         onEvent(TrainingScreenEvent.OnTrainingTemplateDelete(id))
                                     },
-                                    modifier = Modifier.animateItemPlacement()
+                                    modifier = Modifier.animateItemPlacement(),
+                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
                             }
                         }
@@ -133,7 +139,6 @@ fun TrainingScreen(
                 }
             }
             state.weeklySummary?.let { weeklyList ->
-                if (weeklyList.firstOrNull()?.totalLiftedWeight == 0.0) return@let
                 TextLarge(text = stringResource(SharedRes.strings.summaries).uppercase())
                 LazyRow {
                     items(weeklyList.size) { counter ->
@@ -152,7 +157,6 @@ fun TrainingScreen(
             }
 
             state.monthlySummary?.let { monthlyList ->
-                if (monthlyList.firstOrNull()?.totalLiftedWeight == 0.0) return@let
                 LazyRow {
                     items(monthlyList.size) { counter ->
                         SummaryMonthly(

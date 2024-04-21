@@ -119,7 +119,7 @@ class ThisTrainingViewModel(
     private fun endOngoingTraining(ongoingTraining: Training) =
         viewModelScope.launch(Dispatchers.IO) {
             ongoingTraining.id?.let { ongoingTrainingId ->
-                if (ongoingTraining.totalWeightLifted == 0.0) {
+                if (ongoingTraining.totalLiftedWeight == 0.0) {
                     trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
                         .invoke(ongoingTrainingId)
                     return@let

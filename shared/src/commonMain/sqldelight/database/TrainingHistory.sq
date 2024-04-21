@@ -10,10 +10,10 @@ CREATE TABLE TrainingHistory (
     total_reps INTEGER NOT NULL,
     start_time INTEGER NOT NULL,
     end_time INTEGER NOT NULL,
+    total_lifted_weight REAL NOT NULL,
     week_number INTEGER,
     month_number INTEGER,
     year INTEGER,
-    total_lifted_weight REAL NOT NULL, -- changed to REAL to match Kotlin's Double
     status TEXT NOT NULL DEFAULT 'ONGOING' CHECK (status IN ('ONGOING', 'COMPLETED')),
     FOREIGN KEY(user_id) REFERENCES User(id)
 );

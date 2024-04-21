@@ -28,7 +28,7 @@ fun TrainingComparison(
 ) {
     val textColor =
         if (
-            (ongoingTraining?.totalWeightLifted ?: 0.0) > (lastTraining?.totalWeightLifted ?: 0.0)
+            (ongoingTraining?.totalLiftedWeight ?: 0.0) > (lastTraining?.totalLiftedWeight ?: 0.0)
         ) Color.Blue
         else Color.Red
     Row(
@@ -53,7 +53,7 @@ fun TrainingComparison(
                     TextLarge(
                         stringResource(
                             SharedRes.strings.last_training_lifted_weight,
-                            lastTraining.totalWeightLifted,
+                            lastTraining.totalLiftedWeight,
                             Utils.countTrainingTime(lastTraining)
                         ),
                         modifier = Modifier.padding(all = Dimens.Padding8)
@@ -74,7 +74,7 @@ fun TrainingComparison(
                         color = textColor,
                         text = stringResource(
                             SharedRes.strings.this_training_lifted_weight,
-                            ongoingTraining.totalWeightLifted,
+                            ongoingTraining.totalLiftedWeight,
                             trainingTime
                         ),
                         modifier = Modifier.padding(all = Dimens.Padding8)

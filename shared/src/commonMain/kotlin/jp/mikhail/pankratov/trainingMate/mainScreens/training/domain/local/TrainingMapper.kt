@@ -20,19 +20,19 @@ fun TrainingHistory.toTraining(): Training {
     return Training(
         id = id,
         trainingTemplateId = training_template_id,
+        userId = user_id,
         name = name,
         groups = groups,
         exercises = exercises.stringToList(),
         doneExercises = done_exercises.stringToList(),
         totalSets = total_sets.toInt(),
         totalReps = total_reps.toInt(),
-        userId = user_id,
         startTime = start_time,
         endTime = end_time,
+        totalLiftedWeight = total_lifted_weight,
         weekNumber = week_number ?: 0L,
         monthNumber = month_number ?: 0L,
         year = year ?: 0L,
-        status = status,
-        totalWeightLifted = total_lifted_weight
+        status = status
     )
 }

@@ -15,7 +15,7 @@ class UpdateTrainingHistoryDataUseCase(private val trainingHistoryDataSource: IT
         reps: Int,
         sets: List<ExerciseSet>
     ) {
-        val totalLiftedWeight = ongoingTraining.totalWeightLifted + weight
+        val totalLiftedWeight = ongoingTraining.totalLiftedWeight + weight
         val doneExercises =
             ongoingTraining.doneExercises.toMutableList()
         val exerciseName = exerciseDetails.exercise?.name ?: ""

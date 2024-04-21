@@ -37,7 +37,7 @@ fun SummaryWeekly(
                         SharedRes.strings.this_week_summary.getString()
                     else
                         SharedRes.strings.last_week_summary.getString()
-                TextLarge(topText)
+                TextLarge(text = topText)
                 TextMedium(
                     text = stringResource(
                         SharedRes.strings.number_of_workouts,

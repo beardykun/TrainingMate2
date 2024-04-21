@@ -64,7 +64,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             total_reps = training.totalReps.toLong(),
             start_time = training.startTime ?: 0,
             end_time = training.endTime ?: 0,
-            total_lifted_weight = training.totalWeightLifted,
+            total_lifted_weight = training.totalLiftedWeight,
             week_number = DateUtils.currentWeekNumber,
             month_number = DateUtils.currentMonthNumber,
             year = DateUtils.currentYear,

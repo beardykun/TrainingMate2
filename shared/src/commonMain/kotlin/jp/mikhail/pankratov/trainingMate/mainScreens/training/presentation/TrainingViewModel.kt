@@ -193,7 +193,7 @@ class TrainingViewModel(
 
     private suspend fun finishLastTrainingWhenStartingNew() {
         state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
-            if (state.value.ongoingTraining?.totalWeightLifted == 0.0) {
+            if (state.value.ongoingTraining?.totalLiftedWeight == 0.0) {
                 trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
                     .invoke(trainingId = ongoingTrainingId)
                 return@let

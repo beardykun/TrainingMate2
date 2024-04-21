@@ -42,7 +42,8 @@ fun LocalTrainingItem(
     onClick: () -> Unit,
     onDeleteClick: (id: Long) -> Unit,
     isDeletable: Boolean = true,
-    backgroundColor: Color = MaterialTheme.colorScheme.inversePrimary,
+    containerColor: Color = MaterialTheme.colorScheme.inversePrimary,
+    contentColor: Color = Color.Black,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -55,14 +56,17 @@ fun LocalTrainingItem(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundColor)
+                .background(containerColor)
                 .padding(Dimens.Padding16)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextLarge(text = stringResource(SharedRes.strings.training_name))
+                TextLarge(
+                    text = stringResource(SharedRes.strings.training_name),
+                    color = contentColor
+                )
                 if (isDeletable) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
@@ -73,9 +77,9 @@ fun LocalTrainingItem(
                         })
                 }
             }
-            TextLarge(text = training.name.uppercase())
+            TextLarge(text = training.name.uppercase(), color = contentColor)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = stringResource(SharedRes.strings.groups))
+            TextLarge(text = stringResource(SharedRes.strings.groups), color = contentColor)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
@@ -85,7 +89,13 @@ fun LocalTrainingItem(
 }
 
 @Composable
-fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Long) -> Unit) {
+fun TrainingItem(
+    training: Training,
+    onClick: () -> Unit,
+    onDeleteClick: (id: Long) -> Unit,
+    containerColor: Color = Color.Unspecified,
+    contentColor: Color = Color.Unspecified
+) {
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = Modifier
@@ -95,16 +105,25 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(containerColor)
                 .padding(Dimens.Padding16)
 
         ) {
-            training.startTime?.let { TextLarge(text = Utils.formatEpochMillisToDate(it)) }
+            training.startTime?.let {
+                TextLarge(
+                    text = Utils.formatEpochMillisToDate(it),
+                    color = contentColor
+                )
+            }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextLarge(text = stringResource(SharedRes.strings.training_name))
+                TextLarge(
+                    text = stringResource(SharedRes.strings.training_name),
+                    color = contentColor
+                )
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     tint = Color.Red,
@@ -113,24 +132,27 @@ fun TrainingItem(training: Training, onClick: () -> Unit, onDeleteClick: (id: Lo
                         training.id?.let { onDeleteClick.invoke(it) }
                     })
             }
-            TextLarge(text = training.name.uppercase())
+            TextLarge(text = training.name.uppercase(), color = contentColor)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
                 text = stringResource(SharedRes.strings.exercises_with_new_line) + training.exercises.toString()
-                    .substring(1, training.exercises.toString().length - 1)
+                    .substring(1, training.exercises.toString().length - 1), color = contentColor
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = stringResource(SharedRes.strings.total_lifted_weight) + training.totalWeightLifted.toString())
+            TextLarge(
+                text = stringResource(SharedRes.strings.total_lifted_weight) + training.totalLiftedWeight.toString(),
+                color = contentColor
+            )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
                 text = stringResource(
                     SharedRes.strings.training_duration_with_arg, Utils.trainingLengthToMin(
                         training
                     ).toString()
-                )
+                ), color = contentColor
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = stringResource(SharedRes.strings.groups))
+            TextLarge(text = stringResource(SharedRes.strings.groups), color = contentColor)
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )

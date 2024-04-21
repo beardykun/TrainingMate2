@@ -9,7 +9,7 @@ class UpdateSummariesUseCase(private val summaryDatasource: ISummaryDatasource) 
         val duration = Utils.trainingLengthToMin(ongoingTraining)
         summaryDatasource.updateSummaries(
             additionalDuration = duration,
-            additionalWeight = ongoingTraining.totalWeightLifted,
+            additionalWeight = ongoingTraining.totalLiftedWeight,
             numExercises = ongoingTraining.doneExercises.size,
             numSets = ongoingTraining.totalSets,
             numReps = ongoingTraining.totalReps

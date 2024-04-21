@@ -192,7 +192,7 @@ class AnalysisViewModel(
         historyTrainings: List<Training>? = null
     ) {
         historyTrainings?.let { trainings ->
-            val weightList = trainings.map { it.totalWeightLifted }
+            val weightList = trainings.map { it.totalLiftedWeight }
             val weightBaseline = weightList.sum().div(weightList.size)
             val weightFivePercent = weightBaseline.div(20)
 
@@ -202,7 +202,7 @@ class AnalysisViewModel(
 
             val data = trainings.map { training ->
                 val weightScore =
-                    (training.totalWeightLifted - weightBaseline) / weightFivePercent
+                    (training.totalLiftedWeight - weightBaseline) / weightFivePercent
 
 
                 val durationScore =
@@ -279,7 +279,7 @@ class AnalysisViewModel(
     private fun prepareWeightDataTrainings(
         historyTrainings: List<Training>?
     ) {
-        val data = historyTrainings?.map { it.totalWeightLifted }
+        val data = historyTrainings?.map { it.totalLiftedWeight }
         val xAxisData = historyTrainings?.map { it.name }
 
         _state.update {
