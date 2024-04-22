@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
@@ -13,11 +12,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class HistoryScreenViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     query: TrainingQuery
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _trainingListState: MutableStateFlow<List<Training>> = MutableStateFlow(listOf())
 

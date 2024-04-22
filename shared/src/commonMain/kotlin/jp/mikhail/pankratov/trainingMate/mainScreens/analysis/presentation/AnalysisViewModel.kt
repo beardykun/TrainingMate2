@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
@@ -14,11 +13,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AnalysisViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val trainingsData: MutableStateFlow<List<Training>?> = MutableStateFlow(null)
     private val _state: MutableStateFlow<AnalysisScreenSate> =

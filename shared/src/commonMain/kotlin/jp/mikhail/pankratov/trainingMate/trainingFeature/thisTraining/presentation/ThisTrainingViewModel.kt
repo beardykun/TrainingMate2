@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
@@ -21,13 +20,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import moe.tlaster.precompose.viewmodel.viewModelScope
 import kotlin.time.Duration.Companion.seconds
 
 class ThisTrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val summaryUseCaseProvider: SummaryUseCaseProvider
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
     private val _exercises = MutableStateFlow<List<ExerciseLocal>?>(null)

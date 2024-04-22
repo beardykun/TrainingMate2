@@ -26,21 +26,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import dev.icerock.moko.mvvm.compose.getViewModel
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.di.AppModule
-import jp.mikhail.pankratov.trainingMate.di.ViewModelsFac
 import jp.mikhail.pankratov.trainingMate.di.domainUseCasesModule
 import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
 import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.local.viewModelModule
 import jp.mikhail.pankratov.trainingMate.di.utilsModule
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
+import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.rememberNavigator
 import org.koin.compose.KoinApplication
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,7 +59,8 @@ fun App(
                     trainingUseCaseModule(),
                     exerciseUseCaseModule(),
                     summaryUseCaseModule(),
-                    domainUseCasesModule()
+                    domainUseCasesModule(),
+                    viewModelModule()
                 )
             )
         }) {
@@ -66,10 +68,7 @@ fun App(
                 darkTheme = darkTheme,
                 dynamicColor = dynamicColor
             ) {
-                val viewModel = getViewModel(
-                    key = "main_vm",
-                    factory = ViewModelsFac.getAppViewModelFactory()
-                )
+                val viewModel = koinViewModel(vmClass = AppViewModel::class) { parametersOf() }
                 viewModel.insertDefaultTraining()
 
                 val navigator = rememberNavigator()

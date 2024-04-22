@@ -62,7 +62,8 @@ permissions-compose = { module = "dev.icerock.moko:permissions-compose", version
 permissions-test = { module = "dev.icerock.moko:permissions-test", version.ref = "permissions-compose" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
 moe-precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sql-delight-version" }
+moe-precompose-viewModel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
+sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sql-delight-version" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
 firebase-auth-ktx = { group = "com.google.firebase:firebase-auth-ktx", name = "firebase-auth-ktx" }
 firebase-storage-ktx = { group = "com.google.firebase:firebase-storage-ktx", name = "firebase-storage-ktx" }

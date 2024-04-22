@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.listToString
@@ -12,9 +11,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCaseProvider) :
-    ViewModel() {
+    moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _state = MutableStateFlow(CreateTrainingState())
     val state = _state.stateIn(

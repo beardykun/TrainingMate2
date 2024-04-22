@@ -1,9 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,12 +11,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class HistoryInfoViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val trainingHistoryId: Long
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _state = MutableStateFlow(HistoryInfoState())
     val state = combine(

@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
@@ -13,11 +12,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class CreateExerciseViewModel(
     trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _state = MutableStateFlow(CreateExerciseState())
     val state =

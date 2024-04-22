@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
@@ -10,11 +9,12 @@ import jp.mikhail.pankratov.trainingMate.core.listToString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AppViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     fun insertDefaultTraining() = viewModelScope.launch(Dispatchers.IO) {
         if (!trainingUseCaseProvider.getTrainingTableEmptyUseCase()()) return@launch

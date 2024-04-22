@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.google.servicess).apply(false)
     alias(libs.plugins.kotlinPlugin).apply(false)
     alias(libs.plugins.firebase.crashlytics).apply(false)
+    alias(libs.plugins.sqldelight.plugin).apply(false)
 }
 
 tasks.register("clean", Delete::class) {

@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 private const val ZERO = 0
 
@@ -38,7 +38,7 @@ class ExerciseAtWorkViewModel(
     private val exerciseTemplateId: Long,
     private val utilsProvider: UtilsProvider,
     val permissionsController: PermissionsController
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _state = MutableStateFlow(ExerciseAtWorkState())
     val state = combine(

@@ -50,7 +50,7 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
-                implementation(libs.runtime)
+                implementation(libs.sqldelight.runtime)
                 implementation(libs.coroutines.extensions)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.firebase.auth)
@@ -62,6 +62,7 @@ kotlin {
 
                 api(libs.precompose)
                 api(libs.moe.precompose.koin)
+                api(libs.moe.precompose.viewModel)
 
                 implementation(libs.kamel.image)
 
@@ -139,8 +140,4 @@ multiplatformResources {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.service)
-    commonMainApi(libs.mvvm.core)
-    commonMainApi(libs.mvvm.compose)
-    commonMainApi(libs.mvvm.flow)
-    commonMainApi(libs.mvvm.flow.compose)
 }

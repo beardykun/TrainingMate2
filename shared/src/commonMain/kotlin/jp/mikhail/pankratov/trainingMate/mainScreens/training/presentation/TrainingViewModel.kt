@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
@@ -14,11 +13,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val summaryUseCaseProvider: SummaryUseCaseProvider
-) : ViewModel() {
+) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val motivationalPhrases = listOf(
         "Every rep counts, make it matter!",

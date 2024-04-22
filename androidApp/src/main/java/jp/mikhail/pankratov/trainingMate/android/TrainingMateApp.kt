@@ -7,6 +7,7 @@ import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
 import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
+import jp.mikhail.pankratov.trainingMate.di.local.viewModelModule
 import jp.mikhail.pankratov.trainingMate.di.utilsModule
 import org.koin.core.context.GlobalContext
 
@@ -30,7 +31,8 @@ class TrainingMateApp : Application() {
                 trainingUseCaseModule(),
                 exerciseUseCaseModule(),
                 summaryUseCaseModule(),
-                domainUseCasesModule()
+                domainUseCasesModule(),
+                viewModelModule()
             )
         }
     }

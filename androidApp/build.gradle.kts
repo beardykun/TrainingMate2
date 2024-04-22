@@ -47,7 +47,5 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.activity.compose)
 
-    implementation(libs.odyssey.core)
-    implementation(libs.odyssey.compose)
     implementation(libs.koin.android)
 }
