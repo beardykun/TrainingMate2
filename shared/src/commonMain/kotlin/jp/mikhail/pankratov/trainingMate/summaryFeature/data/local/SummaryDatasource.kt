@@ -1,7 +1,8 @@
 package jp.mikhail.pankratov.trainingMate.summaryFeature.data.local
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
+
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.util.DateUtils
@@ -78,12 +79,12 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
     override fun getTwoLastWeeklySummary(): Flow<List<WeeklySummary?>> {
         return weeklyQuery.getTwoLastWeeklySummaries()
             .asFlow()
-            .mapToList()
+            .mapToList(Dispatchers.IO)
             .map { summaries ->
                 summaries.map {
                     it.toWeeklySummary()
                 }
-            }.flowOn(Dispatchers.IO)
+            }
     }
 
     override fun getMonthlySummary(): Flow<MonthlySummary?> {
@@ -100,12 +101,12 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
     override fun getTwoLastMonthlySummary(): Flow<List<MonthlySummary?>> {
         return monthlyQuery.getTwoLastMonthlySummaries()
             .asFlow()
-            .mapToList()
+            .mapToList(Dispatchers.IO)
             .map { summaries ->
                 summaries.map {
                     it.toMonthlySummary()
                 }
-            }.flowOn(Dispatchers.IO)
+            }
     }
 
     override suspend fun updateSummaries(

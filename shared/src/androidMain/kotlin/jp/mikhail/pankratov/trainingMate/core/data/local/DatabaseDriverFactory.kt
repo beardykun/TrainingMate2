@@ -1,8 +1,8 @@
 package jp.mikhail.pankratov.trainingMate.core.data.local
 
 import android.content.Context
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 
 actual class DatabaseDriverFactory(private val context: Context) {

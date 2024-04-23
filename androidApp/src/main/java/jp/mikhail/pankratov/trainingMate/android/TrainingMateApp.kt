@@ -9,7 +9,7 @@ import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.viewModelModule
 import jp.mikhail.pankratov.trainingMate.di.utilsModule
-import org.koin.core.context.GlobalContext
+import org.koin.core.context.startKoin
 
 class TrainingMateApp : Application() {
     companion object {
@@ -24,7 +24,7 @@ class TrainingMateApp : Application() {
         super.onCreate()
         instance = this
         appModule = AppModule(context = this)
-        GlobalContext.startKoin {
+        startKoin {
             modules(
                 dataSourcesModule(appModule),
                 utilsModule(appModule),

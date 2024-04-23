@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.DateUtils
 import jp.mikhail.pankratov.trainingMate.core.listToString
@@ -27,16 +27,17 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     }
 
     override fun getLatestHistoryTrainings(): Flow<List<Training>> {
-        return query.getLatestHistoryTrainings().asFlow().mapToList().map { trainings ->
-            trainings.map {
-                it.toTraining()
+        return query.getLatestHistoryTrainings().asFlow().mapToList(Dispatchers.IO)
+            .map { trainings ->
+                trainings.map {
+                    it.toTraining()
+                }
             }
-        }.flowOn(Dispatchers.IO)
     }
 
     override fun getParticularMonthTraining(year: Long, monthNum: Long): Flow<List<Training>> {
         return query.getParticularMonthTraining(year = year, month_number = monthNum)
-            .asFlow().mapToList().map { trainings ->
+            .asFlow().mapToList(Dispatchers.IO).map { trainings ->
                 trainings.map { training ->
                     training.toTraining()
                 }
@@ -45,7 +46,7 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
 
     override fun getParticularWeekTraining(year: Long, weekNum: Long): Flow<List<Training>> {
         return query.getParticularWeekTraining(year = year, week_number = weekNum)
-            .asFlow().mapToList().map { trainings ->
+            .asFlow().mapToList(Dispatchers.IO).map { trainings ->
                 trainings.map { training ->
                     training.toTraining()
                 }
@@ -111,28 +112,29 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     }
 
     override fun getGroupTrainings(group: String): Flow<List<Training>> {
-        return query.getGroupTrainings(group).asFlow().mapToList().map { trainings ->
+        return query.getGroupTrainings(group).asFlow().mapToList(Dispatchers.IO).map { trainings ->
             trainings.map { training ->
                 training.toTraining()
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     override fun getParticularHistoryTrainings(trainingTemplateId: Long): Flow<List<Training>> {
-        return query.getParticularTrainings(trainingTemplateId).asFlow().mapToList()
+        return query.getParticularTrainings(trainingTemplateId).asFlow().mapToList(Dispatchers.IO)
             .map { trainings ->
                 trainings.map { training ->
                     training.toTraining()
                 }
-            }.flowOn(Dispatchers.IO)
+            }
     }
 
     override fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>> {
-        return query.getTrainingsWithExercise(exerciseName).asFlow().mapToList().map { trainings ->
-            trainings.map { training ->
-                training.toTraining()
+        return query.getTrainingsWithExercise(exerciseName).asFlow().mapToList(Dispatchers.IO)
+            .map { trainings ->
+                trainings.map { training ->
+                    training.toTraining()
+                }
             }
-        }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun deleteTrainingHistoryRecord(trainingId: Long) {

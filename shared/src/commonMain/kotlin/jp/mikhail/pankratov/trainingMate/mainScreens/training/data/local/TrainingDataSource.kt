@@ -1,7 +1,8 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
+
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
@@ -28,11 +29,11 @@ class TrainingDataSource(db: TrainingDatabase) : ITrainingDataSource {
     }
 
     override fun getLocalTrainings(): Flow<List<TrainingLocal>> {
-        return queries.getTrainings().asFlow().mapToList().map { trainings ->
+        return queries.getTrainings().asFlow().mapToList(Dispatchers.IO).map { trainings ->
             trainings.map { training ->
                 training.toTrainingLocal()
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     override suspend fun isLocalTrainingTableEmpty(): Boolean {

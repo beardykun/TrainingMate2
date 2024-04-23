@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.local
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.setListToString
@@ -31,28 +31,29 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
 
     override fun getExercisesForTrainingHistory(trainingHistoryId: Long): Flow<List<Exercise>> {
         return query.getExercisesForTrainingHistory(training_history_id = trainingHistoryId)
-            .asFlow().mapToList().map { exercises ->
+            .asFlow().mapToList(Dispatchers.IO).map { exercises ->
                 exercises.map { exercise ->
                     exercise.toExercise()
                 }
-            }.flowOn(Dispatchers.IO)
+            }
     }
 
     override fun getExercisesForTrainingWithId(trainingId: Long): Flow<List<Exercise>> {
         return query.getExercisesForTrainingWithId(training_template_id = trainingId)
-            .asFlow().mapToList().map { exercises ->
+            .asFlow().mapToList(Dispatchers.IO).map { exercises ->
                 exercises.map { exercise ->
                     exercise.toExercise()
                 }
-            }.flowOn(Dispatchers.IO)
+            }
     }
 
     override fun getHistoryExercisesWithName(name: String): Flow<List<Exercise>> {
-        return query.getExercisesWithName(name).asFlow().mapToList().map { exercises ->
-            exercises.map { exercise ->
-                exercise.toExercise()
+        return query.getExercisesWithName(name).asFlow().mapToList(Dispatchers.IO)
+            .map { exercises ->
+                exercises.map { exercise ->
+                    exercise.toExercise()
+                }
             }
-        }.flowOn(Dispatchers.IO)
     }
 
     override fun countExerciseInHistory(

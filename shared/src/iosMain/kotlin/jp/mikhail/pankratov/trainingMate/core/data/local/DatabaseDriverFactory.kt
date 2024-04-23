@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.data.local
 
-import com.squareup.sqldelight.db.SqlDriver
-import com.squareup.sqldelight.drivers.native.NativeSqliteDriver
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.native.NativeSqliteDriver
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 
 actual class DatabaseDriverFactory {

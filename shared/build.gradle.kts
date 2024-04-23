@@ -29,6 +29,7 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic = true
+            freeCompilerArgs += "-Xbinary=bundleId=jp.mikhail.pankratov.trainingMate"
             export(libs.moko.resources)
             export(libs.moko.graphics)
         }
@@ -50,8 +51,10 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
+
                 implementation(libs.sqldelight.runtime)
-                implementation(libs.coroutines.extensions)
+                implementation(libs.sqldelight.coroutines.extensions)
+
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.firebase.auth)
                 implementation(libs.firebase.firestore)
@@ -87,9 +90,8 @@ kotlin {
                 api(libs.androidx.activity.compose)
                 api(libs.androidx.appcompat)
 
-                implementation(libs.android.driver)
+                implementation(libs.sqldelight.android.driver)
                 implementation(libs.ktor.client.android)
-                implementation(libs.koin.android)
             }
         }
         val iosX64Main by getting
@@ -103,7 +105,7 @@ kotlin {
 
             dependencies {
                 implementation(libs.ktor.client.ios)
-                implementation(libs.native.driver)
+                implementation(libs.sqldelight.native.driver)
             }
         }
     }
@@ -125,10 +127,12 @@ android {
 }
 
 sqldelight {
-    database("TrainingDatabase") {
-        packageName = "jp.mikhail.pankratov.trainingMate.database"
-        sourceFolders = listOf("sqldelight")
-        version = 2
+    databases {
+        create("TrainingDatabase") {
+            packageName.set("jp.mikhail.pankratov.trainingMate.database")
+            srcDirs.setFrom("src/commonMain/sqldelight")
+            version = 2
+        }
     }
 }
 

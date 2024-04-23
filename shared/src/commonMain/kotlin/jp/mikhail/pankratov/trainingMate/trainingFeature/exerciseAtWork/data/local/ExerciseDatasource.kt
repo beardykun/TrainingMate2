@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.local
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.ExerciseId
@@ -17,11 +17,11 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
 
     private val queries = db.exerciseTemplateQueries
     override fun getAllLocalExercises(): Flow<List<ExerciseLocal>> {
-        return queries.getExercises().asFlow().mapToList().map { exercises ->
+        return queries.getExercises().asFlow().mapToList(Dispatchers.IO).map { exercises ->
             exercises.map {
                 it.toExerciseLocal()
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     override fun getExercisesByGroups(groups: String): Flow<List<ExerciseLocal>> {
@@ -39,11 +39,11 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
             queryParams[5],
             queryParams[6],
             queryParams[7]
-        ).asFlow().mapToList().map { exercises ->
+        ).asFlow().mapToList(Dispatchers.IO).map { exercises ->
             exercises.map {
                 it.toExerciseLocal()
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     override fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal> {
@@ -79,11 +79,11 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
             adjustedExerciseList[17],
             adjustedExerciseList[18],
             adjustedExerciseList[19]
-        ).asFlow().mapToList().map { exercises ->
+        ).asFlow().mapToList(Dispatchers.IO).map { exercises ->
             exercises.map { exercise ->
                 exercise.toExerciseLocal()
             }
-        }.flowOn(Dispatchers.IO)
+        }
     }
 
     override suspend fun insertExercise(exerciseLocal: ExerciseLocal) {
