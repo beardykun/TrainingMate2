@@ -81,7 +81,7 @@ class ThisTrainingViewModel(
         }
     }
 
-    private fun startTimer(training: Training) = viewModelScope.launch(Dispatchers.Main) {
+    private suspend fun startTimer(training: Training) {
         countTrainingTime(training).collect { time ->
             _state.update {
                 it.copy(
@@ -175,6 +175,7 @@ class ThisTrainingViewModel(
 
     private fun countTrainingTime(training: Training) = flow {
         while (training.status == "ONGOING") {
+            println("TAGGER $training")
             val durationMillis = Clock.System.now().toEpochMilliseconds()
                 .minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
             val totalSeconds = durationMillis / 1000

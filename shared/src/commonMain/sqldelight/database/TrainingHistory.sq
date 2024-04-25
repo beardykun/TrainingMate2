@@ -11,10 +11,10 @@ CREATE TABLE TrainingHistory (
     start_time INTEGER NOT NULL,
     end_time INTEGER NOT NULL,
     total_lifted_weight REAL NOT NULL,
+    status TEXT NOT NULL DEFAULT 'ONGOING' CHECK (status IN ('ONGOING', 'COMPLETED')),
+    year INTEGER,
     week_number INTEGER,
     month_number INTEGER,
-    year INTEGER,
-    status TEXT NOT NULL DEFAULT 'ONGOING' CHECK (status IN ('ONGOING', 'COMPLETED')),
     FOREIGN KEY(user_id) REFERENCES User(id)
 );
 
