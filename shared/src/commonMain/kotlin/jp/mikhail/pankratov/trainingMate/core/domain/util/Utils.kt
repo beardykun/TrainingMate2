@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.util
 
+import androidx.compose.ui.graphics.Color
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -28,5 +30,13 @@ object Utils {
             training.endTime?.minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
         val totalSeconds = durationMillis?.div(1000)
         return totalSeconds?.div(60)?.toDouble() ?: 0.0
+    }
+
+    fun setDifficultyColor(difficulty: SetDifficulty): Color {
+        return when (difficulty) {
+            SetDifficulty.Light -> Color(0xFFE8F5E9)
+            SetDifficulty.Medium -> Color(0xFFFFF9C4)
+            SetDifficulty.Hard -> Color(0xFFFFEBEE)
+        }
     }
 }

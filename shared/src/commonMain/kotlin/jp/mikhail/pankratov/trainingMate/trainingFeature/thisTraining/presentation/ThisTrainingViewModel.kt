@@ -52,20 +52,17 @@ class ThisTrainingViewModel(
         ThisTrainingState()
     )
 
-    init {
-        loadTrainingAndExercises()
-    }
-
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
-        val lastTraining =
-            trainingUseCaseProvider.getGetLastSameHistoryTrainingUseCase()
-                .invoke(trainingTemplateId = ongoingTrainingTemplateId)
-                .first()
-        _state.update {
-            it.copy(
-                lastTraining = lastTraining
-            )
-        }
+        trainingUseCaseProvider.getGetLastSameHistoryTrainingUseCase()
+            .invoke(trainingTemplateId = ongoingTrainingTemplateId)
+            .collect { lastTraining ->
+                println("TAGGER $lastTraining")
+                _state.update {
+                    it.copy(
+                        lastTraining = lastTraining
+                    )
+                }
+            }
     }
 
     private fun loadTrainingAndExercises() = viewModelScope.launch {
@@ -76,8 +73,8 @@ class ThisTrainingViewModel(
                 exerciseUseCaseProvider.getLocalExercisesByNamesUseCase()
                     .invoke(trainingNotNull.exercises).first()
             _exercises.value = exercises
-            startTimer(trainingNotNull)
             loadLastSameTrainingData(ongoingTrainingTemplateId = trainingNotNull.trainingTemplateId)
+            startTimer(trainingNotNull)
         }
     }
 
@@ -112,6 +109,10 @@ class ThisTrainingViewModel(
                 state.value.ongoingTraining?.let { ongoingTraining ->
                     endOngoingTraining(ongoingTraining)
                 }
+            }
+
+            ThisTrainingEvent.OnInitData -> {
+                loadTrainingAndExercises()
             }
         }
     }
@@ -175,7 +176,6 @@ class ThisTrainingViewModel(
 
     private fun countTrainingTime(training: Training) = flow {
         while (training.status == "ONGOING") {
-            println("TAGGER $training")
             val durationMillis = Clock.System.now().toEpochMilliseconds()
                 .minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
             val totalSeconds = durationMillis / 1000

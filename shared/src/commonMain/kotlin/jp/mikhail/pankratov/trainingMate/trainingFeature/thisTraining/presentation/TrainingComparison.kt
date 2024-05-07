@@ -28,7 +28,7 @@ fun TrainingComparison(
 ) {
     val textColor =
         if (
-            (ongoingTraining?.totalLiftedWeight ?: 0.0) > (lastTraining?.totalLiftedWeight ?: 0.0)
+            (ongoingTraining?.totalLiftedWeight ?: 0.0) >= (lastTraining?.totalLiftedWeight ?: 0.0)
         ) Color.Blue
         else Color.Red
     Row(

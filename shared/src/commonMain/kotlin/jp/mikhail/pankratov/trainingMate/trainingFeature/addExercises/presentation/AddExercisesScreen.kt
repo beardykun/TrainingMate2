@@ -12,8 +12,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
@@ -29,6 +29,9 @@ fun AddExercisesScreen(
     onEvent: (AddExercisesEvent) -> Unit,
     navigator: Navigator
 ) {
+    LaunchedEffect(Unit) {
+        onEvent(AddExercisesEvent.OnInitData)
+    }
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
             navigator.navigate(Routs.TrainingScreens.createExercise)

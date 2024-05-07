@@ -9,4 +9,6 @@ sealed class ThisTrainingEvent {
     ) : ThisTrainingEvent()
 
     data object EndTraining : ThisTrainingEvent()
+
+    data object OnInitData: ThisTrainingEvent()
 }

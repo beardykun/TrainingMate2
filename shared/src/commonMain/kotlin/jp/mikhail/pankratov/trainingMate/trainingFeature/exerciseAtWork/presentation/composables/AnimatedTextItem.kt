@@ -15,18 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
 
 @Composable
-fun AnimatedTextSizeItem(
+fun AnimatedTextItem(
     set: ExerciseSet,
     targetSize: TextUnit = Dimens.normalTextSize,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
@@ -43,16 +42,12 @@ fun AnimatedTextSizeItem(
             if (isAnimating) {
                 animatedFontSize.animateTo(
                     targetValue = targetSize.value,
-                    animationSpec = tween(durationMillis = 2000) // 2 seconds animation
+                    animationSpec = tween(durationMillis = 1000)
                 )
                 onEvent(ExerciseAtWorkEvent.OnAnimationSeen)
             }
         }
-        val textColor = when (set.difficulty) {
-            SetDifficulty.Light -> Color(0xFFE8F5E9)
-            SetDifficulty.Medium -> Color(0xFFFFF9C4)
-            SetDifficulty.Hard -> Color(0xFFFFEBEE)
-        }
+        val textColor = Utils.setDifficultyColor(set.difficulty)
 
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),

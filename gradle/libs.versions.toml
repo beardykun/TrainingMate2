@@ -51,10 +51,10 @@ permissions-test = { module = "dev.icerock.moko:permissions-test", version.ref =
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
 moe-precompose-viewModel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom-version" }
-firebase-auth-ktx = { group = "com.google.firebase:firebase-auth-ktx", name = "firebase-auth-ktx" }
-firebase-storage-ktx = { group = "com.google.firebase:firebase-storage-ktx", name = "firebase-storage-ktx" }
-firebase-crashlytics-ktx = { group = "com.google.firebase:firebase-crashlytics-ktx", name = "firebase-crashlytics-ktx" }
-firebase-messaging-ktx = { group = "com.google.firebase:firebase-messaging-ktx", name = "firebase-messaging-ktx" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx" }
+firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
 
 sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sql-delight-version" }
 sqldelight-coroutines-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sql-delight-version" }

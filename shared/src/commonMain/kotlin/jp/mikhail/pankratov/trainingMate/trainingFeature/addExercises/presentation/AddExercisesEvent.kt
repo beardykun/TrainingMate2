@@ -10,6 +10,7 @@ sealed class AddExercisesEvent {
     data class OnDisplayDeleteDialog(
         val isDeleteVisible: Boolean,
         val exercise: ExerciseLocal? = null
-    ) :
-        AddExercisesEvent()
+    ) : AddExercisesEvent()
+
+    data object OnInitData : AddExercisesEvent()
 }

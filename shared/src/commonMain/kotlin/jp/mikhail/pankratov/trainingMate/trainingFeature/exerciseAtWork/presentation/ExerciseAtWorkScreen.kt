@@ -51,7 +51,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.CountdownAnimation
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.DifficultySelection
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseComparison
@@ -161,7 +161,7 @@ fun ExerciseAtWorkScreen(
             state.exerciseDetails.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMNS_NUM)) {
                     items(sets) { item ->
-                        AnimatedTextSizeItem(
+                        AnimatedTextItem(
                             set = item,
                             onEvent = onEvent,
                             isAnimating = state.uiState.isAnimating,

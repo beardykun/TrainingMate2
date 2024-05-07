@@ -42,23 +42,20 @@ class AddExercisesViewModel(
         initialValue = AddExercisesState()
     )
 
-    init {
-        loadTrainingAndExercises()
-    }
-
     private fun loadTrainingAndExercises() =
         viewModelScope.launch {
-            val training = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
-            training?.let { trainingNotNull ->
-                _training.update {
-                    trainingNotNull
+            trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().collect { training ->
+                training?.let { trainingNotNull ->
+                    _training.update {
+                        trainingNotNull
+                    }
+                    val exercises =
+                        exerciseUseCaseProvider.getLocalExerciseByGroupUseCase()
+                            .invoke(groupNames = trainingNotNull.groups)
+                            .first()
+                    _selectedExercises.update { trainingNotNull.exercises }
+                    _availableExercises.update { exercises }
                 }
-                val exercises =
-                    exerciseUseCaseProvider.getLocalExerciseByGroupUseCase()
-                        .invoke(groupNames = trainingNotNull.groups)
-                        .first()
-                _selectedExercises.update { trainingNotNull.exercises }
-                _availableExercises.update { exercises }
             }
         }
 
@@ -106,6 +103,8 @@ class AddExercisesViewModel(
                     )
                 }
             }
+
+            AddExercisesEvent.OnInitData -> loadTrainingAndExercises()
         }
     }
 

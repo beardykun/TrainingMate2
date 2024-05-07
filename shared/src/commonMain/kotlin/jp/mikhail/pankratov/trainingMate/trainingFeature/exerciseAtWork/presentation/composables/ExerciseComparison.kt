@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables
 
 import Dimens
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 
 @Composable
@@ -25,7 +27,7 @@ fun ExerciseComparison(
     onClick: (name: String) -> Unit
 ) {
     val weightTextColor =
-        if (exercise.totalLiftedWeight > (lastExercise?.totalLiftedWeight ?: 0.0))
+        if (exercise.totalLiftedWeight >= (lastExercise?.totalLiftedWeight ?: 0.0))
             Color.Blue
         else Color.Red
     Row(
@@ -45,15 +47,32 @@ fun ExerciseComparison(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextLarge(
-                        text =
-                        stringResource(
-                            SharedRes.strings.last_exercise,
-                            lastExercise.totalLiftedWeight,
-                            lastExercise.sets.size
-                        ),
-                        modifier = Modifier.padding(all = Dimens.Padding8)
-                    )
+                    Column(modifier = Modifier.padding(all = Dimens.Padding8)) {
+                        TextLarge(
+                            text =
+                            stringResource(
+                                SharedRes.strings.last_exercise,
+                                lastExercise.totalLiftedWeight,
+                                lastExercise.sets.size
+                            ),
+                        )
+                        val setNum = maxOf((exercise.sets.size - 1), 0)
+                        if (setNum < it.sets.size) {
+                            val setNumToDisplay = exercise.sets.size + 1
+                            val set = it.sets[setNum]
+                            val background = Utils.setDifficultyColor(set.difficulty)
+                            TextLarge(
+                                text = stringResource(
+                                    SharedRes.strings.last_exercise_next_set,
+                                    setNumToDisplay,
+                                    set.weight,
+                                    set.reps
+                                ),
+                                modifier = Modifier.padding(top = Dimens.Padding4)
+                                    .background(background)
+                            )
+                        }
+                    }
                 }
             }
         }

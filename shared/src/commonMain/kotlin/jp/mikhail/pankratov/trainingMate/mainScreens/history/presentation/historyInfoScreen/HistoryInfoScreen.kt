@@ -28,7 +28,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextSizeItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -179,7 +179,7 @@ fun FixedGrid(
                                 .weight(1f)
                                 .padding(Dimens.Padding4) // Adjust padding as needed
                         ) {
-                            AnimatedTextSizeItem(
+                            AnimatedTextItem(
                                 set = items[index],
                                 onEvent = {},
                                 isAnimating = false,
