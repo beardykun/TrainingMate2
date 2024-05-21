@@ -56,7 +56,7 @@ fun ExerciseComparison(
                                 lastExercise.sets.size
                             ),
                         )
-                        val setNum = maxOf((exercise.sets.size - 1), 0)
+                        val setNum = exercise.sets.size
                         if (setNum < it.sets.size) {
                             val setNumToDisplay = exercise.sets.size + 1
                             val set = it.sets[setNum]

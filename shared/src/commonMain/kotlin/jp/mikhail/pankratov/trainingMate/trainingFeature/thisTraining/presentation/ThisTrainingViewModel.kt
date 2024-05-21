@@ -53,16 +53,14 @@ class ThisTrainingViewModel(
     )
 
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
-        trainingUseCaseProvider.getGetLastSameHistoryTrainingUseCase()
+        val lastTraining = trainingUseCaseProvider.getGetLastSameHistoryTrainingUseCase()
             .invoke(trainingTemplateId = ongoingTrainingTemplateId)
-            .collect { lastTraining ->
-                println("TAGGER $lastTraining")
-                _state.update {
-                    it.copy(
-                        lastTraining = lastTraining
-                    )
-                }
-            }
+            .first()
+        _state.update {
+            it.copy(
+                lastTraining = lastTraining
+            )
+        }
     }
 
     private fun loadTrainingAndExercises() = viewModelScope.launch {
@@ -74,7 +72,9 @@ class ThisTrainingViewModel(
                     .invoke(trainingNotNull.exercises).first()
             _exercises.value = exercises
             loadLastSameTrainingData(ongoingTrainingTemplateId = trainingNotNull.trainingTemplateId)
-            startTimer(trainingNotNull)
+        }
+        if (ongoingTraining != null) {
+            startTimer(ongoingTraining)
         }
     }
 
@@ -183,6 +183,7 @@ class ThisTrainingViewModel(
             val minutes = (totalSeconds % 3600) / 60
             val seconds = totalSeconds % 60
             kotlinx.coroutines.delay(1000L)
+            println("TAGGER $hours:$minutes:$seconds")
             emit("${hours}h:${minutes}m:${seconds}s")
         }
     }.flowOn(Dispatchers.Default)
