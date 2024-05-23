@@ -60,7 +60,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presenta
 import moe.tlaster.precompose.navigation.Navigator
 
 const val COLUMNS_NUM = 3
-const val COUNTDOWN_ANIMATION = 10
+private val COUNTDOWN_ANIMATION_RANGE = 0..10
 
 //Use same weights as before, increase or decrease selection
 @Composable
@@ -171,9 +171,14 @@ fun ExerciseAtWorkScreen(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            Row(modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon), verticalAlignment = Alignment.CenterVertically) {
-                val minText = if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
-                val secText = if (state.timerState.timerSec < 10) "0${state.timerState.timerSec}" else state.timerState.timerSec
+            Row(
+                modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val minText =
+                    if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
+                val secText =
+                    if (state.timerState.timerSec < 10) "0${state.timerState.timerSec}" else state.timerState.timerSec
                 TextLarge(
                     textAlign = TextAlign.Center,
                     text = "$minText:$secText",
@@ -227,7 +232,7 @@ fun ExerciseAtWorkScreen(
 
             AnimatedVisibility(visible = state.timerState.isExpanded) {
                 TimerDialog(
-                    dialogTitle = "Select timer",
+                    dialogTitle = stringResource(SharedRes.strings.break_time),
                     onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
                     onMinuteUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnMinutesUpdated(value)) },
                     onSecondUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnSecondsUpdated(value)) },
@@ -238,8 +243,12 @@ fun ExerciseAtWorkScreen(
                 )
             }
         }
-        AnimatedVisibility(visible = state.timerState.isCounting && state.timerState.timerMin == 0 && state.timerState.timerSec <= COUNTDOWN_ANIMATION) {
-            if (state.timerState.timerValue <= COUNTDOWN_ANIMATION) {
+        AnimatedVisibility(
+            visible = state.timerState.isCounting &&
+                    state.timerState.timerMin == 0 &&
+                    state.timerState.timerSec in COUNTDOWN_ANIMATION_RANGE
+        ) {
+            if (state.timerState.timerSec in COUNTDOWN_ANIMATION_RANGE) {
                 CountdownAnimation(currentTimerValue = state.timerState.timerSec)
             }
         }

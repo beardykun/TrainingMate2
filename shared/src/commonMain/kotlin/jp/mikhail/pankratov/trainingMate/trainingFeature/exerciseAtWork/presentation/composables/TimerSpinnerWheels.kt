@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 
 @Composable
@@ -36,7 +38,7 @@ fun TimerSpinnerWheels(onMinuteSelected: (Int) -> Unit, onSecondSelected: (Int) 
             horizontalArrangement = Arrangement.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TextLarge(text = "Min")
+                TextLarge(text = stringResource(SharedRes.strings.minutes))
                 SpinnerWheel(
                     items = minuteValues,
                     selectedItem = selectedMinute,
@@ -48,7 +50,7 @@ fun TimerSpinnerWheels(onMinuteSelected: (Int) -> Unit, onSecondSelected: (Int) 
             }
             Spacer(modifier = Modifier.width(Dimens.Padding16))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TextLarge(text = "Sec")
+                TextLarge(text = stringResource(SharedRes.strings.seconds))
                 SpinnerWheel(
                     items = secondValues,
                     selectedItem = selectedSecond,

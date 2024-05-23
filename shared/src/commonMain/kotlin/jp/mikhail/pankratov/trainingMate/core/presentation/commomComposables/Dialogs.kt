@@ -54,14 +54,9 @@ fun TimerDialog(
             },
             confirmButton = {
                 Button(onClick = { onConfirm.invoke() }) {
-                    Text(text = "Res.string.apply")
+                    Text(text = stringResource(SharedRes.strings.ok))
                 }
-            }/*,
-            dismissButton = {
-                Button(onClick = onDismiss) {
-                    Text("Dismiss")
-                }
-            }*/
+            }
         )
     }
 }
