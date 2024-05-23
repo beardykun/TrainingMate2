@@ -9,6 +9,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.randomUUID
 import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.TimerDataHolder
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
@@ -79,7 +80,8 @@ class ExerciseAtWorkViewModel(
                     currentState.copy(
                         timerState = currentState.timerState.copy(
                             timerValue = currentState.timerState.timerValue,
-                            timer = currentState.timerState.timerValue,
+                            timerMin = state.value.timerState.timerValue / 60,
+                            timerSec = state.value.timerState.timerValue % 60,
                             isCounting = false
                         )
                     )
@@ -102,15 +104,36 @@ class ExerciseAtWorkViewModel(
                 }
             }
 
-            is ExerciseAtWorkEvent.OnDropdownItemSelected -> {
+            ExerciseAtWorkEvent.OnDropdownItemSelected -> {
                 utilsProvider.getTimerServiceRep().stopService()
                 _state.update { currentState ->
                     currentState.copy(
                         timerState = currentState.timerState.copy(
-                            timerValue = event.item.toInt(),
-                            timer = event.item.toInt(),
+                            timerValue = state.value.timerState.timerMin * 60 + state.value.timerState.timerSec,
                             isExpanded = false,
                             isCounting = false
+                        )
+                    )
+                }
+            }
+
+            is ExerciseAtWorkEvent.OnMinutesUpdated -> {
+                _state.update {
+                    it.copy(
+                        timerState =
+                        it.timerState.copy(
+                            timerMin = event.newMinutes
+                        )
+                    )
+                }
+            }
+
+            is ExerciseAtWorkEvent.OnSecondsUpdated -> {
+                _state.update {
+                    it.copy(
+                        timerState =
+                        it.timerState.copy(
+                            timerSec = event.newSeconds
                         )
                     )
                 }
@@ -142,8 +165,11 @@ class ExerciseAtWorkViewModel(
 
             is ExerciseAtWorkEvent.OnSetDelete -> {
                 state.value.uiState.deleteItem?.let { deleteItem ->
+
                     val sets =
-                        state.value.exerciseDetails.exercise?.sets?.minus(deleteItem) ?: emptyList()
+                        state.value.exerciseDetails.exercise?.sets?.filter { it.id != deleteItem.id }
+                            ?: emptyList()
+                    if (sets.size == state.value.exerciseDetails.exercise?.sets?.size) return
                     val minusWeight = deleteItem.weight.toDouble() * deleteItem.reps.toInt()
                     updateSets(sets, -minusWeight, -deleteItem.reps.toInt())
                 }
@@ -271,6 +297,7 @@ class ExerciseAtWorkViewModel(
 
         val exerciseDetails = state.value.exerciseDetails
         val newInput = ExerciseSet(
+            id = randomUUID(),
             weight = exerciseDetails.weight.text,
             reps = exerciseDetails.reps.text,
             difficulty = exerciseDetails.setDifficulty
@@ -342,14 +369,19 @@ class ExerciseAtWorkViewModel(
             TimerDataHolder.timerValue.collect { counter ->
                 _state.update {
                     it.copy(
-                        timerState = it.timerState.copy(timer = counter ?: 0, isCounting = true)
+                        timerState = it.timerState.copy(
+                            timerMin = (counter ?: 0) / 60,
+                            timerSec = (counter ?: 0) % 60,
+                            isCounting = true
+                        )
                     )
                 }
                 if (counter == ZERO) {
                     _state.update {
                         it.copy(
                             timerState = it.timerState.copy(
-                                timer = state.value.timerState.timerValue,
+                                timerMin = state.value.timerState.timerValue / 60,
+                                timerSec = state.value.timerState.timerValue % 60,
                                 isCounting = false
                             ),
                         )

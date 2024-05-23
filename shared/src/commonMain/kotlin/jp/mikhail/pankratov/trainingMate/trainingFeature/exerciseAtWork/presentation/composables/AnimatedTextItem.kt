@@ -33,11 +33,9 @@ fun AnimatedTextItem(
     isAnimating: Boolean
 ) {
     AnimatedVisibility(visible = set.weight.isNotBlank()) {
-        // Remember animatable to animate font size
         val size = if (isAnimating) Dimens.animationTextSize.value else Dimens.normalTextSize.value
         val animatedFontSize = remember { Animatable(initialValue = size) }
 
-        // Animate fontSize when this composable enters the composition
         LaunchedEffect(key1 = isAnimating) {
             if (isAnimating) {
                 animatedFontSize.animateTo(
@@ -53,13 +51,13 @@ fun AnimatedTextItem(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
             colors = CardDefaults.cardColors(containerColor = textColor),
             modifier = modifier.pointerInput(Unit) {
-                detectTapGestures(onLongPress = {
-                    onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, set))
-                })
+                detectTapGestures(
+                    onLongPress = {
+                        onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, set))
+                    })
             }.padding(all = Dimens.Padding16)
 
         ) {
-            // Text composable with animated fontSize
             Box(modifier = Modifier.padding(all = Dimens.Padding8)) {
                 Text(
                     text = "${set.weight} x ${set.reps}",

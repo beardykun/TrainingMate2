@@ -44,12 +44,12 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficult
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.GlobalToastMessage
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupHorizontal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TimerDialog
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.CountdownAnimation
@@ -160,7 +160,7 @@ fun ExerciseAtWorkScreen(
 
             state.exerciseDetails.exercise?.sets?.let { sets ->
                 LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMNS_NUM)) {
-                    items(sets) { item ->
+                    items(sets, key = { it.id }) { item ->
                         AnimatedTextItem(
                             set = item,
                             onEvent = onEvent,
@@ -171,22 +171,20 @@ fun ExerciseAtWorkScreen(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            Row(modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon)) {
-                DropDown(
-                    initValue = state.timerState.timer.toString(),
-                    isOpen = state.timerState.isExpanded,
-                    onClick = {
+            Row(modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon), verticalAlignment = Alignment.CenterVertically) {
+                val minText = if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
+                val secText = if (state.timerState.timerSec < 10) "0${state.timerState.timerSec}" else state.timerState.timerSec
+                TextLarge(
+                    textAlign = TextAlign.Center,
+                    text = "$minText:$secText",
+                    modifier = Modifier.clickable {
                         onEvent(ExerciseAtWorkEvent.OnDropdownOpen)
-                    },
-                    onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
-                    onSelectedValue = { value ->
-                        onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected(value))
-                    },
-                    values = listOf("30", "45", "60", "90", "120", "150", "180", "300"),
-                    modifier = Modifier.clip(
+                    }.clip(
                         RoundedCornerShape(percent = 50)
                     ).background(color = MaterialTheme.colorScheme.primaryContainer)
+                        .padding(Dimens.Padding16)
                 )
+
                 Spacer(modifier = Modifier.width(Dimens.Padding16))
                 Button(onClick = {
                     onEvent(ExerciseAtWorkEvent.OnAddNewSet)
@@ -226,10 +224,23 @@ fun ExerciseAtWorkScreen(
                     }
                 )
             }
+
+            AnimatedVisibility(visible = state.timerState.isExpanded) {
+                TimerDialog(
+                    dialogTitle = "Select timer",
+                    onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
+                    onMinuteUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnMinutesUpdated(value)) },
+                    onSecondUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnSecondsUpdated(value)) },
+                    showDialog = state.timerState.isExpanded,
+                    onConfirm = {
+                        onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected)
+                    },
+                )
+            }
         }
-        AnimatedVisibility(visible = state.timerState.timer <= COUNTDOWN_ANIMATION) {
-            if (state.timerState.timer <= COUNTDOWN_ANIMATION) {
-                CountdownAnimation(currentTimerValue = state.timerState.timer)
+        AnimatedVisibility(visible = state.timerState.isCounting && state.timerState.timerMin == 0 && state.timerState.timerSec <= COUNTDOWN_ANIMATION) {
+            if (state.timerState.timerValue <= COUNTDOWN_ANIMATION) {
+                CountdownAnimation(currentTimerValue = state.timerState.timerSec)
             }
         }
         GlobalToastMessage()

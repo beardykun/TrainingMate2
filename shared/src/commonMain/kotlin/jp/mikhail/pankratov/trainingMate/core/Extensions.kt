@@ -21,20 +21,26 @@ fun String.stringToList(): List<String> {
 
 fun List<ExerciseSet>.setListToString(): String {
     return this.filterNot { it.weight.isEmpty() }.joinToString(separator = ", ") {
-        "${it.weight};${it.reps};${it.difficulty.name}"
+        "${it.weight};${it.reps};${it.difficulty.name};${it.id}"
     }
 }
 
 fun String.stringToSetList(): List<ExerciseSet> {
-    return this.split(", ").map { it.trim() }.filterNot { it.isEmpty() }.map {
-        val (weight, reps, difficulty) = it.split(";")
+    return this.split(", ").map { it.trim() }.filterNot { it.isEmpty() }.map { dataString ->
+        val components = dataString.split(";")
+
+        val weight = components[0]
+        val reps = components[1]
+        val difficulty = components[2]
         val dif = when (difficulty) {
             SetDifficulty.Light.name -> SetDifficulty.Light
             SetDifficulty.Medium.name -> SetDifficulty.Medium
             SetDifficulty.Hard.name -> SetDifficulty.Hard
             else -> SetDifficulty.Light
         }
-        ExerciseSet(weight = weight, reps = reps, difficulty = dif)
+        val id = components.getOrNull(3)?.takeIf { it.isNotEmpty() }
+
+        ExerciseSet(weight = weight, reps = reps, difficulty = dif, id = id ?: randomUUID())
     }
 }
 

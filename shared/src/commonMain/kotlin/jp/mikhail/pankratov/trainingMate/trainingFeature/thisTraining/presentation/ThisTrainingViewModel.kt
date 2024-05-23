@@ -183,7 +183,6 @@ class ThisTrainingViewModel(
             val minutes = (totalSeconds % 3600) / 60
             val seconds = totalSeconds % 60
             kotlinx.coroutines.delay(1000L)
-            println("TAGGER $hours:$minutes:$seconds")
             emit("${hours}h:${minutes}m:${seconds}s")
         }
     }.flowOn(Dispatchers.Default)
