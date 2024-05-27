@@ -26,4 +26,5 @@ interface ITrainingHistoryDataSource {
     fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>>
     suspend fun deleteTrainingHistoryRecord(trainingId: Long)
     fun getLastSameTraining(trainingTemplateId: Long): Flow<Training?>
+    fun getLastTraining(): Flow<Training?>
 }

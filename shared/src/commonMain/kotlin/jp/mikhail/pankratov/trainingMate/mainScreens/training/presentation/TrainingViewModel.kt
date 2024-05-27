@@ -64,7 +64,7 @@ class TrainingViewModel(
     private val trainingData = combine(
         trainingUseCaseProvider.getLocalTrainingsUseCase().invoke(),
         trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
-        trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke()
+        trainingUseCaseProvider.getLastHistoryTrainingUseCase().invoke()
     ) { trainings, ongoingTraining, trainingsHistory ->
         Triple(trainings, ongoingTraining, trainingsHistory)
     }
@@ -81,7 +81,7 @@ class TrainingViewModel(
             availableTrainings = trainings,
             greeting = motivationalPhrases.random(),
             ongoingTraining = ongoingTraining,
-            lastTrainings = trainingsHistory,
+            lastTraining = trainingsHistory,
             monthlySummary = monthly,
             weeklySummary = weekly
         )

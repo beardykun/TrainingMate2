@@ -11,7 +11,7 @@ data class TrainingScreenState(
     val selectedTraining: TrainingLocal? = null,
     val showStartTrainingDialog: Boolean = false,
     val ongoingTraining: Training? = null,
-    val lastTrainings: List<Training>? = null,
+    val lastTraining: Training? = null,
     val monthlySummary: List<MonthlySummary?>? = null,
     val weeklySummary: List<WeeklySummary?>? = null,
     val showDeleteDialog: Boolean = false,

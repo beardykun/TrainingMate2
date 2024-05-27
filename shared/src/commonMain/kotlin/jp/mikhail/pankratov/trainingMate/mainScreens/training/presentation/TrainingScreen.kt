@@ -64,9 +64,8 @@ fun TrainingScreen(
         ) {
             TextLarge(text = state.greeting)
 
-            if (state.lastTrainings?.isNotEmpty() == true) {
+            state.lastTraining?.let { lastTraining ->
                 TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
-                val lastTraining = state.lastTrainings.last()
                 TrainingItem(
                     training = lastTraining,
                     onClick = {

@@ -53,7 +53,7 @@ class ThisTrainingViewModel(
     )
 
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
-        val lastTraining = trainingUseCaseProvider.getGetLastSameHistoryTrainingUseCase()
+        val lastTraining = trainingUseCaseProvider.getLastSameHistoryTrainingUseCase()
             .invoke(trainingTemplateId = ongoingTrainingTemplateId)
             .first()
         _state.update {

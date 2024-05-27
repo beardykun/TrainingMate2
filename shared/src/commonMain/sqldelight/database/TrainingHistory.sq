@@ -91,9 +91,15 @@ DELETE
 FROM TrainingHistory
 WHERE id = ?;
 
-getLastTraining:
+getLastSameTraining:
 SELECT * FROM TrainingHistory
 WHERE status = 'COMPLETED' AND training_template_id = ?
+ORDER BY id DESC
+LIMIT 1;
+
+getLastTraining:
+SELECT * FROM TrainingHistory
+WHERE status = 'COMPLETED'
 ORDER BY id DESC
 LIMIT 1;
 

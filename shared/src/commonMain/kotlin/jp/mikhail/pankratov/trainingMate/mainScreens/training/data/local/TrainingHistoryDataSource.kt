@@ -143,7 +143,14 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     }
 
     override fun getLastSameTraining(trainingTemplateId: Long): Flow<Training?> {
-        return query.getLastTraining(training_template_id = trainingTemplateId).asFlow()
+        return query.getLastSameTraining(training_template_id = trainingTemplateId).asFlow()
+            .map { trainingHistory ->
+                trainingHistory.executeAsOneOrNull()?.toTraining()
+            }.flowOn(Dispatchers.IO)
+    }
+
+    override fun getLastTraining(): Flow<Training?> {
+        return query.getLastTraining().asFlow()
             .map { trainingHistory ->
                 trainingHistory.executeAsOneOrNull()?.toTraining()
             }.flowOn(Dispatchers.IO)

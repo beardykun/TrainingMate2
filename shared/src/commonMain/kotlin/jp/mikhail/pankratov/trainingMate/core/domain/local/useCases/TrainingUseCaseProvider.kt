@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.local.useCases
 
-import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.IsLocalTrainingTableEmptyUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.DeleteTrainingHistoryRecordUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastHistoryTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastSameHistoryTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLatestHistoryTrainingsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetOngoingTrainingUseCase
@@ -15,6 +15,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.loc
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.GetLocalTrainingsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.InsertLocalTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.IsLocalTrainingExistsUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.IsLocalTrainingTableEmptyUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.UpdateTrainingLocalExerciseUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateTrainingHistoryDataUseCase
 import org.koin.core.Koin
@@ -37,7 +38,8 @@ class TrainingUseCaseProvider(val koin: Koin) {
     fun getOngoingTrainingUseCase(): GetOngoingTrainingUseCase = get()
     fun getUpdateTrainingHistoryDataUseCase(): UpdateTrainingHistoryDataUseCase = get()
     fun getUpdateTrainingHistoryStatusUseCase(): UpdateTrainingHistoryStatusUseCase = get()
-    fun getGetLastSameHistoryTrainingUseCase(): GetLastSameHistoryTrainingUseCase = get()
+    fun getLastSameHistoryTrainingUseCase(): GetLastSameHistoryTrainingUseCase = get()
+    fun getLastHistoryTrainingUseCase(): GetLastHistoryTrainingUseCase = get()
     fun getGetHistoryTrainingRecordByIdUseCase(): GetTrainingHistoryRecordByIdUseCase = get()
     fun getParticularHistoryTrainingsUseCase(): GetParticularHistoryTrainingsUseCase = get()
     fun getParticularMonthHistoryTrainings(): GetParticularMonthHistoryTrainings = get()
