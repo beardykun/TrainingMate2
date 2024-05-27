@@ -114,7 +114,6 @@ fun TrainingScreen(
                                     training = training,
                                     onClick = {
                                         if (state.ongoingTraining?.trainingTemplateId == training.id) {
-
                                             navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                                             return@LocalTrainingItem
                                         }

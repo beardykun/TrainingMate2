@@ -94,8 +94,13 @@ class TrainingViewModel(
     fun onEvent(event: TrainingScreenEvent) {
         when (event) {
             is TrainingScreenEvent.OnStartNewTraining -> {
-                state.value.selectedTraining?.let {
-                    startNewTraining(it)
+                state.value.selectedTraining?.let { localTraining ->
+                    _state.update {
+                        it.copy(
+                            showStartTrainingDialog = false
+                        )
+                    }
+                    startNewTraining(localTraining)
                 }
             }
 
