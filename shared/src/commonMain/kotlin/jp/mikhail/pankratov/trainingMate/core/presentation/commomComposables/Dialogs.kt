@@ -35,6 +35,8 @@ fun DialogPopup(title: String, description: String, onAccept: () -> Unit, onDenn
 
 @Composable
 fun TimerDialog(
+    minuteValue: Int,
+    secondValue: Int,
     dialogTitle: String,
     showDialog: Boolean,
     onMinuteUpdated: (Int) -> Unit,
@@ -48,6 +50,8 @@ fun TimerDialog(
             title = { Text(dialogTitle) },
             text = {
                 TimerSpinnerWheels(
+                    minuteValue = minuteValue,
+                    secondValue = secondValue,
                     onMinuteSelected = onMinuteUpdated,
                     onSecondSelected = onSecondUpdated
                 )

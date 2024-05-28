@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
@@ -20,12 +16,14 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 
 @Composable
-fun TimerSpinnerWheels(onMinuteSelected: (Int) -> Unit, onSecondSelected: (Int) -> Unit) {
+fun TimerSpinnerWheels(
+    minuteValue: Int,
+    secondValue: Int,
+    onMinuteSelected: (Int) -> Unit,
+    onSecondSelected: (Int) -> Unit
+) {
     val minuteValues = (0..59).toList()
-    val secondValues = (0..59).toList()
-
-    var selectedMinute by remember { mutableStateOf(minuteValues.first()) }
-    var selectedSecond by remember { mutableStateOf(secondValues.first()) }
+    val secondValues = (0..59).step(5).toList()
 
     Column(
         modifier = Modifier
@@ -41,10 +39,9 @@ fun TimerSpinnerWheels(onMinuteSelected: (Int) -> Unit, onSecondSelected: (Int) 
                 TextLarge(text = stringResource(SharedRes.strings.minutes))
                 SpinnerWheel(
                     items = minuteValues,
-                    selectedItem = selectedMinute,
+                    selectedItem = minuteValue,
                     onItemSelected = {
-                        selectedMinute = it
-                        onMinuteSelected(selectedMinute)
+                        onMinuteSelected(it)
                     }
                 )
             }
@@ -53,9 +50,8 @@ fun TimerSpinnerWheels(onMinuteSelected: (Int) -> Unit, onSecondSelected: (Int) 
                 TextLarge(text = stringResource(SharedRes.strings.seconds))
                 SpinnerWheel(
                     items = secondValues,
-                    selectedItem = selectedSecond,
+                    selectedItem = secondValue,
                     onItemSelected = {
-                        selectedSecond = it
                         onSecondSelected.invoke(it)
                     }
                 )

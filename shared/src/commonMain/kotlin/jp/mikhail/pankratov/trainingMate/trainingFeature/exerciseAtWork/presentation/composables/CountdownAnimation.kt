@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 fun CountdownAnimation(
     currentTimerValue: Int,
 ) {
+    if (currentTimerValue <= 0) return
     // This will hold the current scale of the animation.
     val scale: Float by animateFloatAsState(
         targetValue = 1f / (currentTimerValue * 0.1f),

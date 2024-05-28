@@ -232,6 +232,8 @@ fun ExerciseAtWorkScreen(
 
             AnimatedVisibility(visible = state.timerState.isExpanded) {
                 TimerDialog(
+                    minuteValue = state.timerState.timerMin,
+                    secondValue = state.timerState.timerSec,
                     dialogTitle = stringResource(SharedRes.strings.break_time),
                     onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
                     onMinuteUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnMinutesUpdated(value)) },

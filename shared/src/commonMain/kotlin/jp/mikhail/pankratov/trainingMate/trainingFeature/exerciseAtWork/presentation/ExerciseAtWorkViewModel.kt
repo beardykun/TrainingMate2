@@ -94,6 +94,7 @@ class ExerciseAtWorkViewModel(
                         timerState = currentState.timerState.copy(isExpanded = true)
                     )
                 }
+                onEvent(ExerciseAtWorkEvent.OnTimerStop)
             }
 
             ExerciseAtWorkEvent.OnDropdownClosed -> {
