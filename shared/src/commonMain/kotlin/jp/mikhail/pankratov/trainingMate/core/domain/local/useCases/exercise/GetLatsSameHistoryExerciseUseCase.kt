@@ -7,11 +7,13 @@ import kotlinx.coroutines.flow.Flow
 class GetLatsSameHistoryExerciseUseCase(private val exerciseHistoryDatasource: IExerciseHistoryDatasource) {
     operator fun invoke(
         exerciseTemplateId: Long,
-        trainingId: Long
+        trainingId: Long,
+        trainingTemplateId: Long
     ): Flow<Exercise?> {
         return exerciseHistoryDatasource.getLatsSameExercise(
             exerciseTemplateId = exerciseTemplateId,
-            trainingHistoryId = trainingId
+            trainingHistoryId = trainingId,
+            trainingTemplateId = trainingTemplateId
         )
     }
 }

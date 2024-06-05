@@ -36,6 +36,7 @@ class ExerciseAtWorkViewModel(
     private val updateAutoInputUseCase: UpdateAutoInputUseCase,
     private val validateInputUseCase: ValidateInputUseCase,
     private val trainingId: Long,
+    private val trainingTemplateId: Long,
     private val exerciseTemplateId: Long,
     private val utilsProvider: UtilsProvider,
     val permissionsController: PermissionsController
@@ -51,7 +52,8 @@ class ExerciseAtWorkViewModel(
             .invoke(trainingId, exerciseTemplateId),
         exerciseUseCaseProvider.getLatsSameExerciseUseCase().invoke(
             exerciseTemplateId = exerciseTemplateId,
-            trainingId = trainingId
+            trainingId = trainingId,
+            trainingTemplateId = trainingTemplateId
         )
     ) { state, exerciseLocal, ongoingTraining, exercise, lastExercise ->
         state.copy(
@@ -415,4 +417,9 @@ class ExerciseAtWorkViewModel(
                     .invoke(exerciseDetails = exerciseDetails)
             }
         }
+
+    override fun onCleared() {
+        utilsProvider.getTimerServiceRep().stopService()
+        super.onCleared()
+    }
 }

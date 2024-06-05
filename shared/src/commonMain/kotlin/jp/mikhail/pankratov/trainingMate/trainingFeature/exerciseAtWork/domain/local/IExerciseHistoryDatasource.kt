@@ -19,5 +19,5 @@ interface IExerciseHistoryDatasource {
         reps: Int
     )
 
-    fun getLatsSameExercise(exerciseTemplateId: Long, trainingHistoryId: Long): Flow<Exercise?>
+    fun getLatsSameExercise(exerciseTemplateId: Long, trainingHistoryId: Long, trainingTemplateId: Long): Flow<Exercise?>
 }

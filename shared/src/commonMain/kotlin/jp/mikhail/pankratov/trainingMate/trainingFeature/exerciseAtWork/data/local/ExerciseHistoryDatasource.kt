@@ -101,11 +101,13 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
 
     override fun getLatsSameExercise(
         exerciseTemplateId: Long,
-        trainingHistoryId: Long
+        trainingHistoryId: Long,
+        trainingTemplateId: Long
     ): Flow<Exercise?> {
         return query.getLastSameExercise(
             exercise_template_id = exerciseTemplateId,
-            training_history_id = trainingHistoryId
+            training_history_id = trainingHistoryId,
+            training_template_id = trainingTemplateId
         ).asFlow().map {
             it.executeAsOneOrNull()?.toExercise()
         }.flowOn(Dispatchers.IO)

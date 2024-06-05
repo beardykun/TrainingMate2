@@ -102,7 +102,7 @@ fun ThisTrainingScreen(
                                                 it,
                                                 navigateToExercise = { exerciseId ->
                                                     navigator.navigate(
-                                                        "${Routs.ExerciseScreens.exerciseAtWork}/${state.ongoingTraining?.id}/${exerciseId}"
+                                                        "${Routs.ExerciseScreens.exerciseAtWork}/${state.ongoingTraining?.id}/${exerciseId}/${state.ongoingTraining?.trainingTemplateId}"
                                                     )
                                                 })
                                         )
@@ -120,6 +120,7 @@ fun ThisTrainingScreen(
                         navigator.goBack()
                     },
                     modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = Dimens.Padding48, vertical = Dimens.Padding16)
                 ) {
                     TextLarge(
                         text = stringResource(SharedRes.strings.finish_training),

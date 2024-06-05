@@ -79,7 +79,7 @@ fun viewModelModule() = module {
         )
     }
 
-    factory { (trainingId: Long, exerciseTemplateId: Long, permissionsController: PermissionsController) ->
+    factory { (trainingId: Long, exerciseTemplateId: Long, trainingTemplateId: Long, permissionsController: PermissionsController) ->
         ExerciseAtWorkViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
@@ -87,6 +87,7 @@ fun viewModelModule() = module {
             validateInputUseCase = get(),
             trainingId = trainingId,
             exerciseTemplateId = exerciseTemplateId,
+            trainingTemplateId = trainingTemplateId,
             utilsProvider = get(),
             permissionsController = permissionsController
         )

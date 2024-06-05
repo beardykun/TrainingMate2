@@ -18,6 +18,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.EXERCISE_TEMPLATE_ID
 import jp.mikhail.pankratov.trainingMate.core.presentation.MONTH_NUM
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TRAINING_HISTORY_ID
+import jp.mikhail.pankratov.trainingMate.core.presentation.TRAINING_TEMPLATE_ID
 import jp.mikhail.pankratov.trainingMate.core.presentation.WEEK_NUM
 import jp.mikhail.pankratov.trainingMate.core.presentation.YEAR
 import jp.mikhail.pankratov.trainingMate.createTraining.presentation.CreateTrainingScreen
@@ -170,15 +171,21 @@ private fun RouteBuilder.trainingScreens(
         }
 
         scene(
-            route = "${Routs.ExerciseScreens.exerciseAtWork}/{$TRAINING_HISTORY_ID}/{$EXERCISE_TEMPLATE_ID}",
+            route = "${Routs.ExerciseScreens.exerciseAtWork}/{$TRAINING_HISTORY_ID}/{$EXERCISE_TEMPLATE_ID}/{$TRAINING_TEMPLATE_ID}",
             navTransition = NavTransition()
         ) { backStackEntry ->
             val trainingId: Long = backStackEntry.path(TRAINING_HISTORY_ID) ?: -1
             val exerciseTemplateId: Long = backStackEntry.path(EXERCISE_TEMPLATE_ID) ?: -1
+            val trainingTemplateId: Long = backStackEntry.path(TRAINING_TEMPLATE_ID) ?: -1
             val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
 
             val viewModel = koinViewModel(vmClass = ExerciseAtWorkViewModel::class) {
-                parametersOf(trainingId, exerciseTemplateId, factory.createPermissionsController())
+                parametersOf(
+                    trainingId,
+                    exerciseTemplateId,
+                    trainingTemplateId,
+                    factory.createPermissionsController()
+                )
             }
             BindEffect(viewModel.permissionsController)
             val state by viewModel.state.collectAsStateWithLifecycle()

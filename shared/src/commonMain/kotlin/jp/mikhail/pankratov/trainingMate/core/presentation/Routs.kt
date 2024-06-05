@@ -4,6 +4,7 @@ const val MONTH_NUM = "monthNum"
 const val WEEK_NUM = "weekNum"
 const val TRAINING_HISTORY_ID = "trainingHistoryId"
 const val EXERCISE_TEMPLATE_ID = "exerciseTemplateId"
+const val TRAINING_TEMPLATE_ID = "trainingTemplateId"
 const val EXERCISE_NAME = "exerciseName"
 object Routs {
 

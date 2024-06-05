@@ -47,7 +47,7 @@ WHERE training_history_id = ? AND exercise_template_id = ?;
 getLastSameExercise:
 SELECT *
 FROM ExerciseHistory
-WHERE exercise_template_id = ? AND training_history_id != ?
+WHERE exercise_template_id = ? AND training_history_id != ? AND training_template_id = ?
 ORDER BY id DESC
 LIMIT 1;
 

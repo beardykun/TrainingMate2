@@ -52,7 +52,7 @@
 
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>
-    <string name="add_exercises">"Add exercises"</string>
+    <string name="add_exercises">Add exercises</string>
 
 
     <!-- DialogPopup -->
