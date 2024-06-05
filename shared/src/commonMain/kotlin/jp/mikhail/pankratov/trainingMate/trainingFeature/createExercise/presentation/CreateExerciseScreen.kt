@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -78,13 +77,15 @@ fun CreateExerciseScreen(
             })
             TextMedium(text = stringResource(SharedRes.strings.using_two_dumbbell))
         }
-        Spacer(modifier = Modifier.height(Dimens.Padding16))
+        Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
                 onEvent(CreateExerciseEvent.OnExerciseCreate(onSuccess = {
                     navigator.popBackStack()
                 }))
             },
+            modifier = Modifier.fillMaxWidth()
+                .padding(vertical = Dimens.Padding16, horizontal = Dimens.Padding48)
         ) {
             TextMedium(text = stringResource(SharedRes.strings.add_exercise))
         }

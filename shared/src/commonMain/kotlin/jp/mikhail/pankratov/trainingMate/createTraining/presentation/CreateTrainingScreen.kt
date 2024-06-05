@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
 import Dimens
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -55,13 +56,14 @@ fun CreateTrainingScreen(
                 )
             }
         )
-
+        Spacer(modifier = Modifier.weight(1f))
         Button(
             onClick = {
                 onEvent(CreateTrainingEvent.OnAddNewTraining(onSuccess = {
                     navigator.popBackStack()
                 }))
             },
+            modifier = Modifier.padding(vertical = Dimens.Padding16, horizontal = Dimens.Padding48)
         ) {
             TextMedium(text = stringResource(SharedRes.strings.add_training))
         }
