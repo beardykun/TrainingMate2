@@ -68,7 +68,7 @@ getLatestHistoryTrainings:
 SELECT *
 FROM TrainingHistory
 WHERE total_lifted_weight != 0.0
-ORDER BY start_time
+ORDER BY start_time DESC
 LIMIT :limit OFFSET :offset;
 
 getGroupTrainings:

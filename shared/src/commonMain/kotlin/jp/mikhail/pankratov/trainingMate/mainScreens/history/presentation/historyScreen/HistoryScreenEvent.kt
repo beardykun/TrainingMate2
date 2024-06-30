@@ -4,4 +4,5 @@ sealed class HistoryScreenEvent {
     data class OnDeleteClick(val trainingId: Long) : HistoryScreenEvent()
     data object OnDeleteConfirmClick: HistoryScreenEvent()
     data object OnDeleteDenyClick: HistoryScreenEvent()
+    data object OnLoadNextPage: HistoryScreenEvent()
 }

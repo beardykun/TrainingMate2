@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
@@ -23,19 +26,20 @@ fun HistoryScreen(
     onEvent: (HistoryScreenEvent) -> Unit,
     navigator: Navigator
 ) {
+    val listState = rememberLazyListState()
     Column(modifier = Modifier.fillMaxSize()) {
-        state.historyList?.let { list ->
-            if (list.isEmpty()) {
+        state.historyList?.let { trainings ->
+            if (trainings.isEmpty()) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     TextLarge(stringResource(SharedRes.strings.no_history))
                 }
-            } else
-                LazyColumn {
+            } else {
+                LazyColumn(state = listState) {
                     items(
-                        items = list,
+                        items = trainings,
                         key = { training ->
                             training.id ?: -1
                         }) { training ->
@@ -46,7 +50,15 @@ fun HistoryScreen(
                         })
                     }
                 }
-
+                LaunchedEffect(key1 = listState, key2 = trainings.size) {
+                    snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+                        .collect { lastVisibleItemIndex ->
+                            if (lastVisibleItemIndex == trainings.size - 1 && !state.isLastPage) {
+                                onEvent(HistoryScreenEvent.OnLoadNextPage)
+                            }
+                        }
+                }
+            }
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.delete_training),

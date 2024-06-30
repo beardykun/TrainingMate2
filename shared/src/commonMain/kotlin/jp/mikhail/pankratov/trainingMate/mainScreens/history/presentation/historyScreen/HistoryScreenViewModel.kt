@@ -7,33 +7,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
+private const val pageSize: Long = 10
+
 class HistoryScreenViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
-    query: TrainingQuery
+    private val query: TrainingQuery
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
-    private val _trainingListState: MutableStateFlow<List<Training>> = MutableStateFlow(listOf())
-
     private val _state = MutableStateFlow(HistoryScreenState())
-    val state = combine(
-        _trainingListState,
-        _state
-    ) { historyList, state ->
-        if (state.historyList != historyList) {
-            state.copy(historyList = historyList)
-        } else state
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(3000),
-        initialValue = HistoryScreenState()
-    )
+    val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -42,19 +33,26 @@ class HistoryScreenViewModel(
     }
 
     private suspend fun loadTrainingHistory(query: TrainingQuery) {
-        val trainings = when (query) {
+        when (query) {
             TrainingQuery.All ->
-                trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke().first()
+                loadPaginatedTrainings()
 
-            is TrainingQuery.Month ->
-                trainingUseCaseProvider.getParticularMonthHistoryTrainings()
+            is TrainingQuery.Month -> {
+                val trainings = trainingUseCaseProvider.getParticularMonthHistoryTrainings()
                     .invoke(year = query.year, monthNum = query.month).first()
+                _state.update {
+                    it.copy(historyList = trainings)
+                }
+            }
 
-            is TrainingQuery.Week ->
-                trainingUseCaseProvider.getParticularWeekHistoryTrainings()
+            is TrainingQuery.Week -> {
+                val trainings = trainingUseCaseProvider.getParticularWeekHistoryTrainings()
                     .invoke(year = query.year, weekNum = query.week).first()
+                _state.update {
+                    it.copy(historyList = trainings)
+                }
+            }
         }
-        _trainingListState.value = trainings
     }
 
     fun onEvent(event: HistoryScreenEvent) {
@@ -92,6 +90,27 @@ class HistoryScreenViewModel(
                     )
                 }
             }
+
+            HistoryScreenEvent.OnLoadNextPage -> loadNextPage()
+        }
+    }
+
+    private suspend fun loadPaginatedTrainings() {
+        val newTrainings = trainingUseCaseProvider.getLatestHistoryTrainingsUseCase()
+            .invoke(pageSize, state.value.currentPage * pageSize).first()
+        _state.update {
+            it.copy(
+                currentPage = it.currentPage + 1,
+                isLastPage = newTrainings.isEmpty(),
+                historyList = (state.value.historyList ?: emptyList()).plus(newTrainings)
+            )
+        }
+    }
+
+    private fun loadNextPage() {
+        if (query != TrainingQuery.All) return
+        viewModelScope.launch {
+            loadPaginatedTrainings()
         }
     }
 }

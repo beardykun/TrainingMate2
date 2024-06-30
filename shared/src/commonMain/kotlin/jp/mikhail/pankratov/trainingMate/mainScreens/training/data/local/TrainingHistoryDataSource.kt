@@ -26,8 +26,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getLatestHistoryTrainings(): Flow<List<Training>> {
-        return query.getLatestHistoryTrainings().asFlow().mapToList(Dispatchers.IO)
+    override fun getLatestHistoryTrainings(limit: Long, offset: Long): Flow<List<Training>> {
+        return query.getLatestHistoryTrainings(limit = limit, offset = offset).asFlow().mapToList(Dispatchers.IO)
             .map { trainings ->
                 trainings.map {
                     it.toTraining()
