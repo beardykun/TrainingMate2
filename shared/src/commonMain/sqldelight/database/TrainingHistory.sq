@@ -69,7 +69,7 @@ SELECT *
 FROM TrainingHistory
 WHERE total_lifted_weight != 0.0
 ORDER BY start_time
-LIMIT 30;
+LIMIT :limit OFFSET :offset;
 
 getGroupTrainings:
 SELECT *
