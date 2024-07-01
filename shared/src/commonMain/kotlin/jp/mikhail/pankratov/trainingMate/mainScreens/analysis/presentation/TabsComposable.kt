@@ -91,23 +91,21 @@ fun TabsComposable(
             }
         }
         Spacer(modifier = Modifier.weight(1f))
-        DropDown(
-            initValue = analysisMode,
-            isOpen = isDropdownExpanded,
-            onClick = { onEvent(AnalysisScreenEvent.OnDropdownOpen) },
-            onDismiss = { onEvent(AnalysisScreenEvent.OnDropdownClosed) },
-            onSelectedValue = { value ->
-                onEvent(AnalysisScreenEvent.OnAnalysisModeChanged(value))
-            },
-            values = if (metricsMode == MetricsMode.EXERCISE) AnalysisMode.entries.minus(
-                AnalysisMode.LENGTH
+        AnimatedVisibility(metricsMode != MetricsMode.EXERCISE) {
+            DropDown(
+                initValue = analysisMode,
+                isOpen = isDropdownExpanded,
+                onClick = { onEvent(AnalysisScreenEvent.OnDropdownOpen) },
+                onDismiss = { onEvent(AnalysisScreenEvent.OnDropdownClosed) },
+                onSelectedValue = { value ->
+                    onEvent(AnalysisScreenEvent.OnAnalysisModeChanged(value))
+                },
+                values = AnalysisMode.entries.map { it.name },
+                modifier = Modifier.clip(
+                    RoundedCornerShape(percent = 50)
+                ).background(color = MaterialTheme.colorScheme.primaryContainer)
             )
-                .map { it.name }
-            else AnalysisMode.entries.map { it.name },
-            modifier = Modifier.clip(
-                RoundedCornerShape(percent = 50)
-            ).background(color = MaterialTheme.colorScheme.primaryContainer)
-        )
+        }
     }
 
     HorizontalPager(state = pagerState) {

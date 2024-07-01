@@ -110,7 +110,14 @@ fun App(
                             )
                         },
                         bottomBar = {
-                            if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) return@Scaffold
+                            val destination = current?.route?.route
+                            if (destination == null || !Routs.MainScreens.mainScreens.any {
+                                    destination.startsWith(
+                                        it
+                                    )
+                                }) {
+                                return@Scaffold
+                            }
                             NavigationBar {
                                 items.forEachIndexed { index, item ->
                                     NavigationBarItem(

@@ -25,7 +25,7 @@ object Routs {
 
     object HistoryScreens {
         val historyGroupRoot = "History Group"
-        val historyInfo = "History Info"
+        val historyInfo = "Info History"
     }
 
     object ExerciseScreens {

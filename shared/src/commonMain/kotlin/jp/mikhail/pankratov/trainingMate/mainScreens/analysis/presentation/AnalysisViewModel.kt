@@ -103,7 +103,6 @@ class AnalysisViewModel(
                 val analysisMode = when (event.analysisMode) {
                     AnalysisMode.WEIGHT.name -> AnalysisMode.WEIGHT
                     AnalysisMode.LENGTH.name -> AnalysisMode.LENGTH
-                    AnalysisMode.PROGRESS.name -> AnalysisMode.PROGRESS
                     else -> AnalysisMode.WEIGHT
                 }
                 _state.update {
@@ -156,12 +155,6 @@ class AnalysisViewModel(
                     historyTrainings = trainings
                 )
             }
-
-            AnalysisMode.PROGRESS -> {
-                prepareProgressDataTrainings(
-                    historyTrainings = trainings
-                )
-            }
         }
     }
 
@@ -179,87 +172,8 @@ class AnalysisViewModel(
             }
 
             AnalysisMode.LENGTH -> {}
-
-            AnalysisMode.PROGRESS -> {
-                prepareProgressDataExercises(
-                    historyExercises = exercises
-                )
-            }
         }
     }
-
-    private fun prepareProgressDataTrainings(
-        historyTrainings: List<Training>? = null
-    ) {
-        historyTrainings?.let { trainings ->
-            val weightList = trainings.map { it.totalLiftedWeight }
-            val weightBaseline = weightList.sum().div(weightList.size)
-            val weightFivePercent = weightBaseline.div(20)
-
-            val durationsList = trainings.map { Utils.trainingLengthToMin(it) }
-            val durationsBaseline = durationsList.sum().div(durationsList.size)
-            val durationFivePercent = durationsBaseline.div(20)
-
-            val data = trainings.map { training ->
-                val weightScore =
-                    (training.totalLiftedWeight - weightBaseline) / weightFivePercent
-
-
-                val durationScore =
-                    -((Utils.trainingLengthToMin(training) - durationsBaseline) / durationFivePercent)
-
-                weightScore + durationScore
-            }
-
-            // Find the minimum value in the data list
-            val minValue = data.minOrNull() ?: 0.0
-
-            // Shift all values up so that the minimum value becomes zero
-            val adjustedData = data.map { it - minValue }
-            _state.update {
-                it.copy(
-                    metricsData = adjustedData,
-                    metricsXAxisData = trainings.map { tr -> tr.name }
-                )
-            }
-        }
-    }
-
-    private fun prepareProgressDataExercises(
-        historyExercises: List<Exercise>?,
-    ) {
-        historyExercises?.let { exercises ->
-            val weightList = exercises.map { it.totalLiftedWeight }
-            val weightBaseline = weightList.sum().div(weightList.size)
-            val weightFivePercent = weightBaseline.div(20)
-
-            val setsList = exercises.map { it.sets.size }
-            val setsBaseline = setsList.sum() / setsList.size
-
-            val data = exercises.map { exercise ->
-                val weightScore =
-                    (exercise.totalLiftedWeight - weightBaseline) / weightFivePercent
-
-                val setsScore = exercise.sets.size - setsBaseline
-
-                weightScore + setsScore
-            }
-
-            // Find the minimum value in the data list
-            val minValue = data.minOrNull() ?: 0.0
-
-            // Shift all values up so that the minimum value becomes zero
-            val adjustedData = data.map { it - minValue }
-
-            _state.update {
-                it.copy(
-                    metricsData = adjustedData,
-                    metricsXAxisData = exercises.map { tr -> tr.name }
-                )
-            }
-        }
-    }
-
 
     private fun prepareLengthData(
         historyTrainings: List<Training>? = null

@@ -20,7 +20,7 @@ data class AnalysisScreenSate(
 )
 
 enum class AnalysisMode {
-    WEIGHT, LENGTH, PROGRESS
+    WEIGHT, LENGTH
 }
 
 enum class MetricsMode {
