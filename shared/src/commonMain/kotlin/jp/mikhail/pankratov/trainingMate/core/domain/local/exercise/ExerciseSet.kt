@@ -4,5 +4,6 @@ data class ExerciseSet(
     val id: String,
     val weight: String,
     val reps: String,
-    val difficulty: SetDifficulty = SetDifficulty.Light
+    val difficulty: SetDifficulty = SetDifficulty.Light,
+    val updateTime: Long
 )

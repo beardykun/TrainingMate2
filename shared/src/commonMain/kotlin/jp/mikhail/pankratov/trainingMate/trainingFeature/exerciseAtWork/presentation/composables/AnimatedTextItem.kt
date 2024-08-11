@@ -5,7 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -22,10 +22,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
 
 @Composable
 fun AnimatedTextItem(
+    previousSet: ExerciseSet?,
     set: ExerciseSet,
     targetSize: TextUnit = Dimens.normalTextSize,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
@@ -58,15 +60,23 @@ fun AnimatedTextItem(
             }.padding(all = Dimens.Padding16)
 
         ) {
-            Box(modifier = Modifier.padding(all = Dimens.Padding8)) {
+            Column(modifier = Modifier.padding(all = Dimens.Padding8)) {
                 Text(
-                    text = "${set.weight} x ${set.reps}",
+                    text = "${set.weight} kg x ${set.reps}",
                     style = TextStyle(
                         fontSize = animatedFontSize.value.sp,
                         textAlign = TextAlign.Center
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
+                if (previousSet != null) {
+                    TextSmall(
+                        text = Utils.calculateRestTime(
+                            previousSet.updateTime,
+                            set.updateTime
+                        )
+                    )
+                }
             }
         }
     }

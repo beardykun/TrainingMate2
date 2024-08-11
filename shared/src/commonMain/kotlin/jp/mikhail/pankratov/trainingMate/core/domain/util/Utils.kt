@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.core.domain.util
 import androidx.compose.ui.graphics.Color
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -38,5 +39,14 @@ object Utils {
             SetDifficulty.Medium -> Color(0xFFFFF9C4)
             SetDifficulty.Hard -> Color(0xFFFFEBEE)
         }
+    }
+
+    fun calculateRestTime(lastSetTime: Long, thisSetTime: Long): String {
+        val totalSeconds = (thisSetTime - lastSetTime) / 1000
+        val minutes = totalSeconds / 60
+        val minToDisplay = if (minutes < 10) "0$minutes" else minutes.toString()
+        val seconds = totalSeconds % 60
+        val secondsToDisplay = if (seconds < 10) "0$seconds" else seconds.toString()
+        return "Interval $minToDisplay:$secondsToDisplay"
     }
 }

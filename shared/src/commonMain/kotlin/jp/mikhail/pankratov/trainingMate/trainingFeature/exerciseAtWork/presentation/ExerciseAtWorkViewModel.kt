@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 private const val ZERO = 0
@@ -303,7 +304,8 @@ class ExerciseAtWorkViewModel(
             id = randomUUID(),
             weight = exerciseDetails.weight.text,
             reps = exerciseDetails.reps.text,
-            difficulty = exerciseDetails.setDifficulty
+            difficulty = exerciseDetails.setDifficulty,
+            updateTime = Clock.System.now().toEpochMilliseconds()
         )
         val sets = exerciseDetails.exercise?.sets?.plus(newInput) ?: emptyList()
 

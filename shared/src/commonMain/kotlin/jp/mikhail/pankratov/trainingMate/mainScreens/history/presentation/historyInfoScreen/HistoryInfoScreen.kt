@@ -180,6 +180,7 @@ fun FixedGrid(
                                 .padding(Dimens.Padding4) // Adjust padding as needed
                         ) {
                             AnimatedTextItem(
+                                previousSet = items.getOrNull(index - 1),
                                 set = items[index],
                                 onEvent = {},
                                 isAnimating = false,
