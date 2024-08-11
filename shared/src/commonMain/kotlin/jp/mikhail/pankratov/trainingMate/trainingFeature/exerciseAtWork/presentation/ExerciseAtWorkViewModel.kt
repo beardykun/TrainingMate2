@@ -9,6 +9,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.randomUUID
 import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.TimerDataHolder
@@ -37,7 +38,7 @@ class ExerciseAtWorkViewModel(
     private val updateAutoInputUseCase: UpdateAutoInputUseCase,
     private val validateInputUseCase: ValidateInputUseCase,
     private val trainingId: Long,
-    private val trainingTemplateId: Long,
+    trainingTemplateId: Long,
     private val exerciseTemplateId: Long,
     private val utilsProvider: UtilsProvider,
     val permissionsController: PermissionsController
@@ -74,7 +75,7 @@ class ExerciseAtWorkViewModel(
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
             ExerciseAtWorkEvent.OnTimerStart -> {
-                runTimerJob()
+                runTimerJob(null)
             }
 
             ExerciseAtWorkEvent.OnTimerStop -> {
@@ -299,15 +300,21 @@ class ExerciseAtWorkViewModel(
     private fun handleAddSetEvent(): List<ExerciseSet>? {
         if (invalidInput()) return null
 
+        val now = Clock.System.now().toEpochMilliseconds()
         val exerciseDetails = state.value.exerciseDetails
-        val newInput = ExerciseSet(
+        val lastSet = exerciseDetails.exercise?.sets?.lastOrNull()
+        val restSec = if (lastSet?.updateTime == null) null else Utils.calculateRestSec(
+            lastSet.updateTime, now
+        )
+        val newSet = ExerciseSet(
             id = randomUUID(),
             weight = exerciseDetails.weight.text,
             reps = exerciseDetails.reps.text,
             difficulty = exerciseDetails.setDifficulty,
-            updateTime = Clock.System.now().toEpochMilliseconds()
+            updateTime = now,
+            restSec = restSec
         )
-        val sets = exerciseDetails.exercise?.sets?.plus(newInput) ?: emptyList()
+        val sets = exerciseDetails.exercise?.sets?.plus(newSet) ?: emptyList()
 
         updateBestLiftedWeightIfNeeded()
 
@@ -318,7 +325,8 @@ class ExerciseAtWorkViewModel(
                 exerciseDetails.weight.text.toDouble()
         val reps = exerciseDetails.reps.text.toInt()
         updateSets(sets = sets, weight = weight * reps, reps = reps)
-        runTimerJob()
+
+        runTimerJob(lastSet?.restSec?.toInt())
         return sets
     }
 
@@ -366,11 +374,12 @@ class ExerciseAtWorkViewModel(
         )
     }
 
-    private fun runTimerJob() {
+    private fun runTimerJob(restSec: Int?) {
         viewModelScope.launch {
             requestNotificationPermission()
 
-            utilsProvider.getTimerServiceRep().startService(state.value.timerState.timerValue)
+            utilsProvider.getTimerServiceRep()
+                .startService(restSec ?: state.value.timerState.timerValue)
             TimerDataHolder.timerValue.collect { counter ->
                 _state.update {
                     it.copy(

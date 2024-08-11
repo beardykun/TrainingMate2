@@ -21,7 +21,7 @@ fun String.stringToList(): List<String> {
 
 fun List<ExerciseSet>.setListToString(): String {
     return this.filterNot { it.weight.isEmpty() }.joinToString(separator = ", ") {
-        "${it.weight};${it.reps};${it.difficulty.name};${it.id};${it.updateTime}"
+        "${it.weight};${it.reps};${it.difficulty.name};${it.id};${it.updateTime};${it.restSec};${it.restTimeText}"
     }
 }
 
@@ -40,13 +40,17 @@ fun String.stringToSetList(): List<ExerciseSet> {
         }
         val id = components.getOrNull(3)?.takeIf { it.isNotEmpty() }
         val updateTime = components.getOrNull(4)?.takeIf { it.isNotEmpty() }
+        val restSec = components.getOrNull(5)?.takeIf { it.isNotEmpty() && it != "null" }
+        val restTimeText = components.getOrNull(6)?.takeIf { it.isNotEmpty() && it != "null" }
 
         ExerciseSet(
             weight = weight,
             reps = reps,
             difficulty = dif,
             id = id ?: randomUUID(),
-            updateTime = updateTime?.toLong() ?: 0L
+            updateTime = updateTime?.toLong() ?: 0L,
+            restSec = restSec?.toLong(),
+            restTimeText = restTimeText
         )
     }
 }

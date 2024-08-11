@@ -17,8 +17,10 @@ import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 
 @Composable
 fun ExerciseComparison(
@@ -37,64 +39,84 @@ fun ExerciseComparison(
             .padding(vertical = Dimens.Padding8)
 
     ) {
-        lastExercise?.let {
-            Card(
-                modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
-                elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-                onClick = { onClick.invoke(it.name) }
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.padding(all = Dimens.Padding8)) {
-                        TextLarge(
-                            text =
-                            stringResource(
-                                SharedRes.strings.last_exercise,
-                                lastExercise.totalLiftedWeight,
-                                lastExercise.sets.size
-                            ),
-                        )
-                        val setNum = exercise.sets.size
-                        if (setNum < it.sets.size) {
-                            val setNumToDisplay = exercise.sets.size + 1
-                            val set = it.sets[setNum]
-                            val background = Utils.setDifficultyColor(set.difficulty)
-                            TextLarge(
-                                text = stringResource(
-                                    SharedRes.strings.last_exercise_next_set,
-                                    setNumToDisplay,
-                                    set.weight,
-                                    set.reps
-                                ),
-                                modifier = Modifier.padding(top = Dimens.Padding4)
-                                    .background(background)
-                            )
-                        }
-                    }
-                }
-            }
+        lastExercise?.let { lastExercise ->
+            LastExerciseData(onClick, lastExercise, exercise, Modifier.weight(1f))
         }
 
-        Card(
-            modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
-            elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+        CurrentExerciseData(weightTextColor, exercise, Modifier.weight(1f))
+    }
+}
+
+@Composable
+fun CurrentExerciseData(
+    weightTextColor: Color,
+    exercise: Exercise,
+    modifier: Modifier
+) {
+    Card(
+        modifier = modifier.padding(horizontal = Dimens.Padding8),
+        elevation = CardDefaults.cardElevation(Dimens.cardElevation)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            TextLarge(
+                color = weightTextColor,
+                text =
+                stringResource(
+                    SharedRes.strings.this_exercise,
+                    exercise.totalLiftedWeight,
+                    exercise.sets.size
+                ),
+                modifier = Modifier.padding(all = Dimens.Padding8)
+            )
+        }
+    }
+}
+
+@Composable
+fun LastExerciseData(
+    onClick: (name: String) -> Unit,
+    lastExercise: Exercise,
+    exercise: Exercise,
+    modifier: Modifier
+) {
+    Card(
+        modifier = modifier.padding(horizontal = Dimens.Padding8),
+        elevation = CardDefaults.cardElevation(Dimens.cardElevation),
+        onClick = { onClick.invoke(lastExercise.name) }
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(all = Dimens.Padding8)) {
                 TextLarge(
-                    color = weightTextColor,
                     text =
                     stringResource(
-                        SharedRes.strings.this_exercise,
-                        exercise.totalLiftedWeight,
-                        exercise.sets.size
+                        SharedRes.strings.last_exercise,
+                        lastExercise.totalLiftedWeight,
+                        lastExercise.sets.size
                     ),
-                    modifier = Modifier.padding(all = Dimens.Padding8)
                 )
+                val setNum = exercise.sets.size
+                if (setNum < lastExercise.sets.size) {
+                    val setNumToDisplay = exercise.sets.size + 1
+                    val set = lastExercise.sets[setNum]
+                    val background = Utils.setDifficultyColor(set.difficulty)
+                    TextLarge(
+                        text = stringResource(
+                            SharedRes.strings.last_exercise_next_set,
+                            setNumToDisplay,
+                            set.weight,
+                            set.reps
+                        ),
+                        modifier = Modifier.padding(top = Dimens.Padding4)
+                            .background(background)
+                    )
+                    set.restTimeText?.let { TextSmall(text = it) }
+                }
             }
         }
     }

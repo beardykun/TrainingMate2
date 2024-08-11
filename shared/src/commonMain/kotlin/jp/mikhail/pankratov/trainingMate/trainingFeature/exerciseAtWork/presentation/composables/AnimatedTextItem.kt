@@ -69,12 +69,9 @@ fun AnimatedTextItem(
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
-                if (previousSet != null) {
+                set.restTimeText?.let {
                     TextSmall(
-                        text = Utils.calculateRestTime(
-                            previousSet.updateTime,
-                            set.updateTime
-                        )
+                        text = it
                     )
                 }
             }

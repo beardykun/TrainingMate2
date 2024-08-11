@@ -41,8 +41,16 @@ object Utils {
         }
     }
 
+    fun calculateRestSec(lastSetTime: Long, thisSetTime: Long): Long {
+        return (thisSetTime - lastSetTime) / 1000
+    }
+
     fun calculateRestTime(lastSetTime: Long, thisSetTime: Long): String {
         val totalSeconds = (thisSetTime - lastSetTime) / 1000
+        return formatTimeText(totalSeconds)
+    }
+
+    fun formatTimeText(totalSeconds: Long): String {
         val minutes = totalSeconds / 60
         val minToDisplay = if (minutes < 10) "0$minutes" else minutes.toString()
         val seconds = totalSeconds % 60

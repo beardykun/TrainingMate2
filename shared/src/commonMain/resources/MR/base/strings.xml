@@ -77,7 +77,7 @@
     <string name="cd_exercise_history">Exercise history</string>
     <string name="cd_start_timer">Start timer</string>
     <string name="last_exercise">Last Exercise\nLifted: %1$.2f kg\nSets: %2$d</string>
-    <string name="last_exercise_next_set">Set %1$d: %2$s x %3$s kg</string>
+    <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
     <string name="this_exercise">This Exercise\nLifted: %1$.2f kg\nSets: %2$d</string>
     <string name="auto_input">Auto Input</string>
     <string name="break_time">Select break time</string>
