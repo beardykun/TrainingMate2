@@ -175,7 +175,11 @@ class ExerciseAtWorkViewModel(
                         state.value.exerciseDetails.exercise?.sets?.filter { it.id != deleteItem.id }
                             ?: emptyList()
                     if (sets.size == state.value.exerciseDetails.exercise?.sets?.size) return
-                    val minusWeight = deleteItem.weight.toDouble() * deleteItem.reps.toInt()
+                    val minusWeight = calculateSetTotalWeight(
+                        state.value.exerciseDetails.exerciseLocal?.usesTwoDumbbells,
+                        deleteItem.weight,
+                        deleteItem.reps
+                    )
                     updateSets(sets, -minusWeight, -deleteItem.reps.toInt())
                 }
                 _state.update {
@@ -300,8 +304,40 @@ class ExerciseAtWorkViewModel(
     private fun handleAddSetEvent(): List<ExerciseSet>? {
         if (invalidInput()) return null
 
-        val now = Clock.System.now().toEpochMilliseconds()
         val exerciseDetails = state.value.exerciseDetails
+        val newSet = createNewSet(exerciseDetails)
+        val sets = exerciseDetails.exercise?.sets?.plus(newSet) ?: emptyList()
+
+        updateBestLiftedWeightIfNeeded()
+        val reps = exerciseDetails.reps.text.toInt()
+
+        val weight = calculateSetTotalWeight(
+            exerciseDetails.exerciseLocal?.usesTwoDumbbells,
+            exerciseDetails.weight.text,
+            exerciseDetails.reps.text
+        )
+        updateSets(sets = sets, weight = weight * reps, reps = reps)
+
+        val lastSameExercise = exerciseDetails.lastSameExercise
+        runTimerJob(lastSameExercise?.sets?.getOrNull(sets.size)?.restSec)
+        return sets
+    }
+
+    private fun calculateSetTotalWeight(
+        usesTwoDumbbells: Boolean?,
+        weight: String,
+        reps: String
+    ): Double {
+        val totalWeight =
+            if (usesTwoDumbbells == true)
+                weight.toDouble() * 2
+            else
+                weight.toDouble()
+        return totalWeight * reps.toInt()
+    }
+
+    private fun createNewSet(exerciseDetails: ExerciseDetails): ExerciseSet {
+        val now = Clock.System.now().toEpochMilliseconds()
         val lastSet = exerciseDetails.exercise?.sets?.lastOrNull()
         val restSec = if (lastSet?.updateTime == null) null else Utils.calculateRestSec(
             lastSet.updateTime, now
@@ -314,20 +350,7 @@ class ExerciseAtWorkViewModel(
             updateTime = now,
             restSec = restSec
         )
-        val sets = exerciseDetails.exercise?.sets?.plus(newSet) ?: emptyList()
-
-        updateBestLiftedWeightIfNeeded()
-
-        val weight =
-            if (exerciseDetails.exerciseLocal?.usesTwoDumbbells == true)
-                exerciseDetails.weight.text.toDouble() * 2
-            else
-                exerciseDetails.weight.text.toDouble()
-        val reps = exerciseDetails.reps.text.toInt()
-        updateSets(sets = sets, weight = weight * reps, reps = reps)
-
-        runTimerJob(lastSet?.restSec?.toInt())
-        return sets
+        return newSet
     }
 
     private fun updateSets(sets: List<ExerciseSet>, weight: Double, reps: Int) =
@@ -374,12 +397,11 @@ class ExerciseAtWorkViewModel(
         )
     }
 
-    private fun runTimerJob(restSec: Int?) {
+    private fun runTimerJob(restSec: Long?) {
         viewModelScope.launch {
             requestNotificationPermission()
-
             utilsProvider.getTimerServiceRep()
-                .startService(restSec ?: state.value.timerState.timerValue)
+                .startService(restSec?.toInt() ?: state.value.timerState.timerValue)
             TimerDataHolder.timerValue.collect { counter ->
                 _state.update {
                     it.copy(
