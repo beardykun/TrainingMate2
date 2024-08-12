@@ -316,7 +316,7 @@ class ExerciseAtWorkViewModel(
             exerciseDetails.weight.text,
             exerciseDetails.reps.text
         )
-        updateSets(sets = sets, weight = weight * reps, reps = reps)
+        updateSets(sets = sets, weight = weight, reps = reps)
 
         val lastSameExercise = exerciseDetails.lastSameExercise
         runTimerJob(lastSameExercise?.sets?.getOrNull(sets.size)?.restSec)
