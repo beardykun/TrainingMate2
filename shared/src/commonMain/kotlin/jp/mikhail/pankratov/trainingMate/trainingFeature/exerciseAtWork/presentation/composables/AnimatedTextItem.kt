@@ -5,15 +5,20 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
@@ -27,7 +32,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presenta
 
 @Composable
 fun AnimatedTextItem(
-    previousSet: ExerciseSet?,
+    lastTrainingSet: ExerciseSet?,
     set: ExerciseSet,
     targetSize: TextUnit = Dimens.normalTextSize,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
@@ -48,6 +53,7 @@ fun AnimatedTextItem(
             }
         }
         val textColor = Utils.setDifficultyColor(set.difficulty)
+        var expanded by remember { mutableStateOf(false) }
 
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
@@ -56,19 +62,40 @@ fun AnimatedTextItem(
                 detectTapGestures(
                     onLongPress = {
                         onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(true, set))
-                    })
+                    },
+                    onTap = { expanded = true })
             }.padding(all = Dimens.Padding16)
 
         ) {
-            Column(modifier = Modifier.padding(all = Dimens.Padding8)) {
-                Text(
-                    text = "${set.weight} kg x ${set.reps}",
-                    style = TextStyle(
-                        fontSize = animatedFontSize.value.sp,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                )
+            Column(
+                modifier = Modifier
+                    .padding(all = Dimens.Padding8)
+            ) {
+                Box(modifier = modifier) {
+                    Text(
+                        text = "${set.weight} kg x ${set.reps}",
+                        style = TextStyle(
+                            fontSize = animatedFontSize.value.sp,
+                            textAlign = TextAlign.Center
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        Column(modifier = Modifier.padding(Dimens.Padding8)) {
+                            Text(
+                                text = "Last Training Set:\n${lastTrainingSet?.weight} kg x ${lastTrainingSet?.reps}"
+                            )
+                            lastTrainingSet?.restTimeText?.let {
+                                TextSmall(
+                                    text = it
+                                )
+                            }
+                        }
+                    }
+                }
                 set.restTimeText?.let {
                     TextSmall(
                         text = it

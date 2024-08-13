@@ -162,7 +162,9 @@ fun ExerciseAtWorkScreen(
                 LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMNS_NUM)) {
                     items(sets, key = { it.id }) { item ->
                         AnimatedTextItem(
-                            previousSet = sets.getOrNull(sets.indexOf(item) - 1),
+                            lastTrainingSet = state.exerciseDetails.lastSameExercise?.sets?.getOrNull(
+                                sets.indexOf(item)
+                            ),
                             set = item,
                             onEvent = onEvent,
                             isAnimating = state.uiState.isAnimating,
