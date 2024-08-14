@@ -25,6 +25,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import dev.icerock.moko.resources.compose.stringResource
+import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
@@ -86,7 +88,11 @@ fun AnimatedTextItem(
                     ) {
                         Column(modifier = Modifier.padding(Dimens.Padding8)) {
                             Text(
-                                text = "Last Training Set:\n${lastTrainingSet?.weight} kg x ${lastTrainingSet?.reps}"
+                                text = stringResource(
+                                    SharedRes.strings.last_training_set,
+                                    lastTrainingSet?.weight ?: "",
+                                    lastTrainingSet?.reps ?: ""
+                                )
                             )
                             lastTrainingSet?.restTimeText?.let {
                                 TextSmall(
