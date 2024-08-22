@@ -1,7 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +10,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingViewModel(
@@ -62,11 +59,10 @@ class TrainingViewModel(
         }
 
     private val trainingData = combine(
-        trainingUseCaseProvider.getLocalTrainingsUseCase().invoke(),
         trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
         trainingUseCaseProvider.getLastHistoryTrainingUseCase().invoke()
-    ) { trainings, ongoingTraining, trainingsHistory ->
-        Triple(trainings, ongoingTraining, trainingsHistory)
+    ) { ongoingTraining, trainingsHistory ->
+        Pair(ongoingTraining, trainingsHistory)
     }
 
     private val _state = MutableStateFlow(TrainingScreenState())
@@ -75,10 +71,9 @@ class TrainingViewModel(
         trainingData,
         summaries
     ) { state, trainingData, summaries ->
-        val (trainings, ongoingTraining, trainingsHistory) = trainingData
+        val (ongoingTraining, trainingsHistory) = trainingData
         val (monthly, weekly) = summaries
         state.copy(
-            availableTrainings = trainings,
             greeting = motivationalPhrases.random(),
             ongoingTraining = ongoingTraining,
             lastTraining = trainingsHistory,
@@ -93,40 +88,29 @@ class TrainingViewModel(
 
     fun onEvent(event: TrainingScreenEvent) {
         when (event) {
-            is TrainingScreenEvent.OnStartNewTraining -> {
-                state.value.selectedTraining?.let { localTraining ->
-                    _state.update {
-                        it.copy(
-                            showStartTrainingDialog = false
-                        )
-                    }
-                    startNewTraining(localTraining)
-                }
-            }
-
-            is TrainingScreenEvent.OnTrainingItemClick -> {
+            is TrainingScreenEvent.OnStartTrainingClick -> {
                 _state.update {
                     it.copy(
-                        showStartTrainingDialog = event.shouldShowDialog,
-                        selectedTraining = event.training
+                        showStartTrainingDialog = false
                     )
+                }
+                viewModelScope.launch {
+                    finishLastTrainingWhenStartingNew()
                 }
             }
 
             is TrainingScreenEvent.OnLastTrainingDelete -> {
                 _state.update {
                     it.copy(
-                        trainingId = event.trainingId,
                         showDeleteDialog = true
                     )
                 }
             }
 
             TrainingScreenEvent.OnDeleteConfirmClick -> {
-                state.value.trainingId?.let { deleteLastTraining(trainingId = it) }
+                state.value.lastTraining?.id?.let { deleteLastTraining(it) }
                 _state.update {
                     it.copy(
-                        trainingId = null,
                         showDeleteDialog = false
                     )
                 }
@@ -135,37 +119,14 @@ class TrainingViewModel(
             TrainingScreenEvent.OnDeleteDenyClick -> {
                 _state.update {
                     it.copy(
-                        trainingId = null,
                         showDeleteDialog = false
                     )
                 }
             }
 
-            is TrainingScreenEvent.OnTrainingTemplateDelete -> {
+            TrainingScreenEvent.OnShouldShowDialog -> {
                 _state.update {
-                    it.copy(
-                        trainingId = event.id,
-                        showDeleteTemplateDialog = true
-                    )
-                }
-            }
-
-            TrainingScreenEvent.OnDeleteTemplateConfirmClick -> {
-                state.value.trainingId?.let { deleteTemplateTraining(trainingId = it) }
-                _state.update {
-                    it.copy(
-                        showDeleteTemplateDialog = false,
-                        trainingId = null
-                    )
-                }
-            }
-
-            TrainingScreenEvent.OnDeleteTemplateDenyClick -> {
-                _state.update {
-                    it.copy(
-                        showDeleteTemplateDialog = false,
-                        trainingId = null
-                    )
+                    it.copy(showDeleteDialog = true)
                 }
             }
         }
@@ -174,26 +135,6 @@ class TrainingViewModel(
     private fun deleteLastTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
             .invoke(trainingId = trainingId)
-    }
-
-    private fun deleteTemplateTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
-        trainingUseCaseProvider.getDeleteTrainingTemplateUseCase().invoke(trainingId)
-    }
-
-    private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {
-        finishLastTrainingWhenStartingNew()
-        trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase().invoke(
-            Training(
-                trainingTemplateId = training.id!!,
-                name = training.name,
-                groups = training.groups,
-                description = training.description,
-                startTime = Clock.System.now().toEpochMilliseconds(),
-                userId = "1",
-                exercises = training.exercises
-            )
-        )
-        summaryUseCaseProvider.getInsetSummaryUseCase().invoke()
     }
 
     private suspend fun finishLastTrainingWhenStartingNew() {

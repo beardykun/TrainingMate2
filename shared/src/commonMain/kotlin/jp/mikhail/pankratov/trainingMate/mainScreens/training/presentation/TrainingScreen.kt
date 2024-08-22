@@ -2,7 +2,6 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.compo
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.SummaryWeekly
 import moe.tlaster.precompose.navigation.Navigator
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrainingScreen(
     state: TrainingScreenState,
@@ -48,7 +46,12 @@ fun TrainingScreen(
     Scaffold(floatingActionButton =
     {
         FloatingActionButton(onClick = {
-            navigator.navigate(Routs.TrainingScreens.createTraining)
+            if (state.ongoingTraining != null) {
+                onEvent(TrainingScreenEvent.OnShouldShowDialog(shouldShowDialog = true))
+            } else {
+                onEvent(TrainingScreenEvent.OnStartTrainingClick)
+                navigator.navigate(Routs.TrainingScreens.createTraining)
+            }
         }) {
             Icon(
                 imageVector = Icons.Default.Add,
@@ -96,44 +99,6 @@ fun TrainingScreen(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
                         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                     )
-                }
-            }
-            AnimatedVisibility(state.ongoingTraining == null) {
-                state.availableTrainings?.let { trainings ->
-                    Column {
-                        TextLarge(text = stringResource(SharedRes.strings.start_new_training).uppercase())
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            items(trainings,
-                                key = { item ->
-                                    item.name
-                                }
-                            ) { training ->
-                                LocalTrainingItem(
-                                    training = training,
-                                    onClick = {
-                                        if (state.ongoingTraining?.trainingTemplateId == training.id) {
-                                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-                                            return@LocalTrainingItem
-                                        }
-                                        onEvent(
-                                            TrainingScreenEvent.OnTrainingItemClick(
-                                                shouldShowDialog = true,
-                                                training = training
-                                            )
-                                        )
-                                    },
-                                    onDeleteClick = { id ->
-                                        onEvent(TrainingScreenEvent.OnTrainingTemplateDelete(id))
-                                    },
-                                    modifier = Modifier.animateItemPlacement(),
-                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                                )
-                            }
-                        }
-                    }
                 }
             }
             state.weeklySummary?.let { weeklyList ->
@@ -221,11 +186,11 @@ fun TrainingScreen(
                     title = stringResource(SharedRes.strings.start_training),
                     description = stringResource(SharedRes.strings.are_you_ready_to_start),
                     onAccept = {
-                        onEvent(TrainingScreenEvent.OnStartNewTraining)
+                        onEvent(TrainingScreenEvent.OnStartTrainingClick)
                         navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                     },
                     onDenny = {
-                        onEvent(TrainingScreenEvent.OnTrainingItemClick())
+                        onEvent(TrainingScreenEvent.OnShouldShowDialog())
                     }
                 )
             }
@@ -238,18 +203,6 @@ fun TrainingScreen(
                     },
                     onDenny = {
                         onEvent(TrainingScreenEvent.OnDeleteDenyClick)
-                    }
-                )
-            }
-            AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
-                DialogPopup(
-                    title = stringResource(SharedRes.strings.delete_training),
-                    description = stringResource(SharedRes.strings.want_to_delete_training),
-                    onAccept = {
-                        onEvent(TrainingScreenEvent.OnDeleteTemplateConfirmClick)
-                    },
-                    onDenny = {
-                        onEvent(TrainingScreenEvent.OnDeleteTemplateDenyClick)
                     }
                 )
             }
