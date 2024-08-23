@@ -88,17 +88,6 @@ class TrainingViewModel(
 
     fun onEvent(event: TrainingScreenEvent) {
         when (event) {
-            is TrainingScreenEvent.OnStartTrainingClick -> {
-                _state.update {
-                    it.copy(
-                        showStartTrainingDialog = false
-                    )
-                }
-                viewModelScope.launch {
-                    finishLastTrainingWhenStartingNew()
-                }
-            }
-
             is TrainingScreenEvent.OnLastTrainingDelete -> {
                 _state.update {
                     it.copy(
@@ -123,29 +112,11 @@ class TrainingViewModel(
                     )
                 }
             }
-
-            is TrainingScreenEvent.OnShouldShowDialog -> {
-                _state.update {
-                    it.copy(showStartTrainingDialog = event.shouldShowDialog)
-                }
-            }
         }
     }
 
     private fun deleteLastTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
             .invoke(trainingId = trainingId)
-    }
-
-    private suspend fun finishLastTrainingWhenStartingNew() {
-        state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
-            if (state.value.ongoingTraining?.totalLiftedWeight == 0.0) {
-                trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
-                    .invoke(trainingId = ongoingTrainingId)
-                return@let
-            }
-            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
-                .invoke(trainingId = ongoingTrainingId)
-        }
     }
 }

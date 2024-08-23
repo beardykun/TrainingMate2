@@ -17,6 +17,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FitScreen
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,15 +49,10 @@ fun TrainingScreen(
     Scaffold(floatingActionButton =
     {
         FloatingActionButton(onClick = {
-            if (state.ongoingTraining != null) {
-                onEvent(TrainingScreenEvent.OnShouldShowDialog(shouldShowDialog = true))
-            } else {
-                onEvent(TrainingScreenEvent.OnStartTrainingClick)
-                navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-            }
+            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
         }) {
             Icon(
-                imageVector = Icons.Default.Add,
+                imageVector = Icons.Default.FitnessCenter,
                 contentDescription = stringResource(SharedRes.strings.cd_add_new_training)
             )
         }
@@ -92,7 +90,7 @@ fun TrainingScreen(
                             groups = ongoingTraining.groups
                         ),
                         onClick = {
-                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                            navigator.navigate(Routs.TrainingScreens.trainingExercises)
                         },
                         onDeleteClick = {},
                         isDeletable = false,
@@ -136,7 +134,7 @@ fun TrainingScreen(
                 }
             }
 
-            MaterialTheme.colorScheme.apply {
+            /*MaterialTheme.colorScheme.apply {
                 val colorEntries = listOf(
                     ColorEntry("primary", primary),
                     ColorEntry("onPrimary", onPrimary),
@@ -179,21 +177,7 @@ fun TrainingScreen(
                         }
                     }
                 }
-            }
-
-            AnimatedVisibility(visible = state.showStartTrainingDialog) {
-                DialogPopup(
-                    title = stringResource(SharedRes.strings.start_training),
-                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
-                    onAccept = {
-                        onEvent(TrainingScreenEvent.OnStartTrainingClick)
-                        navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-                    },
-                    onDenny = {
-                        onEvent(TrainingScreenEvent.OnShouldShowDialog())
-                    }
-                )
-            }
+            }*/
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.delete_last_training),

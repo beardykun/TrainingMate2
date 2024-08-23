@@ -16,7 +16,7 @@ object Routs {
     }
 
     object TrainingScreens {
-        val trainingGroupRout = "This Training"
+        val trainingGroupRout = "Training Selection"
         val trainingExercises = "Training Exercises"
         val createTraining = "Create Training"
         val addExercises = "Add Exercises"

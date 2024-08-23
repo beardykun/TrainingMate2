@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.History
@@ -230,7 +231,7 @@ private fun RouteBuilder.trainingScreens(
 fun bottomNavigationItems() = listOf(
     BottomNavigationItem(
         title = Routs.MainScreens.training.title,
-        selectedIcon = Icons.Filled.FitnessCenter,
+        selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.FitnessCenter,
         hasNews = false
     ),

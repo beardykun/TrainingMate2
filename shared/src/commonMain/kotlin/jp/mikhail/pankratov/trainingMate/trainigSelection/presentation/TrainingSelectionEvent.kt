@@ -7,7 +7,8 @@ sealed class TrainingSelectionEvent {
     data object OnDeleteTemplateDenyClick : TrainingSelectionEvent()
     data class OnTrainingItemClick(val shouldShowDialog: Boolean, val training: TrainingLocal) :
         TrainingSelectionEvent()
+
     data class OnTrainingTemplateDelete(val id: Long) : TrainingSelectionEvent()
-    data object OnStartNewTraining : TrainingSelectionEvent()
+    data class OnStartNewTraining(val onSuccess: () -> Unit) : TrainingSelectionEvent()
     data object OnStartNewTrainingDeny : TrainingSelectionEvent()
 }

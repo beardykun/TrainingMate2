@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
@@ -23,10 +24,12 @@ class TrainingSelectionViewModel(
     private val _state = MutableStateFlow(value = TrainingSelectionState())
     val state = combine(
         _state,
-        trainingUseCaseProvider.getLocalTrainingsUseCase().invoke()
-    ) { state, localTrainings ->
+        trainingUseCaseProvider.getLocalTrainingsUseCase().invoke(),
+        trainingUseCaseProvider.getOngoingTrainingUseCase().invoke()
+    ) { state, localTrainings, ongoingTraining ->
         if (state.availableTrainings != localTrainings)
             state.copy(
+                ongoingTraining = ongoingTraining,
                 availableTrainings = localTrainings
             ) else state
     }.stateIn(
@@ -53,7 +56,11 @@ class TrainingSelectionViewModel(
                             showStartTrainingDialog = false,
                         )
                     }
-                    startNewTraining(localTraining)
+                    viewModelScope.launch {
+                        finishLastTrainingWhenStartingNew()
+                        startNewTraining(localTraining)
+                        event.onSuccess.invoke()
+                    }
                 }
             }
 
@@ -100,7 +107,7 @@ class TrainingSelectionViewModel(
         trainingUseCaseProvider.getDeleteTrainingTemplateUseCase().invoke(trainingId)
     }
 
-    private fun startNewTraining(training: TrainingLocal) = viewModelScope.launch(Dispatchers.IO) {
+    private suspend fun startNewTraining(training: TrainingLocal) = withContext(Dispatchers.IO) {
         trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase().invoke(
             Training(
                 trainingTemplateId = training.id!!,
@@ -113,5 +120,17 @@ class TrainingSelectionViewModel(
             )
         )
         summaryUseCaseProvider.getInsetSummaryUseCase().invoke()
+    }
+
+    private suspend fun finishLastTrainingWhenStartingNew() = withContext(Dispatchers.IO) {
+        state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
+            if (state.value.ongoingTraining?.totalLiftedWeight == 0.0) {
+                trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
+                    .invoke(trainingId = ongoingTrainingId)
+                return@let
+            }
+            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
+                .invoke(trainingId = ongoingTrainingId)
+        }
     }
 }

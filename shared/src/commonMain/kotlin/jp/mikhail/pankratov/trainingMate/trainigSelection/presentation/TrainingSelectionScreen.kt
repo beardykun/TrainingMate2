@@ -15,7 +15,6 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.LocalTrainingItem
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreenEvent
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -71,10 +70,13 @@ fun TrainingSelectionScreen(
             AnimatedVisibility(visible = state.showStartTrainingDialog) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.start_training),
-                    description = stringResource(SharedRes.strings.start_new_training),
+                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
                     onAccept = {
-                        onEvent(TrainingSelectionEvent.OnStartNewTraining)
-                        navigator.navigate(Routs.TrainingScreens.trainingExercises)
+                        onEvent(TrainingSelectionEvent.OnStartNewTraining {
+                            navigator.navigate(
+                                Routs.TrainingScreens.trainingExercises
+                            )
+                        })
                     },
                     onDenny = {
                         onEvent(TrainingSelectionEvent.OnStartNewTrainingDeny)
