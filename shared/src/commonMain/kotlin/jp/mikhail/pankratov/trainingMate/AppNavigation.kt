@@ -32,6 +32,8 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
+import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionScreen
+import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseScreen
@@ -128,8 +130,20 @@ private fun RouteBuilder.trainingScreens(
 ) {
     group(
         route = Routs.TrainingScreens.trainingGroupRout,
-        initialRoute = Routs.TrainingScreens.trainingExercises
+        initialRoute = Routs.TrainingScreens.selectTraining
     ) {
+        scene(
+            route = Routs.TrainingScreens.selectTraining,
+            navTransition = NavTransition()
+        ) {
+            val viewModel = koinViewModel(vmClass = TrainingSelectionViewModel::class)
+            val sate by viewModel.state.collectAsStateWithLifecycle()
+            TrainingSelectionScreen(
+                state = sate,
+                onEvent = viewModel::onEvent,
+                navigator = navigator
+            )
+        }
         scene(
             route = Routs.TrainingScreens.trainingExercises,
             navTransition = NavTransition()

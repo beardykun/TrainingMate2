@@ -4,7 +4,6 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreenEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,11 +45,12 @@ class TrainingSelectionViewModel(
                     )
                 }
             }
+
             is TrainingSelectionEvent.OnStartNewTraining -> {
                 state.value.selectedTraining?.let { localTraining ->
                     _state.update {
                         it.copy(
-                            showStartTrainingDialog = false
+                            showStartTrainingDialog = false,
                         )
                     }
                     startNewTraining(localTraining)
@@ -67,8 +67,32 @@ class TrainingSelectionViewModel(
                 }
             }
 
-            TrainingSelectionEvent.OnDeleteTemplateDenyClick -> TODO()
-            is TrainingSelectionEvent.OnTrainingTemplateDelete -> TODO()
+            TrainingSelectionEvent.OnDeleteTemplateDenyClick -> {
+                _state.update {
+                    it.copy(
+                        showDeleteTemplateDialog = false,
+                        trainingId = null
+                    )
+                }
+            }
+
+            is TrainingSelectionEvent.OnTrainingTemplateDelete -> {
+                _state.update {
+                    it.copy(
+                        showDeleteTemplateDialog = true,
+                        trainingId = event.id
+                    )
+                }
+            }
+
+            TrainingSelectionEvent.OnStartNewTrainingDeny -> {
+                _state.update {
+                    it.copy(
+                        showStartTrainingDialog = false,
+                        trainingId = null
+                    )
+                }
+            }
         }
     }
 

@@ -9,4 +9,5 @@ sealed class TrainingSelectionEvent {
         TrainingSelectionEvent()
     data class OnTrainingTemplateDelete(val id: Long) : TrainingSelectionEvent()
     data object OnStartNewTraining : TrainingSelectionEvent()
+    data object OnStartNewTrainingDeny : TrainingSelectionEvent()
 }

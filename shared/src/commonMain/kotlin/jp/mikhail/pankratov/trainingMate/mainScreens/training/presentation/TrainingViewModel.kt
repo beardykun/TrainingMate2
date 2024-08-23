@@ -14,7 +14,7 @@ import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
-    private val summaryUseCaseProvider: SummaryUseCaseProvider
+    summaryUseCaseProvider: SummaryUseCaseProvider
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val motivationalPhrases = listOf(
@@ -124,9 +124,9 @@ class TrainingViewModel(
                 }
             }
 
-            TrainingScreenEvent.OnShouldShowDialog -> {
+            is TrainingScreenEvent.OnShouldShowDialog -> {
                 _state.update {
-                    it.copy(showDeleteDialog = true)
+                    it.copy(showStartTrainingDialog = event.shouldShowDialog)
                 }
             }
         }

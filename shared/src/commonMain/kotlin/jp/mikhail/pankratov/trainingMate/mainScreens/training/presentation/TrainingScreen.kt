@@ -50,7 +50,7 @@ fun TrainingScreen(
                 onEvent(TrainingScreenEvent.OnShouldShowDialog(shouldShowDialog = true))
             } else {
                 onEvent(TrainingScreenEvent.OnStartTrainingClick)
-                navigator.navigate(Routs.TrainingScreens.createTraining)
+                navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
             }
         }) {
             Icon(
