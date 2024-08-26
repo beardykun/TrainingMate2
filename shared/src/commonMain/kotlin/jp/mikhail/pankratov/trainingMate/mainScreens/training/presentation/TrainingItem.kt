@@ -44,6 +44,7 @@ fun LocalTrainingItem(
     isDeletable: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.inversePrimary,
     contentColor: Color = Color.Black,
+    limitWidth: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -51,7 +52,13 @@ fun LocalTrainingItem(
         modifier = modifier
             .clickable { onClick.invoke() }
             .padding(Dimens.Padding8)
-            .widthIn(min = Dimens.cardMinWidth, max = Dimens.cardMaxWidth)
+            .then(
+                if (limitWidth)
+                    modifier.widthIn(
+                        min = Dimens.cardMinWidth,
+                        max = Dimens.cardMaxWidth
+                    ) else modifier.fillMaxWidth().padding(horizontal = Dimens.Padding8)
+            )
     ) {
         Column(
             modifier = Modifier

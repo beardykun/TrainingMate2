@@ -1,20 +1,39 @@
 package jp.mikhail.pankratov.trainingMate.trainigSelection.presentation
 
+import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCard
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.LocalTrainingItem
+import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -24,64 +43,107 @@ fun TrainingSelectionScreen(
     onEvent: (TrainingSelectionEvent) -> Unit,
     navigator: Navigator
 ) {
-    state.availableTrainings?.let { trainings ->
-        Column {
-            TextLarge(text = stringResource(SharedRes.strings.start_new_training).uppercase())
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                items(trainings,
-                    key = { item ->
-                        item.name
-                    }
-                ) { training ->
-                    LocalTrainingItem(
-                        training = training,
+    Scaffold(floatingActionButton =
+    {
+        FloatingActionButton(onClick = {
+            navigator.navigate(Routs.TrainingScreens.createTraining)
+        }) {
+            Icon(
+                imageVector = Icons.Default.AddCard,
+                contentDescription = stringResource(SharedRes.strings.cd_add_new_training)
+            )
+        }
+    }) {
+        state.availableTrainings?.let {
+            Column {
+            val trainingTypes = Constants.GROUPS
+            val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
+            var selectedTabIndex by remember { mutableStateOf(0) }
+            val coroutineScope = rememberCoroutineScope()
+
+            LaunchedEffect(pagerState.currentPage) {
+                val trainingType = trainingTypes[pagerState.currentPage]
+                selectedTabIndex = pagerState.currentPage
+                onEvent(TrainingSelectionEvent.OnTrainingTypeChanged(trainingType))
+            }
+            TabRow(selectedTabIndex = selectedTabIndex) {
+                trainingTypes.forEachIndexed { index, trainingType ->
+                    Tab(
+                        selected = selectedTabIndex == index,
                         onClick = {
-                            onEvent(
-                                TrainingSelectionEvent.OnTrainingItemClick(
-                                    shouldShowDialog = true,
-                                    training = training
-                                )
-                            )
-                        },
-                        onDeleteClick = { id ->
-                            onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
-                        },
-                        modifier = Modifier.animateItemPlacement(),
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                    )
+                            selectedTabIndex = index
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        }) {
+                        TextMedium(
+                            text = trainingType,
+                            modifier = Modifier.padding(Dimens.Padding8)
+                        )
+                    }
                 }
             }
-            AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
-                DialogPopup(
-                    title = stringResource(SharedRes.strings.delete_training),
-                    description = stringResource(SharedRes.strings.want_to_delete_training),
-                    onAccept = {
-                        onEvent(TrainingSelectionEvent.OnDeleteTemplateConfirmClick)
-                    },
-                    onDenny = {
-                        onEvent(TrainingSelectionEvent.OnDeleteTemplateDenyClick)
-                    }
-                )
-            }
-
-            AnimatedVisibility(visible = state.showStartTrainingDialog) {
-                DialogPopup(
-                    title = stringResource(SharedRes.strings.start_training),
-                    description = stringResource(SharedRes.strings.are_you_ready_to_start),
-                    onAccept = {
-                        onEvent(TrainingSelectionEvent.OnStartNewTraining {
-                            navigator.navigate(
-                                Routs.TrainingScreens.trainingExercises
+            state.typedTrainings?.let { trainings ->
+                HorizontalPager(state = pagerState) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        items(trainings,
+                            key = { item ->
+                                item.name
+                            }
+                        ) { training ->
+                            LocalTrainingItem(
+                                training = training,
+                                onClick = {
+                                    onEvent(
+                                        TrainingSelectionEvent.OnTrainingItemClick(
+                                            shouldShowDialog = true,
+                                            training = training
+                                        )
+                                    )
+                                },
+                                onDeleteClick = { id ->
+                                    onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
+                                },
+                                modifier = Modifier.animateItemPlacement(),
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                limitWidth = false
                             )
-                        })
-                    },
-                    onDenny = {
-                        onEvent(TrainingSelectionEvent.OnStartNewTrainingDeny)
+                        }
                     }
-                )
+                }
+            }
+                AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
+                    DialogPopup(
+                        title = stringResource(SharedRes.strings.delete_training),
+                        description = stringResource(SharedRes.strings.want_to_delete_training),
+                        onAccept = {
+                            onEvent(TrainingSelectionEvent.OnDeleteTemplateConfirmClick)
+                        },
+                        onDenny = {
+                            onEvent(TrainingSelectionEvent.OnDeleteTemplateDenyClick)
+                        }
+                    )
+                }
+
+                AnimatedVisibility(visible = state.showStartTrainingDialog) {
+                    DialogPopup(
+                        title = stringResource(SharedRes.strings.start_training),
+                        description = stringResource(SharedRes.strings.are_you_ready_to_start),
+                        onAccept = {
+                            onEvent(TrainingSelectionEvent.OnStartNewTraining {
+                                navigator.navigate(
+                                    Routs.TrainingScreens.trainingExercises
+                                )
+                            })
+                        },
+                        onDenny = {
+                            onEvent(TrainingSelectionEvent.OnStartNewTrainingDeny)
+                        }
+                    )
+                }
             }
         }
     }

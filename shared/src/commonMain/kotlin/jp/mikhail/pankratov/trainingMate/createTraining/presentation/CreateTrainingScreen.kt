@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
@@ -41,7 +42,7 @@ fun CreateTrainingScreen(
         )
 
         SelectableGroupVertical(
-            items = state.trainingGroups,
+            items = Constants.GROUPS,
             selected = state.selectedGroups,
             displayItem = { it },
             onClick = { selectedGroup ->

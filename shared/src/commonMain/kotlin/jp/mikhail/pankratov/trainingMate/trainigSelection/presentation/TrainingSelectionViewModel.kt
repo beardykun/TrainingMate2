@@ -100,8 +100,26 @@ class TrainingSelectionViewModel(
                     )
                 }
             }
+
+            is TrainingSelectionEvent.OnTrainingTypeChanged -> {
+                viewModelScope.launch {
+                    _state.update {
+                        it.copy(
+                            typedTrainings = sortTrainings(event.trainingType, state.value.availableTrainings)
+                        )
+                    }
+                }
+            }
         }
     }
+
+    private suspend fun sortTrainings(
+        trainingType: String,
+        availableTrainings: List<TrainingLocal>?
+    ): List<TrainingLocal>? =
+        withContext(Dispatchers.Default) {
+            availableTrainings?.filter { it.groups.contains(trainingType) }
+        }
 
     private fun deleteTemplateTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getDeleteTrainingTemplateUseCase().invoke(trainingId)
