@@ -75,7 +75,7 @@ class ExerciseAtWorkViewModel(
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
             ExerciseAtWorkEvent.OnTimerStart -> {
-                runTimerJob(null)
+                runTimerJob()
             }
 
             ExerciseAtWorkEvent.OnTimerStop -> {
@@ -317,9 +317,7 @@ class ExerciseAtWorkViewModel(
             exerciseDetails.reps.text
         )
         updateSets(sets = sets, weight = weight, reps = reps)
-
-        val lastSameExercise = exerciseDetails.lastSameExercise
-        runTimerJob(lastSameExercise?.sets?.getOrNull(sets.size)?.restSec)
+        runTimerJob()
         return sets
     }
 
@@ -397,11 +395,11 @@ class ExerciseAtWorkViewModel(
         )
     }
 
-    private fun runTimerJob(restSec: Long?) {
+    private fun runTimerJob() {
         viewModelScope.launch {
             requestNotificationPermission()
             utilsProvider.getTimerServiceRep()
-                .startService(restSec?.toInt() ?: state.value.timerState.timerValue)
+                .startService(state.value.timerState.timerValue)
             TimerDataHolder.timerValue.collect { counter ->
                 _state.update {
                     it.copy(

@@ -117,7 +117,7 @@ fun ThisTrainingScreen(
                 Button(
                     onClick = {
                         onEvent(ThisTrainingEvent.EndTraining)
-                        navigator.goBack()
+                        navigator.navigate(Routs.MainScreens.training.title)
                     },
                     modifier = Modifier.fillMaxWidth()
                         .padding(horizontal = Dimens.Padding48, vertical = Dimens.Padding16)
