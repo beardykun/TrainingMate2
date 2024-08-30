@@ -15,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,18 @@ fun SpinnerWheel(
     LaunchedEffect(Unit){
         scrollState.scrollToItem(items.indexOf(selectedItem))
     }
+    LaunchedEffect(scrollState) {
+        snapshotFlow {
+            scrollState.layoutInfo
+        }.collect { layoutInfo ->
+            val visibleItems = layoutInfo.visibleItemsInfo
+            if (visibleItems.isNotEmpty()) {
+                val middleIndex = visibleItems.size / 2
+                val middleItem = visibleItems[middleIndex]
+                onItemSelected(items[middleItem.index])
+            }
+        }
+    }
     LazyColumn(
         state = scrollState,
         modifier = Modifier
@@ -46,9 +59,6 @@ fun SpinnerWheel(
                 modifier = Modifier
                     .height(itemHeight)
                     .fillMaxWidth()
-                    .clickable {
-                        onItemSelected(item)
-                    }
                     .background(
                         if (item == selectedItem) Color.Blue else Color.Transparent,
                         shape = RoundedCornerShape(10.dp)
