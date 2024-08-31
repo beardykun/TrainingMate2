@@ -22,8 +22,15 @@ fun TimerSpinnerWheels(
     onMinuteSelected: (Int) -> Unit,
     onSecondSelected: (Int) -> Unit
 ) {
-    val minuteValues = (0..59).toList()
-    val secondValues = (0..59).step(5).toList()
+    val minuteValues = (0..59).map { it.toString() }.toMutableList().apply {
+        addAll(0, listOf("*", "*"))
+        addAll(listOf("*", "*"))
+    }.toList()
+    val secondValues = (0..59).step(5).map { it.toString() }.toMutableList()
+        .apply {
+            addAll(0, listOf("*", "*"))
+            addAll(listOf("*", "*"))
+        }
 
     Column(
         modifier = Modifier
@@ -39,7 +46,7 @@ fun TimerSpinnerWheels(
                 TextLarge(text = stringResource(SharedRes.strings.minutes))
                 SpinnerWheel(
                     items = minuteValues,
-                    selectedItem = minuteValue,
+                    selectedItem = minuteValue.toString(),
                     onItemSelected = {
                         onMinuteSelected(it)
                     }
@@ -50,7 +57,7 @@ fun TimerSpinnerWheels(
                 TextLarge(text = stringResource(SharedRes.strings.seconds))
                 SpinnerWheel(
                     items = secondValues,
-                    selectedItem = secondValue,
+                    selectedItem = secondValue.toString(),
                     onItemSelected = {
                         onSecondSelected.invoke(it)
                     }

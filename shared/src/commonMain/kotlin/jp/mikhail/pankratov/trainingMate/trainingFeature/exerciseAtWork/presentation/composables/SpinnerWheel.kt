@@ -1,7 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
@@ -25,13 +23,13 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SpinnerWheel(
-    items: List<Int>,
-    selectedItem: Int,
+    items: List<String>,
+    selectedItem: String,
     onItemSelected: (Int) -> Unit
 ) {
     val itemHeight = 40.dp
     val scrollState = rememberLazyListState()
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         scrollState.scrollToItem(items.indexOf(selectedItem))
     }
     LaunchedEffect(scrollState) {
@@ -42,7 +40,7 @@ fun SpinnerWheel(
             if (visibleItems.isNotEmpty()) {
                 val middleIndex = visibleItems.size / 2
                 val middleItem = visibleItems[middleIndex]
-                onItemSelected(items[middleItem.index])
+                onItemSelected(items[middleItem.index].toInt())
             }
         }
     }
