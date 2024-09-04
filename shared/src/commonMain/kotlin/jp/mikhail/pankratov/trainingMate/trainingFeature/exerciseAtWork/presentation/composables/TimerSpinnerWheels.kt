@@ -26,11 +26,10 @@ fun TimerSpinnerWheels(
         addAll(0, listOf("*", "*"))
         addAll(listOf("*", "*"))
     }.toList()
-    val secondValues = (0..59).step(5).map { it.toString() }.toMutableList()
-        .apply {
-            addAll(0, listOf("*", "*"))
-            addAll(listOf("*", "*"))
-        }
+    val secondValues = (0..59).step(5).map { it.toString() }.toMutableList().apply {
+        addAll(0, listOf("*", "*"))
+        addAll(listOf("*", "*"))
+    }.toList()
 
     Column(
         modifier = Modifier

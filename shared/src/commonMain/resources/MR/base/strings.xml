@@ -52,8 +52,9 @@
 
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>
-    <string name="add_exercises">Add exercises</string>
-
+    <string name="apply_changes">Apply changes</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
 
     <!-- DialogPopup -->
     <string name="yes">Yes</string>

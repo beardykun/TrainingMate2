@@ -11,6 +11,6 @@ sealed class AddExercisesEvent {
         val isDeleteVisible: Boolean,
         val exercise: ExerciseLocal? = null
     ) : AddExercisesEvent()
-
+    data class OnSelectionChanged(val selectedType: SelectionType) : AddExercisesEvent()
     data object OnInitData : AddExercisesEvent()
 }

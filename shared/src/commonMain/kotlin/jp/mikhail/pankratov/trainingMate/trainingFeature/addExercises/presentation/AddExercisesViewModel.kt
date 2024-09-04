@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AddExercisesViewModel(
@@ -105,8 +106,69 @@ class AddExercisesViewModel(
             }
 
             AddExercisesEvent.OnInitData -> loadTrainingAndExercises()
+            is AddExercisesEvent.OnSelectionChanged -> {
+                viewModelScope.launch {
+                    val filteredList = withContext(Dispatchers.Default) { getFilteredList(event.selectedType) }
+                    _state.update {
+                        it.copy(
+                            sortedExercises = filteredList
+                        )
+                    }
+                }
+            }
         }
     }
+
+    private fun getFilteredList(selectionType: SelectionType) =
+        when (selectionType) {
+            SelectionType.ADD -> {
+                state.value.availableExerciseLocals?.mapNotNull { item ->
+                    when (item) {
+                        is ExerciseListItem.ExerciseItem -> {
+                            if (!state.value.selectedExercises.contains(item.exercise.name)) {
+                                item
+                            } else {
+                                null
+                            }
+                        }
+
+                        is ExerciseListItem.Header -> {
+                            if (state.value.availableExerciseLocals?.filterIsInstance<ExerciseListItem.ExerciseItem>()
+                                    ?.any { state.value.selectedExercises.contains(it.exercise.name) } == true
+                            ) {
+                                item
+                            } else {
+                                null
+                            }
+                        }
+                    }
+                }
+            }
+
+            SelectionType.REMOVE -> {
+                state.value.availableExerciseLocals?.mapNotNull { item ->
+                    when (item) {
+                        is ExerciseListItem.ExerciseItem -> {
+                            if (state.value.selectedExercises.contains(item.exercise.name)) {
+                                item
+                            } else {
+                                null
+                            }
+                        }
+
+                        is ExerciseListItem.Header -> {
+                            if (state.value.availableExerciseLocals?.filterIsInstance<ExerciseListItem.ExerciseItem>()
+                                    ?.any { !state.value.selectedExercises.contains(it.exercise.name) } == true
+                            ) {
+                                item
+                            } else {
+                                null
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
     private fun updateTraining(oldTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase()
