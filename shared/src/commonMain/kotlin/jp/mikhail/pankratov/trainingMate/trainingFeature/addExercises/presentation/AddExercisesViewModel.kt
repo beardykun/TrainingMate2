@@ -108,7 +108,8 @@ class AddExercisesViewModel(
             AddExercisesEvent.OnInitData -> loadTrainingAndExercises()
             is AddExercisesEvent.OnSelectionChanged -> {
                 viewModelScope.launch {
-                    val filteredList = withContext(Dispatchers.Default) { getFilteredList(event.selectedType) }
+                    val filteredList =
+                        withContext(Dispatchers.Default) { getFilteredList(event.selectedType) }
                     _state.update {
                         it.copy(
                             sortedExercises = filteredList
@@ -119,13 +120,19 @@ class AddExercisesViewModel(
         }
     }
 
-    private fun getFilteredList(selectionType: SelectionType) =
-        when (selectionType) {
+    private fun getFilteredList(selectionType: SelectionType): List<ExerciseListItem>? {
+        val totalExerciseItems = if (selectionType == SelectionType.ADD)
+            (state.value.availableExerciseLocals?.count { it is ExerciseListItem.ExerciseItem }
+                ?.minus(state.value.selectedExercises.size))
+                ?: 0 else state.value.selectedExercises.size
+        return when (selectionType) {
             SelectionType.ADD -> {
+                var exerciseItemCount = 0
                 state.value.availableExerciseLocals?.mapNotNull { item ->
                     when (item) {
                         is ExerciseListItem.ExerciseItem -> {
                             if (!state.value.selectedExercises.contains(item.exercise.name)) {
+                                exerciseItemCount++
                                 item
                             } else {
                                 null
@@ -133,9 +140,8 @@ class AddExercisesViewModel(
                         }
 
                         is ExerciseListItem.Header -> {
-                            if (state.value.availableExerciseLocals?.filterIsInstance<ExerciseListItem.ExerciseItem>()
-                                    ?.any { state.value.selectedExercises.contains(it.exercise.name) } == true
-                            ) {
+                            // Only return the Header if there are more ExerciseItems to display after it
+                            if (exerciseItemCount < totalExerciseItems) {
                                 item
                             } else {
                                 null
@@ -146,10 +152,12 @@ class AddExercisesViewModel(
             }
 
             SelectionType.REMOVE -> {
+                var exerciseItemCount = 0
                 state.value.availableExerciseLocals?.mapNotNull { item ->
                     when (item) {
                         is ExerciseListItem.ExerciseItem -> {
                             if (state.value.selectedExercises.contains(item.exercise.name)) {
+                                exerciseItemCount++
                                 item
                             } else {
                                 null
@@ -157,9 +165,8 @@ class AddExercisesViewModel(
                         }
 
                         is ExerciseListItem.Header -> {
-                            if (state.value.availableExerciseLocals?.filterIsInstance<ExerciseListItem.ExerciseItem>()
-                                    ?.any { !state.value.selectedExercises.contains(it.exercise.name) } == true
-                            ) {
+                            // Only return the Header if there are more ExerciseItems to display after it
+                            if (exerciseItemCount < totalExerciseItems) {
                                 item
                             } else {
                                 null
@@ -169,6 +176,7 @@ class AddExercisesViewModel(
                 }
             }
         }
+    }
 
     private fun updateTraining(oldTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase()

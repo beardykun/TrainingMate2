@@ -4,7 +4,6 @@ import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -55,12 +54,12 @@ fun AddExercisesScreen(
             )
         }
     }) { padding ->
-        Column(
-            modifier = Modifier.fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = Dimens.Padding16, vertical = Dimens.Padding8)
-        ) {
-            state.availableExerciseLocals?.let {
+        if(!state.availableExerciseLocals.isNullOrEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = Dimens.Padding16, vertical = Dimens.Padding8)
+            ) {
                 val exercisesTypes = listOf(SelectionType.ADD, SelectionType.REMOVE)
                 val pagerState = rememberPagerState(pageCount = { exercisesTypes.size })
                 var selectedTabIndex by remember { mutableStateOf(0) }
@@ -70,6 +69,7 @@ fun AddExercisesScreen(
                     val selectedType = exercisesTypes[pagerState.currentPage]
                     selectedTabIndex = pagerState.currentPage
                     onEvent(AddExercisesEvent.OnSelectionChanged(selectedType))
+                    println("TAGGER ${selectedType.name}")
                 }
                 state.sortedExercises?.let { exercises ->
                     TabRow(selectedTabIndex = selectedTabIndex) {
