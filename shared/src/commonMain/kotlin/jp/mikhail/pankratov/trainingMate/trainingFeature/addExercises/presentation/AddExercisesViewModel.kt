@@ -140,7 +140,6 @@ class AddExercisesViewModel(
                         }
 
                         is ExerciseListItem.Header -> {
-                            // Only return the Header if there are more ExerciseItems to display after it
                             if (exerciseItemCount < totalExerciseItems) {
                                 item
                             } else {
@@ -165,7 +164,6 @@ class AddExercisesViewModel(
                         }
 
                         is ExerciseListItem.Header -> {
-                            // Only return the Header if there are more ExerciseItems to display after it
                             if (exerciseItemCount < totalExerciseItems) {
                                 item
                             } else {
