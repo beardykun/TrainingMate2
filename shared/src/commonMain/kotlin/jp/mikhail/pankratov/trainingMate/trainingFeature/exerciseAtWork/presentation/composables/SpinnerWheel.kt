@@ -21,6 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+private const val MIDDLE_ITEM_OFFSET = 2
+
 @Composable
 fun SpinnerWheel(
     items: List<String>,
@@ -29,9 +31,7 @@ fun SpinnerWheel(
 ) {
     val itemHeight = 40.dp
     val scrollState = rememberLazyListState()
-    LaunchedEffect(Unit) {
-        scrollState.scrollToItem(items.indexOf(selectedItem))
-    }
+
     LaunchedEffect(scrollState) {
         snapshotFlow {
             scrollState.layoutInfo
@@ -43,6 +43,9 @@ fun SpinnerWheel(
                 onItemSelected(items[middleItem.index].toInt())
             }
         }
+    }
+    LaunchedEffect(Unit) {
+        scrollState.scrollToItem(items.indexOf(selectedItem) - MIDDLE_ITEM_OFFSET)
     }
     LazyColumn(
         state = scrollState,
