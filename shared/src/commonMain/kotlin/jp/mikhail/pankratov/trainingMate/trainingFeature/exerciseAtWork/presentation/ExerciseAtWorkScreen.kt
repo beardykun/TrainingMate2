@@ -2,18 +2,19 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.present
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,9 +24,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TimerOff
-import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -34,10 +36,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
@@ -175,8 +179,9 @@ fun ExerciseAtWorkScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             Row(
-                modifier = Modifier.fillMaxWidth().height(Dimens.timerIcon),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 val minText =
                     if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
@@ -194,9 +199,18 @@ fun ExerciseAtWorkScreen(
                 )
 
                 Spacer(modifier = Modifier.width(Dimens.Padding16))
-                Button(onClick = {
-                    onEvent(ExerciseAtWorkEvent.OnAddNewSet)
-                }, modifier = Modifier.fillMaxSize().weight(1f)) {
+                OutlinedButton(
+                    shape = CircleShape,
+                    border = BorderStroke(1.dp, Color.Blue),
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        onEvent(ExerciseAtWorkEvent.OnAddNewSet)
+                    }, modifier = Modifier.size(Dimens.roundButton)
+                ) {
                     TextMedium(text = stringResource(SharedRes.strings.add_set))
                 }
                 Spacer(modifier = Modifier.width(Dimens.Padding16))
@@ -214,8 +228,7 @@ fun ExerciseAtWorkScreen(
                             else
                                 onEvent(ExerciseAtWorkEvent.OnTimerStart)
                         }
-                        .fillMaxHeight()
-                        .width(Dimens.timerIcon)
+                        .size(Dimens.timerIcon)
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
             }

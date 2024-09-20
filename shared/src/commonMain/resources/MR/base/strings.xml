@@ -26,6 +26,8 @@
     <string name="hint_light">Completed comfortably.</string>
     <string name="hint_medium">Challenging but manageable.</string>
     <string name="hint_hard">Couldn\'t complete as intended due to difficulty.</string>
+    <string name="interval">Interval: %1$s</string>
+    <string name="exercise_time">Exercise length: %1$s</string>
 
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>
@@ -77,10 +79,10 @@
     <!-- ExerciseAtWorkScreen -->
     <string name="cd_exercise_history">Exercise history</string>
     <string name="cd_start_timer">Start timer</string>
-    <string name="last_exercise">Last Exercise\nLifted: %1$.2f kg\nSets: %2$d</string>
+    <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$.2f kg\nSets: %3$d</string>
     <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
     <string name="last_training_set">Last Training Set\n%1$s kg x %2$s</string>
-    <string name="this_exercise">This Exercise\nLifted: %1$.2f kg\nSets: %2$d</string>
+    <string name="this_exercise">This Exercise\nLength: %1$s\nLifted: %2$.2f kg\nSets: %3$d</string>
     <string name="auto_input">Auto Input</string>
     <string name="break_time">Select break time</string>
     <string name="ok">OK</string>

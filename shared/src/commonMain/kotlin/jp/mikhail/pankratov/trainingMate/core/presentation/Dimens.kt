@@ -31,7 +31,8 @@ object Dimens {
 
     val selectableGroupImageSize = 48.dp
     val standardIcon = 24.dp
-    val timerIcon = 60.dp
+    val timerIcon = 80.dp
+    val roundButton = 150.dp
 
     val historyFabPadding = 128.dp
 

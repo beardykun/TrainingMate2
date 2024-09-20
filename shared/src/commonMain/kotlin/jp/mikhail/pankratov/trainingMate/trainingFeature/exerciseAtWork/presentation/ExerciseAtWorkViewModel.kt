@@ -169,28 +169,7 @@ class ExerciseAtWorkViewModel(
             }
 
             is ExerciseAtWorkEvent.OnSetDelete -> {
-                state.value.uiState.deleteItem?.let { deleteItem ->
-
-                    val sets =
-                        state.value.exerciseDetails.exercise?.sets?.filter { it.id != deleteItem.id }
-                            ?: emptyList()
-                    if (sets.size == state.value.exerciseDetails.exercise?.sets?.size) return
-                    val minusWeight = calculateSetTotalWeight(
-                        state.value.exerciseDetails.exerciseLocal?.usesTwoDumbbells,
-                        deleteItem.weight,
-                        deleteItem.reps
-                    )
-                    updateSets(sets, -minusWeight, -deleteItem.reps.toInt())
-                }
-                _state.update {
-                    it.copy(
-                        uiState =
-                        it.uiState.copy(
-                            deleteItem = null,
-                            isDeleteDialogVisible = false
-                        )
-                    )
-                }
+                handleDeleteSet()
             }
 
             is ExerciseAtWorkEvent.OnDisplayDeleteDialog -> {
@@ -261,6 +240,30 @@ class ExerciseAtWorkViewModel(
                     )
                 }
             }
+        }
+    }
+
+    private fun handleDeleteSet() {
+        state.value.uiState.deleteItem?.let { deleteItem ->
+            val sets =
+                state.value.exerciseDetails.exercise?.sets?.filter { it.id != deleteItem.id }
+                    ?: emptyList()
+            if (sets.size == state.value.exerciseDetails.exercise?.sets?.size) return
+            val minusWeight = calculateSetTotalWeight(
+                state.value.exerciseDetails.exerciseLocal?.usesTwoDumbbells,
+                deleteItem.weight,
+                deleteItem.reps
+            )
+            updateSets(sets, -minusWeight, -deleteItem.reps.toInt())
+        }
+        _state.update {
+            it.copy(
+                uiState =
+                it.uiState.copy(
+                    deleteItem = null,
+                    isDeleteDialogVisible = false
+                )
+            )
         }
     }
 

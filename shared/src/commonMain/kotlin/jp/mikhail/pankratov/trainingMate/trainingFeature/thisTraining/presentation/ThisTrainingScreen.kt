@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,9 +37,6 @@ import moe.tlaster.precompose.navigation.Navigator
 fun ThisTrainingScreen(
     state: ThisTrainingState, onEvent: (ThisTrainingEvent) -> Unit, navigator: Navigator
 ) {
-    LaunchedEffect(Unit) {
-        onEvent(ThisTrainingEvent.OnInitData)
-    }
     Scaffold(floatingActionButton = {
         FloatingActionButton(
             onClick = {
@@ -121,6 +118,7 @@ fun ThisTrainingScreen(
                     },
                     modifier = Modifier.fillMaxWidth()
                         .padding(horizontal = Dimens.Padding48, vertical = Dimens.Padding16)
+                        .height(Dimens.Padding64)
                 ) {
                     TextLarge(
                         text = stringResource(SharedRes.strings.finish_training),

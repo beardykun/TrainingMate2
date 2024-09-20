@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
@@ -66,6 +65,7 @@ fun CurrentExerciseData(
                 text =
                 stringResource(
                     SharedRes.strings.this_exercise,
+                    Utils.formatTimeText(exercise.sets.sumOf { it.restSec ?: 0 }),
                     exercise.totalLiftedWeight,
                     exercise.sets.size
                 ),
@@ -96,6 +96,7 @@ fun LastExerciseData(
                     text =
                     stringResource(
                         SharedRes.strings.last_exercise,
+                        Utils.formatTimeText(lastExercise.sets.sumOf { it.restSec ?: 0 }),
                         lastExercise.totalLiftedWeight,
                         lastExercise.sets.size
                     ),
@@ -115,7 +116,14 @@ fun LastExerciseData(
                         modifier = Modifier.padding(top = Dimens.Padding4)
                             .background(background)
                     )
-                    set.restTimeText?.let { TextSmall(text = it) }
+                    set.restTimeText?.let {
+                        TextSmall(
+                            text = stringResource(
+                                SharedRes.strings.interval,
+                                it
+                            )
+                        )
+                    }
                 }
             }
         }

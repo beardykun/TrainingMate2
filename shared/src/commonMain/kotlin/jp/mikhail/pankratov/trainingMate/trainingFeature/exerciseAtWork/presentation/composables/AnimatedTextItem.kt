@@ -29,6 +29,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
 
@@ -96,7 +97,7 @@ fun AnimatedTextItem(
                             )
                             lastTrainingSet?.restTimeText?.let {
                                 TextSmall(
-                                    text = it
+                                    text = stringResource(SharedRes.strings.interval, it)
                                 )
                             }
                         }
@@ -104,7 +105,7 @@ fun AnimatedTextItem(
                 }
                 set.restTimeText?.let {
                     TextSmall(
-                        text = it
+                        text = stringResource(SharedRes.strings.interval, it)
                     )
                 }
             }

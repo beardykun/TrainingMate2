@@ -55,6 +55,6 @@ object Utils {
         val minToDisplay = if (minutes < 10) "0$minutes" else minutes.toString()
         val seconds = totalSeconds % 60
         val secondsToDisplay = if (seconds < 10) "0$seconds" else seconds.toString()
-        return "Interval $minToDisplay:$secondsToDisplay"
+        return " $minToDisplay:$secondsToDisplay"
     }
 }

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,6 +47,8 @@ class ThisTrainingViewModel(
                 )
             } else state
         newState
+    }.onStart {
+        loadTrainingAndExercises()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(1000L),
@@ -109,10 +112,6 @@ class ThisTrainingViewModel(
                 state.value.ongoingTraining?.let { ongoingTraining ->
                     endOngoingTraining(ongoingTraining)
                 }
-            }
-
-            ThisTrainingEvent.OnInitData -> {
-                loadTrainingAndExercises()
             }
         }
     }

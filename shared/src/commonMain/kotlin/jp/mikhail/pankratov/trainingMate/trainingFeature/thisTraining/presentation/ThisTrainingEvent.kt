@@ -10,5 +10,4 @@ sealed class ThisTrainingEvent {
 
     data object EndTraining : ThisTrainingEvent()
 
-    data object OnInitData: ThisTrainingEvent()
 }
