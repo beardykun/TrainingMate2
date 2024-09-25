@@ -32,6 +32,7 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.data.painterResource
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.getString
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 
 @Composable
@@ -68,7 +69,7 @@ fun ExerciseItem(
             }
 
             Column {
-                TextMedium(text = exerciseLocal.name)
+                TextLarge(text = exerciseLocal.name.uppercase())
                 TextMedium(
                     text = stringResource(
                         SharedRes.strings.group,

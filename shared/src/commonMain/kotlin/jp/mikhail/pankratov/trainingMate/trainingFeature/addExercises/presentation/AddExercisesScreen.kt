@@ -41,9 +41,6 @@ fun AddExercisesScreen(
     onEvent: (AddExercisesEvent) -> Unit,
     navigator: Navigator
 ) {
-    LaunchedEffect(Unit) {
-        onEvent(AddExercisesEvent.OnInitData)
-    }
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = {
             navigator.navigate(Routs.TrainingScreens.createExercise)
@@ -69,7 +66,6 @@ fun AddExercisesScreen(
                     val selectedType = exercisesTypes[pagerState.currentPage]
                     selectedTabIndex = pagerState.currentPage
                     onEvent(AddExercisesEvent.OnSelectionChanged(selectedType))
-                    println("TAGGER ${selectedType.name}")
                 }
                 state.sortedExercises?.let { exercises ->
                     TabRow(selectedTabIndex = selectedTabIndex) {

@@ -12,5 +12,4 @@ sealed class AddExercisesEvent {
         val exercise: ExerciseLocal? = null
     ) : AddExercisesEvent()
     data class OnSelectionChanged(val selectedType: SelectionType) : AddExercisesEvent()
-    data object OnInitData : AddExercisesEvent()
 }

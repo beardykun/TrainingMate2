@@ -11,7 +11,8 @@ data class AddExercisesState(
     val sortedExercises: List<ExerciseListItem>? = null,
     val selectedExercises: List<String> = emptyList(),
     val isDeleteDialogVisible: Boolean = false,
-    val selectedForDelete: ExerciseLocal? = null
+    val selectedForDelete: ExerciseLocal? = null,
+    val selectedType: SelectionType = SelectionType.ADD
 )
 
 enum class SelectionType(typeName: StringResource) {

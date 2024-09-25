@@ -9,6 +9,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,6 +37,8 @@ class AddExercisesViewModel(
             selectedExercises = selectedExercises,
             training = training
         )
+    }.onStart {
+        loadTrainingAndExercises()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000L),
@@ -54,6 +57,7 @@ class AddExercisesViewModel(
                         .collect { exercises ->
                             _selectedExercises.update { trainingNotNull.exercises }
                             _availableExercises.update { exercises }
+                            onEvent(AddExercisesEvent.OnSelectionChanged(_state.value.selectedType))
                         }
                 }
             }
@@ -104,14 +108,14 @@ class AddExercisesViewModel(
                 }
             }
 
-            AddExercisesEvent.OnInitData -> loadTrainingAndExercises()
             is AddExercisesEvent.OnSelectionChanged -> {
                 viewModelScope.launch {
                     val filteredList =
                         withContext(Dispatchers.Default) { getFilteredList(event.selectedType) }
                     _state.update {
                         it.copy(
-                            sortedExercises = filteredList
+                            sortedExercises = filteredList,
+                            selectedType = event.selectedType
                         )
                     }
                 }
