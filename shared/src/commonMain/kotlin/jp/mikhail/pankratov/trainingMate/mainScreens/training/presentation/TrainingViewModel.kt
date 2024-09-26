@@ -1,13 +1,18 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
+import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.MuscleStrength
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -15,7 +20,7 @@ import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
-    private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
+    exerciseUseCaseProvider: ExerciseUseCaseProvider,
     summaryUseCaseProvider: SummaryUseCaseProvider
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
@@ -65,7 +70,6 @@ class TrainingViewModel(
         _state,
         trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
         trainingUseCaseProvider.getLastHistoryTrainingUseCase().invoke(),
-        //exerciseUseCaseProvider.,
         summaries
     ) { state, ongoingTraining, trainingsHistory, summaries ->
         val (monthly, weekly) = summaries
@@ -76,6 +80,12 @@ class TrainingViewModel(
             monthlySummary = monthly,
             weeklySummary = weekly
         )
+    }.onStart {
+        val strengthDefineExercises =
+            exerciseUseCaseProvider.getStrengthDefineExercisesUseCase().invoke().first()
+        _state.update {
+            it.copy(strengthLevel = calculateRelativeStrength(strengthDefineExercises))
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
@@ -114,5 +124,41 @@ class TrainingViewModel(
     private fun deleteLastTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
             .invoke(trainingId = trainingId)
+    }
+
+    //TODO Make available baseline setup by user choice (not the strongest exercise as now)?
+    private fun calculateRelativeStrength(userStrength: List<ExerciseLocal>?): Map<String, Double> {
+        // Normalize user strength relative to reference strength
+        val normalizedStrength = mutableMapOf<String, Double>()
+        userStrength?.forEach { exercise ->
+            if (exercise.bestLiftedWeight == 0.0) return@forEach
+            normalizedStrength[exercise.name] = exercise.bestLiftedWeight / getCorrectMuscleRate(exercise)
+        }
+
+        // Find the strongest muscle group (maximum value)
+        val strongestMuscleValue = normalizedStrength.values.maxOrNull() ?: 1.0
+
+        // Calculate relative strength percentages based on the strongest muscle
+        val relativeStrengthPercentages = normalizedStrength.mapValues { (_, value) ->
+            (value / strongestMuscleValue) * 100
+        }
+
+        return relativeStrengthPercentages
+    }
+
+    private fun getCorrectMuscleRate(exerciseLocal: ExerciseLocal): Double {
+        val muscleStrength = MuscleStrength()
+        return when (exerciseLocal.group) {
+            DatabaseContract.BICEPS_GROUP -> muscleStrength.biceps
+            DatabaseContract.TRICEPS_GROUP -> muscleStrength.triceps
+            DatabaseContract.SHOULDERS_GROUP -> muscleStrength.shoulders
+            DatabaseContract.BACK_GROUP -> {
+                if (exerciseLocal.name == "deadlift") muscleStrength.lowerBack else muscleStrength.upperBack
+            }
+
+            DatabaseContract.CHEST_GROUP -> muscleStrength.chest
+            DatabaseContract.LEGS_GROUP -> muscleStrength.legs
+            else -> 0.0
+        }
     }
 }

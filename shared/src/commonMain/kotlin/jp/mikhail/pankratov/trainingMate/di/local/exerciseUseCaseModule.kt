@@ -10,6 +10,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.Get
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetLocalExerciseByGroupUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetLocalExerciseByTemplateIdUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetLocalExercisesByNamesUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetStrengthDefiningExercisesUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.InsertExerciseHistoryUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.InsertLocalExerciseUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.domain.IsLocalExerciseExistsUseCase
@@ -29,6 +30,7 @@ fun exerciseUseCaseModule() = module {
     single { InsertLocalExerciseUseCase(exerciseDatasource = get()) }
     single { GetLocalExercisesByNamesUseCase(exerciseDatasource = get()) }
     single { GetAllLocalExercisesUseCase(exerciseDatasource = get()) }
+    single { GetStrengthDefiningExercisesUseCase(exerciseDatasource = get()) }
     //History
     single { GetExerciseFromHistoryUseCase(exerciseHistoryDatasource = get()) }
     single { GetLatsSameHistoryExerciseUseCase(exerciseHistoryDatasource = get()) }

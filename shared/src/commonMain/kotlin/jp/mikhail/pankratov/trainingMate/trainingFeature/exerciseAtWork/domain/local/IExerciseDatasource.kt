@@ -10,6 +10,7 @@ interface IExerciseDatasource {
     fun getExercisesByGroups(groups: String): Flow<List<ExerciseLocal>>
     fun getExercisesByNames(exerciseList: List<String>): Flow<List<ExerciseLocal>>
     fun getExerciseById(exerciseId: Long): Flow<ExerciseLocal>
+    fun getStrengthDefineExercises(): Flow<List<ExerciseLocal>>
     suspend fun insertExercise(exerciseLocal: ExerciseLocal)
     suspend fun exerciseTableEmpty(): Boolean
     suspend fun isExerciseExists(name: String): Long

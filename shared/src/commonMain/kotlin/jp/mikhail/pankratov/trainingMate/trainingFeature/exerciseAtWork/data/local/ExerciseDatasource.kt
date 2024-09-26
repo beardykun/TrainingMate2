@@ -52,6 +52,15 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
         }.flowOn(Dispatchers.IO)
     }
 
+    override fun getStrengthDefineExercises(): Flow<List<ExerciseLocal>> {
+        return queries.getStrengthDefineExercises().asFlow().mapToList(Dispatchers.IO)
+            .map { templateExercises ->
+                templateExercises.map {
+                    it.toExerciseLocal()
+                }
+            }
+    }
+
     override fun getExercisesByNames(exerciseList: List<String>): Flow<List<ExerciseLocal>> {
         val adjustedExerciseList = exerciseList.toMutableList()
         while (adjustedExerciseList.size < 20) {

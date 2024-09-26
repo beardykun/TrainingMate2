@@ -24,6 +24,11 @@ FROM ExerciseTemplate
 WHERE exercise_group = ?
 ORDER BY name ASC;
 
+getStrengthDefineExercises:
+SELECT *
+FROM ExerciseTemplate
+WHERE is_strength_defining = 1;
+
 insertExercise:
 INSERT OR REPLACE
 INTO ExerciseTemplate(

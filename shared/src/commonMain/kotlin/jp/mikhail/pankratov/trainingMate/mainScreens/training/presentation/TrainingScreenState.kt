@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
@@ -13,5 +14,6 @@ data class TrainingScreenState(
     val lastTraining: Training? = null,
     val monthlySummary: List<MonthlySummary?>? = null,
     val weeklySummary: List<WeeklySummary?>? = null,
-    val showDeleteDialog: Boolean = false
+    val showDeleteDialog: Boolean = false,
+    val strengthLevel: Map<String, Double>? = null
 )

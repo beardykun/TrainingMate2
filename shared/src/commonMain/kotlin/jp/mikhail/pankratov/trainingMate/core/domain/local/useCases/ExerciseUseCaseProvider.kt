@@ -9,6 +9,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.Get
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetLocalExerciseByGroupUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetLocalExerciseByTemplateIdUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetLocalExercisesByNamesUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetStrengthDefiningExercisesUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.InsertExerciseHistoryUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.InsertLocalExerciseUseCase
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.domain.IsLocalExerciseExistsUseCase
@@ -29,6 +30,8 @@ class ExerciseUseCaseProvider(val koin: Koin) {
     fun getInsertLocalExerciseUseCase(): InsertLocalExerciseUseCase = get()
     fun getLocalExercisesByNamesUseCase(): GetLocalExercisesByNamesUseCase = get()
     fun getAllLocalExercisesUseCase(): GetAllLocalExercisesUseCase = get()
+    fun getStrengthDefineExercisesUseCase(): GetStrengthDefiningExercisesUseCase = get()
+
 
     //History
     fun getExerciseFromHistoryUseCase(): GetExerciseFromHistoryUseCase = get()
