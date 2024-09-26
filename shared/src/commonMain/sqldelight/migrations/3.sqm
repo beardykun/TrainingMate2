@@ -1,0 +1,3 @@
+ALTER TABLE ExerciseTemplate ADD COLUMN is_strength_defining INTEGER;
+
+UPDATE ExerciseTemplate SET is_strength_defining = 0 WHERE is_strength_defining IS NULL;

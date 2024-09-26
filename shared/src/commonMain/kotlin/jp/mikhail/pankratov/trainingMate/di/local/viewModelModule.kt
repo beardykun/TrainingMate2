@@ -43,6 +43,7 @@ fun viewModelModule() = module {
     factory {
         TrainingViewModel(
             trainingUseCaseProvider = get(),
+            exerciseUseCaseProvider = get(),
             summaryUseCaseProvider = get()
         )
     }

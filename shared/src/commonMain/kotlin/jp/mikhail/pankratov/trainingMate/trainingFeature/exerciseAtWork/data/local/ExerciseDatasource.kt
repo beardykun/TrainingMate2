@@ -93,7 +93,8 @@ class ExerciseDatasource(db: TrainingDatabase) : IExerciseDatasource {
             image = exerciseLocal.image,
             best_lifted_weight = exerciseLocal.bestLiftedWeight,
             exercise_group = exerciseLocal.group,
-            uses_two_dumbbells = if (exerciseLocal.usesTwoDumbbells) 1 else 0
+            uses_two_dumbbells = if (exerciseLocal.usesTwoDumbbells) 1 else 0,
+            is_strength_defining = if (exerciseLocal.isStrengthDefining) 1 else 0
         )
     }
 

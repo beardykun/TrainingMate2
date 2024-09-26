@@ -6,5 +6,6 @@ data class ExerciseLocal(
     val bestLiftedWeight: Double = 0.0,
     val group: String,
     val image: String,
-    val usesTwoDumbbells: Boolean = false
+    val usesTwoDumbbells: Boolean = false,
+    val isStrengthDefining: Boolean = false
 )

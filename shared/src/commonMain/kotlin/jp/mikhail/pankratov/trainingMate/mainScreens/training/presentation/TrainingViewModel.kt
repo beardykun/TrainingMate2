@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +15,7 @@ import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
+    private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     summaryUseCaseProvider: SummaryUseCaseProvider
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
@@ -58,20 +60,14 @@ class TrainingViewModel(
             Pair(monthly, weekly)
         }
 
-    private val trainingData = combine(
-        trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
-        trainingUseCaseProvider.getLastHistoryTrainingUseCase().invoke()
-    ) { ongoingTraining, trainingsHistory ->
-        Pair(ongoingTraining, trainingsHistory)
-    }
-
     private val _state = MutableStateFlow(TrainingScreenState())
     val state = combine(
         _state,
-        trainingData,
+        trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
+        trainingUseCaseProvider.getLastHistoryTrainingUseCase().invoke(),
+        //exerciseUseCaseProvider.,
         summaries
-    ) { state, trainingData, summaries ->
-        val (ongoingTraining, trainingsHistory) = trainingData
+    ) { state, ongoingTraining, trainingsHistory, summaries ->
         val (monthly, weekly) = summaries
         state.copy(
             greeting = motivationalPhrases.random(),
@@ -82,7 +78,7 @@ class TrainingViewModel(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(3000L),
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
         initialValue = TrainingScreenState()
     )
 

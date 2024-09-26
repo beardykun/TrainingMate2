@@ -4,7 +4,8 @@ CREATE TABLE ExerciseTemplate (
     image TEXT NOT NULL,
     best_lifted_weight REAL NOT NULL,
     exercise_group TEXT NOT NULL,
-    uses_two_dumbbells INTEGER NOT NULL
+    uses_two_dumbbells INTEGER NOT NULL,
+    is_strength_defining INTEGER NOT NULL
 );
 
 getExercises:
@@ -31,9 +32,10 @@ INTO ExerciseTemplate(
     image,
     best_lifted_weight,
     exercise_group,
-    uses_two_dumbbells
+    uses_two_dumbbells,
+    is_strength_defining
 )
-VALUES(?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?);
 
 countExerciseTemplates:
 SELECT COUNT(*) FROM ExerciseTemplate;
