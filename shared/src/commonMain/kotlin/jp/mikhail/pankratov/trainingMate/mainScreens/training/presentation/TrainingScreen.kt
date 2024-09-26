@@ -179,7 +179,7 @@ fun TrainingScreen(
                 }
             }*/
 
-            Column {
+            Column(modifier = Modifier.padding(bottom = Dimens.Padding32)) {
                 state.strengthLevel?.forEach { strength ->
                     TextLarge(text = "${strength.key} : ${strength.value}%")
                 }

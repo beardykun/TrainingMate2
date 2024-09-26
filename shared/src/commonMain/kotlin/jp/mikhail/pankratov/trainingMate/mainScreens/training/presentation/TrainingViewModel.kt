@@ -127,22 +127,24 @@ class TrainingViewModel(
     }
 
     //TODO Make available baseline setup by user choice (not the strongest exercise as now)?
-    private fun calculateRelativeStrength(userStrength: List<ExerciseLocal>?): Map<String, Double> {
-        // Normalize user strength relative to reference strength
+    private fun calculateRelativeStrength(userStrength: List<ExerciseLocal>?): Map<String, Int> {
         val normalizedStrength = mutableMapOf<String, Double>()
+        var strongestMuscleValue = 0.0
         userStrength?.forEach { exercise ->
             if (exercise.bestLiftedWeight == 0.0) return@forEach
-            normalizedStrength[exercise.name] = exercise.bestLiftedWeight / getCorrectMuscleRate(exercise)
+            val muscleStrength = exercise.bestLiftedWeight / getCorrectMuscleRate(exercise)
+            if (exercise.group == DatabaseContract.CHEST_GROUP) {
+                strongestMuscleValue = muscleStrength
+            }
+            normalizedStrength[exercise.name] = muscleStrength
         }
-
-        // Find the strongest muscle group (maximum value)
-        val strongestMuscleValue = normalizedStrength.values.maxOrNull() ?: 1.0
+        if (strongestMuscleValue == 0.0)
+            strongestMuscleValue = normalizedStrength.values.maxOrNull() ?: 1.0
 
         // Calculate relative strength percentages based on the strongest muscle
         val relativeStrengthPercentages = normalizedStrength.mapValues { (_, value) ->
-            (value / strongestMuscleValue) * 100
+            ((value / strongestMuscleValue) * 100).toInt()
         }
-
         return relativeStrengthPercentages
     }
 

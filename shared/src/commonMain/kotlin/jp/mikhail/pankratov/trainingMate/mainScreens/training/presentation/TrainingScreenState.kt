@@ -15,5 +15,5 @@ data class TrainingScreenState(
     val monthlySummary: List<MonthlySummary?>? = null,
     val weeklySummary: List<WeeklySummary?>? = null,
     val showDeleteDialog: Boolean = false,
-    val strengthLevel: Map<String, Double>? = null
+    val strengthLevel: Map<String, Int>? = null
 )
