@@ -1,7 +1,6 @@
 package jp.mikhail.pankratov.trainingMate
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Timeline
@@ -151,7 +150,6 @@ private fun RouteBuilder.trainingScreens(
         ) {
             val viewModel = koinViewModel(vmClass = ThisTrainingViewModel::class)
             val state by viewModel.state.collectAsStateWithLifecycle()
-
             ThisTrainingScreen(
                 state = state,
                 onEvent = viewModel::onEvent,

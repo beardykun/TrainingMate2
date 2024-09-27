@@ -6,6 +6,8 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentati
 data class ThisTrainingState(
     val ongoingTraining: Training? = null,
     val exerciseLocals: List<ExerciseListItem>? = null,
-    val trainingTime: String = "",
-    val lastTraining: Training? = null
+    val lastTraining: Training? = null,
+    val timerState: TimerState = TimerState()
 )
+
+data class TimerState(val trainingTime: String = "")

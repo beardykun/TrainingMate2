@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import moe.tlaster.precompose.viewmodel.viewModelScope
@@ -38,22 +39,72 @@ class ThisTrainingViewModel(
         _training,
         _exercises
     ) { state, training, exercises ->
-        val newState =
-            if (training != state.ongoingTraining) {
-                state.copy(
-                    ongoingTraining = training,
-                    exerciseLocals = getExerciseListWithHeaders(exercises?.sortedBy { it.group }
-                        ?: emptyList())
-                )
-            } else state
-        newState
+        if (state.ongoingTraining == null) {
+            state.copy(
+                ongoingTraining = training,
+                exerciseLocals = (getExerciseListWithHeaders(exercises?.sortedBy { it.group }
+                    ?: emptyList())).toMutableList()
+            )
+        } else state
     }.onStart {
         loadTrainingAndExercises()
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(1000L),
+        started = SharingStarted.WhileSubscribed(5000L),
         ThisTrainingState()
     )
+
+    fun onEvent(event: ThisTrainingEvent) {
+        when (event) {
+            is ThisTrainingEvent.OnExerciseClick -> {
+                state.value.ongoingTraining?.let { training ->
+                    viewModelScope.launch(Dispatchers.IO) {
+                        insertExerciseHistory(
+                            exercise = event.exercise,
+                            training = training
+                        ) { exerciseId ->
+                            viewModelScope.launch(Dispatchers.Main) {
+                                event.navigateToExercise(exerciseId)
+                            }
+                        }
+                    }
+                }
+            }
+
+            ThisTrainingEvent.EndTraining -> {
+                state.value.ongoingTraining?.let { ongoingTraining ->
+                    endOngoingTraining(ongoingTraining)
+                }
+            }
+
+            is ThisTrainingEvent.OnCollapsedEvent -> {
+                val updatedList = state.value.exerciseLocals?.map {
+                    if (it == event.item) {
+                        (it as ExerciseListItem.ExerciseItem).copy(isOptionsReveled = false)
+                    } else it
+                }
+
+                _state.update {
+                    it.copy(
+                        exerciseLocals = updatedList
+                    )
+                }
+            }
+
+            is ThisTrainingEvent.OnExtendedEvent -> {
+                val updatedList = state.value.exerciseLocals?.map {
+                    if (it == event.item) {
+                        (it as ExerciseListItem.ExerciseItem).copy(isOptionsReveled = true)
+                    } else it
+                }
+                _state.update {
+                    it.copy(
+                        exerciseLocals = updatedList
+                    )
+                }
+            }
+        }
+    }
 
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
         val lastTraining = trainingUseCaseProvider.getLastSameHistoryTrainingUseCase()
@@ -84,34 +135,7 @@ class ThisTrainingViewModel(
     private suspend fun startTimer(training: Training) {
         countTrainingTime(training).collect { time ->
             _state.update {
-                it.copy(
-                    trainingTime = time
-                )
-            }
-        }
-    }
-
-    fun onEvent(event: ThisTrainingEvent) {
-        when (event) {
-            is ThisTrainingEvent.OnExerciseClick -> {
-                state.value.ongoingTraining?.let { training ->
-                    viewModelScope.launch(Dispatchers.IO) {
-                        insertExerciseHistory(
-                            exercise = event.exercise,
-                            training = training
-                        ) { exerciseId ->
-                            viewModelScope.launch(Dispatchers.Main) {
-                                event.navigateToExercise(exerciseId)
-                            }
-                        }
-                    }
-                }
-            }
-
-            ThisTrainingEvent.EndTraining -> {
-                state.value.ongoingTraining?.let { ongoingTraining ->
-                    endOngoingTraining(ongoingTraining)
-                }
+                it.copy(timerState = state.value.timerState.copy(trainingTime = time))
             }
         }
     }
@@ -197,7 +221,6 @@ class ThisTrainingViewModel(
             }
             items.add(ExerciseListItem.ExerciseItem(exercise))
         }
-
         return items
     }
 }

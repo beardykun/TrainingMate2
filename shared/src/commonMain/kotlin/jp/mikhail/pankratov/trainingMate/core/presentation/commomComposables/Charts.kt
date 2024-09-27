@@ -19,12 +19,9 @@ fun CommonLineChart(
     data: List<Double>,
     xAxisData: List<String>
 ) {
-
-    val dataList = listOf(0.0).plus(data)
-    val xAxisList = listOf("").plus(xAxisData)
     val lineParameters = LineParameters(
         label = label,
-        data = dataList,
+        data = data,
         lineColor = Color.Gray,
         lineType = LineType.CURVED_LINE,
         lineShadow = true,
@@ -36,7 +33,7 @@ fun CommonLineChart(
             linesParameters = listOf(lineParameters),
             isGrid = true,
             gridColor = Color.Blue,
-            xAxisData = xAxisList,
+            xAxisData = xAxisData,
             animateChart = true,
             showGridWithSpacer = true,
             yAxisStyle = TextStyle(
