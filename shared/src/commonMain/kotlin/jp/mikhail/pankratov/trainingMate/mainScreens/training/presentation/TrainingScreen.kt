@@ -179,11 +179,6 @@ fun TrainingScreen(
                 }
             }*/
 
-            Column(modifier = Modifier.padding(bottom = Dimens.Padding32)) {
-                state.strengthLevel?.forEach { strength ->
-                    TextLarge(text = "${strength.key} : ${strength.value}%")
-                }
-            }
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
                     title = stringResource(SharedRes.strings.delete_last_training),

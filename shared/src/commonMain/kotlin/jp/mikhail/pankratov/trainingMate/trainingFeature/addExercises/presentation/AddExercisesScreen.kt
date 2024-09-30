@@ -107,7 +107,7 @@ fun AddExercisesScreen(
                             Button(
                                 onClick = {
                                     onEvent(AddExercisesEvent.OnAddNewExercises {
-                                        navigator.popBackStack()
+                                        navigator.navigate(Routs.TrainingScreens.trainingExercises)
                                     })
                                 }, modifier = Modifier.fillMaxWidth()
                             ) {

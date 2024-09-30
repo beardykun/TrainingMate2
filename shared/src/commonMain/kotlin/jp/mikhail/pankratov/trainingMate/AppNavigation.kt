@@ -3,11 +3,14 @@ package jp.mikhail.pankratov.trainingMate
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import dev.icerock.moko.permissions.compose.BindEffect
@@ -32,6 +35,8 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
+import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoScreen
+import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoViewModel
 import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionScreen
 import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesScreen
@@ -98,6 +103,12 @@ fun NavHost(navigator: Navigator) {
             val viewModel = koinViewModel(CreateTrainingViewModel::class)
             val state by viewModel.state.collectAsStateWithLifecycle()
             CreateTrainingScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
+        }
+
+        scene(route = Routs.MainScreens.userInfo.title, navTransition = NavTransition()) {
+            val viewModel = koinViewModel(vmClass = UserInfoViewModel::class)
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            UserInfoScreen(state = state, navigator = navigator)
         }
 
         trainingScreens(navigator)
@@ -244,6 +255,12 @@ fun bottomNavigationItems() = listOf(
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Outlined.History,
         hasNews = false
+    ),
+    BottomNavigationItem(
+        title = Routs.MainScreens.userInfo.title,
+        selectedIcon = Icons.Filled.Info,
+        unselectedIcon = Icons.Outlined.Info,
+        hasNews = false
     )
 )
 
@@ -259,6 +276,10 @@ fun navigateOnTabClick(index: Int, navigator: Navigator) {
 
         Routs.MainScreens.history.position -> navigator.navigate(
             "${Routs.MainScreens.history.title}/${null}/${null}/${null}"
+        )
+
+        Routs.MainScreens.userInfo.position -> navigator.navigate(
+            Routs.MainScreens.userInfo.title
         )
 
         else -> {}

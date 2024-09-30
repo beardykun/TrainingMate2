@@ -8,13 +8,13 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.HistoryScreenViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
+import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoViewModel
 import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
-import org.koin.core.component.get
 import org.koin.dsl.module
 
 fun viewModelModule() = module {
@@ -43,7 +43,6 @@ fun viewModelModule() = module {
     factory {
         TrainingViewModel(
             trainingUseCaseProvider = get(),
-            exerciseUseCaseProvider = get(),
             summaryUseCaseProvider = get()
         )
     }
@@ -106,6 +105,12 @@ fun viewModelModule() = module {
         ExerciseAtWorkHistoryViewModel(
             exerciseUseCaseProvider = get(),
             exerciseName = exerciseName
+        )
+    }
+
+    factory {
+        UserInfoViewModel(
+            exerciseUseCaseProvider = get()
         )
     }
 }
