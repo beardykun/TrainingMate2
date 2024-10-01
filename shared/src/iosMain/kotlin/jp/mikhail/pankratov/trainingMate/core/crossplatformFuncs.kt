@@ -11,4 +11,3 @@ actual fun formatNumberWithCommas(number: String): String {
     val nsNumber = formatter.numberFromString(number) ?: return ""
     return formatter.stringFromNumber(nsNumber) ?: ""
 }
-
