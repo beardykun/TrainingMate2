@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import dev.icerock.moko.resources.compose.stringResource
 import dev.icerock.moko.resources.getImageByFileName
 import jp.mikhail.pankratov.trainingMate.SharedRes
@@ -34,14 +36,25 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLoca
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
+import jp.mikhail.pankratov.trainingMate.theme.gold
+import jp.mikhail.pankratov.trainingMate.theme.goldLight
 
 @Composable
 fun ExerciseItem(
     exerciseLocal: ExerciseLocal,
     onClick: (ExerciseLocal) -> Unit,
     isDone: Boolean = false,
+    isStrengthDefining: Boolean,
     modifier: Modifier
 ) {
+    val cardColor =
+        when {
+            isStrengthDefining && !isDone -> goldLight
+            isStrengthDefining && isDone -> gold
+            !isStrengthDefining && isDone -> MaterialTheme.colorScheme.inversePrimary
+            else -> CardDefaults.cardColors().containerColor
+        }
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = modifier.fillMaxSize()
@@ -50,7 +63,7 @@ fun ExerciseItem(
                 onClick.invoke(exerciseLocal)
             },
         colors = CardDefaults.cardColors(
-            containerColor = if (isDone) MaterialTheme.colorScheme.inversePrimary else CardDefaults.cardColors().containerColor
+            containerColor = cardColor
         )
     ) {
         Row(
@@ -69,7 +82,10 @@ fun ExerciseItem(
             }
 
             Column {
-                TextLarge(text = exerciseLocal.name.uppercase())
+                TextLarge(
+                    text = exerciseLocal.name.uppercase(),
+                    overflow = TextOverflow.Ellipsis
+                )
                 TextMedium(
                     text = stringResource(
                         SharedRes.strings.group,
@@ -82,6 +98,12 @@ fun ExerciseItem(
                         exerciseLocal.bestLiftedWeight
                     )
                 )
+                if (isStrengthDefining)
+                    TextSmall(
+                        SharedRes.strings.strength_defining.getString(),
+                        fontWeight = FontWeight.SemiBold,
+                        textColor = Color.Blue
+                    )
             }
             if (isDone) {
                 Spacer(modifier = Modifier.weight(1f))

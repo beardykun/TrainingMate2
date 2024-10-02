@@ -35,7 +35,6 @@ fun SwipeableItemWithActions(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    println("TAGGER isRevealed: $isRevealed")
     var contextMenuWidth by remember { mutableFloatStateOf(0f) }
     val offset = remember { Animatable(initialValue = 0f) }
     val scope = rememberCoroutineScope()

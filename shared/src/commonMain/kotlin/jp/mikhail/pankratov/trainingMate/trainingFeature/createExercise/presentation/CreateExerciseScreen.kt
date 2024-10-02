@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.getString
+import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
@@ -78,16 +80,13 @@ fun CreateExerciseScreen(
             TextMedium(text = stringResource(SharedRes.strings.using_two_dumbbell))
         }
         Spacer(modifier = Modifier.weight(1f))
-        Button(
+        CommonButton(
             onClick = {
                 onEvent(CreateExerciseEvent.OnExerciseCreate(onSuccess = {
-                    navigator.popBackStack()
+                    navigator.navigate(Routs.TrainingScreens.selectTraining)
                 }))
             },
-            modifier = Modifier.fillMaxWidth()
-                .padding(vertical = Dimens.Padding16, horizontal = Dimens.Padding48)
-        ) {
-            TextMedium(text = stringResource(SharedRes.strings.add_exercise))
-        }
+            text = SharedRes.strings.add_exercise.getString()
+        )
     }
 }

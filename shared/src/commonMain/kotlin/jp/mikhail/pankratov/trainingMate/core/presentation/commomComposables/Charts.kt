@@ -74,7 +74,7 @@ fun CommonRadarChart(map: Map<String, Int>) {
         fontWeight = FontWeight.Medium,
         fontSize = 10.sp
     )
-    val chartMax = roundUpToNearest50(values.max())
+    val chartMax = maxOf(50.0, roundUpToNearest50(values.max()))
     RadarChart(
         modifier = Modifier.fillMaxSize(),
         radarLabels = map.keys.toList(),

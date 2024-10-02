@@ -6,8 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +25,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.ActionIcon
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SwipeableItemWithActions
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
@@ -120,6 +119,7 @@ fun ThisTrainingScreen(
                                             isDone = state.ongoingTraining?.doneExercises?.contains(
                                                 item.exercise.name
                                             ) == true,
+                                            isStrengthDefining = item.exercise.isStrengthDefining,
                                             modifier = Modifier.animateItemPlacement()
                                         )
                                     },
@@ -146,20 +146,13 @@ fun ThisTrainingScreen(
                         }
                     }
                 }
-                Button(
+                CommonButton(
                     onClick = {
                         onEvent(ThisTrainingEvent.EndTraining)
                         navigator.navigate(Routs.MainScreens.training.title)
                     },
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = Dimens.Padding48, vertical = Dimens.Padding16)
-                        .height(Dimens.Padding64)
-                ) {
-                    TextLarge(
-                        text = stringResource(SharedRes.strings.finish_training),
-                        color = Color.White
-                    )
-                }
+                    text = SharedRes.strings.finish_training.getString()
+                )
             }
         }
     }

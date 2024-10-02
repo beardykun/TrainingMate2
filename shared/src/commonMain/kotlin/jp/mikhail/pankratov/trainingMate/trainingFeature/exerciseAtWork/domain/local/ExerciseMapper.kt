@@ -13,7 +13,8 @@ fun ExerciseTemplate.toExerciseLocal(): ExerciseLocal {
         image = image,
         bestLiftedWeight = best_lifted_weight,
         group = exercise_group,
-        usesTwoDumbbells = uses_two_dumbbells.toInt() != 0
+        usesTwoDumbbells = uses_two_dumbbells.toInt() != 0,
+        isStrengthDefining = is_strength_defining.toInt() != 0
     )
 }
 

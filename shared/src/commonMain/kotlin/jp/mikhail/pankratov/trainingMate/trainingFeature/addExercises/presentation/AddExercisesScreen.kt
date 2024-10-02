@@ -5,13 +5,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -27,7 +25,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -51,7 +51,7 @@ fun AddExercisesScreen(
             )
         }
     }) { padding ->
-        if(!state.availableExerciseLocals.isNullOrEmpty()) {
+        if (!state.availableExerciseLocals.isNullOrEmpty()) {
             Column(
                 modifier = Modifier.fillMaxSize()
                     .padding(padding)
@@ -104,15 +104,14 @@ fun AddExercisesScreen(
                                 }
                             )
 
-                            Button(
+                            CommonButton(
                                 onClick = {
                                     onEvent(AddExercisesEvent.OnAddNewExercises {
                                         navigator.navigate(Routs.TrainingScreens.trainingExercises)
                                     })
-                                }, modifier = Modifier.fillMaxWidth()
-                            ) {
-                                TextMedium(text = stringResource(SharedRes.strings.apply_changes))
-                            }
+                                },
+                                text = SharedRes.strings.apply_changes.getString()
+                            )
                         }
                     }
                 }

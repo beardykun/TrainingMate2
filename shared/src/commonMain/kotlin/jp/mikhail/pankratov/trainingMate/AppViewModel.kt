@@ -171,7 +171,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Close grip barbell press",
                 group = DatabaseContract.TRICEPS_GROUP,
-                image = "close_grip_barbell_press"
+                image = "close_grip_barbell_press",
+                isStrengthDefining = true
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
@@ -210,15 +211,15 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Barbell Shoulder Press",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "barbell_shoulder_press",
-                isStrengthDefining = true
+                image = "barbell_shoulder_press"
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
                 name = "Shoulder Press",
                 group = DatabaseContract.SHOULDERS_GROUP,
-                image = "shoulder_press"
+                image = "shoulder_press",
+                isStrengthDefining = true
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
@@ -448,8 +449,7 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Squats",
                 group = DatabaseContract.LEGS_GROUP,
-                image = "squat",
-                isStrengthDefining = true
+                image = "squat"
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
@@ -505,7 +505,8 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Barbell squat",
                 group = DatabaseContract.LEGS_GROUP,
-                image = "barbell_squat"
+                image = "barbell_squat",
+                isStrengthDefining = true
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(

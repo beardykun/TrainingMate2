@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,12 +36,17 @@ fun TextMedium(
 fun TextSmall(
     text: String,
     textAlign: TextAlign = TextAlign.Unspecified,
+    fontWeight: FontWeight = FontWeight.Normal,
+    textColor: Color = Color.Unspecified,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodySmall,
         textAlign = textAlign,
+        fontWeight = fontWeight,
+        color = textColor,
+        fontStyle = FontStyle.Italic,
         modifier = modifier
     )
 }
@@ -50,6 +56,7 @@ fun TextLarge(
     text: String,
     fontWeight: FontWeight = FontWeight.Bold,
     textAlign: TextAlign = TextAlign.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
     color: Color = Color.Unspecified,
     modifier: Modifier = Modifier
 ) {
@@ -58,6 +65,7 @@ fun TextLarge(
         style = MaterialTheme.typography.bodyLarge,
         fontWeight = fontWeight,
         color = color,
+        overflow = overflow,
         textAlign = textAlign,
         modifier = modifier
     )

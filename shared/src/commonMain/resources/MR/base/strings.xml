@@ -90,12 +90,14 @@
     <string name="seconds">Sec</string>
     <string name="notification_permission_always_denied">To receive rest time notifications, please enable them in your settings</string>
     <string name="notification_permission_denied">Permission denied. Enable notifications to be alerted when rest time ends</string>
+    <string name="total_in_set">Total: %1$s kg</string>
 
 
     <!-- ExerciseItem -->
     <string name="group">Group: %1$s</string>
     <string name="best_weight">Best weight: %1$.2f kg</string>
     <string name="cd_done_icon">Done icon</string>
+    <string name="strength_defining">Strength Indicator &#128170;</string>
 
     <!-- ExerciseAtWorkHistoryScreen -->
     <string name="date">Date: %1$s</string>

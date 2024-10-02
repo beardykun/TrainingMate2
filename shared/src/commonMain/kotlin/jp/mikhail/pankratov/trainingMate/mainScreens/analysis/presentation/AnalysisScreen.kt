@@ -77,7 +77,9 @@ fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String
                     exerciseLocal = exercise,
                     onClick = {
                         onItemClick.invoke(it.name)
-                    }, modifier = Modifier.animateItemPlacement()
+                    },
+                    isStrengthDefining = exercise.isStrengthDefining,
+                    modifier = Modifier.animateItemPlacement()
                 )
             }
         }

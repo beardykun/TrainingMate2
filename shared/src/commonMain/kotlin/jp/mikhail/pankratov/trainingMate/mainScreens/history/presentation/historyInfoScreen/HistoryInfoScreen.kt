@@ -70,33 +70,6 @@ fun HistoryInfoScreen(
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
         }
-        /*Row(modifier = Modifier.fillMaxWidth()) {
-            Button(onClick = {
-                navigator.popBackStack()
-            }, modifier = Modifier.weight(1f)) {
-                TextMedium(
-                    text = stringResource(
-                        SharedRes.strings.back_btn
-                    )
-                )
-            }
-            Spacer(modifier = Modifier.width(Dimens.Padding32))
-            Button(onClick = {
-                onEvent(HistoryInfoEvent.OnContinueTraining(
-                    onSuccess = {
-                        navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
-                    }, onError = {
-                        onEvent(HistoryInfoEvent.OnError)
-                    })
-                )
-            }, modifier = Modifier.weight(1f)) {
-                TextMedium(
-                    text = stringResource(
-                        SharedRes.strings.continue_training
-                    )
-                )
-            }
-        }*/
         state.exercises?.let { exercises ->
             LazyColumn {
                 items(
@@ -184,6 +157,7 @@ fun FixedGrid(
                                 set = items[index],
                                 onEvent = {},
                                 isAnimating = false,
+                                isUsingTwoDumbbells = null,
                                 modifier = Modifier
                             )
                         }

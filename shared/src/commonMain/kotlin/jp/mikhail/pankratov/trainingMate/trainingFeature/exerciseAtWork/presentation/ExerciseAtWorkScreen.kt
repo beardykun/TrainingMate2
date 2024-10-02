@@ -172,6 +172,8 @@ fun ExerciseAtWorkScreen(
                             set = item,
                             onEvent = onEvent,
                             isAnimating = state.uiState.isAnimating,
+                            isUsingTwoDumbbells = state.exerciseDetails.exerciseLocal?.usesTwoDumbbells
+                                ?: false,
                             modifier = Modifier
                         )
                     }

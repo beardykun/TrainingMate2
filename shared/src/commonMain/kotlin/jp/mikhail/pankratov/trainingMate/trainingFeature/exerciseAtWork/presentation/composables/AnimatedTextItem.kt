@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +30,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
-import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
 
@@ -40,6 +40,7 @@ fun AnimatedTextItem(
     targetSize: TextUnit = Dimens.normalTextSize,
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     modifier: Modifier,
+    isUsingTwoDumbbells: Boolean? = null,
     isAnimating: Boolean
 ) {
     AnimatedVisibility(visible = set.weight.isNotBlank()) {
@@ -72,7 +73,8 @@ fun AnimatedTextItem(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(all = Dimens.Padding8)
+                    .padding(all = Dimens.Padding8),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(modifier = modifier) {
                     Text(
@@ -102,6 +104,17 @@ fun AnimatedTextItem(
                             }
                         }
                     }
+                }
+                isUsingTwoDumbbells?.let { usingTwoDumbbells ->
+                    val sum =
+                        if (usingTwoDumbbells) (set.reps.toInt() * set.weight.toDouble()) * 2 else
+                            set.reps.toInt() * set.weight.toDouble()
+                    TextSmall(
+                        text = stringResource(
+                            SharedRes.strings.total_in_set,
+                            sum
+                        )
+                    )
                 }
                 set.restTimeText?.let {
                     TextSmall(
