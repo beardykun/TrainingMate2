@@ -140,4 +140,7 @@
     <string name="last_training_lifted_weight">Last training\nLifted: %1$.2f kg\nLength: %2$s</string>
     <string name="this_training_lifted_weight">This training\nLifted: %1$.2f kg\nLength: %2$s</string>
 
+    <!-- UserInfo -->
+    <string name="strength_comparison_info">Base exercises strength level comparison</string>
+    <string name="strength_comparison_hint">Comparing strength levels of exercises relative to the baseline exercise (baseline = 100%)</string>
 </resources>

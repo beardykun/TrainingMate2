@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
+import Dimens
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -9,7 +10,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.aay.compose.barChart.BarChart
+import com.aay.compose.barChart.model.BarParameters
 import com.aay.compose.baseComponents.model.GridOrientation
 import com.aay.compose.lineChart.LineChart
 import com.aay.compose.lineChart.model.LineParameters
@@ -60,6 +64,7 @@ fun CommonLineChart(
 
 @Composable
 fun CommonRadarChart(map: Map<String, Int>) {
+    val labels = map.map { "${it.key}: ${it.value}%" }
     val values = map.values.map { it.toDouble() }
     val labelsStyle = TextStyle(
         color = Color.Black,
@@ -77,7 +82,7 @@ fun CommonRadarChart(map: Map<String, Int>) {
     val chartMax = maxOf(50.0, roundUpToNearest50(values.max()))
     RadarChart(
         modifier = Modifier.fillMaxSize(),
-        radarLabels = map.keys.toList(),
+        radarLabels = labels,
         labelsStyle = labelsStyle,
         netLinesStyle = NetLinesStyle(
             netLineColor = Color(0x90ffD3CFD3),
@@ -106,4 +111,48 @@ fun CommonRadarChart(map: Map<String, Int>) {
 
 private fun roundUpToNearest50(value: Double): Double {
     return (((value + 49) / 50).toInt() * 50).toDouble()
+}
+
+@Composable
+fun CommonBarChart(map: Map<String, Int>, modifier: Modifier = Modifier) {
+    val exerciseColors = mapOf(
+        "barbell curls" to Color(0xFF4CAF50),   // Green
+        "barbell squat" to Color(0xFFFF5722),   // Deep Orange
+        "bench press" to Color(0xFF2196F3),     // Blue
+        "chin ups" to Color(0xFFFFEB3B),        // Yellow
+        "lying triceps press" to Color(0xFF9C27B0), // Purple
+        "close grip barbell press" to Color(0xFFF44336), // Red
+        "barbell shoulder press" to Color(0xFF00BCD4)   // Cyan
+    )
+    val labels = map.map {
+        BarParameters(
+            dataName = "${it.key}: ${it.value}%",
+            data = listOf(it.value.toDouble()),
+            barColor = exerciseColors.get(key = it.key) ?: Color.Black
+        )
+    }
+
+    Box(modifier = modifier) {
+        BarChart(
+            chartParameters = labels,
+            gridColor = Color.DarkGray,
+            xAxisData = listOf(""),
+            isShowGrid = true,
+            animateChart = true,
+            showGridWithSpacer = true,
+            yAxisStyle = TextStyle(
+                fontSize = 14.sp,
+                color = Color.DarkGray,
+            ),
+            xAxisStyle = TextStyle(
+                fontSize = 14.sp,
+                color = Color.DarkGray,
+                fontWeight = FontWeight.W400
+            ),
+            showXAxis = false,
+            yAxisRange = 15,
+            barWidth = 20.dp,
+            spaceBetweenBars = Dimens.Padding32
+        )
+    }
 }
