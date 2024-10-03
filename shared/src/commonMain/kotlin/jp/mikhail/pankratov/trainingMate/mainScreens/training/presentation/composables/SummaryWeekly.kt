@@ -40,13 +40,13 @@ fun SummaryWeekly(
                 TextLarge(text = topText)
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.number_of_workouts,
+                        SharedRes.strings.number_of_workouts_with_args,
                         summary.numWorkouts
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.total_training_duration,
+                        SharedRes.strings.total_training_duration_with_args,
                         summary.trainingDuration
                     )
                 )
@@ -58,37 +58,37 @@ fun SummaryWeekly(
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.number_of_done_exercises,
+                        SharedRes.strings.number_of_done_exercises_with_args,
                         summary.numExercises
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.number_of_done_sets,
+                        SharedRes.strings.number_of_done_sets_with_args,
                         summary.numSets
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.total_reps_number,
+                        SharedRes.strings.total_reps_number_with_args,
                         summary.numReps
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.average_weight_per_exercise,
+                        SharedRes.strings.average_weight_per_exercise_with_args,
                         summary.avgLiftedWeightPerExercise
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.average_weight_per_workout,
+                        SharedRes.strings.average_weight_per_workout_with_args,
                         summary.avgLiftedWeightPerWorkout
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.average_workout_time,
+                        SharedRes.strings.average_workout_time_with_args,
                         summary.avgDurationPerWorkout
                     )
                 )

@@ -129,7 +129,7 @@ private fun RouteBuilder.summaryScreens(
         scene(route = Routs.SummaryScreens.summaryScreen, navTransition = NavTransition()) {
             val viewModel = koinViewModel(vmClass = SummaryViewModel::class)
             val state by viewModel.state.collectAsStateWithLifecycle()
-            SummaryScreen(state = state)
+            SummaryScreen(state = state, onEvent = viewModel::onEvent)
         }
     }
 }

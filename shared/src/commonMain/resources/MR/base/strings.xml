@@ -41,15 +41,15 @@
     <string name="last_week_summary">Last Week</string>
     <string name="this_month_summary">This Month</string>
     <string name="last_month_summary">Last Month</string>
-    <string name="number_of_workouts">Number of workouts: %1$d</string>
-    <string name="total_training_duration">Total training duration: %1$d min</string>
+    <string name="number_of_workouts_with_args">Number of workouts: %1$d</string>
+    <string name="total_training_duration_with_args">Total training duration: %1$d min</string>
     <string name="total_lifted_weight_with_args">Total lifted weight: %1$.2f kg</string>
-    <string name="number_of_done_exercises">Done exercises: %1$d</string>
-    <string name="number_of_done_sets">Done sets: %1$d</string>
-    <string name="total_reps_number">Total reps number: %1$d</string>
-    <string name="average_weight_per_exercise">Average weight per exercise: %1$.2f kg</string>
-    <string name="average_weight_per_workout">Average weight per workout: %1$.2f kg</string>
-    <string name="average_workout_time">Average workout time: %1$.2f min</string>
+    <string name="number_of_done_exercises_with_args">Done exercises: %1$d</string>
+    <string name="number_of_done_sets_with_args">Done sets: %1$d</string>
+    <string name="total_reps_number_with_args">Total reps number: %1$d</string>
+    <string name="average_weight_per_exercise_with_args">Average weight per exercise: %1$.2f kg</string>
+    <string name="average_weight_per_workout_with_args">Average weight per workout: %1$.2f kg</string>
+    <string name="average_workout_time_with_args">Average workout time: %1$.2f min</string>
     <string name="summaries">Summaries: </string>
 
     <!-- AddExercisesScreen -->
@@ -143,4 +143,17 @@
     <!-- UserInfo -->
     <string name="strength_comparison_info">Base exercises strength level comparison</string>
     <string name="strength_comparison_hint">Comparing strength levels of exercises relative to the baseline exercise (baseline = 100%)</string>
+
+    <!-- SummariesScreen -->
+    <string name="number_of_workouts">Number of workouts</string>
+    <string name="total_training_duration">Total training duration</string>
+    <string name="total_lifted_weight">Total lifted weight</string>
+    <string name="number_of_done_exercises">Done exercises</string>
+    <string name="number_of_done_sets">Done sets</string>
+    <string name="total_reps_number">Total reps number</string>
+    <string name="average_weight_per_exercise">Average weight per exercise</string>
+    <string name="average_weight_per_workout">Average weight per workout</string>
+    <string name="average_workout_time">Average workout time</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
 </resources>

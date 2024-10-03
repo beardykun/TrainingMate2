@@ -1,14 +1,11 @@
 package jp.mikhail.pankratov.trainingMate.summaryFeature.presentation
 
 import com.aay.compose.donutChart.model.PieChartData
-import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
-import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 
 data class SummaryScreenState(
-    val monthlySummary: List<MonthlySummary?>? = null,
-    val weeklySummary: List<WeeklySummary?>? = null,
     val weeklySummaryData: SummaryData? = null,
-    val monthlySummaryData: SummaryData? = null
+    val monthlySummaryData: SummaryData? = null,
+    val summaryDataToDisplay:  SummaryData? = null
 )
 
 data class SummaryData(

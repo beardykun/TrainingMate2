@@ -7,9 +7,10 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
@@ -17,42 +18,49 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
 
     private val _state = MutableStateFlow(SummaryScreenState())
 
-    val state = combine(
-        _state,
-        summaryUseCaseProvider.getTwoLastWeeklySummaryUseCase().invoke(),
-        summaryUseCaseProvider.getTwoLastMonthlySummaryUseCase().invoke()
-    ) { state, weeklySummaries, monthlySummaries ->
-        state.copy(
-            monthlySummary = monthlySummaries,
-            weeklySummary = weeklySummaries
+    val state = _state.onStart {
+        val weeklySummary = summaryUseCaseProvider.getTwoLastWeeklySummaryUseCase().invoke().first()
+        val monthlySummary =
+            summaryUseCaseProvider.getTwoLastMonthlySummaryUseCase().invoke().first()
+
+        val summaryData = fillStateWeeklySummaryData(
+            weeklySummary,
+            prefixLast = "Last Week:",
+            prefixCurrent = "Current Week:"
         )
-    }.map { state ->
-        var newState = if (state.weeklySummary != null) {
-            state.copy(
-                weeklySummaryData = fillStateWeeklySummaryData(
-                    state.weeklySummary,
-                    prefixLast = "Last Week:",
-                    prefixCurrent = "Current Week:"
-                )
-            )
-        } else {
-            state
-        }
-        newState = if (state.monthlySummary != null) {
-            newState.copy(
+        _state.update {
+            it.copy(
+                weeklySummaryData = summaryData,
+                summaryDataToDisplay = summaryData,
                 monthlySummaryData = fillStateMonthlySummaryData(
-                    state.monthlySummary,
+                    monthlySummary,
                     prefixLast = "Last Month:",
                     prefixCurrent = "Current Month:"
                 )
             )
-        } else newState
-        newState
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
         initialValue = SummaryScreenState()
     )
+
+    fun onEvent(event: SummaryScreenEvent) {
+        when (event) {
+            is SummaryScreenEvent.OnPageChanged -> {
+                val summaryData = if (event.pageName == "Week") {
+                    state.value.weeklySummaryData
+                } else {
+                    state.value.monthlySummaryData
+                }
+                _state.update {
+                    it.copy(
+                        summaryDataToDisplay = summaryData
+                    )
+                }
+            }
+        }
+    }
 
     private fun fillStateWeeklySummaryData(
         summary: List<WeeklySummary?>,
@@ -65,64 +73,64 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
             trainingDuration = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.trainingDuration?.toDouble() ?: 0.0,
-                currentData = last?.trainingDuration?.toDouble() ?: 0.0,
+                lastData = last?.trainingDuration?.toDouble() ?: 0.0,
+                currentData = first?.trainingDuration?.toDouble() ?: 0.0,
                 unit = "min"
             ),
             totalLiftedWeight = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.totalLiftedWeight ?: 0.0,
-                currentData = last?.totalLiftedWeight ?: 0.0,
+                lastData = last?.totalLiftedWeight ?: 0.0,
+                currentData = first?.totalLiftedWeight ?: 0.0,
                 unit = "kg"
             ),
             numWorkouts = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numWorkouts?.toDouble() ?: 0.0,
-                currentData = last?.numWorkouts?.toDouble() ?: 0.0,
+                lastData = last?.numWorkouts?.toDouble() ?: 0.0,
+                currentData = first?.numWorkouts?.toDouble() ?: 0.0,
                 unit = ""
             ),
             numExercises = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numExercises?.toDouble() ?: 0.0,
-                currentData = last?.numExercises?.toDouble() ?: 0.0,
+                lastData = last?.numExercises?.toDouble() ?: 0.0,
+                currentData = first?.numExercises?.toDouble() ?: 0.0,
                 unit = ""
             ),
             numSets = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numSets?.toDouble() ?: 0.0,
-                currentData = last?.numSets?.toDouble() ?: 0.0,
+                lastData = last?.numSets?.toDouble() ?: 0.0,
+                currentData = first?.numSets?.toDouble() ?: 0.0,
                 unit = ""
             ),
             numReps = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numReps?.toDouble() ?: 0.0,
-                currentData = last?.numReps?.toDouble() ?: 0.0,
+                lastData = last?.numReps?.toDouble() ?: 0.0,
+                currentData = first?.numReps?.toDouble() ?: 0.0,
                 unit = ""
             ),
             avgDurationPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.avgDurationPerWorkout ?: 0.0,
-                currentData = last?.avgDurationPerWorkout ?: 0.0,
+                lastData = last?.avgDurationPerWorkout ?: 0.0,
+                currentData = first?.avgDurationPerWorkout ?: 0.0,
                 unit = "min"
             ),
             avgLiftedWeightPerExercise = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.avgLiftedWeightPerExercise ?: 0.0,
-                currentData = last?.avgLiftedWeightPerExercise ?: 0.0,
+                lastData = last?.avgLiftedWeightPerExercise ?: 0.0,
+                currentData = first?.avgLiftedWeightPerExercise ?: 0.0,
                 unit = "kg"
             ),
             avgLiftedWeightPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.avgLiftedWeightPerWorkout ?: 0.0,
-                currentData = last?.avgLiftedWeightPerWorkout ?: 0.0,
+                lastData = last?.avgLiftedWeightPerWorkout ?: 0.0,
+                currentData = first?.avgLiftedWeightPerWorkout ?: 0.0,
                 unit = "kg"
             )
         )
@@ -139,64 +147,64 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
             trainingDuration = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.trainingDuration?.toDouble() ?: 0.0,
-                currentData = last?.trainingDuration?.toDouble() ?: 0.0,
+                lastData = last?.trainingDuration?.toDouble() ?: 0.0,
+                currentData = first?.trainingDuration?.toDouble() ?: 0.0,
                 unit = "min"
             ),
             totalLiftedWeight = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.totalLiftedWeight ?: 0.0,
-                currentData = last?.totalLiftedWeight ?: 0.0,
+                lastData = last?.totalLiftedWeight ?: 0.0,
+                currentData = first?.totalLiftedWeight ?: 0.0,
                 unit = "kg"
             ),
             numWorkouts = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numWorkouts?.toDouble() ?: 0.0,
-                currentData = last?.numWorkouts?.toDouble() ?: 0.0,
+                lastData = last?.numWorkouts?.toDouble() ?: 0.0,
+                currentData = first?.numWorkouts?.toDouble() ?: 0.0,
                 unit = ""
             ),
             numExercises = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numExercises?.toDouble() ?: 0.0,
-                currentData = last?.numExercises?.toDouble() ?: 0.0,
+                lastData = last?.numExercises?.toDouble() ?: 0.0,
+                currentData = first?.numExercises?.toDouble() ?: 0.0,
                 unit = ""
             ),
             numSets = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numSets?.toDouble() ?: 0.0,
-                currentData = last?.numSets?.toDouble() ?: 0.0,
+                lastData = last?.numSets?.toDouble() ?: 0.0,
+                currentData = first?.numSets?.toDouble() ?: 0.0,
                 unit = ""
             ),
             numReps = getPieChartData(
-                 prefixLast = prefixLast,
+                prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.numReps?.toDouble() ?: 0.0,
-                currentData = last?.numReps?.toDouble() ?: 0.0,
+                lastData = last?.numReps?.toDouble() ?: 0.0,
+                currentData = first?.numReps?.toDouble() ?: 0.0,
                 unit = ""
             ),
             avgDurationPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.avgDurationPerWorkout ?: 0.0,
-                currentData = last?.avgDurationPerWorkout ?: 0.0,
+                lastData = last?.avgDurationPerWorkout ?: 0.0,
+                currentData = first?.avgDurationPerWorkout ?: 0.0,
                 unit = "min"
             ),
             avgLiftedWeightPerExercise = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.avgLiftedWeightPerExercise ?: 0.0,
-                currentData = last?.avgLiftedWeightPerExercise ?: 0.0,
+                lastData = last?.avgLiftedWeightPerExercise ?: 0.0,
+                currentData = first?.avgLiftedWeightPerExercise ?: 0.0,
                 unit = "kg"
             ),
             avgLiftedWeightPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = first?.avgLiftedWeightPerWorkout ?: 0.0,
-                currentData = last?.avgLiftedWeightPerWorkout ?: 0.0,
+                lastData = last?.avgLiftedWeightPerWorkout ?: 0.0,
+                currentData = first?.avgLiftedWeightPerWorkout ?: 0.0,
                 unit = "kg"
             )
         )
