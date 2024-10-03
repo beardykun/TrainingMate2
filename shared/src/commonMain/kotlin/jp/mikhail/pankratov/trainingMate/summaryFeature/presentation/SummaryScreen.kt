@@ -3,6 +3,7 @@ package jp.mikhail.pankratov.trainingMate.summaryFeature.presentation
 import Dimens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -95,6 +96,6 @@ fun SummaryScreen(state: SummaryScreenState, onEvent: (SummaryScreenEvent) -> Un
 fun ChartComp(list: List<PieChartData>, label: String, modifier: Modifier = Modifier) {
     Column(modifier = Modifier) {
         TextLarge(text = label)
-        CommonPieChart(list = list, modifier = modifier.size(400.dp))
+        CommonPieChart(list = list, modifier = modifier.size(500.dp))
     }
 }

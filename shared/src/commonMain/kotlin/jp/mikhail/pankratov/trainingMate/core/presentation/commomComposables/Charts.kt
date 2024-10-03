@@ -172,8 +172,6 @@ fun CommonPieChart(
         animation = TweenSpec(durationMillis = 1000),
         pieChartData = list,
         ratioLineColor = Color.LightGray,
-        textRatioStyle = TextStyle(color = Color.Gray),
-        descriptionStyle = TextStyle(color = Color.Black),
-        legendPosition = LegendPosition.BOTTOM
+        textRatioStyle = TextStyle(color = Color.Gray)
     )
 }
