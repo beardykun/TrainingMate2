@@ -9,6 +9,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoViewModel
+import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryViewModel
 import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseViewModel
@@ -111,6 +112,12 @@ fun viewModelModule() = module {
     factory {
         UserInfoViewModel(
             exerciseUseCaseProvider = get()
+        )
+    }
+
+    factory {
+        SummaryViewModel(
+            summaryUseCaseProvider = get()
         )
     }
 }

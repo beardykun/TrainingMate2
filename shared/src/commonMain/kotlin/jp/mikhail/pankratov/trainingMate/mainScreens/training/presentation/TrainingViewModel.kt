@@ -75,7 +75,7 @@ class TrainingViewModel(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 2000L),
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
         initialValue = TrainingScreenState()
     )
 

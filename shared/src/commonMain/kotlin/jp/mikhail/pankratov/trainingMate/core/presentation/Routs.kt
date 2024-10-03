@@ -34,6 +34,11 @@ object Routs {
         val exerciseAtWork = "Exercise At Work"
         val exerciseAtWorkHistory = "Exercise History"
     }
+
+    object SummaryScreens {
+        val summaryScreensRoot = "summaryScreensRoot"
+        val summaryScreen = "Summary Screen"
+    }
 }
 
 data class Screen(val title: String, val position: Int = 0)

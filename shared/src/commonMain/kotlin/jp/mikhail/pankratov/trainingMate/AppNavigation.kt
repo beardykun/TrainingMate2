@@ -37,6 +37,8 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.Train
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoViewModel
+import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryScreen
+import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryViewModel
 import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionScreen
 import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesScreen
@@ -113,6 +115,22 @@ fun NavHost(navigator: Navigator) {
 
         trainingScreens(navigator)
         historyScreens(navigator)
+        summaryScreens(navigator)
+    }
+}
+
+private fun RouteBuilder.summaryScreens(
+    navigator: Navigator
+) {
+    group(
+        route = Routs.SummaryScreens.summaryScreensRoot,
+        initialRoute = Routs.SummaryScreens.summaryScreen
+    ) {
+        scene(route = Routs.SummaryScreens.summaryScreen, navTransition = NavTransition()) {
+            val viewModel = koinViewModel(vmClass = SummaryViewModel::class)
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            SummaryScreen(state = state)
+        }
     }
 }
 

@@ -109,7 +109,8 @@ fun TrainingScreen(
                             modifier = Modifier.padding(Dimens.Padding16),
                             onClick = { year, weekNum ->
                                 navigator.navigate(
-                                    "${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
+                                    //"${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
+                                    Routs.SummaryScreens.summaryScreensRoot
                                 )
                             }
                         )
