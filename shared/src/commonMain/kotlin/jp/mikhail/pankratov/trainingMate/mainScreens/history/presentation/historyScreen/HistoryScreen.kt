@@ -17,7 +17,7 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingItem
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.TrainingItem
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable

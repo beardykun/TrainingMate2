@@ -32,7 +32,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.LocalTrainingItem
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 

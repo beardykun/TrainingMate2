@@ -15,7 +15,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLoca
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.LocalTrainingItem
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable

@@ -20,7 +20,6 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 @Composable
 fun SummaryScreen(state: SummaryScreenState, onEvent: (SummaryScreenEvent) -> Unit) {
     state.summaryDataToDisplay?.let { summaryItem ->
-
         MyHorizontalViewPager(
             pageNames = listOf(
                 SharedRes.strings.week.getString(),

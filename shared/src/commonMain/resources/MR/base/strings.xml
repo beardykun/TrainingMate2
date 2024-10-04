@@ -50,7 +50,7 @@
     <string name="average_weight_per_exercise_with_args">Average weight per exercise: %1$.2f kg</string>
     <string name="average_weight_per_workout_with_args">Average weight per workout: %1$.2f kg</string>
     <string name="average_workout_time_with_args">Average workout time: %1$.2f min</string>
-    <string name="summaries">Summaries: </string>
+    <string name="summaries">Summary: </string>
 
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>

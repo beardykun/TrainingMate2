@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.comp
 
 import Dimens
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,24 +20,21 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 fun SummaryWeekly(
     weeklySummary: WeeklySummary?,
     modifier: Modifier,
-    counter: Int,
     onClick: (year: Long, week: Long) -> Unit
 ) {
     weeklySummary?.let { summary ->
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.outlineVariant),
-            modifier = Modifier.padding(horizontal = Dimens.Padding8),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.Padding8),
             onClick = {
                 onClick.invoke(summary.year, summary.weekNumber)
             }
         ) {
             Column(modifier = modifier) {
                 val topText =
-                    if (counter == 0)
                         SharedRes.strings.this_week_summary.getString()
-                    else
-                        SharedRes.strings.last_week_summary.getString()
+
                 TextLarge(text = topText)
                 TextMedium(
                     text = stringResource(
