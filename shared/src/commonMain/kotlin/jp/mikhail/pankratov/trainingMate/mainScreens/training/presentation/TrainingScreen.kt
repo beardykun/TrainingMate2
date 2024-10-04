@@ -153,7 +153,7 @@ fun TrainingScreen(
                     weeklySummary = summaryItem,
                     modifier = Modifier.padding(Dimens.Padding16),
                     onClick = { year, weekNum ->
-                        if (weeklyList.size > 1) {
+                        if (weeklyList.isNotEmpty()) {
                             //"${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
                             navigator.navigate(Routs.SummaryScreens.summaryScreensRoot)
                         } else {
