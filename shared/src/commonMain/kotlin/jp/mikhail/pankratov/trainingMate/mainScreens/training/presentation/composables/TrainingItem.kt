@@ -106,8 +106,8 @@ fun TrainingItem(
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = Modifier
-            .clickable { onClick.invoke() }
             .padding(Dimens.Padding8)
+            .clickable { onClick.invoke() }
     ) {
         Column(
             modifier = Modifier

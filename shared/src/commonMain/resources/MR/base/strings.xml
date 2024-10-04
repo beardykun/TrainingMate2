@@ -32,6 +32,8 @@
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>
     <string name="last_training">Last training:</string>
+    <string name="last_training_dummy">Last training sample:</string>
+    <string name="your_last_training_dummy">Your last training name</string>
     <string name="current_training">Ongoing training:</string>
     <string name="are_you_ready_to_start">Ready to start a new training?\nOther ongoing trainings will be finished.</string>
     <string name="delete_last_training">Delete Last Training</string>
@@ -50,7 +52,9 @@
     <string name="average_weight_per_exercise_with_args">Average weight per exercise: %1$.2f kg</string>
     <string name="average_weight_per_workout_with_args">Average weight per workout: %1$.2f kg</string>
     <string name="average_workout_time_with_args">Average workout time: %1$.2f min</string>
-    <string name="summaries">Summary: </string>
+    <string name="summaries">Summary:</string>
+    <string name="summaries_sample">Summaries sample:</string>
+    <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
 
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>

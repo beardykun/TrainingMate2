@@ -21,7 +21,6 @@ class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : View
         .onStart {
             val strengthDefineExercises =
                 exerciseUseCaseProvider.getStrengthDefineExercisesUseCase().invoke().first()
-            println("TAGGER $strengthDefineExercises")
 
             _state.update {
                 it.copy(strengthLevel = calculateRelativeStrength(strengthDefineExercises))

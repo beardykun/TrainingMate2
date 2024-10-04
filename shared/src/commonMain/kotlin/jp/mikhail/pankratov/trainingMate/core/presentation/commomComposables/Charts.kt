@@ -1,7 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.sp
 import com.aay.compose.barChart.BarChart
 import com.aay.compose.barChart.model.BarParameters
 import com.aay.compose.baseComponents.model.GridOrientation
-import com.aay.compose.baseComponents.model.LegendPosition
 import com.aay.compose.donutChart.PieChart
 import com.aay.compose.donutChart.model.PieChartData
 import com.aay.compose.lineChart.LineChart

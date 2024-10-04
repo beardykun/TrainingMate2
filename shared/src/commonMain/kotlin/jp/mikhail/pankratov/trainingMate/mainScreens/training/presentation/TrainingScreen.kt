@@ -21,8 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
+import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
+import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.GlobalToastMessage
@@ -49,16 +53,23 @@ fun TrainingScreen(
             )
         }
     }) {
+        val toastMessage = stringResource(SharedRes.strings.dummy_data_toast)
+
         val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier.fillMaxSize().padding(horizontal = Dimens.Padding16)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = Dimens.Padding16)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(Dimens.Padding16)
         ) {
             TextLarge(text = state.greeting)
 
             state.lastTraining?.let { lastTraining ->
-                TextLarge(text = stringResource(SharedRes.strings.last_training).uppercase())
+                TextLarge(
+                    text = SharedRes.strings.last_training.getString().uppercase(),
+                    color = MaterialTheme.colorScheme.error
+                )
                 TrainingItem(
                     training = lastTraining,
                     onClick = {
@@ -72,10 +83,38 @@ fun TrainingScreen(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
+            } ?: run {
+                TextLarge(
+                    text = SharedRes.strings.last_training_dummy.getString().uppercase(),
+                    color = MaterialTheme.colorScheme.error
+                )
+                TrainingItem(
+                    training = Training(
+                        name = SharedRes.strings.your_last_training_dummy.getString(),
+                        totalLiftedWeight = 10000.0,
+                        exercises = listOf(
+                            "Exercise 1",
+                            "Exercise 2",
+                            "Exercise 3"
+                        ),
+                        groups = DatabaseContract.LEGS_GROUP,
+                        userId = "",
+                    ),
+                    onClick = {
+                        ToastManager.showToast(toastMessage)
+                    },
+                    onDeleteClick = {
+                    },
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             }
 
             state.ongoingTraining?.let { ongoingTraining ->
-                TextLarge(text = stringResource(SharedRes.strings.current_training).uppercase())
+                TextLarge(
+                    text = stringResource(SharedRes.strings.current_training).uppercase(),
+                    color = MaterialTheme.colorScheme.error
+                )
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     LocalTrainingItem(
                         training = TrainingLocal(
@@ -94,20 +133,32 @@ fun TrainingScreen(
                 }
             }
             state.weeklySummary?.let { weeklyList ->
-                TextLarge(text = stringResource(SharedRes.strings.summaries).uppercase())
-
+                val summaryTitle =
+                    stringResource(if (weeklyList.isEmpty()) SharedRes.strings.summaries_sample else SharedRes.strings.summaries)
+                val summaryItem = if (weeklyList.isEmpty()) WeeklySummary(
+                    numWorkouts = 4,
+                    trainingDuration = 200,
+                    totalLiftedWeight = 30000.00,
+                    numExercises = 10,
+                    numSets = 40,
+                    numReps = 400,
+                    avgDurationPerWorkout = 50.00,
+                    avgLiftedWeightPerExercise = 3000.00,
+                    avgLiftedWeightPerWorkout = 7500.00,
+                    year = 2023,
+                    weekNumber = 1
+                ) else weeklyList.first()
+                TextLarge(text = summaryTitle.uppercase(), color = MaterialTheme.colorScheme.error)
                 SummaryWeekly(
-                    weeklySummary = weeklyList.first(),
+                    weeklySummary = summaryItem,
                     modifier = Modifier.padding(Dimens.Padding16),
                     onClick = { year, weekNum ->
-                        //if (weeklyList.size > 1) {
-                            navigator.navigate(
-                                //"${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
-                                Routs.SummaryScreens.summaryScreensRoot
-                            )
-                       /* } else {
-                            ToastManager.showToast("Not enough data.\nNeed at least two weeks　data to show summary")
-                        }*/
+                        if (weeklyList.size > 1) {
+                            //"${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
+                            navigator.navigate(Routs.SummaryScreens.summaryScreensRoot)
+                        } else {
+                            ToastManager.showToast(toastMessage)
+                        }
                     }
                 )
             }
