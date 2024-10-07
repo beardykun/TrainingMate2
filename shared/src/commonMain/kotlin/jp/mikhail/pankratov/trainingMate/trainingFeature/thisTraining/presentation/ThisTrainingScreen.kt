@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -66,7 +65,7 @@ fun ThisTrainingScreen(
                 navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${trainingId}")
             }
 
-            state.exerciseLocals?.let { exercises ->
+            state.exerciseLocalsWithHeaders?.let { exercises ->
                 if (exercises.isEmpty()) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -92,6 +91,7 @@ fun ThisTrainingScreen(
                                         .clip(RoundedCornerShape(25))
                                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                                         .padding(Dimens.Padding4)
+                                        .animateItemPlacement()
                                 )
                             }
 
@@ -126,20 +126,20 @@ fun ThisTrainingScreen(
                                     actions = {
                                         ActionIcon(
                                             onClick = {
-                                                onEvent(ThisTrainingEvent.OnCollapsedEvent(item))
+                                                onEvent(ThisTrainingEvent.OnRemoveExercise(item.exercise.name))
                                             },
                                             icon = Icons.Default.Delete,
                                             backgroundColor = Color.Red,
                                             modifier = Modifier
                                         )
-                                        ActionIcon(
+                                       /* ActionIcon(
                                             onClick = {
                                                 onEvent(ThisTrainingEvent.OnCollapsedEvent(item))
                                             },
                                             icon = Icons.Default.Edit,
                                             backgroundColor = Color.Blue,
                                             modifier = Modifier
-                                        )
+                                        )*/
                                     }
                                 )
                             }

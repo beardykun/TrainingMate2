@@ -30,6 +30,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.di.AppModule
 import jp.mikhail.pankratov.trainingMate.di.domainUseCasesModule
+import jp.mikhail.pankratov.trainingMate.di.local.appUseCasesProvider
 import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
 import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
 import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
@@ -60,7 +61,8 @@ fun App(
                     exerciseUseCaseModule(),
                     summaryUseCaseModule(),
                     domainUseCasesModule(),
-                    viewModelModule()
+                    viewModelModule(),
+                    appUseCasesProvider()
                 )
             )
         }) {

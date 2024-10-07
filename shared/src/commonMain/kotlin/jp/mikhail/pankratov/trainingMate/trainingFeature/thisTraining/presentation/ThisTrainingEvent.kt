@@ -12,4 +12,5 @@ sealed class ThisTrainingEvent {
     data object EndTraining : ThisTrainingEvent()
     data class OnCollapsedEvent(val item: ExerciseListItem) : ThisTrainingEvent()
     data class OnExtendedEvent(val item: ExerciseListItem) : ThisTrainingEvent()
+    data class OnRemoveExercise(val exerciseName: String) : ThisTrainingEvent()
 }

@@ -23,7 +23,8 @@ fun viewModelModule() = module {
         ThisTrainingViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
-            summaryUseCaseProvider = get()
+            summaryUseCaseProvider = get(),
+            removeTrainingExerciseUseCase = get()
         )
     }
 

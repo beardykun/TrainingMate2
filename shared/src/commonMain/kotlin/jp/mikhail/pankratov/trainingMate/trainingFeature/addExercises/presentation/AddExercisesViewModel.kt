@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,28 +21,17 @@ class AddExercisesViewModel(
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
     private val _training = MutableStateFlow<Training?>(null)
-    private val _availableExercises = MutableStateFlow<List<ExerciseLocal>>(emptyList())
-    private val _selectedExercises = MutableStateFlow<List<String>>(emptyList())
+
 
     private val _state = MutableStateFlow(AddExercisesState())
-    val state = combine(
-        _state,
-        _training,
-        _availableExercises,
-        _selectedExercises
-    ) { state, training, availableExercises, selectedExercises ->
-        state.copy(
-            availableExerciseLocals = getExerciseListWithHeaders(availableExercises.sortedBy { it.group }),
-            selectedExercises = selectedExercises,
-            training = training
+    val state =
+        _state.onStart {
+            loadTrainingAndExercises()
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(3000L),
+            initialValue = AddExercisesState()
         )
-    }.onStart {
-        loadTrainingAndExercises()
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(3000L),
-        initialValue = AddExercisesState()
-    )
 
     private fun loadTrainingAndExercises() =
         viewModelScope.launch {
@@ -55,9 +43,20 @@ class AddExercisesViewModel(
                     exerciseUseCaseProvider.getLocalExerciseByGroupUseCase()
                         .invoke(groupNames = trainingNotNull.groups)
                         .collect { exercises ->
-                            _selectedExercises.update { trainingNotNull.exercises }
-                            _availableExercises.update { exercises }
-                            onEvent(AddExercisesEvent.OnSelectionChanged(_state.value.selectedType))
+                            val sortedExercises =
+                                withContext(Dispatchers.Default) {
+                                    getFilteredList(
+                                        availableExercises = getExerciseListWithHeaders(exercises = exercises),
+                                        selectedExercises = trainingNotNull.exercises
+                                    )
+                                }
+                            _state.update {
+                                it.copy(
+                                    sortedExercises = sortedExercises,
+                                    training = trainingNotNull,
+                                    selectedExercises = trainingNotNull.exercises
+                                )
+                            }
                         }
                 }
             }
@@ -67,13 +66,13 @@ class AddExercisesViewModel(
     fun onEvent(event: AddExercisesEvent) {
         when (event) {
             is AddExercisesEvent.OnSelectExercise -> {
-                _selectedExercises.update {
-                    val list = if (!state.value.selectedExercises.contains(event.exercise)) {
-                        state.value.selectedExercises.plus(event.exercise)
-                    } else {
-                        state.value.selectedExercises.minus(event.exercise)
-                    }
-                    list
+                val list = if (!state.value.selectedExercises.contains(event.exerciseName)) {
+                    state.value.selectedExercises.plus(event.exerciseName)
+                } else {
+                    state.value.selectedExercises.minus(event.exerciseName)
+                }
+                _state.update {
+                    it.copy(selectedExercises = list)
                 }
             }
 
@@ -107,72 +106,34 @@ class AddExercisesViewModel(
                     )
                 }
             }
-
-            is AddExercisesEvent.OnSelectionChanged -> {
-                viewModelScope.launch {
-                    val filteredList =
-                        withContext(Dispatchers.Default) { getFilteredList(event.selectedType) }
-                    _state.update {
-                        it.copy(
-                            sortedExercises = filteredList,
-                            selectedType = event.selectedType
-                        )
-                    }
-                }
-            }
         }
     }
 
-    private fun getFilteredList(selectionType: SelectionType): List<ExerciseListItem>? {
-        val totalExerciseItems = if (selectionType == SelectionType.ADD)
-            (state.value.availableExerciseLocals?.count { it is ExerciseListItem.ExerciseItem }
-                ?.minus(state.value.selectedExercises.size))
-                ?: 0 else state.value.selectedExercises.size
-        return when (selectionType) {
-            SelectionType.ADD -> {
-                var exerciseItemCount = 0
-                state.value.availableExerciseLocals?.mapNotNull { item ->
-                    when (item) {
-                        is ExerciseListItem.ExerciseItem -> {
-                            if (!state.value.selectedExercises.contains(item.exercise.name)) {
-                                exerciseItemCount++
-                                item
-                            } else {
-                                null
-                            }
-                        }
+    private fun getFilteredList(
+        availableExercises: List<ExerciseListItem>,
+        selectedExercises: List<String>
+    ): List<ExerciseListItem> {
+        val totalExerciseItems =
+            (availableExercises.count { it is ExerciseListItem.ExerciseItem }
+                .minus(selectedExercises.size))
 
-                        is ExerciseListItem.Header -> {
-                            if (exerciseItemCount < totalExerciseItems) {
-                                item
-                            } else {
-                                null
-                            }
-                        }
+        var exerciseItemCount = 0
+        return availableExercises.mapNotNull { item ->
+            when (item) {
+                is ExerciseListItem.ExerciseItem -> {
+                    if (!selectedExercises.contains(item.exercise.name)) {
+                        exerciseItemCount++
+                        item
+                    } else {
+                        null
                     }
                 }
-            }
 
-            SelectionType.REMOVE -> {
-                var exerciseItemCount = 0
-                state.value.availableExerciseLocals?.mapNotNull { item ->
-                    when (item) {
-                        is ExerciseListItem.ExerciseItem -> {
-                            if (state.value.selectedExercises.contains(item.exercise.name)) {
-                                exerciseItemCount++
-                                item
-                            } else {
-                                null
-                            }
-                        }
-
-                        is ExerciseListItem.Header -> {
-                            if (exerciseItemCount < totalExerciseItems) {
-                                item
-                            } else {
-                                null
-                            }
-                        }
+                is ExerciseListItem.Header -> {
+                    if (exerciseItemCount < totalExerciseItems) {
+                        item
+                    } else {
+                        null
                     }
                 }
             }
@@ -181,9 +142,9 @@ class AddExercisesViewModel(
 
     private fun updateTraining(oldTraining: Training) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getInsertTrainingHistoryRecordUseCase()
-            .invoke(oldTraining.copy(exercises = _selectedExercises.value))
+            .invoke(oldTraining.copy(exercises = state.value.selectedExercises))
         trainingUseCaseProvider.getUpdateTrainingLocalExerciseUseCase().invoke(
-            exercises = _selectedExercises.value,
+            exercises = state.value.selectedExercises,
             id = oldTraining.trainingTemplateId
         )
     }

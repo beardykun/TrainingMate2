@@ -8,19 +8,19 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCa
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.domain.useCases.RemoveExerciseUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import moe.tlaster.precompose.viewmodel.viewModelScope
 import kotlin.time.Duration.Companion.seconds
@@ -28,25 +28,12 @@ import kotlin.time.Duration.Companion.seconds
 class ThisTrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
-    private val summaryUseCaseProvider: SummaryUseCaseProvider
+    private val summaryUseCaseProvider: SummaryUseCaseProvider,
+    private val removeTrainingExerciseUseCase: RemoveExerciseUseCase
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
-    private val _training = MutableStateFlow<Training?>(null)
-    private val _exercises = MutableStateFlow<List<ExerciseLocal>?>(null)
     private val _state = MutableStateFlow(ThisTrainingState())
-    val state = combine(
-        _state,
-        _training,
-        _exercises
-    ) { state, training, exercises ->
-        if (state.ongoingTraining == null) {
-            state.copy(
-                ongoingTraining = training,
-                exerciseLocals = (getExerciseListWithHeaders(exercises?.sortedBy { it.group }
-                    ?: emptyList())).toMutableList()
-            )
-        } else state
-    }.onStart {
+    val state = _state.onStart {
         loadTrainingAndExercises()
     }.stateIn(
         scope = viewModelScope,
@@ -78,7 +65,7 @@ class ThisTrainingViewModel(
             }
 
             is ThisTrainingEvent.OnCollapsedEvent -> {
-                val updatedList = state.value.exerciseLocals?.map {
+                val updatedList = state.value.exerciseLocalsWithHeaders?.map {
                     if (it == event.item) {
                         (it as ExerciseListItem.ExerciseItem).copy(isOptionsReveled = false)
                     } else it
@@ -86,24 +73,49 @@ class ThisTrainingViewModel(
 
                 _state.update {
                     it.copy(
-                        exerciseLocals = updatedList
+                        exerciseLocalsWithHeaders = updatedList
                     )
                 }
             }
 
             is ThisTrainingEvent.OnExtendedEvent -> {
-                val updatedList = state.value.exerciseLocals?.map {
+                val updatedList = state.value.exerciseLocalsWithHeaders?.map {
                     if (it == event.item) {
                         (it as ExerciseListItem.ExerciseItem).copy(isOptionsReveled = true)
                     } else it
                 }
                 _state.update {
                     it.copy(
-                        exerciseLocals = updatedList
+                        exerciseLocalsWithHeaders = updatedList
                     )
                 }
             }
+
+            is ThisTrainingEvent.OnRemoveExercise -> {
+                state.value.ongoingTraining?.let { ongoingTraining ->
+                    viewModelScope.launch {
+                        removeExercise(
+                            ongoingTraining,
+                            state.value.exercisesLocal,
+                            event
+                        )
+                    }
+                }
+            }
         }
+    }
+
+    private suspend fun removeExercise(
+        ongoingTraining: Training,
+        localExercises: List<ExerciseLocal>,
+        event: ThisTrainingEvent.OnRemoveExercise
+    ) = withContext(Dispatchers.IO) {
+        removeTrainingExerciseUseCase.removeExercise(
+            ongoingTraining = ongoingTraining,
+            exercises = localExercises.map { it.name },
+            selectedExercise = event.exerciseName
+        )
+        loadTrainingAndExercises()
     }
 
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
@@ -120,11 +132,19 @@ class ThisTrainingViewModel(
     private fun loadTrainingAndExercises() = viewModelScope.launch {
         val ongoingTraining = trainingUseCaseProvider.getOngoingTrainingUseCase().invoke().first()
         ongoingTraining?.let { trainingNotNull ->
-            _training.value = trainingNotNull
-            val exercises =
-                exerciseUseCaseProvider.getLocalExercisesByNamesUseCase()
-                    .invoke(trainingNotNull.exercises).first()
-            _exercises.value = exercises
+            _state.update {
+                it.copy(
+                    ongoingTraining = trainingNotNull,
+                )
+            }
+            val exercises = exerciseUseCaseProvider.getLocalExercisesByNamesUseCase()
+                .invoke(trainingNotNull.exercises).first()
+            _state.update {
+                it.copy(
+                    exercisesLocal = exercises,
+                    exerciseLocalsWithHeaders = getExerciseListWithHeaders(exercises.sortedBy { item -> item.group })
+                )
+            }
             loadLastSameTrainingData(ongoingTrainingTemplateId = trainingNotNull.trainingTemplateId)
         }
         if (ongoingTraining != null) {
