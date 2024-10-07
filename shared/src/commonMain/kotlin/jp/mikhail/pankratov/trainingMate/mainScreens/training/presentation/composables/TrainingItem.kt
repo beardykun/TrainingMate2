@@ -147,7 +147,7 @@ fun TrainingItem(
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
-                text = stringResource(SharedRes.strings.total_lifted_weight) + training.totalLiftedWeight.toString(),
+                text = stringResource(SharedRes.strings.total_lifted_weight_with_args, training.totalLiftedWeight),
                 color = contentColor
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))

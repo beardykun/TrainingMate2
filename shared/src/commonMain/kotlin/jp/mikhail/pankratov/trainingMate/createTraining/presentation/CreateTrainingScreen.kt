@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
+import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.GlobalToastMessage
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
@@ -59,8 +61,13 @@ fun CreateTrainingScreen(
             }
         )
         Spacer(modifier = Modifier.weight(1f))
+        val groupError = SharedRes.strings.select_muscle_group.getString()
         CommonButton(
             onClick = {
+                if (state.selectedGroups.isEmpty()) {
+                    ToastManager.showToast(message = groupError)
+                    return@CommonButton
+                }
                 onEvent(CreateTrainingEvent.OnAddNewTraining(onSuccess = {
                     navigator.navigate(Routs.TrainingScreens.selectTraining)
                 }))
@@ -68,4 +75,5 @@ fun CreateTrainingScreen(
             text = SharedRes.strings.add_training.getString()
         )
     }
+    GlobalToastMessage()
 }

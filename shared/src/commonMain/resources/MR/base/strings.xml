@@ -6,6 +6,7 @@
     <string name="groups">Groups: </string>
     <string name="cd_muscle_group_image">muscle group image</string>
     <string name="cd_add_new_training">add new training</string>
+    <string name="select_muscle_group">Select at least one muscle group</string>
 
     <!-- Exercise at work -->
     <string name="select_weight">Select weight</string>
@@ -123,7 +124,7 @@
     <!-- HistoryInfoScreen -->
     <string name="training_name_with_arg">Training name: %1$s</string>
     <string name="training_groups_with_arg">Training groups: %1$s</string>
-    <string name="training_duration_with_arg">Training duration: %1$s</string>
+    <string name="training_duration_with_arg">Training duration: %1$s min</string>
     <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$.2f kg</string>
     <string name="lifted_weight_with_arg">Lifted weight: %1$.2f kg</string>
     <string name="back_btn">Back</string>
@@ -151,7 +152,6 @@
     <!-- SummariesScreen -->
     <string name="number_of_workouts">Number of workouts</string>
     <string name="total_training_duration">Total training duration</string>
-    <string name="total_lifted_weight">Total lifted weight</string>
     <string name="number_of_done_exercises">Done exercises</string>
     <string name="number_of_done_sets">Done sets</string>
     <string name="total_reps_number">Total reps number</string>
