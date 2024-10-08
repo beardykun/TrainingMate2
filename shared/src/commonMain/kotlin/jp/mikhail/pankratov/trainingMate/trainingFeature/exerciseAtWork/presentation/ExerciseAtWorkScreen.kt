@@ -205,13 +205,14 @@ fun ExerciseAtWorkScreen(
                     shape = CircleShape,
                     border = BorderStroke(1.dp, Color.Blue),
                     contentPadding = PaddingValues(0.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = Dimens.cardElevation),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = Color.White
                     ),
                     onClick = {
                         onEvent(ExerciseAtWorkEvent.OnAddNewSet)
-                    }, modifier = Modifier.size(Dimens.roundButton)
+                    }, modifier = Modifier.padding(bottom = Dimens.Padding8).size(Dimens.roundButton)
                 ) {
                     TextMedium(text = stringResource(SharedRes.strings.add_set))
                 }
