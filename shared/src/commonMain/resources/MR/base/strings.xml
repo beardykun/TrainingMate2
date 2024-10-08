@@ -136,7 +136,6 @@
     <!-- TrainingItem -->
     <string name="cd_delete">Delete</string>
     <string name="exercises_with_new_line">Exercises:\n</string>
-    <string name="total_lifted_weight">Total lifted weight: </string>
 
     <!-- ThisTrainingScreen -->
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
@@ -150,6 +149,7 @@
     <string name="strength_comparison_hint">Comparing strength levels of exercises relative to the baseline exercise (baseline = 100%)</string>
 
     <!-- SummariesScreen -->
+    <string name="total_lifted_weight">Total lifted weight</string>
     <string name="number_of_workouts">Number of workouts</string>
     <string name="total_training_duration">Total training duration</string>
     <string name="number_of_done_exercises">Done exercises</string>

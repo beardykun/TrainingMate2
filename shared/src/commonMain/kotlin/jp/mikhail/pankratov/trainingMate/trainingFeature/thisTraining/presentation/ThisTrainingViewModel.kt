@@ -110,7 +110,7 @@ class ThisTrainingViewModel(
         localExercises: List<ExerciseLocal>,
         event: ThisTrainingEvent.OnRemoveExercise
     ) = withContext(Dispatchers.IO) {
-        removeTrainingExerciseUseCase.removeExercise(
+        removeTrainingExerciseUseCase.invoke(
             ongoingTraining = ongoingTraining,
             exercises = localExercises.map { it.name },
             selectedExercise = event.exerciseName

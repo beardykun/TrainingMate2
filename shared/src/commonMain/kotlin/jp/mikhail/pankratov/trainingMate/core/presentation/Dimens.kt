@@ -38,7 +38,9 @@ object Dimens {
 
     //text sizes
     val normalTextSize = 16.sp
-    val animationTextSize = 20.sp
+    val largeTextSize = 20.sp
 
     val borderWidth = 1.dp
+
+    val PieChartSize = 500.dp
 }

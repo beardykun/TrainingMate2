@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.aay.compose.barChart.BarChart
 import com.aay.compose.barChart.model.BarParameters
 import com.aay.compose.baseComponents.model.GridOrientation
+import com.aay.compose.baseComponents.model.LegendPosition
 import com.aay.compose.donutChart.PieChart
 import com.aay.compose.donutChart.model.PieChartData
 import com.aay.compose.lineChart.LineChart
@@ -170,6 +171,7 @@ fun CommonPieChart(
         animation = TweenSpec(durationMillis = 1000),
         pieChartData = list,
         ratioLineColor = Color.LightGray,
-        textRatioStyle = TextStyle(color = Color.Gray)
+        textRatioStyle = TextStyle(color = Color.Gray),
+        legendPosition = LegendPosition.BOTTOM
     )
 }

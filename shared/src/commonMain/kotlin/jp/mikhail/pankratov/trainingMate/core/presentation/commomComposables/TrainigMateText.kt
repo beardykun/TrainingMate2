@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
 
 @Composable
 fun TextMedium(
@@ -58,6 +59,7 @@ fun TextLarge(
     textAlign: TextAlign = TextAlign.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     color: Color = Color.Unspecified,
+    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -67,6 +69,7 @@ fun TextLarge(
         color = color,
         overflow = overflow,
         textAlign = textAlign,
+        fontSize = fontSize,
         modifier = modifier
     )
 }

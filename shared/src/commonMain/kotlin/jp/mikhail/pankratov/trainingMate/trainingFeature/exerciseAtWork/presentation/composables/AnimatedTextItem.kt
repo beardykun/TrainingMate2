@@ -44,7 +44,7 @@ fun AnimatedTextItem(
     isAnimating: Boolean
 ) {
     AnimatedVisibility(visible = set.weight.isNotBlank()) {
-        val size = if (isAnimating) Dimens.animationTextSize.value else Dimens.normalTextSize.value
+        val size = if (isAnimating) Dimens.largeTextSize.value else Dimens.normalTextSize.value
         val animatedFontSize = remember { Animatable(initialValue = size) }
 
         LaunchedEffect(key1 = isAnimating) {

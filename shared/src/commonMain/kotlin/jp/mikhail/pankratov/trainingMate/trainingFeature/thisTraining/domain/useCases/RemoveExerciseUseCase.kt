@@ -5,7 +5,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseC
 
 class RemoveExerciseUseCase(val trainingUseCaseProvider: TrainingUseCaseProvider) {
 
-    suspend inline fun removeExercise(
+    suspend operator fun invoke(
         ongoingTraining: Training,
         exercises: List<String>,
         selectedExercise: String
