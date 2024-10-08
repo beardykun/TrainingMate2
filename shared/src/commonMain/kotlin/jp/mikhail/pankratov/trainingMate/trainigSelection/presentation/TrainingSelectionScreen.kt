@@ -4,6 +4,7 @@ import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,8 +17,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +27,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
@@ -56,65 +59,73 @@ fun TrainingSelectionScreen(
     }) {
         state.availableTrainings?.let {
             Column {
-            val trainingTypes = Constants.GROUPS
-            val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
-            var selectedTabIndex by remember { mutableStateOf(0) }
-            val coroutineScope = rememberCoroutineScope()
+                val trainingTypes = Constants.GROUPS
+                val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
+                var selectedTabIndex by remember { mutableStateOf(0) }
+                val coroutineScope = rememberCoroutineScope()
 
-            LaunchedEffect(pagerState.currentPage) {
-                val trainingType = trainingTypes[pagerState.currentPage]
-                selectedTabIndex = pagerState.currentPage
-                onEvent(TrainingSelectionEvent.OnTrainingTypeChanged(trainingType))
-            }
-            TabRow(selectedTabIndex = selectedTabIndex) {
-                trainingTypes.forEachIndexed { index, trainingType ->
-                    Tab(
-                        selected = selectedTabIndex == index,
-                        onClick = {
-                            selectedTabIndex = index
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        }) {
-                        TextMedium(
-                            text = trainingType,
-                            modifier = Modifier.padding(Dimens.Padding8)
-                        )
-                    }
+                // Handle page changes in the pager
+                LaunchedEffect(pagerState.currentPage) {
+                    val trainingType = trainingTypes[pagerState.currentPage]
+                    selectedTabIndex = pagerState.currentPage
+                    onEvent(TrainingSelectionEvent.OnTrainingTypeChanged(trainingType))
                 }
-            }
-            state.typedTrainings?.let { trainings ->
-                HorizontalPager(state = pagerState) {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        items(trainings,
-                            key = { item ->
-                                item.name
+
+                // Scrollable Tab Row with scrollable tabs
+                ScrollableTabRow(
+                    selectedTabIndex = selectedTabIndex,
+                    edgePadding = Dimens.Padding16
+                ) {
+                    trainingTypes.forEachIndexed { index, trainingType ->
+                        Tab(
+                            selected = selectedTabIndex == index,
+                            onClick = {
+                                selectedTabIndex = index
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
                             }
-                        ) { training ->
-                            LocalTrainingItem(
-                                training = training,
-                                onClick = {
-                                    onEvent(
-                                        TrainingSelectionEvent.OnTrainingItemClick(
-                                            shouldShowDialog = true,
-                                            training = training
-                                        )
-                                    )
-                                },
-                                onDeleteClick = { id ->
-                                    onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
-                                },
-                                modifier = Modifier.animateItemPlacement(),
-                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                limitWidth = false
+                        ) {
+                            TextMedium(
+                                text = trainingType,
+                                modifier = Modifier.padding(Dimens.Padding8)
                             )
                         }
                     }
                 }
-            }
+                val nestedScrollConnection = remember { object : NestedScrollConnection {} }
+                state.typedTrainings?.let { trainings ->
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .nestedScroll(nestedScrollConnection)
+                    ) { page ->
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(trainings, key = { it.name }) { training ->
+                                LocalTrainingItem(
+                                    training = training,
+                                    onClick = {
+                                        onEvent(
+                                            TrainingSelectionEvent.OnTrainingItemClick(
+                                                shouldShowDialog = true,
+                                                training = training
+                                            )
+                                        )
+                                    },
+                                    onDeleteClick = { id ->
+                                        onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
+                                    },
+                                    modifier = Modifier.animateItemPlacement(),
+                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                    limitWidth = false
+                                )
+                            }
+                        }
+                    }
+                }
                 AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
                     DialogPopup(
                         title = stringResource(SharedRes.strings.delete_training),
