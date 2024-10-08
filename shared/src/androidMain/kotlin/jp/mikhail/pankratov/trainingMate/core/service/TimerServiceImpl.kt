@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.core.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.media.RingtoneManager
@@ -104,7 +105,15 @@ class TimerServiceImpl : LifecycleService() {
     }
 
     private fun sendTimerEndNotification() {
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        val launchIntent = packageManager.getLaunchIntentForPackage(packageName)?.apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        // Create a PendingIntent with the intent
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         val notificationBuilder = NotificationCompat.Builder(this, notificationChannelId)
             .setSmallIcon(R.drawable.timer_off)
             .setContentTitle("Rest is over!")
@@ -112,6 +121,7 @@ class TimerServiceImpl : LifecycleService() {
             .setVibrate(longArrayOf(0, 400, 200, 400))
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(timerEndNotificationId, notificationBuilder.build())
