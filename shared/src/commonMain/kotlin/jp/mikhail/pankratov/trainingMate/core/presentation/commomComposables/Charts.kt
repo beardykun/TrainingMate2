@@ -2,9 +2,12 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -43,7 +46,6 @@ fun CommonLineChart(
 
     Box(Modifier.fillMaxSize()) {
         LineChart(
-            modifier = Modifier,
             linesParameters = listOf(lineParameters),
             isGrid = true,
             gridColor = Color.Blue,
@@ -59,7 +61,7 @@ fun CommonLineChart(
                 color = Color.Gray,
                 fontWeight = FontWeight.W400
             ),
-            oneLineChart = false,
+            oneLineChart = true,
             gridOrientation = GridOrientation.VERTICAL,
             showXAxis = false
         )
@@ -166,12 +168,14 @@ fun CommonPieChart(
     list: List<PieChartData>,
     modifier: Modifier = Modifier
 ) {
-    PieChart(
-        modifier = modifier,
-        animation = TweenSpec(durationMillis = 1000),
-        pieChartData = list,
-        ratioLineColor = Color.LightGray,
-        textRatioStyle = TextStyle(color = Color.Gray),
-        legendPosition = LegendPosition.BOTTOM
-    )
+    Box(contentAlignment = Alignment.Center, modifier = modifier) {
+        PieChart(
+            modifier = Modifier.fillMaxSize(),
+            animation = TweenSpec(durationMillis = 1000),
+            pieChartData = list,
+            ratioLineColor = Color.LightGray,
+            textRatioStyle = TextStyle(color = Color.Gray),
+            legendPosition = LegendPosition.BOTTOM
+        )
+    }
 }

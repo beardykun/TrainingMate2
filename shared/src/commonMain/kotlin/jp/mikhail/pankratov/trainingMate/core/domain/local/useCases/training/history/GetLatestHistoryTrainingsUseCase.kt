@@ -5,7 +5,7 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 import kotlinx.coroutines.flow.Flow
 
 class GetLatestHistoryTrainingsUseCase(private val trainingHistoryDataSource: ITrainingHistoryDataSource) {
-    operator fun invoke(limit: Long = 10, offset: Long = 0): Flow<List<Training>> {
+    operator fun invoke(limit: Long = 30, offset: Long = 0): Flow<List<Training>> {
         return trainingHistoryDataSource.getLatestHistoryTrainings(limit = limit, offset = offset)
     }
 }

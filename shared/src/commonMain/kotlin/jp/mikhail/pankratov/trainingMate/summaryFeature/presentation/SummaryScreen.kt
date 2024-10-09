@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.aay.compose.donutChart.model.PieChartData
-import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
@@ -54,59 +53,89 @@ fun SummaryScreen(state: SummaryScreenState, onEvent: (SummaryScreenEvent) -> Un
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                LazyColumn(modifier = Modifier.padding(all = Dimens.Padding16).fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier.padding(all = Dimens.Padding16).fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     item {
                         ChartComp(
                             list = item.totalLiftedWeight,
-                            label = stringResource(SharedRes.strings.total_weight_lifted_with_arg, getLabelValue(item.totalLiftedWeight))
+                            label = stringResource(
+                                SharedRes.strings.total_weight_lifted_with_arg,
+                                getLabelValue(item.totalLiftedWeight)
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.trainingDuration,
-                            label = stringResource(SharedRes.strings.total_training_duration_with_args, getLabelValue(item.trainingDuration).toInt())
+                            label = stringResource(
+                                SharedRes.strings.total_training_duration_with_args,
+                                getLabelValue(item.trainingDuration).toInt()
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.numWorkouts,
-                            label = stringResource(SharedRes.strings.number_of_workouts_with_args, getLabelValue(item.numWorkouts).toInt())
+                            label = stringResource(
+                                SharedRes.strings.number_of_workouts_with_args,
+                                getLabelValue(item.numWorkouts).toInt()
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.numExercises,
-                            label = stringResource(SharedRes.strings.number_of_done_exercises_with_args, getLabelValue(item.numExercises).toInt())
+                            label = stringResource(
+                                SharedRes.strings.number_of_done_exercises_with_args,
+                                getLabelValue(item.numExercises).toInt()
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.numSets,
-                            label = stringResource(SharedRes.strings.number_of_done_sets_with_args, getLabelValue(item.numSets).toInt())
+                            label = stringResource(
+                                SharedRes.strings.number_of_done_sets_with_args,
+                                getLabelValue(item.numSets).toInt()
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.numReps,
-                            label = stringResource(SharedRes.strings.total_reps_number_with_args, getLabelValue(item.numReps).toInt())
+                            label = stringResource(
+                                SharedRes.strings.total_reps_number_with_args,
+                                getLabelValue(item.numReps).toInt()
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.avgDurationPerWorkout,
-                            label = stringResource(SharedRes.strings.average_workout_time_with_args, getLabelValue(item.avgDurationPerWorkout))
+                            label = stringResource(
+                                SharedRes.strings.average_workout_time_with_args,
+                                getLabelValue(item.avgDurationPerWorkout)
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.avgLiftedWeightPerWorkout,
-                            label = stringResource(SharedRes.strings.average_weight_per_workout_with_args, getLabelValue(item.avgLiftedWeightPerWorkout))
+                            label = stringResource(
+                                SharedRes.strings.average_weight_per_workout_with_args,
+                                getLabelValue(item.avgLiftedWeightPerWorkout)
+                            )
                         )
                     }
                     item {
                         ChartComp(
                             list = item.avgLiftedWeightPerExercise,
-                            label = stringResource(SharedRes.strings.average_weight_per_exercise_with_args, getLabelValue(item.avgLiftedWeightPerExercise))
+                            label = stringResource(
+                                SharedRes.strings.average_weight_per_exercise_with_args,
+                                getLabelValue(item.avgLiftedWeightPerExercise)
+                            )
                         )
                     }
                 }
