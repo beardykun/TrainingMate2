@@ -2,10 +2,8 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,6 +67,50 @@ fun CommonLineChart(
 }
 
 @Composable
+fun CommonBarChart(params: List<BarParameters>, modifier: Modifier = Modifier) {
+    Box(modifier = modifier) {
+        BarChart(
+            chartParameters = params,
+            gridColor = Color.DarkGray,
+            xAxisData = listOf(""),
+            isShowGrid = true,
+            animateChart = true,
+            showGridWithSpacer = true,
+            yAxisStyle = TextStyle(
+                fontSize = 14.sp,
+                color = Color.DarkGray,
+            ),
+            xAxisStyle = TextStyle(
+                fontSize = 14.sp,
+                color = Color.DarkGray,
+                fontWeight = FontWeight.W400
+            ),
+            showXAxis = false,
+            yAxisRange = 15,
+            barWidth = 20.dp,
+            spaceBetweenBars = Dimens.Padding32
+        )
+    }
+}
+
+@Composable
+fun CommonPieChart(
+    list: List<PieChartData>,
+    modifier: Modifier = Modifier
+) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier) {
+        PieChart(
+            modifier = Modifier.fillMaxSize(),
+            animation = TweenSpec(durationMillis = 1000),
+            pieChartData = list,
+            ratioLineColor = Color.LightGray,
+            textRatioStyle = TextStyle(color = Color.Gray),
+            legendPosition = LegendPosition.BOTTOM
+        )
+    }
+}
+
+@Composable
 fun CommonRadarChart(map: Map<String, Int>) {
     val labels = map.map { "${it.key}: ${it.value}%" }
     val values = map.values.map { it.toDouble() }
@@ -117,65 +159,4 @@ fun CommonRadarChart(map: Map<String, Int>) {
 
 private fun roundUpToNearest50(value: Double): Double {
     return (((value + 49) / 50).toInt() * 50).toDouble()
-}
-
-@Composable
-fun CommonBarChart(map: Map<String, Int>, modifier: Modifier = Modifier) {
-    val exerciseColors = mapOf(
-        "barbell curls" to Color(0xFF4CAF50),   // Green
-        "barbell squat" to Color(0xFFFF5722),   // Deep Orange
-        "bench press" to Color(0xFF2196F3),     // Blue
-        "chin ups" to Color(0xFFFFEB3B),        // Yellow
-        "lying triceps press" to Color(0xFF9C27B0), // Purple
-        "close grip barbell press" to Color(0xFFF44336), // Red
-        "barbell shoulder press" to Color(0xFF00BCD4)   // Cyan
-    )
-    val labels = map.map {
-        BarParameters(
-            dataName = "${it.key}: ${it.value}%",
-            data = listOf(it.value.toDouble()),
-            barColor = exerciseColors.get(key = it.key) ?: Color.Black
-        )
-    }
-
-    Box(modifier = modifier) {
-        BarChart(
-            chartParameters = labels,
-            gridColor = Color.DarkGray,
-            xAxisData = listOf(""),
-            isShowGrid = true,
-            animateChart = true,
-            showGridWithSpacer = true,
-            yAxisStyle = TextStyle(
-                fontSize = 14.sp,
-                color = Color.DarkGray,
-            ),
-            xAxisStyle = TextStyle(
-                fontSize = 14.sp,
-                color = Color.DarkGray,
-                fontWeight = FontWeight.W400
-            ),
-            showXAxis = false,
-            yAxisRange = 15,
-            barWidth = 20.dp,
-            spaceBetweenBars = Dimens.Padding32
-        )
-    }
-}
-
-@Composable
-fun CommonPieChart(
-    list: List<PieChartData>,
-    modifier: Modifier = Modifier
-) {
-    Box(contentAlignment = Alignment.Center, modifier = modifier) {
-        PieChart(
-            modifier = Modifier.fillMaxSize(),
-            animation = TweenSpec(durationMillis = 1000),
-            pieChartData = list,
-            ratioLineColor = Color.LightGray,
-            textRatioStyle = TextStyle(color = Color.Gray),
-            legendPosition = LegendPosition.BOTTOM
-        )
-    }
 }

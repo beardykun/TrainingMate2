@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation
 
+import androidx.compose.ui.graphics.Color
+import com.aay.compose.barChart.model.BarParameters
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
@@ -15,15 +17,31 @@ import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : ViewModel() {
+    private val exerciseColors = mapOf(
+        "barbell curls" to Color(0xFF4CAF50),   // Green
+        "barbell squat" to Color(0xFFFF5722),   // Deep Orange
+        "bench press" to Color(0xFF2196F3),     // Blue
+        "chin ups" to Color(0xFFFFEB3B),        // Yellow
+        "lying triceps press" to Color(0xFF9C27B0), // Purple
+        "close grip barbell press" to Color(0xFFF44336), // Red
+        "barbell shoulder press" to Color(0xFF00BCD4)   // Cyan
+    )
 
     private val _state = MutableStateFlow(UserInfoState())
     val state = _state.asStateFlow()
         .onStart {
             val strengthDefineExercises =
                 exerciseUseCaseProvider.getStrengthDefineExercisesUseCase().invoke().first()
-
+            val map = calculateRelativeStrength(strengthDefineExercises)
+            val parameters = map.map {
+                BarParameters(
+                    dataName = "${it.key}: ${it.value}%",
+                    data = listOf(it.value.toDouble()),
+                    barColor = exerciseColors.get(key = it.key) ?: Color.Black
+                )
+            }
             _state.update {
-                it.copy(strengthLevel = calculateRelativeStrength(strengthDefineExercises))
+                it.copy(strengthLevelParams = parameters)
             }
         }
         .stateIn(
