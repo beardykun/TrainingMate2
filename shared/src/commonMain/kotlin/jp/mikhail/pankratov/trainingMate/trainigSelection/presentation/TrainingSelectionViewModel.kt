@@ -9,6 +9,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,11 +33,14 @@ class TrainingSelectionViewModel(
                 ongoingTraining = ongoingTraining,
                 availableTrainings = localTrainings
             ) else state
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(3000L),
-        initialValue = TrainingSelectionState()
-    )
+    }.onEach {
+        sortTrainings(it.sortType, it.availableTrainings)
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(3000L),
+            initialValue = TrainingSelectionState()
+        )
 
     fun onEvent(event: TrainingSelectionEvent) {
         when (event) {
@@ -105,7 +109,7 @@ class TrainingSelectionViewModel(
                 viewModelScope.launch {
                     _state.update {
                         it.copy(
-                            typedTrainings = sortTrainings(event.trainingType, state.value.availableTrainings)
+                            sortType = event.trainingType
                         )
                     }
                 }
@@ -116,10 +120,14 @@ class TrainingSelectionViewModel(
     private suspend fun sortTrainings(
         trainingType: String,
         availableTrainings: List<TrainingLocal>?
-    ): List<TrainingLocal>? =
-        withContext(Dispatchers.Default) {
-            availableTrainings?.filter { it.groups.contains(trainingType) }
+    ) = withContext(Dispatchers.Default) {
+        val typedTrainings = availableTrainings?.filter { it.groups.contains(trainingType) }
+        _state.update {
+            it.copy(
+                typedTrainings = typedTrainings
+            )
         }
+    }
 
     private fun deleteTemplateTraining(trainingId: Long) = viewModelScope.launch(Dispatchers.IO) {
         trainingUseCaseProvider.getDeleteTrainingTemplateUseCase().invoke(trainingId)

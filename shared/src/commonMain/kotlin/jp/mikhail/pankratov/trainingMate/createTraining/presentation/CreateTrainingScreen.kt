@@ -43,6 +43,18 @@ fun CreateTrainingScreen(
             isError = state.invalidNameInput,
             errorText = if (state.invalidNameInput) stringResource(SharedRes.strings.invalid_or_duplicate_training_name) else ""
         )
+        InputField(
+            value = state.trainingDescription,
+            onValueChanged = { newValue ->
+                onEvent(CreateTrainingEvent.OnTrainingDescriptionChanged(description = newValue))
+            },
+            label = stringResource(SharedRes.strings.choose_training_description),
+            placeholder = stringResource(SharedRes.strings.choose_training_description),
+            modifier = Modifier.fillMaxWidth(),
+            isError = state.invalidDescriptionInput,
+            errorText = if (state.invalidDescriptionInput) stringResource(SharedRes.strings.invalid_training_description) else ""
+        )
+
 
         SelectableGroupVertical(
             items = Constants.GROUPS,

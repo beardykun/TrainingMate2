@@ -4,6 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 sealed class CreateTrainingEvent {
     data class OnTrainingNameChanged(val name: TextFieldValue) : CreateTrainingEvent()
+    data class OnTrainingDescriptionChanged(val description: TextFieldValue) : CreateTrainingEvent()
     data class OnTrainingGroupsChanged(val group: String) : CreateTrainingEvent()
     data class OnAddNewTraining(val onSuccess: () -> Unit) : CreateTrainingEvent()
 }

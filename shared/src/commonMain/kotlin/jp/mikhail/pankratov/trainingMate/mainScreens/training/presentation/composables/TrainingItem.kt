@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables
 
 import Dimens
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -86,6 +87,10 @@ fun LocalTrainingItem(
             }
             TextLarge(text = training.name.uppercase(), color = contentColor)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
+            AnimatedVisibility(visible = training.description.isNotBlank()) {
+                TextLarge(text = training.description, color = contentColor)
+                Spacer(modifier = Modifier.height(Dimens.Padding8))
+            }
             TextLarge(text = stringResource(SharedRes.strings.groups), color = contentColor)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             OverlappingImagesBackground(
@@ -147,7 +152,10 @@ fun TrainingItem(
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
-                text = stringResource(SharedRes.strings.total_lifted_weight_with_args, training.totalLiftedWeight),
+                text = stringResource(
+                    SharedRes.strings.total_lifted_weight_with_args,
+                    training.totalLiftedWeight
+                ),
                 color = contentColor
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))

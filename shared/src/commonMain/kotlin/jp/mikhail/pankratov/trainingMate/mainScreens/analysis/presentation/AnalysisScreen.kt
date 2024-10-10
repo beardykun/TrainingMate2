@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,14 +9,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -29,33 +32,42 @@ fun AnalysisScreen(
             onEvent(AnalysisScreenEvent.OnGeneralSelected)
         }
     }
-    Column(modifier = Modifier.fillMaxSize()) {
-        TabsComposable(
-            chartLabel = state.chartLabel,
-            categories = listOf(
-                MetricsMode.GENERAL,
-                MetricsMode.TRAINING,
-                MetricsMode.EXERCISE
-            ),
-            metricsMode = state.metricsMode,
-            metricsData = state.metricsData,
-            metricsXAxisData = state.metricsXAxisData,
-            analysisMode = state.analysisMode.name,
-            isDropdownExpanded = state.isDropdownExpanded,
-            onEvent = onEvent
-        )
+    if (state.metricsData.isNullOrEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            TextLarge(SharedRes.strings.no_analysis_data.getString())
+        }
+    } else {
+        Column(modifier = Modifier.fillMaxSize()) {
+            TabsComposable(
+                chartLabel = state.chartLabel,
+                categories = listOf(
+                    MetricsMode.GENERAL,
+                    MetricsMode.TRAINING,
+                    MetricsMode.EXERCISE
+                ),
+                metricsMode = state.metricsMode,
+                metricsData = state.metricsData,
+                metricsXAxisData = state.metricsXAxisData,
+                analysisMode = state.analysisMode.name,
+                isDropdownExpanded = state.isDropdownExpanded,
+                onEvent = onEvent
+            )
 
-        if (state.metricsMode == MetricsMode.TRAINING && !state.graphDisplayed) {
-            state.localTrainings?.let { localTrainings ->
-                TrainingChoice(localTrainings) { trainingId, name ->
-                    onEvent(AnalysisScreenEvent.OnTrainingIdSelected(trainingId, name))
+            if (state.metricsMode == MetricsMode.TRAINING && !state.graphDisplayed) {
+                state.localTrainings?.let { localTrainings ->
+                    TrainingChoice(localTrainings) { trainingId, name ->
+                        onEvent(AnalysisScreenEvent.OnTrainingIdSelected(trainingId, name))
+                    }
                 }
             }
-        }
-        if (state.metricsMode == MetricsMode.EXERCISE && !state.graphDisplayed) {
-            state.localExercises?.let { localExercises ->
-                ExerciseNameChoice(localExercises = localExercises) { exerciseName ->
-                    onEvent(AnalysisScreenEvent.OnExerciseNameSelected(exerciseName))
+            if (state.metricsMode == MetricsMode.EXERCISE && !state.graphDisplayed) {
+                state.localExercises?.let { localExercises ->
+                    ExerciseNameChoice(localExercises = localExercises) { exerciseName ->
+                        onEvent(AnalysisScreenEvent.OnExerciseNameSelected(exerciseName))
+                    }
                 }
             }
         }

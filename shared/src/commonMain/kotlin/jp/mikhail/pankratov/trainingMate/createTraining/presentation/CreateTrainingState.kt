@@ -4,7 +4,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 
 data class CreateTrainingState(
     val trainingName: TextFieldValue = TextFieldValue(""),
-    val trainingDescription: String = "",
+    val trainingDescription: TextFieldValue = TextFieldValue(""),
     val selectedGroups: List<String> = emptyList(),
-    val invalidNameInput: Boolean = false
+    val invalidNameInput: Boolean = false,
+    val invalidDescriptionInput: Boolean = false
 )

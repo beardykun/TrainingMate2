@@ -45,6 +45,17 @@ class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCa
 
             is CreateTrainingEvent.OnAddNewTraining -> {
                 if (validNameInput().not()) return
+                _state.update {
+                    it.copy(
+                        invalidNameInput = false,
+                    )
+                }
+                if (validDescriptionInput().not()) return
+                _state.update {
+                    it.copy(
+                        invalidDescriptionInput = false
+                    )
+                }
 
                 viewModelScope.launch {
                     if (trainingUseCaseProvider.getIsLocalTrainingExistsUseCase()
@@ -54,12 +65,15 @@ class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCa
                             it.copy(invalidNameInput = true)
                         }
                     } else {
-                        _state.update {
-                            it.copy(invalidNameInput = false)
-                        }
                         addNewTraining()
                         event.onSuccess.invoke()
                     }
+                }
+            }
+
+            is CreateTrainingEvent.OnTrainingDescriptionChanged -> {
+                _state.update {
+                    it.copy(trainingDescription = event.description)
                 }
             }
         }
@@ -75,13 +89,23 @@ class CreateTrainingViewModel(private val trainingUseCaseProvider: TrainingUseCa
         } else true
     }
 
+    private fun validDescriptionInput(): Boolean {
+        val trainingDescription = state.value.trainingDescription.text
+        return if (trainingDescription.length in 1..4) {
+            _state.update {
+                it.copy(invalidDescriptionInput = true)
+            }
+            false
+        } else true
+    }
+
     private fun addNewTraining() = viewModelScope.launch {
         val training = TrainingLocal(
             id = null,
             name = state.value.trainingName.text.uppercase(),
             groups = state.value.selectedGroups.listToString(),
             exercises = emptyList(),
-            description = state.value.trainingDescription
+            description = state.value.trainingDescription.text
         )
         withContext(Dispatchers.IO) {
             trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(trainingLocal = training)
