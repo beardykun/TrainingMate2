@@ -42,5 +42,5 @@ object Dimens {
 
     val borderWidth = 1.dp
 
-    val PieChartSize = 300.dp
+    val PieChartSize = 400.dp
 }
