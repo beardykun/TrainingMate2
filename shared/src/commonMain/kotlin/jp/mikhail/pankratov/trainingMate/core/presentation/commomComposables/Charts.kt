@@ -67,12 +67,16 @@ fun CommonLineChart(
 }
 
 @Composable
-fun CommonBarChart(params: List<BarParameters>, modifier: Modifier = Modifier) {
+fun CommonBarChart(
+    params: List<BarParameters>,
+    xAxisData: List<String> = listOf(""),
+    modifier: Modifier = Modifier
+) {
     Box(modifier = modifier) {
         BarChart(
             chartParameters = params,
             gridColor = Color.DarkGray,
-            xAxisData = listOf(""),
+            xAxisData = xAxisData,
             isShowGrid = true,
             animateChart = true,
             showGridWithSpacer = true,
@@ -81,12 +85,12 @@ fun CommonBarChart(params: List<BarParameters>, modifier: Modifier = Modifier) {
                 color = Color.DarkGray,
             ),
             xAxisStyle = TextStyle(
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Color.DarkGray,
                 fontWeight = FontWeight.W400
             ),
             showXAxis = false,
-            yAxisRange = 15,
+            yAxisRange = 20,
             barWidth = 20.dp,
             spaceBetweenBars = Dimens.Padding32
         )

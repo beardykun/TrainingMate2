@@ -180,7 +180,12 @@ class AnalysisViewModel(
     ) {
         val trainings = historyTrainings?.filter { it.endTime != 0L }
         val data = trainings?.map { Utils.trainingLengthToMin(it) }
-        val xAxisData = trainings?.map { it.name }
+        val xAxisData =
+            trainings?.map {
+                if (state.value.metricsMode.name == MetricsMode.GENERAL.name) it.name else Utils.formatEpochMillisToDate(
+                    it.startTime ?: 0
+                )
+            }
 
         _state.update {
             it.copy(
@@ -194,7 +199,11 @@ class AnalysisViewModel(
         historyTrainings: List<Training>?
     ) {
         val data = historyTrainings?.map { it.totalLiftedWeight }
-        val xAxisData = historyTrainings?.map { it.name }
+        val xAxisData = historyTrainings?.map {
+            if (state.value.metricsMode.name == MetricsMode.GENERAL.name) it.name else Utils.formatEpochMillisToDate(
+                it.startTime ?: 0
+            )
+        }
 
         _state.update {
             it.copy(
@@ -222,7 +231,8 @@ class AnalysisViewModel(
     }
 
     private fun getGeneralTrainings() = viewModelScope.launch {
-        val trainings = trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke().first()
+        val trainings =
+            trainingUseCaseProvider.getLatestHistoryTrainingsUseCase().invoke().first().reversed()
         _state.update {
             it.copy(historyTrainings = trainings)
         }

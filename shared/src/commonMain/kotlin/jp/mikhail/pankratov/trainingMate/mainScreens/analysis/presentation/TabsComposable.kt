@@ -26,9 +26,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import com.aay.compose.barChart.model.BarParameters
 import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonLineChart
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonBarChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import kotlinx.coroutines.launch
@@ -111,9 +112,14 @@ fun TabsComposable(
     HorizontalPager(state = pagerState) {
         AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
             metricsData?.let {
-                CommonLineChart(
-                    label = chartLabel,
-                    data = metricsData,
+                CommonBarChart(
+                    params = listOf(
+                        BarParameters(
+                            dataName = chartLabel,
+                            data = it,
+                            barColor = MaterialTheme.colorScheme.primary
+                        )
+                    ),
                     xAxisData = metricsXAxisData!!
                 )
             }
