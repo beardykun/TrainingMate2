@@ -32,6 +32,84 @@ class AppViewModel(
                 description = "full body training, good after a long break to restart your training process"
             )
         )
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
+            TrainingLocal(
+                id = null,
+                name = "Biceps Training",
+                groups = listOf(
+                    DatabaseContract.BICEPS_GROUP
+                ).listToString(),
+                exercises = listOf(
+                    "barbell curls",
+                    "dumbbell bicep curl",
+                    "cross body hammer curl"
+                ),
+                description = "Focused training for the biceps muscle group, ideal for increasing arm strength."
+            )
+        )
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
+            TrainingLocal(
+                id = null,
+                name = "Triceps Training",
+                groups = listOf(
+                    DatabaseContract.TRICEPS_GROUP
+                ).listToString(),
+                exercises = listOf(
+                    "lying triceps press",
+                    "close grip barbell press",
+                    "cable rope overhead extension"
+                ),
+                description = "Triceps-focused workout, essential for building arm muscle mass."
+            )
+        )
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
+            TrainingLocal(
+                id = null,
+                name = "Shoulders Training",
+                groups = listOf(
+                    DatabaseContract.SHOULDERS_GROUP
+                ).listToString(),
+                exercises = listOf(
+                    "shoulder press",
+                    "bent over dumbbell rear delt raise",
+                    "barbell shoulder press"
+                ),
+                description = "Shoulder-focused workout, great for improving upper body strength and posture."
+            )
+        )
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
+            TrainingLocal(
+                id = null,
+                name = "Back Training",
+                groups = listOf(
+                    DatabaseContract.BACK_GROUP
+                ).listToString(),
+                exercises = emptyList(),
+                description = "Back-focused training to enhance posture and strengthen the upper and lower back."
+            )
+        )
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
+            TrainingLocal(
+                id = null,
+                name = "Chest Training",
+                groups = listOf(
+                    DatabaseContract.CHEST_GROUP
+                ).listToString(),
+                exercises = emptyList(),
+                description = "Chest-targeted workout for building pectoral muscle strength and size."
+            )
+        )
+        trainingUseCaseProvider.getInsertLocalTrainingUseCase().invoke(
+            TrainingLocal(
+                id = null,
+                name = "Legs Training",
+                groups = listOf(
+                    DatabaseContract.LEGS_GROUP
+                ).listToString(),
+                exercises = emptyList(),
+                description = "Leg workout to build lower body strength and improve overall athletic performance."
+            )
+        )
         insertDefaultExercises()
     }
 
@@ -291,7 +369,7 @@ class AppViewModel(
                 usesTwoDumbbells = true
             )
         )
-        //FIXME add dead lift
+
         //back
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
@@ -305,7 +383,7 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Dead lift",
                 group = DatabaseContract.BACK_GROUP,
-                image = "bent_over_barbell_row",
+                image = "romanian_deadlift",
                 isStrengthDefining = true
             )
         )

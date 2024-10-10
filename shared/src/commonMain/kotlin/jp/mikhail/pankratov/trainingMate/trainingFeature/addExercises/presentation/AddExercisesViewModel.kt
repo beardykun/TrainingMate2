@@ -46,7 +46,7 @@ class AddExercisesViewModel(
                             val sortedExercises =
                                 withContext(Dispatchers.Default) {
                                     getFilteredList(
-                                        availableExercises = getExerciseListWithHeaders(exercises = exercises),
+                                        availableExercises = getExerciseListWithHeaders(exercises = exercises.sortedBy { it.group }),
                                         selectedExercises = trainingNotNull.exercises
                                     )
                                 }
