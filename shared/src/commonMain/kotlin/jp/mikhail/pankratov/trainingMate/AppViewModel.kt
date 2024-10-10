@@ -84,7 +84,11 @@ class AppViewModel(
                 groups = listOf(
                     DatabaseContract.BACK_GROUP
                 ).listToString(),
-                exercises = emptyList(),
+                exercises = listOf(
+                    "chin ups",
+                    "dead lift",
+                    "reverse grip bent over rows"
+                ),
                 description = "Back-focused training to enhance posture and strengthen the upper and lower back."
             )
         )
@@ -95,7 +99,11 @@ class AppViewModel(
                 groups = listOf(
                     DatabaseContract.CHEST_GROUP
                 ).listToString(),
-                exercises = emptyList(),
+                exercises = listOf(
+                    "bench press",
+                    "barbell incline bench",
+                    "dumbbell flyes"
+                ),
                 description = "Chest-targeted workout for building pectoral muscle strength and size."
             )
         )
@@ -106,7 +114,11 @@ class AppViewModel(
                 groups = listOf(
                     DatabaseContract.LEGS_GROUP
                 ).listToString(),
-                exercises = emptyList(),
+                exercises = listOf(
+                    "barbell squat",
+                    "leg press",
+                    "leg extensions"
+                ),
                 description = "Leg workout to build lower body strength and improve overall athletic performance."
             )
         )
