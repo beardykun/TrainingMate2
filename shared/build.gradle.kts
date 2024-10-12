@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization") version libs.versions.kotlin.version.get()
     id("dev.icerock.mobile.multiplatform-resources")
     alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {

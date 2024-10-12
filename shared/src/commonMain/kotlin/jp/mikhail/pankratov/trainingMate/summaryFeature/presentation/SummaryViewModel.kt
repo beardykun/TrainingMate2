@@ -82,7 +82,7 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
                 lastData = last?.totalLiftedWeight,
-                currentData = first.totalLiftedWeight,
+                currentData = if (first.totalLiftedWeight == 0.0) 1.0 else first.totalLiftedWeight,
                 unit = "kg"
             ),
             numWorkouts = getPieChartData(
@@ -124,14 +124,14 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
                 lastData = last?.avgLiftedWeightPerExercise,
-                currentData = first.avgLiftedWeightPerExercise,
+                currentData = if (first.avgLiftedWeightPerExercise == 0.0) 1.0 else first.avgLiftedWeightPerExercise,
                 unit = "kg"
             ),
             avgLiftedWeightPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
                 lastData = last?.avgLiftedWeightPerWorkout,
-                currentData = first.avgLiftedWeightPerWorkout,
+                currentData = if (first.avgLiftedWeightPerWorkout == 0.0) 1.0 else first.avgLiftedWeightPerWorkout,
                 unit = "kg"
             )
         )
@@ -156,7 +156,7 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
                 lastData = last?.totalLiftedWeight,
-                currentData = first.totalLiftedWeight,
+                currentData = if (first.totalLiftedWeight == 0.0) 1.0 else first.totalLiftedWeight,
                 unit = "kg"
             ),
             numWorkouts = getPieChartData(
@@ -198,14 +198,14 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
                 lastData = last?.avgLiftedWeightPerExercise,
-                currentData = first.avgLiftedWeightPerExercise,
+                currentData = if (first.avgLiftedWeightPerExercise == 0.0) 1.0 else first.avgLiftedWeightPerExercise,
                 unit = "kg"
             ),
             avgLiftedWeightPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
                 lastData = last?.avgLiftedWeightPerWorkout,
-                currentData = first.avgLiftedWeightPerWorkout,
+                currentData = if (first.avgLiftedWeightPerWorkout == 0.0) 1.0 else first.avgLiftedWeightPerWorkout,
                 unit = "kg"
             )
         )

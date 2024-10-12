@@ -8,7 +8,7 @@ firebase-crashlytics-gradle = "3.0.2"
 gitlive-firebase-versions = "1.11.1"
 google-services = "4.4.2"
 kamel-image = "0.9.4"
-kotlin-version = "1.9.22"
+kotlin-version = "2.0.0"
 kotlinx-datetime = "0.6.0"
 ktor-version = "2.3.10"
 moko-version = "0.23.0"
@@ -74,6 +74,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 sqldelight-plugin = { id = "app.cash.sqldelight", version.ref = "sql-delight-version" }
 kotlinPlugin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-version" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
 google-servicess = { id = "com.google.gms.google-services", version.ref = "google-services" }
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrains-compose-version" }
