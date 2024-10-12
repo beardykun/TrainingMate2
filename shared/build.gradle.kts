@@ -33,8 +33,6 @@ kotlin {
             export(libs.moko.resources)
             export(libs.moko.graphics)
         }
-        extraSpecAttributes["resources"] =
-            "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
     sourceSets {
@@ -115,7 +113,7 @@ kotlin {
 
 android {
     namespace = "jp.mikhail.pankratov.trainingMate"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }

@@ -80,7 +80,7 @@ fun HistoryInfoScreen(
                     ExerciseHistoryItem(
                         exercise, modifier = Modifier
                             .fillParentMaxWidth()
-                            .animateItemPlacement()
+                            .animateItem()
                     )
                 }
             }
