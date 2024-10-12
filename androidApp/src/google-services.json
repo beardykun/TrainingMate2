@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "827456531874",
+    "project_id": "maxrep-875bd",
+    "storage_bucket": "maxrep-875bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827456531874:android:6b4c79ffd9fe1f0ff256fb",
+        "android_client_info": {
+          "package_name": "jp.mikhail.pankratov.trainingMate.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAerfP96VX3rKM4Q7CUcVAUCUn6cMnleQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

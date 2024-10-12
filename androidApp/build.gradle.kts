@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinPlugin)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.servicess)
 }
 
 android {
