@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import kotlinx.coroutines.Dispatchers
@@ -9,14 +11,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 private const val pageSize: Long = 10
 
 class HistoryScreenViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val query: TrainingQuery
-) : moe.tlaster.precompose.viewmodel.ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(HistoryScreenState())
     val state = _state.asStateFlow()

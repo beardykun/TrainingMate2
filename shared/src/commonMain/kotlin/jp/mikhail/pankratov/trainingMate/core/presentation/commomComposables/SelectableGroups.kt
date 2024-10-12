@@ -65,7 +65,7 @@ fun <T> SelectableGroupVertical(
             key = { item ->
                 displayItem(item)
             }) { item ->
-            listItem(item, selected, onClick, modifier.animateItemPlacement())
+            listItem(item, selected, onClick, modifier.animateItem())
         }
     }
 }
@@ -183,7 +183,7 @@ fun SelectableExercises(
                         isSelected,
                         onClick,
                         onDeleteClick,
-                        modifier.animateItemPlacement()
+                        modifier.animateItem()
                     )
                 }
             }

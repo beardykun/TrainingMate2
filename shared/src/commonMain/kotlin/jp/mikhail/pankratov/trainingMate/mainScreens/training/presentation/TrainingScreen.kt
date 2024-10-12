@@ -157,9 +157,10 @@ fun TrainingScreen(
                 }
             }
             state.weeklySummary?.let { weeklyList ->
+                val emptySummary = weeklyList.isEmpty() || weeklyList.first()?.numWorkouts == 0
                 val summaryTitle =
-                    stringResource(if (weeklyList.isEmpty()) SharedRes.strings.summaries_sample else SharedRes.strings.summaries)
-                val summaryItem = if (weeklyList.isEmpty()) WeeklySummary(
+                    stringResource(if (emptySummary) SharedRes.strings.summaries_sample else SharedRes.strings.summaries)
+                val summaryItem = if (emptySummary) WeeklySummary(
                     numWorkouts = 4,
                     trainingDuration = 200,
                     totalLiftedWeight = 30000.00,
@@ -177,7 +178,7 @@ fun TrainingScreen(
                     weeklySummary = summaryItem,
                     modifier = Modifier.padding(Dimens.Padding16),
                     onClick = { year, weekNum ->
-                        if (weeklyList.isNotEmpty()) {
+                        if (emptySummary.not()) {
                             //"${Routs.MainScreens.history.title}/${year}/${null}/${weekNum}"
                             navigator.navigate(Routs.SummaryScreens.summaryScreensRoot)
                         } else {

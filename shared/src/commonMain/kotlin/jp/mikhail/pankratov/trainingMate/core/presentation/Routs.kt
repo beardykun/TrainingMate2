@@ -9,10 +9,10 @@ const val EXERCISE_NAME = "exerciseName"
 object Routs {
 
     object MainScreens {
-        val training = Screen("Training", 0)
-        val analysis = Screen("Analysis", 1)
-        val history = Screen("History", 2)
-        val userInfo = Screen("User Info", 3)
+        val training = Screen("Feature Training", 0)
+        val analysis = Screen("Feature Analysis", 1)
+        val history = Screen("Feature History", 2)
+        val userInfo = Screen("Feature User Info", 3)
         val mainScreens = listOf(training.title, analysis.title, history.title, userInfo.title)
     }
 

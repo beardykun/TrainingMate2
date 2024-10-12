@@ -117,7 +117,7 @@ fun TrainingSelectionScreen(
                                     onDeleteClick = { id ->
                                         onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
                                     },
-                                    modifier = Modifier.animateItemPlacement(),
+                                    modifier = Modifier.animateItem(),
                                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                     limitWidth = false

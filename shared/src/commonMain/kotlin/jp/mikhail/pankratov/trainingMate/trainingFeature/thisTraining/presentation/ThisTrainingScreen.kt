@@ -91,7 +91,7 @@ fun ThisTrainingScreen(
                                         .clip(RoundedCornerShape(25))
                                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                                         .padding(Dimens.Padding4)
-                                        .animateItemPlacement()
+                                        .animateItem()
                                 )
                             }
 
@@ -120,7 +120,7 @@ fun ThisTrainingScreen(
                                                 item.exercise.name
                                             ) == true,
                                             isStrengthDefining = item.exercise.isStrengthDefining,
-                                            modifier = Modifier.animateItemPlacement()
+                                            modifier = Modifier.animateItem()
                                         )
                                     },
                                     actions = {

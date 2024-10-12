@@ -26,23 +26,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
 import jp.mikhail.pankratov.trainingMate.di.AppModule
-import jp.mikhail.pankratov.trainingMate.di.domainUseCasesModule
-import jp.mikhail.pankratov.trainingMate.di.local.appUseCasesProvider
-import jp.mikhail.pankratov.trainingMate.di.local.dataSourcesModule
-import jp.mikhail.pankratov.trainingMate.di.local.exerciseUseCaseModule
-import jp.mikhail.pankratov.trainingMate.di.local.summaryUseCaseModule
-import jp.mikhail.pankratov.trainingMate.di.local.trainingUseCaseModule
-import jp.mikhail.pankratov.trainingMate.di.local.viewModelModule
-import jp.mikhail.pankratov.trainingMate.di.utilsModule
 import moe.tlaster.precompose.PreComposeApp
-import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
-import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.rememberNavigator
-import org.koin.compose.KoinApplication
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,109 +44,95 @@ fun App(
     appModule: AppModule
 ) {
     PreComposeApp {
-        KoinApplication(application = {
-            modules(
-                listOf(
-                    dataSourcesModule(appModule),
-                    utilsModule(appModule),
-                    trainingUseCaseModule(),
-                    exerciseUseCaseModule(),
-                    summaryUseCaseModule(),
-                    domainUseCasesModule(),
-                    viewModelModule(),
-                    appUseCasesProvider()
-                )
-            )
-        }) {
-            TrainingMateTheme(
-                darkTheme = darkTheme,
-                dynamicColor = dynamicColor
+        TrainingMateTheme(
+            darkTheme = darkTheme,
+            dynamicColor = dynamicColor
+        ) {
+            val viewModel: AppViewModel =
+                koinViewModel(qualifier = named("AppViewModel")) { parametersOf() }
+            viewModel.insertDefaultTraining()
+
+            val navigator = rememberNavigator()
+
+            val items = bottomNavigationItems()
+
+            var selectedIndex by rememberSaveable { mutableStateOf(0) }
+
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background,
             ) {
-                val viewModel = koinViewModel(vmClass = AppViewModel::class) { parametersOf() }
-                viewModel.insertDefaultTraining()
+                val current by navigator.currentEntry.collectAsStateWithLifecycle(null)
 
-                val navigator = rememberNavigator()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(title = {
+                            Text(
+                                text = current?.route?.route?.split("/")?.first() ?: "",
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(end = Dimens.Padding32)
+                            )
+                        },
+                            navigationIcon = {
+                                if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) {
 
-                val items = bottomNavigationItems()
-
-                var selectedIndex by rememberSaveable { mutableStateOf(0) }
-
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    val current by navigator.currentEntry.collectAsStateWithLifecycle(null)
-
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(title = {
-                                Text(
-                                    text = current?.route?.route?.split("/")?.first() ?: "",
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(end = Dimens.Padding32)
+                                    IconButton(onClick = {
+                                        navigator.popBackStack()
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+                            }
+                        )
+                    },
+                    bottomBar = {
+                        val destination = current?.route?.route
+                        if (destination == null || !Routs.MainScreens.mainScreens.any {
+                                destination.startsWith(
+                                    it
                                 )
-                            },
-                                navigationIcon = {
-                                    if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) {
-
-                                        IconButton(onClick = {
-                                            navigator.popBackStack()
-                                        }) {
+                            }) {
+                            return@Scaffold
+                        }
+                        NavigationBar {
+                            items.forEachIndexed { index, item ->
+                                NavigationBarItem(
+                                    selected = selectedIndex == index,
+                                    onClick = {
+                                        selectedIndex = index
+                                        navigateOnTabClick(index, navigator)
+                                    },
+                                    icon = {
+                                        BadgedBox(
+                                            badge = {
+                                                if (item.badgeCount != null) {
+                                                    Badge {
+                                                        Text(text = item.badgeCount.toString())
+                                                    }
+                                                } else if (item.hasNews) {
+                                                    Badge()
+                                                }
+                                            }
+                                        ) {
                                             Icon(
-                                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                                contentDescription = null
+                                                imageVector =
+                                                if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
+                                                contentDescription = item.title
                                             )
                                         }
                                     }
-                                }
-                            )
-                        },
-                        bottomBar = {
-                            val destination = current?.route?.route
-                            if (destination == null || !Routs.MainScreens.mainScreens.any {
-                                    destination.startsWith(
-                                        it
-                                    )
-                                }) {
-                                return@Scaffold
-                            }
-                            NavigationBar {
-                                items.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        selected = selectedIndex == index,
-                                        onClick = {
-                                            selectedIndex = index
-                                            navigateOnTabClick(index, navigator)
-                                        },
-                                        icon = {
-                                            BadgedBox(
-                                                badge = {
-                                                    if (item.badgeCount != null) {
-                                                        Badge {
-                                                            Text(text = item.badgeCount.toString())
-                                                        }
-                                                    } else if (item.hasNews) {
-                                                        Badge()
-                                                    }
-                                                }
-                                            ) {
-                                                Icon(
-                                                    imageVector =
-                                                    if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
-                                                    contentDescription = item.title
-                                                )
-                                            }
-                                        }
-                                    )
-                                }
+                                )
                             }
                         }
-                    ) { paddings ->
-                        Column(modifier = Modifier.padding(paddings)) {
-                            NavHost(navigator)
-                        }
+                    }
+                ) { paddings ->
+                    Column(modifier = Modifier.padding(paddings)) {
+                        NavHost(navigator)
                     }
                 }
             }

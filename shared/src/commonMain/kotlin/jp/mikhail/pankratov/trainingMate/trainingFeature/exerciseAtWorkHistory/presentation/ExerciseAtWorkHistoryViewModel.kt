@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -7,13 +9,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class ExerciseAtWorkHistoryViewModel(
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val exerciseName: String
-) :
-    moe.tlaster.precompose.viewmodel.ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(ExerciseAtWorkHistoryState())
     val state = _state.stateIn(

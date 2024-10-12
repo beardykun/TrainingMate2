@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization") version libs.versions.kotlin.version.get()
     id("dev.icerock.mobile.multiplatform-resources")
     alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
@@ -33,8 +34,6 @@ kotlin {
             export(libs.moko.resources)
             export(libs.moko.graphics)
         }
-        extraSpecAttributes["resources"] =
-            "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
     sourceSets {
@@ -115,7 +114,7 @@ kotlin {
 
 android {
     namespace = "jp.mikhail.pankratov.trainingMate"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }

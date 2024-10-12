@@ -74,7 +74,7 @@ fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String
                         onItemClick.invoke(it.name)
                     },
                     isStrengthDefining = exercise.isStrengthDefining,
-                    modifier = Modifier.animateItemPlacement()
+                    modifier = Modifier.animateItem()
                 )
             }
         }
@@ -100,7 +100,7 @@ fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long, Stri
                 },
                 onDeleteClick = {},
                 isDeletable = false,
-                modifier = Modifier.animateItemPlacement()
+                modifier = Modifier.animateItem()
             )
         }
     }
