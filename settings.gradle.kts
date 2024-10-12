@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TrainingMate"
+rootProject.name = "MaxRep"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":androidApp")
 include(":shared")

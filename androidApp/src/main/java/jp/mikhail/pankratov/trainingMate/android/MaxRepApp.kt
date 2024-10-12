@@ -12,9 +12,9 @@ import jp.mikhail.pankratov.trainingMate.di.local.viewModelModule
 import jp.mikhail.pankratov.trainingMate.di.utilsModule
 import org.koin.core.context.startKoin
 
-class TrainingMateApp : Application() {
+class MaxRepApp : Application() {
     companion object {
-        lateinit var instance: TrainingMateApp
+        lateinit var instance: MaxRepApp
             private set
     }
 

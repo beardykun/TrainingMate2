@@ -14,7 +14,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val appModule = TrainingMateApp.instance.appModule
+        val appModule = MaxRepApp.instance.appModule
         setContent {
             MyApplicationTheme {
                 Surface(

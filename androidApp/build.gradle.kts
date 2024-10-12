@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinPlugin)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -45,6 +46,6 @@ dependencies {
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.material)
     implementation(libs.androidx.activity.compose)
-
+    implementation(libs.firebase.crashlytics.ktx)
     implementation(libs.koin.android)
 }

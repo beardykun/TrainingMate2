@@ -8,10 +8,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".TrainingMateApp"
+        android:name=".MaxRepApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="TrainingMate"
+        android:label="MaxRep"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,7 +38,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.compo
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrainingSelectionScreen(
     state: TrainingSelectionState,
