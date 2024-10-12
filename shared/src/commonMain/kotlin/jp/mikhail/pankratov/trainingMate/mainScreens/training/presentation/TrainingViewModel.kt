@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -10,12 +12,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     summaryUseCaseProvider: SummaryUseCaseProvider
-) : moe.tlaster.precompose.viewmodel.ViewModel() {
+) : ViewModel() {
 
     private val motivationalPhrases = listOf(
         "Every rep counts, make it matter!",

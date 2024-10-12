@@ -10,9 +10,9 @@ import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
@@ -51,13 +51,13 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.p
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
-import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
-import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.transition.NavTransition
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.named
 
 @Composable
 fun NavHost(navigator: Navigator) {
@@ -67,7 +67,7 @@ fun NavHost(navigator: Navigator) {
         initialRoute = Routs.MainScreens.training.title
     ) {
         scene(route = Routs.MainScreens.training.title, navTransition = NavTransition()) {
-            val viewModel = koinViewModel(vmClass = TrainingViewModel::class)
+            val viewModel: TrainingViewModel = koinViewModel(qualifier = named("TrainingViewModel"))
 
             val state by viewModel.state.collectAsStateWithLifecycle()
             TrainingScreen(
@@ -78,7 +78,7 @@ fun NavHost(navigator: Navigator) {
         }
 
         scene(route = Routs.MainScreens.analysis.title, navTransition = NavTransition()) {
-            val viewModel = koinViewModel(AnalysisViewModel::class)
+            val viewModel: AnalysisViewModel = koinViewModel(qualifier = named("AnalysisViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             AnalysisScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
@@ -97,18 +97,21 @@ fun NavHost(navigator: Navigator) {
             weekNum?.let {
                 query = TrainingQuery.Week(week = weekNum, year = year)
             }
-            val viewModel = koinViewModel(HistoryScreenViewModel::class) { parametersOf(query) }
+            val viewModel: HistoryScreenViewModel =
+                koinViewModel(qualifier = named("HistoryScreenViewModel")) { parametersOf(query) }
             val state by viewModel.state.collectAsStateWithLifecycle()
             HistoryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
         scene(route = Routs.TrainingScreens.createTraining, navTransition = NavTransition()) {
-            val viewModel = koinViewModel(CreateTrainingViewModel::class)
+            val viewModel: CreateTrainingViewModel =
+                koinViewModel(qualifier = named("CreateTrainingViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             CreateTrainingScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
 
         scene(route = Routs.MainScreens.userInfo.title, navTransition = NavTransition()) {
-            val viewModel = koinViewModel(vmClass = UserInfoViewModel::class)
+            val viewModel: UserInfoViewModel =
+                koinViewModel(qualifier = named("UserInfoViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             UserInfoScreen(state = state, navigator = navigator)
         }
@@ -127,7 +130,8 @@ private fun RouteBuilder.summaryScreens(
         initialRoute = Routs.SummaryScreens.summaryScreen
     ) {
         scene(route = Routs.SummaryScreens.summaryScreen, navTransition = NavTransition()) {
-            val viewModel = koinViewModel(vmClass = SummaryViewModel::class)
+            val viewModel: SummaryViewModel =
+                koinViewModel(qualifier = named("SummaryViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             SummaryScreen(state = state, onEvent = viewModel::onEvent)
         }
@@ -137,19 +141,15 @@ private fun RouteBuilder.summaryScreens(
 private fun RouteBuilder.historyScreens(
     navigator: Navigator
 ) {
-    group(
-        route = Routs.HistoryScreens.historyGroupRoot,
-        initialRoute = "${Routs.HistoryScreens.historyInfo}/{$TRAINING_HISTORY_ID}"
-    ) {
-        scene(
-            route = "${Routs.HistoryScreens.historyInfo}/{$TRAINING_HISTORY_ID}",
-            navTransition = NavTransition()
-        ) { backStackEntry ->
-            val trainingId: Long = backStackEntry.path(TRAINING_HISTORY_ID) ?: -1
-            val viewModel = koinViewModel(HistoryInfoViewModel::class) { parametersOf(trainingId) }
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            HistoryInfoScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
-        }
+    scene(
+        route = "${Routs.HistoryScreens.historyInfo}/{$TRAINING_HISTORY_ID}",
+        navTransition = NavTransition()
+    ) { backStackEntry ->
+        val trainingId: Long = backStackEntry.path(TRAINING_HISTORY_ID) ?: -1
+        val viewModel: HistoryInfoViewModel =
+            koinViewModel(qualifier = named("HistoryInfoViewModel")) { parametersOf(trainingId) }
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        HistoryInfoScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
     }
 }
 
@@ -165,7 +165,8 @@ private fun RouteBuilder.trainingScreens(
             route = Routs.TrainingScreens.selectTraining,
             navTransition = NavTransition()
         ) {
-            val viewModel = koinViewModel(vmClass = TrainingSelectionViewModel::class)
+            val viewModel: TrainingSelectionViewModel =
+                koinViewModel(qualifier = named("TrainingSelectionViewModel"))
             val sate by viewModel.state.collectAsStateWithLifecycle()
             TrainingSelectionScreen(
                 state = sate,
@@ -177,7 +178,8 @@ private fun RouteBuilder.trainingScreens(
             route = Routs.TrainingScreens.trainingExercises,
             navTransition = NavTransition()
         ) {
-            val viewModel = koinViewModel(vmClass = ThisTrainingViewModel::class)
+            val viewModel: ThisTrainingViewModel =
+                koinViewModel(qualifier = named("ThisTrainingViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             ThisTrainingScreen(
                 state = state,
@@ -190,7 +192,8 @@ private fun RouteBuilder.trainingScreens(
             route = Routs.TrainingScreens.addExercises,
             navTransition = NavTransition()
         ) {
-            val viewModel = koinViewModel(AddExercisesViewModel::class)
+            val viewModel: AddExercisesViewModel =
+                koinViewModel(qualifier = named("AddExercisesViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             AddExercisesScreen(
                 state = state,
@@ -203,7 +206,8 @@ private fun RouteBuilder.trainingScreens(
             route = Routs.TrainingScreens.createExercise,
             navTransition = NavTransition()
         ) {
-            val viewModel = koinViewModel(CreateExerciseViewModel::class)
+            val viewModel: CreateExerciseViewModel =
+                koinViewModel(qualifier = named("CreateExerciseViewModel"))
             val state by viewModel.state.collectAsStateWithLifecycle()
             CreateExerciseScreen(
                 state = state,
@@ -221,14 +225,15 @@ private fun RouteBuilder.trainingScreens(
             val trainingTemplateId: Long = backStackEntry.path(TRAINING_TEMPLATE_ID) ?: -1
             val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
 
-            val viewModel = koinViewModel(vmClass = ExerciseAtWorkViewModel::class) {
-                parametersOf(
-                    trainingId,
-                    exerciseTemplateId,
-                    trainingTemplateId,
-                    factory.createPermissionsController()
-                )
-            }
+            val viewModel: ExerciseAtWorkViewModel =
+                koinViewModel(qualifier = named("ExerciseAtWorkViewModel")) {
+                    parametersOf(
+                        trainingId,
+                        exerciseTemplateId,
+                        trainingTemplateId,
+                        factory.createPermissionsController()
+                    )
+                }
             BindEffect(viewModel.permissionsController)
             val state by viewModel.state.collectAsStateWithLifecycle()
             ExerciseAtWorkScreen(
@@ -243,8 +248,9 @@ private fun RouteBuilder.trainingScreens(
             navTransition = NavTransition()
         ) { backStackEntry ->
             val exerciseName: String = backStackEntry.path(EXERCISE_NAME) ?: ""
-            val viewModel =
-                koinViewModel(ExerciseAtWorkHistoryViewModel::class) { parametersOf(exerciseName) }
+            val viewModel: ExerciseAtWorkHistoryViewModel =
+                koinViewModel(qualifier = named("ExerciseAtWorkHistoryViewModel"))
+                { parametersOf(exerciseName) }
             val state by viewModel.state.collectAsStateWithLifecycle()
             ExerciseAtWorkHistoryScreen(
                 state = state,

@@ -1,6 +1,8 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation
 
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aay.compose.barChart.model.BarParameters
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
@@ -13,8 +15,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : ViewModel() {
     private val exerciseColors = mapOf(

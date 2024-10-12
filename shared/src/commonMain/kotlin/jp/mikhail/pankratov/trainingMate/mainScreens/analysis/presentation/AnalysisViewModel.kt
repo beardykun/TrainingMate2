@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
@@ -14,12 +16,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class AnalysisViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider
-) : moe.tlaster.precompose.viewmodel.ViewModel() {
+) : ViewModel() {
 
     private val _state: MutableStateFlow<AnalysisScreenSate> =
         MutableStateFlow(AnalysisScreenSate())
@@ -36,10 +37,10 @@ class AnalysisViewModel(
         }.onStart {
             onEvent(AnalysisScreenEvent.OnGeneralSelected)
         }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(3000),
-                initialValue = AnalysisScreenSate()
-            )
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(3000),
+            initialValue = AnalysisScreenSate()
+        )
 
     fun onEvent(event: AnalysisScreenEvent) {
         when (event) {

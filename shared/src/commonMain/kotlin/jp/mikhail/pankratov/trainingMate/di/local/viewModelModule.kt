@@ -16,10 +16,12 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presenta
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 fun viewModelModule() = module {
-    factory {
+    viewModel(named("ThisTrainingViewModel")) {
         ThisTrainingViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
@@ -28,46 +30,46 @@ fun viewModelModule() = module {
         )
     }
 
-    factory {
+    viewModel(named("AppViewModel")) {
         AppViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get()
         )
     }
 
-    factory {
+    viewModel(named("TrainingSelectionViewModel")) {
         TrainingSelectionViewModel(
             trainingUseCaseProvider = get(),
             summaryUseCaseProvider = get()
         )
     }
 
-    factory {
+    viewModel(named("TrainingViewModel")) {
         TrainingViewModel(
             trainingUseCaseProvider = get(),
             summaryUseCaseProvider = get()
         )
     }
 
-    factory {
+    viewModel(named("AnalysisViewModel")) {
         AnalysisViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get()
         )
     }
 
-    factory { (query: TrainingQuery) ->
+    viewModel(named("HistoryScreenViewModel")) { (query: TrainingQuery) ->
         HistoryScreenViewModel(
             trainingUseCaseProvider = get(),
             query = query
         )
     }
 
-    factory {
+    viewModel(named("CreateTrainingViewModel")) {
         CreateTrainingViewModel(trainingUseCaseProvider = get())
     }
 
-    factory { (trainingId: Long) ->
+    viewModel(named("HistoryInfoViewModel")) { (trainingId: Long) ->
         HistoryInfoViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
@@ -75,21 +77,21 @@ fun viewModelModule() = module {
         )
     }
 
-    factory {
+    viewModel(named("AddExercisesViewModel")) {
         AddExercisesViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get()
         )
     }
 
-    factory {
+    viewModel(named("CreateExerciseViewModel")) {
         CreateExerciseViewModel(
             exerciseUseCaseProvider = get(),
             trainingUseCaseProvider = get()
         )
     }
 
-    factory { (trainingId: Long, exerciseTemplateId: Long, trainingTemplateId: Long, permissionsController: PermissionsController) ->
+    viewModel(named("ExerciseAtWorkViewModel")) { (trainingId: Long, exerciseTemplateId: Long, trainingTemplateId: Long, permissionsController: PermissionsController) ->
         ExerciseAtWorkViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
@@ -103,20 +105,20 @@ fun viewModelModule() = module {
         )
     }
 
-    factory {(exerciseName: String) ->
+    viewModel(named("ExerciseAtWorkHistoryViewModel")) { (exerciseName: String) ->
         ExerciseAtWorkHistoryViewModel(
             exerciseUseCaseProvider = get(),
             exerciseName = exerciseName
         )
     }
 
-    factory {
+    viewModel(named("UserInfoViewModel")) {
         UserInfoViewModel(
             exerciseUseCaseProvider = get()
         )
     }
 
-    factory {
+    viewModel(named("SummaryViewModel")) {
         SummaryViewModel(
             summaryUseCaseProvider = get()
         )

@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
@@ -22,7 +24,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import moe.tlaster.precompose.viewmodel.viewModelScope
 import kotlin.time.Duration.Companion.seconds
 
 class ThisTrainingViewModel(
@@ -30,7 +31,7 @@ class ThisTrainingViewModel(
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val summaryUseCaseProvider: SummaryUseCaseProvider,
     private val removeTrainingExerciseUseCase: RemoveExerciseUseCase
-) : moe.tlaster.precompose.viewmodel.ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(ThisTrainingState())
     val state = _state.onStart {

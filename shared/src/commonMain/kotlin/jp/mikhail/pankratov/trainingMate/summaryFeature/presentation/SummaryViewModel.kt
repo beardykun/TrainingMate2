@@ -1,6 +1,8 @@
 package jp.mikhail.pankratov.trainingMate.summaryFeature.presentation
 
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aay.compose.donutChart.model.PieChartData
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
@@ -11,8 +13,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewModel() {
 
@@ -225,10 +225,10 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
         )
         val last = if (lastData == null) null else
             PieChartData(
-            partName = "$prefixLast ${lastData.toInt()} $unit",
-            data = lastData,
-            color = Color.Blue
-        )
-        return if (last == null)listOf(current) else listOf(last, current)
+                partName = "$prefixLast ${lastData.toInt()} $unit",
+                data = lastData,
+                color = Color.Blue
+            )
+        return if (last == null) listOf(current) else listOf(last, current)
     }
 }

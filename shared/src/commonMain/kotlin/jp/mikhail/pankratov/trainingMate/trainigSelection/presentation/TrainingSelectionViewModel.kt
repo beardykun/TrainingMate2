@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainigSelection.presentation
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
@@ -15,8 +17,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import moe.tlaster.precompose.viewmodel.ViewModel
-import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class TrainingSelectionViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
