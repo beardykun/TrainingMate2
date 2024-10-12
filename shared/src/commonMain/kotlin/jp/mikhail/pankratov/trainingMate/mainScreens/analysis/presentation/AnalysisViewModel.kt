@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,26 +21,25 @@ class AnalysisViewModel(
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider
 ) : moe.tlaster.precompose.viewmodel.ViewModel() {
 
-    private val trainingsData: MutableStateFlow<List<Training>?> = MutableStateFlow(null)
     private val _state: MutableStateFlow<AnalysisScreenSate> =
         MutableStateFlow(AnalysisScreenSate())
     val state =
         combine(
             _state,
-            trainingsData,
             trainingUseCaseProvider.getLocalTrainingsUseCase().invoke(),
             exerciseUseCaseProvider.getAllLocalExercisesUseCase().invoke()
-        ) { state, historyTrainings, localTrainings, localExercises ->
+        ) { state, localTrainings, localExercises ->
             state.copy(
-                historyTrainings = historyTrainings,
                 localTrainings = localTrainings,
                 localExercises = localExercises.filter { it.bestLiftedWeight != 0.0 }
             )
+        }.onStart {
+            onEvent(AnalysisScreenEvent.OnGeneralSelected)
         }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(3000),
-            initialValue = AnalysisScreenSate()
-        )
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(3000),
+                initialValue = AnalysisScreenSate()
+            )
 
     fun onEvent(event: AnalysisScreenEvent) {
         when (event) {
@@ -220,7 +220,7 @@ class AnalysisViewModel(
             historyExercises.filter { it.totalLiftedWeight != 0.0 }.map { it.totalLiftedWeight }
 
         val xAxisData =
-            historyExercises.filter { it.totalLiftedWeight != 0.0 }.map { it.name }
+            historyExercises.filter { it.totalLiftedWeight != 0.0 }.map { it.date }
 
         _state.update {
             it.copy(

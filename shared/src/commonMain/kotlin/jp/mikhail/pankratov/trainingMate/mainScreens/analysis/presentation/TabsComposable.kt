@@ -4,8 +4,10 @@ import Dimens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +33,7 @@ import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonBarChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import kotlinx.coroutines.launch
 
@@ -55,73 +58,81 @@ fun TabsComposable(
         selectedTabIndex = pagerState.currentPage
         onEvent(AnalysisScreenEvent.OnMetricsModeChanged(category))
     }
-
-    TabRow(selectedTabIndex = selectedTabIndex) {
-        categories.forEachIndexed { index, category ->
-            Tab(
-                selected = selectedTabIndex == index,
-                onClick = {
-                    selectedTabIndex = index
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                }) {
-                TextMedium(
-                    text = category.name,
-                    modifier = Modifier.padding(Dimens.Padding8)
+    if (metricsXAxisData.isNullOrEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            TextLarge(SharedRes.strings.no_analysis_data.getString())
+        }
+    } else {
+        TabRow(selectedTabIndex = selectedTabIndex) {
+            categories.forEachIndexed { index, category ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = {
+                        selectedTabIndex = index
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    }) {
+                    TextMedium(
+                        text = category.name,
+                        modifier = Modifier.padding(Dimens.Padding8)
+                    )
+                }
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth().height(Dimens.tabHeight),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AnimatedVisibility(metricsMode != MetricsMode.GENERAL && !metricsData.isNullOrEmpty()) {
+                Button(
+                    onClick = {
+                        onEvent(AnalysisScreenEvent.OnMetricsModeChanged(metricsMode))
+                    }, modifier = Modifier.padding(horizontal = Dimens.Padding16)
+                ) {
+                    val text =
+                        if (metricsMode == MetricsMode.EXERCISE)
+                            SharedRes.strings.another_exercise.getString()
+                        else
+                            SharedRes.strings.another_training.getString()
+                    TextMedium(text = text)
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            AnimatedVisibility(metricsMode != MetricsMode.EXERCISE) {
+                DropDown(
+                    initValue = analysisMode,
+                    isOpen = isDropdownExpanded,
+                    onClick = { onEvent(AnalysisScreenEvent.OnDropdownOpen) },
+                    onDismiss = { onEvent(AnalysisScreenEvent.OnDropdownClosed) },
+                    onSelectedValue = { value ->
+                        onEvent(AnalysisScreenEvent.OnAnalysisModeChanged(value))
+                    },
+                    values = AnalysisMode.entries.map { it.name },
+                    modifier = Modifier.clip(
+                        RoundedCornerShape(percent = 50)
+                    ).background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
             }
         }
-    }
-    Row(
-        modifier = Modifier.fillMaxWidth().height(Dimens.tabHeight),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AnimatedVisibility(metricsMode != MetricsMode.GENERAL && !metricsData.isNullOrEmpty()) {
-            Button(
-                onClick = {
-                    onEvent(AnalysisScreenEvent.OnMetricsModeChanged(metricsMode))
-                }, modifier = Modifier.padding(horizontal = Dimens.Padding16)
-            ) {
-                val text =
-                    if (metricsMode == MetricsMode.EXERCISE)
-                        SharedRes.strings.another_exercise.getString()
-                    else
-                        SharedRes.strings.another_training.getString()
-                TextMedium(text = text)
-            }
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        AnimatedVisibility(metricsMode != MetricsMode.EXERCISE) {
-            DropDown(
-                initValue = analysisMode,
-                isOpen = isDropdownExpanded,
-                onClick = { onEvent(AnalysisScreenEvent.OnDropdownOpen) },
-                onDismiss = { onEvent(AnalysisScreenEvent.OnDropdownClosed) },
-                onSelectedValue = { value ->
-                    onEvent(AnalysisScreenEvent.OnAnalysisModeChanged(value))
-                },
-                values = AnalysisMode.entries.map { it.name },
-                modifier = Modifier.clip(
-                    RoundedCornerShape(percent = 50)
-                ).background(color = MaterialTheme.colorScheme.primaryContainer)
-            )
-        }
-    }
 
-    HorizontalPager(state = pagerState) {
-        AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
-            metricsData?.let {
-                CommonBarChart(
-                    params = listOf(
-                        BarParameters(
-                            dataName = chartLabel,
-                            data = it,
-                            barColor = MaterialTheme.colorScheme.primary
-                        )
-                    ),
-                    xAxisData = metricsXAxisData!!
-                )
+        HorizontalPager(state = pagerState) {
+            AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
+                metricsData?.let {
+                    CommonBarChart(
+                        params = listOf(
+                            BarParameters(
+                                dataName = chartLabel,
+                                data = it,
+                                barColor = MaterialTheme.colorScheme.primary
+                            )
+                        ),
+                        xAxisData = metricsXAxisData
+                    )
+                }
             }
         }
     }
