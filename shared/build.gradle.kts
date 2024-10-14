@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.sqldelight.plugin)
     kotlin("plugin.serialization") version libs.versions.kotlin.version.get()
-    id("dev.icerock.mobile.multiplatform-resources")
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.compose.compiler)
 }
@@ -31,8 +30,6 @@ kotlin {
             baseName = "shared"
             isStatic = true
             freeCompilerArgs += "-Xbinary=bundleId=jp.mikhail.pankratov.trainingMate"
-            export(libs.moko.resources)
-            export(libs.moko.graphics)
         }
     }
 
@@ -58,9 +55,6 @@ kotlin {
                 implementation(libs.firebase.auth)
                 implementation(libs.firebase.firestore)
                 implementation(libs.firebase.config)
-
-                api(libs.moko.resources)
-                api(libs.moko.resources.compose)
 
                 api(libs.precompose)
                 api(libs.moe.precompose.koin)
@@ -134,11 +128,6 @@ sqldelight {
             version = 3
         }
     }
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "jp.mikhail.pankratov.trainingMate"
-    multiplatformResourcesClassName = "SharedRes"
 }
 
 dependencies {

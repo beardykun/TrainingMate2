@@ -4,9 +4,6 @@ buildscript {
         google()
         mavenCentral()
     }
-    dependencies {
-        classpath(libs.moko.resources.generator)
-    }
 }
 
 plugins {

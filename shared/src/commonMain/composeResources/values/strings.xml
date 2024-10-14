@@ -45,13 +45,13 @@
     <string name="last_month_summary">Last Month</string>
     <string name="number_of_workouts_with_args">Number of workouts: %1$d</string>
     <string name="total_training_duration_with_args">Total training duration: %1$d min</string>
-    <string name="total_lifted_weight_with_args">Total lifted weight: %1$.2f kg</string>
+    <string name="total_lifted_weight_with_args">Total lifted weight: %1$d kg</string>
     <string name="number_of_done_exercises_with_args">Done exercises: %1$d</string>
     <string name="number_of_done_sets_with_args">Done sets: %1$d</string>
     <string name="total_reps_number_with_args">Total reps number: %1$d</string>
-    <string name="average_weight_per_exercise_with_args">Average weight per exercise: %1$.2f kg</string>
-    <string name="average_weight_per_workout_with_args">Average weight per workout: %1$.2f kg</string>
-    <string name="average_workout_time_with_args">Average workout time: %1$.2f min</string>
+    <string name="average_weight_per_exercise_with_args">Average weight per exercise: %1$d kg</string>
+    <string name="average_weight_per_workout_with_args">Average weight per workout: %1$d kg</string>
+    <string name="average_workout_time_with_args">Average workout time: %1$d min</string>
     <string name="summaries">Summary:</string>
     <string name="summaries_sample">Summaries sample:</string>
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
@@ -85,10 +85,10 @@
     <!-- ExerciseAtWorkScreen -->
     <string name="cd_exercise_history">Exercise history</string>
     <string name="cd_start_timer">Start timer</string>
-    <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$.2f kg\nSets: %3$d</string>
+    <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
     <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
     <string name="last_training_set">Last Training Set\n%1$s kg x %2$s</string>
-    <string name="this_exercise">This Exercise\nLength: %1$s\nLifted: %2$.2f kg\nSets: %3$d</string>
+    <string name="this_exercise">This Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
     <string name="auto_input">Auto Input</string>
     <string name="break_time">Select break time</string>
     <string name="ok">OK</string>
@@ -100,7 +100,7 @@
 
     <!-- ExerciseItem -->
     <string name="group">Group: %1$s</string>
-    <string name="best_weight">Best weight: %1$.2f kg</string>
+    <string name="best_weight">Best weight: %1$d kg</string>
     <string name="cd_done_icon">Done icon</string>
     <string name="strength_defining">Strength Indicator &#128170;</string>
 
@@ -126,8 +126,8 @@
     <string name="training_name_with_arg">Training name: %1$s</string>
     <string name="training_groups_with_arg">Training groups: %1$s</string>
     <string name="training_duration_with_arg">Training duration: %1$s min</string>
-    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$.2f kg</string>
-    <string name="lifted_weight_with_arg">Lifted weight: %1$.2f kg</string>
+    <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$d kg</string>
+    <string name="lifted_weight_with_arg">Lifted weight: %1$d kg</string>
     <string name="back_btn">Back</string>
     <string name="continue_training">Continue training</string>
     <string name="sets">Sets: </string>
@@ -142,8 +142,8 @@
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
     <string name="no_exercises_in_training">No exercises in this training yet</string>
     <string name="finish_training">Finish Training</string>
-    <string name="last_training_lifted_weight">Last training\nLifted: %1$.2f kg\nLength: %2$s</string>
-    <string name="this_training_lifted_weight">This training\nLifted: %1$.2f kg\nLength: %2$s</string>
+    <string name="last_training_lifted_weight">Last training\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="this_training_lifted_weight">This training\nLifted: %1$d kg\nLength: %2$s</string>
 
     <!-- UserInfo -->
     <string name="strength_comparison_info">Base exercises strength level comparison</string>

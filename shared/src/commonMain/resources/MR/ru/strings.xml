@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Create training -->
-    <string name="training_name">Training name:</string>
-    <string name="groups">Groups:</string>
-    <string name="cd_muscle_group_image">muscle group image</string>
-    <string name="cd_add_new_training">add new training</string>
-
-</resources>

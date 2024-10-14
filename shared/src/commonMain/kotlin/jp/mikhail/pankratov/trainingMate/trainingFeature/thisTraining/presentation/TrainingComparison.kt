@@ -54,7 +54,7 @@ fun TrainingComparison(
                 ) {
                     TextLarge(
                         stringResource(
-                            Res.string.last_training_lifted_weight,
+                            resource = Res.string.last_training_lifted_weight,
                             lastTraining.totalLiftedWeight,
                             Utils.countTrainingTime(lastTraining)
                         ),
@@ -75,7 +75,7 @@ fun TrainingComparison(
                     TextLarge(
                         color = textColor,
                         text = stringResource(
-                            Res.string.this_training_lifted_weight,
+                            resource = Res.string.this_training_lifted_weight,
                             ongoingTraining.totalLiftedWeight,
                             trainingTime
                         ),
