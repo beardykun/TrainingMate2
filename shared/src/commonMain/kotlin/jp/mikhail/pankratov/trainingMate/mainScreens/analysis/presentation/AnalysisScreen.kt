@@ -8,13 +8,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.choose_your_training
+import maxrep.shared.generated.resources.select_exercise
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -61,7 +63,7 @@ fun AnalysisScreen(
 @Composable
 fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TextLarge(text = stringResource(SharedRes.strings.select_exercise))
+        TextLarge(text = Res.string.select_exercise.getString())
         LazyColumn {
             items(
                 items = localExercises,
@@ -81,10 +83,9 @@ fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrainingChoice(localTrainings: List<TrainingLocal>, onItemClick: (Long, String) -> Unit) {
-    TextLarge(text = stringResource(SharedRes.strings.choose_your_training).uppercase())
+    TextLarge(text = Res.string.choose_your_training.getString().uppercase())
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
     ) {

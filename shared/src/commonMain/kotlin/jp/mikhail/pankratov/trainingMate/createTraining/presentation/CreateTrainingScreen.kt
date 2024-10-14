@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.getString
@@ -20,7 +18,15 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Glo
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.add_training
+import maxrep.shared.generated.resources.choose_training_description
+import maxrep.shared.generated.resources.choose_training_name
+import maxrep.shared.generated.resources.invalid_or_duplicate_training_name
+import maxrep.shared.generated.resources.invalid_training_description
+import maxrep.shared.generated.resources.select_muscle_group
 import moe.tlaster.precompose.navigation.Navigator
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CreateTrainingScreen(
@@ -37,22 +43,22 @@ fun CreateTrainingScreen(
             onValueChanged = { newValue ->
                 onEvent(CreateTrainingEvent.OnTrainingNameChanged(name = newValue))
             },
-            label = stringResource(SharedRes.strings.choose_training_name),
-            placeholder = stringResource(SharedRes.strings.choose_training_name),
+            label = stringResource(Res.string.choose_training_name),
+            placeholder = stringResource(Res.string.choose_training_name),
             modifier = Modifier.fillMaxWidth(),
             isError = state.invalidNameInput,
-            errorText = if (state.invalidNameInput) stringResource(SharedRes.strings.invalid_or_duplicate_training_name) else ""
+            errorText = if (state.invalidNameInput) stringResource(Res.string.invalid_or_duplicate_training_name) else ""
         )
         InputField(
             value = state.trainingDescription,
             onValueChanged = { newValue ->
                 onEvent(CreateTrainingEvent.OnTrainingDescriptionChanged(description = newValue))
             },
-            label = stringResource(SharedRes.strings.choose_training_description),
-            placeholder = stringResource(SharedRes.strings.choose_training_description),
+            label = stringResource(Res.string.choose_training_description),
+            placeholder = stringResource(Res.string.choose_training_description),
             modifier = Modifier.fillMaxWidth(),
             isError = state.invalidDescriptionInput,
-            errorText = if (state.invalidDescriptionInput) stringResource(SharedRes.strings.invalid_training_description) else ""
+            errorText = if (state.invalidDescriptionInput) stringResource(Res.string.invalid_training_description) else ""
         )
 
 
@@ -73,7 +79,7 @@ fun CreateTrainingScreen(
             }
         )
         Spacer(modifier = Modifier.weight(1f))
-        val groupError = SharedRes.strings.select_muscle_group.getString()
+        val groupError = Res.string.select_muscle_group.getString()
         CommonButton(
             onClick = {
                 if (state.selectedGroups.isEmpty()) {
@@ -84,7 +90,7 @@ fun CreateTrainingScreen(
                     navigator.navigate(Routs.TrainingScreens.selectTraining)
                 }))
             },
-            text = SharedRes.strings.add_training.getString()
+            text = Res.string.add_training.getString()
         )
     }
     GlobalToastMessage()

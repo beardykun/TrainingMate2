@@ -29,13 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.aay.compose.barChart.model.BarParameters
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonBarChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DropDown
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import kotlinx.coroutines.launch
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.another_exercise
+import maxrep.shared.generated.resources.another_training
+import maxrep.shared.generated.resources.no_analysis_data
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -63,7 +66,7 @@ fun TabsComposable(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            TextLarge(SharedRes.strings.no_analysis_data.getString())
+            TextLarge(Res.string.no_analysis_data.getString())
         }
     } else {
         TabRow(selectedTabIndex = selectedTabIndex) {
@@ -95,9 +98,9 @@ fun TabsComposable(
                 ) {
                     val text =
                         if (metricsMode == MetricsMode.EXERCISE)
-                            SharedRes.strings.another_exercise.getString()
+                            Res.string.another_exercise.getString()
                         else
-                            SharedRes.strings.another_training.getString()
+                            Res.string.another_training.getString()
                     TextMedium(text = text)
                 }
             }

@@ -2,7 +2,6 @@ package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,17 +30,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
-import dev.icerock.moko.resources.compose.stringResource
-import dev.icerock.moko.resources.getImageByFileName
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.theme.goldLight
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.cd_group_image
+import maxrep.shared.generated.resources.strength_defining
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun <T> SelectableGroupVertical(
     items: List<T>,
@@ -135,18 +133,16 @@ fun SelectableGroupItem(
         )
 
         Spacer(Modifier.weight(1f))
-        SharedRes.images.getImageByFileName(group)?.let {
-            val painter: Painter =
-                jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
+        getDrawableResourceByName(group)?.let {
+            val painter = org.jetbrains.compose.resources.painterResource(it)
             Image(
                 painter = painter,
-                contentDescription = stringResource(SharedRes.strings.cd_group_image)
+                contentDescription = Res.string.cd_group_image.getString()
             )
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SelectableExercises(
     exerciseLocals: List<ExerciseListItem>,
@@ -243,16 +239,15 @@ fun SelectableExerciseItem(
                     overflow = TextOverflow.Ellipsis  // Add ellipsis if text is too long
                 )
                 if (item.isStrengthDefining)
-                    TextSmall(text = SharedRes.strings.strength_defining.getString())
+                    TextSmall(text = Res.string.strength_defining.getString())
             }
 
             Spacer(Modifier.width(Dimens.Padding16)) // Use width here to give consistent spacing
-            SharedRes.images.getImageByFileName(item.image)?.let {
-                val painter: Painter =
-                    jp.mikhail.pankratov.trainingMate.core.data.painterResource(it)
+            getDrawableResourceByName(item.image)?.let {
+                val painter = org.jetbrains.compose.resources.painterResource(it)
                 Image(
                     painter = painter,
-                    contentDescription = stringResource(SharedRes.strings.cd_group_image),
+                    contentDescription = Res.string.cd_group_image.getString(),
                     modifier = Modifier.size(Dimens.selectableGroupImageSize)  // Define a consistent size if necessary
                 )
             }

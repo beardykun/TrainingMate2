@@ -22,8 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.ActionIcon
@@ -32,6 +30,10 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Swi
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.cd_add_new_exercises_button
+import maxrep.shared.generated.resources.finish_training
+import maxrep.shared.generated.resources.no_exercises_in_training
 import moe.tlaster.precompose.navigation.Navigator
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,7 +52,7 @@ fun ThisTrainingScreen(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(SharedRes.strings.cd_add_new_exercises_button)
+                contentDescription = Res.string.cd_add_new_exercises_button.getString()
             )
         }
     }) { padding ->
@@ -71,7 +73,7 @@ fun ThisTrainingScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        TextLarge(stringResource(SharedRes.strings.no_exercises_in_training))
+                        TextLarge(Res.string.no_exercises_in_training.getString())
                     }
                 }
                 LazyColumn(modifier = Modifier.weight(1f)) {
@@ -132,14 +134,14 @@ fun ThisTrainingScreen(
                                             backgroundColor = Color.Red,
                                             modifier = Modifier
                                         )
-                                       /* ActionIcon(
-                                            onClick = {
-                                                onEvent(ThisTrainingEvent.OnCollapsedEvent(item))
-                                            },
-                                            icon = Icons.Default.Edit,
-                                            backgroundColor = Color.Blue,
-                                            modifier = Modifier
-                                        )*/
+                                        /* ActionIcon(
+                                             onClick = {
+                                                 onEvent(ThisTrainingEvent.OnCollapsedEvent(item))
+                                             },
+                                             icon = Icons.Default.Edit,
+                                             backgroundColor = Color.Blue,
+                                             modifier = Modifier
+                                         )*/
                                     }
                                 )
                             }
@@ -151,7 +153,7 @@ fun ThisTrainingScreen(
                         onEvent(ThisTrainingEvent.EndTraining)
                         navigator.navigate(Routs.MainScreens.training.title)
                     },
-                    text = SharedRes.strings.finish_training.getString()
+                    text = Res.string.finish_training.getString()
                 )
             }
         }

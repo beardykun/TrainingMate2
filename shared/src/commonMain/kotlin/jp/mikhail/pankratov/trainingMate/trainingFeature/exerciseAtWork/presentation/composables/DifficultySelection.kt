@@ -13,19 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.hard
+import maxrep.shared.generated.resources.light
+import maxrep.shared.generated.resources.medium
 
 @Composable
 fun DifficultySelection(
     selected: String,
     onSelect: (SetDifficulty) -> Unit
 ) {
-    val light = SharedRes.strings.light.getString()
-    val medium = SharedRes.strings.medium.getString()
-    val hard = SharedRes.strings.hard.getString()
+    val light = Res.string.light.getString()
+    val medium = Res.string.medium.getString()
+    val hard = Res.string.hard.getString()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(Dimens.Padding16)

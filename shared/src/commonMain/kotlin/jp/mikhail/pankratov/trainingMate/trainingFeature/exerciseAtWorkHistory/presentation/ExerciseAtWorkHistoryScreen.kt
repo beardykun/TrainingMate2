@@ -7,11 +7,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyInfoScreen.ExerciseHistoryItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.date
 import moe.tlaster.precompose.navigation.Navigator
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ExerciseAtWorkHistoryScreen(
@@ -33,7 +34,7 @@ fun ExerciseAtWorkHistoryScreen(
                 }) { exercise ->
                 if (exercise.totalLiftedWeight == 0.0) return@items
                 TextMedium(
-                    text = stringResource(SharedRes.strings.date, exercise.date),
+                    text = stringResource(Res.string.date, exercise.date),
                     modifier = Modifier.padding(start = Dimens.Padding16, top = Dimens.Padding8)
                 )
                 ExerciseHistoryItem(

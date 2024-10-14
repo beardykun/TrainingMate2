@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.minutes
+import maxrep.shared.generated.resources.seconds
 
 @Composable
 fun TimerSpinnerWheels(
@@ -42,7 +44,7 @@ fun TimerSpinnerWheels(
             horizontalArrangement = Arrangement.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TextLarge(text = stringResource(SharedRes.strings.minutes))
+                TextLarge(text = Res.string.minutes.getString())
                 SpinnerWheel(
                     items = minuteValues,
                     selectedItem = minuteValue.toString(),
@@ -53,7 +55,7 @@ fun TimerSpinnerWheels(
             }
             Spacer(modifier = Modifier.width(Dimens.Padding16))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                TextLarge(text = stringResource(SharedRes.strings.seconds))
+                TextLarge(text = Res.string.seconds.getString())
                 SpinnerWheel(
                     items = secondValues,
                     selectedItem = secondValue.toString(),

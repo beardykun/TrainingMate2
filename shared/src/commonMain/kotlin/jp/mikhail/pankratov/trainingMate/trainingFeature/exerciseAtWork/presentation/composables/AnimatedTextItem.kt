@@ -26,12 +26,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.interval
+import maxrep.shared.generated.resources.last_training_set
+import maxrep.shared.generated.resources.total_in_set
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AnimatedTextItem(
@@ -92,14 +95,14 @@ fun AnimatedTextItem(
                         Column(modifier = Modifier.padding(Dimens.Padding8)) {
                             Text(
                                 text = stringResource(
-                                    SharedRes.strings.last_training_set,
+                                    Res.string.last_training_set,
                                     lastTrainingSet?.weight ?: "",
                                     lastTrainingSet?.reps ?: ""
                                 )
                             )
                             lastTrainingSet?.restTimeText?.let {
                                 TextSmall(
-                                    text = stringResource(SharedRes.strings.interval, it)
+                                    text = stringResource(Res.string.interval, it)
                                 )
                             }
                         }
@@ -111,14 +114,14 @@ fun AnimatedTextItem(
                             set.reps.toInt() * set.weight.toDouble()
                     TextSmall(
                         text = stringResource(
-                            SharedRes.strings.total_in_set,
+                            Res.string.total_in_set,
                             sum
                         )
                     )
                 }
                 set.restTimeText?.let {
                     TextSmall(
-                        text = stringResource(SharedRes.strings.interval, it)
+                        text = stringResource(Res.string.interval, it)
                     )
                 }
             }

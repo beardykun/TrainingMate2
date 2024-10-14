@@ -52,9 +52,9 @@ fun DropDown(
             Icon(
                 imageVector = if (isOpen) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
                 contentDescription = if (isOpen) {
-                    "SharedRes.strings.cd_close.localize()"
+                    "open"
                 } else {
-                    "SharedRes.strings.ct_open.localize()"
+                    "closed"
                 },
                 modifier = Modifier.size(Dimens.mediumIconSize)
             )

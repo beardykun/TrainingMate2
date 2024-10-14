@@ -2,7 +2,6 @@ package jp.mikhail.pankratov.trainingMate.trainigSelection.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,14 +27,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import kotlinx.coroutines.launch
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.are_you_ready_to_start
+import maxrep.shared.generated.resources.cd_add_new_training
+import maxrep.shared.generated.resources.delete_training
+import maxrep.shared.generated.resources.start_training
+import maxrep.shared.generated.resources.want_to_delete_training
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -51,7 +55,7 @@ fun TrainingSelectionScreen(
         }) {
             Icon(
                 imageVector = Icons.Default.AddCard,
-                contentDescription = stringResource(SharedRes.strings.cd_add_new_training)
+                contentDescription = Res.string.cd_add_new_training.getString()
             )
         }
     }) {
@@ -126,8 +130,8 @@ fun TrainingSelectionScreen(
                 }
                 AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
                     DialogPopup(
-                        title = stringResource(SharedRes.strings.delete_training),
-                        description = stringResource(SharedRes.strings.want_to_delete_training),
+                        title = Res.string.delete_training.getString(),
+                        description = Res.string.want_to_delete_training.getString(),
                         onAccept = {
                             onEvent(TrainingSelectionEvent.OnDeleteTemplateConfirmClick)
                         },
@@ -139,8 +143,8 @@ fun TrainingSelectionScreen(
 
                 AnimatedVisibility(visible = state.showStartTrainingDialog) {
                     DialogPopup(
-                        title = stringResource(SharedRes.strings.start_training),
-                        description = stringResource(SharedRes.strings.are_you_ready_to_start),
+                        title = Res.string.start_training.getString(),
+                        description = Res.string.are_you_ready_to_start.getString(),
                         onAccept = {
                             onEvent(TrainingSelectionEvent.OnStartNewTraining {
                                 navigator.navigate(

@@ -15,13 +15,16 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.asResId
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.reps
+import maxrep.shared.generated.resources.select_reps
+import maxrep.shared.generated.resources.select_weight
+import maxrep.shared.generated.resources.weight
 
 @Composable
 fun InputFields(
@@ -42,8 +45,8 @@ fun InputFields(
     Row(modifier = Modifier.fillMaxWidth()) {
         InputField(
             value = weight,
-            placeholder = stringResource(SharedRes.strings.select_weight),
-            label = stringResource(SharedRes.strings.weight),
+            placeholder = Res.string.select_weight.getString(),
+            label = Res.string.weight.getString(),
             onValueChanged = { value ->
                 onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
             },
@@ -60,8 +63,8 @@ fun InputFields(
         Spacer(modifier = Modifier.padding(Dimens.Padding32))
         InputField(
             value = reps,
-            placeholder = stringResource(SharedRes.strings.select_reps),
-            label = stringResource(SharedRes.strings.reps),
+            placeholder = Res.string.select_reps.getString(),
+            label = Res.string.reps.getString(),
             onValueChanged = { value ->
                 onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
             },

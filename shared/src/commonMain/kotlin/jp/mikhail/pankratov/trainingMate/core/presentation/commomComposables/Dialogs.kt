@@ -5,9 +5,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.TimerSpinnerWheels
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.no
+import maxrep.shared.generated.resources.ok
+import maxrep.shared.generated.resources.yes
 
 @Composable
 fun DialogPopup(title: String, description: String, onAccept: () -> Unit, onDenny: () -> Unit) {
@@ -21,14 +24,14 @@ fun DialogPopup(title: String, description: String, onAccept: () -> Unit, onDenn
             TextButton(onClick = {
                 onAccept.invoke()
             }) {
-                TextMedium(stringResource(SharedRes.strings.yes))
+                TextMedium(Res.string.yes.getString())
             }
         },
         dismissButton = {
             TextButton(onClick = {
                 onDenny.invoke()
             }) {
-                TextMedium(stringResource(SharedRes.strings.no))
+                TextMedium(Res.string.no.getString())
             }
         })
 }
@@ -58,7 +61,7 @@ fun TimerDialog(
             },
             confirmButton = {
                 Button(onClick = { onConfirm.invoke() }) {
-                    Text(text = stringResource(SharedRes.strings.ok))
+                    Text(text = Res.string.ok.getString())
                 }
             }
         )

@@ -19,17 +19,26 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.finish_ongoing_and_continue
+import maxrep.shared.generated.resources.lifted_weight_with_arg
+import maxrep.shared.generated.resources.sets
+import maxrep.shared.generated.resources.total_weight_lifted_with_arg
+import maxrep.shared.generated.resources.training_duration_with_arg
+import maxrep.shared.generated.resources.training_groups_with_arg
+import maxrep.shared.generated.resources.training_name_with_arg
+import maxrep.shared.generated.resources.training_ongoing
 import moe.tlaster.precompose.navigation.Navigator
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,7 +51,7 @@ fun HistoryInfoScreen(
         state.training?.let { training ->
             TextLarge(
                 text = stringResource(
-                    SharedRes.strings.training_name_with_arg,
+                    Res.string.training_name_with_arg,
                     training.name
                 )
             )
@@ -50,21 +59,21 @@ fun HistoryInfoScreen(
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
                 text = stringResource(
-                    SharedRes.strings.training_groups_with_arg, training.groups
+                    Res.string.training_groups_with_arg, training.groups
                 )
             )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
                 text = stringResource(
-                    SharedRes.strings.training_duration_with_arg, Utils.countTrainingTime(training)
+                    Res.string.training_duration_with_arg, Utils.countTrainingTime(training)
                 )
             )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
                 text = stringResource(
-                    SharedRes.strings.total_weight_lifted_with_arg, training.totalLiftedWeight
+                    Res.string.total_weight_lifted_with_arg, training.totalLiftedWeight
                 )
             )
             HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
@@ -87,8 +96,8 @@ fun HistoryInfoScreen(
         }
         if (state.isError) {
             DialogPopup(
-                title = stringResource(SharedRes.strings.training_ongoing),
-                description = stringResource(SharedRes.strings.finish_ongoing_and_continue),
+                title = Res.string.training_ongoing.getString(),
+                description = Res.string.finish_ongoing_and_continue.getString(),
                 onAccept = {
                     onEvent(HistoryInfoEvent.OnFinishOngoingAndContinue {
                         navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
@@ -114,16 +123,14 @@ fun ExerciseHistoryItem(exercise: Exercise, modifier: Modifier) {
             TextMedium(text = exercise.name.uppercase())
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextMedium(
-                text = stringResource(
-                    SharedRes.strings.sets
-                )
+                text = Res.string.sets.getString()
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             FixedGrid(columns = 3, items = exercise.sets)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextMedium(
                 text = stringResource(
-                    SharedRes.strings.lifted_weight_with_arg,
+                    Res.string.lifted_weight_with_arg,
                     exercise.totalLiftedWeight
                 )
             )

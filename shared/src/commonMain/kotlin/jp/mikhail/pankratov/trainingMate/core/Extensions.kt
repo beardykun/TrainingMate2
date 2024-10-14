@@ -1,14 +1,21 @@
 package jp.mikhail.pankratov.trainingMate.core
 
 import androidx.compose.runtime.Composable
-import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.invalid_input_format
+import maxrep.shared.generated.resources.not_a_0
+import maxrep.shared.generated.resources.not_a_float
+import maxrep.shared.generated.resources.reps_should_not_be_empty
+import maxrep.shared.generated.resources.use_dot
+import maxrep.shared.generated.resources.weight_cant_be_0
+import maxrep.shared.generated.resources.weight_should_not_be_empty
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 fun List<String>.listToString(): String {
     return this.filterNot { it.isEmpty() }
@@ -70,14 +77,14 @@ fun LocalDate.getIsoWeekNumber(): Long {
 
 fun InputError.asResId(): StringResource {
     return when (this) {
-        InputError.InputErrorReps.INVALID_FORMAT -> SharedRes.strings.invalid_input_format
-        InputError.InputErrorReps.EMPTY_REPS -> SharedRes.strings.reps_should_not_be_empty
-        InputError.InputErrorReps.REPS_IS_FLOAT -> SharedRes.strings.not_a_float
-        InputError.InputErrorReps.REPS_CANT_BE_0 -> SharedRes.strings.not_a_0
-        InputError.InputErrorWeight.INVALID_FORMAT -> SharedRes.strings.invalid_input_format
-        InputError.InputErrorWeight.WEIGHT_CANT_BE_0 -> SharedRes.strings.weight_cant_be_0
-        InputError.InputErrorWeight.USE_DOT_IN_WEIGHT -> SharedRes.strings.use_dot
-        InputError.InputErrorWeight.EMPTY_WEIGHT -> SharedRes.strings.weight_should_not_be_empty
+        InputError.InputErrorReps.INVALID_FORMAT -> Res.string.invalid_input_format
+        InputError.InputErrorReps.EMPTY_REPS -> Res.string.reps_should_not_be_empty
+        InputError.InputErrorReps.REPS_IS_FLOAT -> Res.string.not_a_float
+        InputError.InputErrorReps.REPS_CANT_BE_0 -> Res.string.not_a_0
+        InputError.InputErrorWeight.INVALID_FORMAT -> Res.string.invalid_input_format
+        InputError.InputErrorWeight.WEIGHT_CANT_BE_0 -> Res.string.weight_cant_be_0
+        InputError.InputErrorWeight.USE_DOT_IN_WEIGHT -> Res.string.use_dot
+        InputError.InputErrorWeight.EMPTY_WEIGHT -> Res.string.weight_should_not_be_empty
     }
 }
 

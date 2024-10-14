@@ -42,8 +42,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
@@ -61,6 +59,16 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presenta
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseComparison
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.InputFields
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.add_set
+import maxrep.shared.generated.resources.auto_input
+import maxrep.shared.generated.resources.break_time
+import maxrep.shared.generated.resources.cd_start_timer
+import maxrep.shared.generated.resources.delete_set
+import maxrep.shared.generated.resources.hint_hard
+import maxrep.shared.generated.resources.hint_light
+import maxrep.shared.generated.resources.hint_medium
+import maxrep.shared.generated.resources.sure_delete_set
 import moe.tlaster.precompose.navigation.Navigator
 
 const val COLUMNS_NUM = 3
@@ -115,7 +123,7 @@ fun ExerciseAtWorkScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextMedium(text = SharedRes.strings.auto_input.getString())
+                    TextMedium(text = Res.string.auto_input.getString())
                     SelectableGroupHorizontal(
                         items = AutoInputMode.entries.minus(AutoInputMode.NONE),
                         selected = state.uiState.autoInputSelected,
@@ -156,9 +164,9 @@ fun ExerciseAtWorkScreen(
                     onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
                 })
             val hint = when (state.exerciseDetails.setDifficulty) {
-                SetDifficulty.Light -> SharedRes.strings.hint_light.getString()
-                SetDifficulty.Medium -> SharedRes.strings.hint_medium.getString()
-                SetDifficulty.Hard -> SharedRes.strings.hint_hard.getString()
+                SetDifficulty.Light -> Res.string.hint_light.getString()
+                SetDifficulty.Medium -> Res.string.hint_medium.getString()
+                SetDifficulty.Hard -> Res.string.hint_hard.getString()
             }
             TextSmall(hint, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
@@ -212,9 +220,10 @@ fun ExerciseAtWorkScreen(
                     ),
                     onClick = {
                         onEvent(ExerciseAtWorkEvent.OnAddNewSet)
-                    }, modifier = Modifier.padding(bottom = Dimens.Padding8).size(Dimens.roundButton)
+                    },
+                    modifier = Modifier.padding(bottom = Dimens.Padding8).size(Dimens.roundButton)
                 ) {
-                    TextMedium(text = stringResource(SharedRes.strings.add_set))
+                    TextMedium(text = Res.string.add_set.getString())
                 }
                 Spacer(modifier = Modifier.width(Dimens.Padding16))
 
@@ -222,7 +231,7 @@ fun ExerciseAtWorkScreen(
                     if (state.timerState.isCounting) Icons.Default.TimerOff else Icons.Default.Timer
                 Image(
                     imageVector = timerImage,
-                    contentDescription = stringResource(SharedRes.strings.cd_start_timer),
+                    contentDescription = Res.string.cd_start_timer.getString(),
                     contentScale = ContentScale.Inside,
                     modifier = Modifier.clip(CircleShape)
                         .clickable {
@@ -238,8 +247,8 @@ fun ExerciseAtWorkScreen(
 
             AnimatedVisibility(visible = state.uiState.isDeleteDialogVisible) {
                 DialogPopup(
-                    title = stringResource(SharedRes.strings.delete_set),
-                    description = stringResource(SharedRes.strings.sure_delete_set),
+                    title = Res.string.delete_set.getString(),
+                    description = Res.string.sure_delete_set.getString(),
                     onAccept = {
                         onEvent(ExerciseAtWorkEvent.OnSetDelete)
                     },
@@ -253,7 +262,7 @@ fun ExerciseAtWorkScreen(
                 TimerDialog(
                     minuteValue = state.timerState.timerMin,
                     secondValue = state.timerState.timerSec,
-                    dialogTitle = stringResource(SharedRes.strings.break_time),
+                    dialogTitle = Res.string.break_time.getString(),
                     onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
                     onMinuteUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnMinutesUpdated(value)) },
                     onSecondUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnSecondsUpdated(value)) },

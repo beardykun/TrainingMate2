@@ -27,8 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
@@ -42,6 +40,17 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.SummaryWeekly
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.TrainingItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.cd_add_new_training
+import maxrep.shared.generated.resources.current_training
+import maxrep.shared.generated.resources.delete_last_training
+import maxrep.shared.generated.resources.dummy_data_toast
+import maxrep.shared.generated.resources.last_training
+import maxrep.shared.generated.resources.last_training_dummy
+import maxrep.shared.generated.resources.summaries
+import maxrep.shared.generated.resources.summaries_sample
+import maxrep.shared.generated.resources.want_to_delete_last_training
+import maxrep.shared.generated.resources.your_last_training_dummy
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -73,11 +82,11 @@ fun TrainingScreen(
         ) {
             Icon(
                 imageVector = Icons.Default.FitnessCenter,
-                contentDescription = stringResource(SharedRes.strings.cd_add_new_training)
+                contentDescription = Res.string.cd_add_new_training.getString()
             )
         }
     }) {
-        val toastMessage = stringResource(SharedRes.strings.dummy_data_toast)
+        val toastMessage = Res.string.dummy_data_toast.getString()
 
         val scrollState = rememberScrollState()
         Column(
@@ -91,7 +100,7 @@ fun TrainingScreen(
 
             state.lastTraining?.let { lastTraining ->
                 TextLarge(
-                    text = SharedRes.strings.last_training.getString().uppercase(),
+                    text = Res.string.last_training.getString().uppercase(),
                     color = MaterialTheme.colorScheme.error
                 )
                 TrainingItem(
@@ -109,12 +118,12 @@ fun TrainingScreen(
                 )
             } ?: run {
                 TextLarge(
-                    text = SharedRes.strings.last_training_dummy.getString().uppercase(),
+                    text = Res.string.last_training_dummy.getString().uppercase(),
                     color = MaterialTheme.colorScheme.error
                 )
                 TrainingItem(
                     training = Training(
-                        name = SharedRes.strings.your_last_training_dummy.getString(),
+                        name = Res.string.your_last_training_dummy.getString(),
                         totalLiftedWeight = 10000.0,
                         exercises = listOf(
                             "Exercise 1",
@@ -136,7 +145,7 @@ fun TrainingScreen(
 
             state.ongoingTraining?.let { ongoingTraining ->
                 TextLarge(
-                    text = stringResource(SharedRes.strings.current_training).uppercase(),
+                    text = Res.string.current_training.getString().uppercase(),
                     color = MaterialTheme.colorScheme.error
                 )
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -159,7 +168,7 @@ fun TrainingScreen(
             state.weeklySummary?.let { weeklyList ->
                 val emptySummary = weeklyList.isEmpty() || weeklyList.first()?.numWorkouts == 0
                 val summaryTitle =
-                    stringResource(if (emptySummary) SharedRes.strings.summaries_sample else SharedRes.strings.summaries)
+                    if (emptySummary) Res.string.summaries_sample.getString() else Res.string.summaries.getString()
                 val summaryItem = if (emptySummary) WeeklySummary(
                     numWorkouts = 4,
                     trainingDuration = 200,
@@ -190,8 +199,8 @@ fun TrainingScreen(
 
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
-                    title = stringResource(SharedRes.strings.delete_last_training),
-                    description = stringResource(SharedRes.strings.want_to_delete_last_training),
+                    title = Res.string.delete_last_training.getString(),
+                    description = Res.string.want_to_delete_last_training.getString(),
                     onAccept = {
                         onEvent(TrainingScreenEvent.OnDeleteConfirmClick)
                     },

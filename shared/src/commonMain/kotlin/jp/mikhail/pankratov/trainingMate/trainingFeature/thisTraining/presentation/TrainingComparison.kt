@@ -13,11 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.last_training_lifted_weight
+import maxrep.shared.generated.resources.this_training_lifted_weight
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TrainingComparison(
@@ -52,7 +54,7 @@ fun TrainingComparison(
                 ) {
                     TextLarge(
                         stringResource(
-                            SharedRes.strings.last_training_lifted_weight,
+                            Res.string.last_training_lifted_weight,
                             lastTraining.totalLiftedWeight,
                             Utils.countTrainingTime(lastTraining)
                         ),
@@ -73,7 +75,7 @@ fun TrainingComparison(
                     TextLarge(
                         color = textColor,
                         text = stringResource(
-                            SharedRes.strings.this_training_lifted_weight,
+                            Res.string.this_training_lifted_weight,
                             ongoingTraining.totalLiftedWeight,
                             trainingTime
                         ),

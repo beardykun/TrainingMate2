@@ -14,12 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.interval
+import maxrep.shared.generated.resources.last_exercise
+import maxrep.shared.generated.resources.last_exercise_next_set
+import maxrep.shared.generated.resources.this_exercise
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ExerciseComparison(
@@ -64,7 +68,7 @@ fun CurrentExerciseData(
                 color = weightTextColor,
                 text =
                 stringResource(
-                    SharedRes.strings.this_exercise,
+                    Res.string.this_exercise,
                     Utils.formatTimeText(exercise.sets.sumOf { it.restSec ?: 0 }),
                     exercise.totalLiftedWeight,
                     exercise.sets.size
@@ -95,7 +99,7 @@ fun LastExerciseData(
                 TextLarge(
                     text =
                     stringResource(
-                        SharedRes.strings.last_exercise,
+                        Res.string.last_exercise,
                         Utils.formatTimeText(lastExercise.sets.sumOf { it.restSec ?: 0 }),
                         lastExercise.totalLiftedWeight,
                         lastExercise.sets.size
@@ -108,7 +112,7 @@ fun LastExerciseData(
                     val background = Utils.setDifficultyColor(set.difficulty)
                     TextLarge(
                         text = stringResource(
-                            SharedRes.strings.last_exercise_next_set,
+                            Res.string.last_exercise_next_set,
                             setNumToDisplay,
                             set.weight,
                             set.reps
@@ -119,7 +123,7 @@ fun LastExerciseData(
                     set.restTimeText?.let {
                         TextSmall(
                             text = stringResource(
-                                SharedRes.strings.interval,
+                                Res.string.interval,
                                 it
                             )
                         )

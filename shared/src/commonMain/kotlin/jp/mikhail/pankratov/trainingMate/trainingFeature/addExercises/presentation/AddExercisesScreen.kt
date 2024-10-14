@@ -12,13 +12,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableExercises
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.apply_changes
+import maxrep.shared.generated.resources.create_new_ex_btn
+import maxrep.shared.generated.resources.delete_set
+import maxrep.shared.generated.resources.sure_delete_set
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -33,7 +36,7 @@ fun AddExercisesScreen(
         }) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(SharedRes.strings.create_new_ex_btn)
+                contentDescription = Res.string.create_new_ex_btn.getString()
             )
         }
     }) { padding ->
@@ -67,15 +70,15 @@ fun AddExercisesScreen(
                                 navigator.navigate(Routs.TrainingScreens.trainingExercises)
                             })
                         },
-                        text = SharedRes.strings.apply_changes.getString()
+                        text = Res.string.apply_changes.getString()
                     )
                 }
             }
 
             AnimatedVisibility(visible = state.isDeleteDialogVisible) {
                 DialogPopup(
-                    title = stringResource(SharedRes.strings.delete_set),
-                    description = stringResource(SharedRes.strings.sure_delete_set),
+                    title = Res.string.delete_set.getString(),
+                    description = Res.string.sure_delete_set.getString(),
                     onAccept = {
                         onEvent(AddExercisesEvent.OnDeleteExercise)
                     },

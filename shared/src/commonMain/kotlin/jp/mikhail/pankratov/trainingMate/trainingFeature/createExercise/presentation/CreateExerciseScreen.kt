@@ -12,8 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
@@ -22,6 +20,11 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Sel
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.stringToList
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.add_exercise
+import maxrep.shared.generated.resources.choose_exercise_name
+import maxrep.shared.generated.resources.invalid_or_duplicate_exercise_name
+import maxrep.shared.generated.resources.using_two_dumbbell
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -39,11 +42,11 @@ fun CreateExerciseScreen(
             onValueChanged = { newValue ->
                 onEvent(CreateExerciseEvent.OnExerciseNameChanged(newName = newValue))
             },
-            label = stringResource(SharedRes.strings.choose_exercise_name),
-            placeholder = stringResource(SharedRes.strings.choose_exercise_name),
+            label = Res.string.choose_exercise_name.getString(),
+            placeholder = Res.string.choose_exercise_name.getString(),
             modifier = Modifier.fillMaxWidth(),
             isError = state.invalidNameInput,
-            errorText = if (state.invalidNameInput) stringResource(SharedRes.strings.invalid_or_duplicate_exercise_name) else ""
+            errorText = if (state.invalidNameInput) Res.string.invalid_or_duplicate_exercise_name.getString() else ""
         )
 
         state.ongoingTraining?.let { ongoingTraining ->
@@ -77,7 +80,7 @@ fun CreateExerciseScreen(
             Checkbox(checked = state.usesTwoDumbbell, onCheckedChange = {
                 onEvent(CreateExerciseEvent.OnExerciseUsesTwoDumbbells)
             })
-            TextMedium(text = stringResource(SharedRes.strings.using_two_dumbbell))
+            TextMedium(text = Res.string.using_two_dumbbell.getString())
         }
         Spacer(modifier = Modifier.weight(1f))
         CommonButton(
@@ -86,7 +89,7 @@ fun CreateExerciseScreen(
                     navigator.navigate(Routs.TrainingScreens.selectTraining)
                 }))
             },
-            text = SharedRes.strings.add_exercise.getString()
+            text = Res.string.add_exercise.getString()
         )
     }
 }

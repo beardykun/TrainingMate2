@@ -12,13 +12,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.stringResource
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.TrainingItem
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.delete_training
+import maxrep.shared.generated.resources.no_history
+import maxrep.shared.generated.resources.want_to_delete_training
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -35,7 +37,7 @@ fun HistoryScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    TextLarge(SharedRes.strings.no_history.getString())
+                    TextLarge(Res.string.no_history.getString())
                 }
             } else {
                 LazyColumn(state = listState) {
@@ -62,8 +64,8 @@ fun HistoryScreen(
             }
             AnimatedVisibility(visible = state.showDeleteDialog) {
                 DialogPopup(
-                    title = stringResource(SharedRes.strings.delete_training),
-                    description = stringResource(SharedRes.strings.want_to_delete_training),
+                    title = Res.string.delete_training.getString(),
+                    description = Res.string.want_to_delete_training.getString(),
                     onAccept = {
                         onEvent(HistoryScreenEvent.OnDeleteConfirmClick)
                         navigator.navigate(Routs.TrainingScreens.trainingGroupRout)

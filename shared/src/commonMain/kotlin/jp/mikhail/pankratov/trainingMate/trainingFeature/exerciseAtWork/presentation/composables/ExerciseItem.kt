@@ -25,20 +25,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import dev.icerock.moko.resources.compose.stringResource
-import dev.icerock.moko.resources.getImageByFileName
-import jp.mikhail.pankratov.trainingMate.SharedRes
-import jp.mikhail.pankratov.trainingMate.core.data.painterResource
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.theme.gold
 import jp.mikhail.pankratov.trainingMate.theme.goldLight
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.best_weight
+import maxrep.shared.generated.resources.cd_done_icon
+import maxrep.shared.generated.resources.group
+import maxrep.shared.generated.resources.strength_defining
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ExerciseItem(
@@ -71,9 +73,8 @@ fun ExerciseItem(
             horizontalArrangement = Arrangement.spacedBy(Dimens.Padding16),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            SharedRes.images.getImageByFileName(exerciseLocal.image)?.let {
-                val painter: Painter =
-                    painterResource(it)
+            getDrawableResourceByName(exerciseLocal.image)?.let {
+                val painter = org.jetbrains.compose.resources.painterResource(it)
 
                 Image(
                     painter = painter,
@@ -88,19 +89,19 @@ fun ExerciseItem(
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.group,
+                        Res.string.group,
                         exerciseLocal.group.uppercase()
                     )
                 )
                 TextMedium(
                     text = stringResource(
-                        SharedRes.strings.best_weight,
+                        Res.string.best_weight,
                         exerciseLocal.bestLiftedWeight
                     )
                 )
                 if (isStrengthDefining)
                     TextSmall(
-                        SharedRes.strings.strength_defining.getString(),
+                        Res.string.strength_defining.getString(),
                         fontWeight = FontWeight.SemiBold,
                         textColor = Color.Blue
                     )
@@ -117,7 +118,7 @@ fun ExerciseItem(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Done,
-                        contentDescription = SharedRes.strings.cd_done_icon.getString(),
+                        contentDescription = Res.string.cd_done_icon.getString(),
                         tint = Color.Green,
                         modifier = Modifier.fillMaxSize()
                     )

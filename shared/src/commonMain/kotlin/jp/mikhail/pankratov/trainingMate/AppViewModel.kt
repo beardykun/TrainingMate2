@@ -11,6 +11,9 @@ import jp.mikhail.pankratov.trainingMate.core.listToString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.abs
+import org.jetbrains.compose.resources.DrawableResource
 
 class AppViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,

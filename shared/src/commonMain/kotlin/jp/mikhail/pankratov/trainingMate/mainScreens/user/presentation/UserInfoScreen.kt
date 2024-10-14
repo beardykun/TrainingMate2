@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import jp.mikhail.pankratov.trainingMate.SharedRes
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonBarChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.strength_comparison_hint
+import maxrep.shared.generated.resources.strength_comparison_info
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -23,9 +25,9 @@ fun UserInfoScreen(state: UserInfoState, navigator: Navigator) {
         modifier = Modifier.fillMaxSize().padding(horizontal = Dimens.Padding16),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextLarge(text = SharedRes.strings.strength_comparison_info.getString())
+        TextLarge(text = Res.string.strength_comparison_info.getString())
         Spacer(modifier = Modifier.height(Dimens.Padding8))
-        TextSmall(text = SharedRes.strings.strength_comparison_hint.getString())
+        TextSmall(text = Res.string.strength_comparison_hint.getString())
         Spacer(modifier = Modifier.height(Dimens.Padding32))
         state.strengthLevelParams?.let {
             if (it.size < 3) return@Column
