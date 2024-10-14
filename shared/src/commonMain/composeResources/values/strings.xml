@@ -163,4 +163,105 @@
     <string name="month">Month</string>
     <string name="not_enough_data">Not enough data to show charts comparison</string>
 
+
+
+
+
+
+    <!-- EXERCISES NAMES -->
+    <!-- Biceps Exercises -->
+    <string name="barbell_curls">Barbell Curls</string>
+    <string name="standing_reverse_curl">Standing Reverse Curl</string>
+    <string name="standing_biceps_cable_curl">Standing Biceps Cable Curl</string>
+    <string name="overhead_cable_curl">Overhead Cable Curl</string>
+    <string name="seated_dumbbell_curls">Seated Dumbbell Curls</string>
+    <string name="dumbbell_preacher_curl">Dumbbell Preacher Curl</string>
+    <string name="preacher_curl">Preacher Curl</string>
+    <string name="concentration_curls">Concentration Curls</string>
+    <string name="dumbbell_bicep_curl">Dumbbell Bicep Curl</string>
+    <string name="dumbbell_alternate_bicep_curl">Dumbbell Alternate Bicep Curl</string>
+    <string name="cross_body_hammer_curl">Cross Body Hammer Curl</string>
+
+    <!-- Triceps Exercises -->
+    <string name="lying_triceps_press">Lying Triceps Press</string>
+    <string name="standing_triceps_press">Standing Triceps Press</string>
+    <string name="tricep_dumbbell_kickback">Tricep Dumbbell Kickback</string>
+    <string name="triceps_pushdown">Triceps Push-Down</string>
+    <string name="push_ups_close_triceps_position">Push-Ups Close Triceps Position</string>
+    <string name="dips_triceps">Dips Triceps</string>
+    <string name="close_grip_barbell_press">Close Grip Barbell Press</string>
+    <string name="cable_rope_overhead_extension">Cable Rope Overhead Extension</string>
+    <string name="bench_dips">Bench Dips</string>
+    <string name="cable_one_arm_triceps_extension">Cable One Arm Triceps Extension</string>
+    <string name="dumbbell_one_arm_triceps_extension">Dumbbell One Arm Triceps Extension</string>
+
+    <!-- Shoulders Exercises -->
+    <string name="barbell_shoulder_press">Barbell Shoulder Press</string>
+    <string name="shoulder_press">Shoulder Press</string>
+    <string name="reverse_machine_flyes">Reverse Machine Flyes</string>
+    <string name="front_dumbbell_raise">Front Dumbbell Raise</string>
+    <string name="side_lateral_raise">Side Lateral Raise</string>
+    <string name="dumbbell_shoulder_press">Dumbbell Shoulder Press</string>
+    <string name="cable_rear_delt_fly">Cable Rear Delt Fly</string>
+    <string name="bent_over_dumbbell_rear_delt_raise">Bent Over Dumbbell Rear Delt Raise</string>
+    <string name="barbell_rear_delt_rows">Barbell Rear Delt Rows</string>
+    <string name="arnold_dumbbell_press">Arnold Dumbbell Press</string>
+    <string name="alternating_deltoid_raise">Alternating Deltoid Raise</string>
+
+    <!-- Back Exercises -->
+    <string name="chin_ups">Chin Ups</string>
+    <string name="dead_lift">Dead Lift</string>
+    <string name="reverse_grip_bent_over_rows">Reverse Grip Bent Over Rows</string>
+    <string name="lying_t_bar_row">Lying T-Bar Row</string>
+    <string name="close_grip_front_lat_pulldown">Close Grip Front Lat Pull-Down</string>
+    <string name="bent_over_barbell_row">Bent Over Barbell Row</string>
+    <string name="wide_grip_lat_pulldown">Wide Grip Lat Pull-Down</string>
+    <string name="underhand_cable_pulldown">Underhand Cable Pull-Down</string>
+    <string name="one_arm_dumbbell_row">One Arm Dumbbell Row</string>
+    <string name="seated_cable_row">Seated Cable Row</string>
+
+    <!-- Chest Exercises -->
+    <string name="bench_press">Bench Press</string>
+    <string name="machine_flye">Machine Flye</string>
+    <string name="machine_bench_press">Machine Bench Press</string>
+    <string name="dumbbell_flyes">Dumbbell Flyes</string>
+    <string name="decline_dumbbell_bench_press">Decline Dumbbell Bench Press</string>
+    <string name="decline_bench_press">Decline Bench Press</string>
+    <string name="barbell_incline_bench">Barbell Incline Bench</string>
+    <string name="incline_dumbbell_bench_press">Incline Dumbbell Bench Press</string>
+    <string name="incline_dumbbell_flyes">Incline Dumbbell Flyes</string>
+    <string name="low_cable_crossover">Low Cable Crossover</string>
+
+    <!-- Legs Exercises -->
+    <string name="squat">Squats</string>
+    <string name="romanian_deadlift_from_deficit">Romanian Deadlift from Deficit</string>
+    <string name="romanian_deadlift">Romanian Deadlift</string>
+    <string name="leg_press">Leg Press</string>
+    <string name="machine_squat">Machine Squat</string>
+    <string name="leg_extensions">Leg Extensions</string>
+    <string name="glute_ham_raise">Glute Ham Raise</string>
+    <string name="good_morning">Good Mornings</string>
+    <string name="barbell_squat">Barbell Squat</string>
+    <string name="barbell_lunge">Barbell Lunge</string>
+    <string name="dumbbell_lunges">Dumbbell Lunges</string>
+    <string name="dumbbell_step_ups">Dumbbell Step-Ups</string>
+    <string name="smith_machine_squat">Smith Machine Squat</string>
+    <string name="smith_machine_front_squat">Smith Machine Front Squat</string>
+
+    <!-- Abs Exercises -->
+    <string name="oblique_crunches_on_the_floor">Oblique Crunches on the Floor</string>
+    <string name="legs_rise_on_bars">Legs Rise on Bars</string>
+    <string name="flat_bench_leg_pull_in">Flat Bench Leg Pull-In</string>
+    <string name="hanging_pike">Hanging Pike</string>
+    <string name="janda_sit_up">Janda Sit Up</string>
+    <string name="knee_hip_raise_on_bars">Knee Hip Raise on Bars</string>
+    <string name="kneeling_rope_crunch">Kneeling Rope Crunch</string>
+    <string name="seated_leg_tucks">Seated Leg Tucks</string>
+    <string name="tuck_crunch">Tuck Crunch</string>
+
+    <!-- Traps Exercises -->
+    <string name="barbell_shrug_behind_the_back">Barbell Shrug Behind the Back</string>
+    <string name="barbell_shrug">Barbell Shrug</string>
+    <string name="dumbbell_shrug">Dumbbell Shrug</string>
+
 </resources>

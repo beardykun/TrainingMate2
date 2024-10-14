@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.domain.util.getExerciseNameStringResource
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -84,7 +85,7 @@ fun ExerciseItem(
 
             Column {
                 TextLarge(
-                    text = exerciseLocal.name.uppercase(),
+                    text = getExerciseNameStringResource(exerciseLocal.name).getString().uppercase(),
                     overflow = TextOverflow.Ellipsis
                 )
                 TextMedium(

@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.domain.util.getExerciseNameStringResource
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.theme.goldLight
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
@@ -234,7 +235,7 @@ fun SelectableExerciseItem(
             Spacer(modifier = Modifier.padding(Dimens.Padding16))
             Column(modifier = Modifier.weight(1f)) {
                 TextMedium(
-                    text = item.name.uppercase(),
+                    text = getExerciseNameStringResource(item.name).getString().uppercase(),
                     maxLines = 1,  // Ensure text stays on one line
                     overflow = TextOverflow.Ellipsis  // Add ellipsis if text is too long
                 )

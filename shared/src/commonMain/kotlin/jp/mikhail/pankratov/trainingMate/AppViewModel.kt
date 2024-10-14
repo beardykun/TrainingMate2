@@ -364,7 +364,7 @@ class AppViewModel(
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
-                name = "Barbell rea delt rows",
+                name = "Barbell rear delt rows",
                 group = DatabaseContract.SHOULDERS_GROUP,
                 image = "barbell_rea_delt_rows"
             )
@@ -644,7 +644,7 @@ class AppViewModel(
         //abs
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
             ExerciseLocal(
-                name = "Oblique crunches on the flor",
+                name = "Oblique crunches on the floor",
                 group = DatabaseContract.ABS_GROUP,
                 image = "oblique_crunches_on_the_flor"
             )
