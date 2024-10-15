@@ -118,9 +118,10 @@ fun viewModelModule() = module {
         )
     }
 
-    viewModel(named("SummaryViewModel")) {
+    viewModel(named("SummaryViewModel")) { (stringsToPass: List<String>) ->
         SummaryViewModel(
-            summaryUseCaseProvider = get()
+            summaryUseCaseProvider = get(),
+            stringsToPass = stringsToPass
         )
     }
 }

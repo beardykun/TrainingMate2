@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.EXERCISE_NAME
 import jp.mikhail.pankratov.trainingMate.core.presentation.EXERCISE_TEMPLATE_ID
 import jp.mikhail.pankratov.trainingMate.core.presentation.MONTH_NUM
@@ -51,6 +52,12 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.p
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
+import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.last_month_summary
+import maxrep.shared.generated.resources.last_week_summary
+import maxrep.shared.generated.resources.this_month_summary
+import maxrep.shared.generated.resources.this_week_summary
+import maxrep.shared.generated.resources.week
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
@@ -130,8 +137,15 @@ private fun RouteBuilder.summaryScreens(
         initialRoute = Routs.SummaryScreens.summaryScreen
     ) {
         scene(route = Routs.SummaryScreens.summaryScreen, navTransition = NavTransition()) {
+            val stringsToPass = listOf(
+                Res.string.last_week_summary.getString(),
+                Res.string.this_week_summary.getString(),
+                Res.string.last_month_summary.getString(),
+                Res.string.this_month_summary.getString(),
+                Res.string.week.getString()
+            )
             val viewModel: SummaryViewModel =
-                koinViewModel(qualifier = named("SummaryViewModel"))
+                koinViewModel(qualifier = named("SummaryViewModel")) { parametersOf(stringsToPass) }
             val state by viewModel.state.collectAsStateWithLifecycle()
             SummaryScreen(state = state, onEvent = viewModel::onEvent)
         }

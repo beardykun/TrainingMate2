@@ -39,10 +39,10 @@
     <string name="delete_last_training">Delete Last Training</string>
     <string name="want_to_delete_last_training">Want to delete last training?</string>
     <string name="start_new_training">Start new training:</string>
-    <string name="this_week_summary">This Week</string>
-    <string name="last_week_summary">Last Week</string>
-    <string name="this_month_summary">This Month</string>
-    <string name="last_month_summary">Last Month</string>
+    <string name="this_week_summary">This Week:</string>
+    <string name="last_week_summary">Last Week:</string>
+    <string name="this_month_summary">This Month:</string>
+    <string name="last_month_summary">Last Month:</string>
     <string name="number_of_workouts_with_args">Number of workouts: %1$d</string>
     <string name="total_training_duration_with_args">Total training duration: %1$d min</string>
     <string name="total_lifted_weight_with_args">Total lifted weight: %1$d kg</string>

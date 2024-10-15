@@ -14,7 +14,15 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewModel() {
+private const val WEEK_LAST_PREFIX_INDEX = 0
+private const val WEEK_CURRENT_PREFIX_INDEX = 1
+private const val MONTH_LAST_PREFIX_INDEX = 2
+private const val MONTH_CURRENT_PREFIX_INDEX = 3
+
+class SummaryViewModel(
+    summaryUseCaseProvider: SummaryUseCaseProvider,
+    private val stringsToPass: List<String>
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SummaryScreenState())
 
@@ -25,8 +33,8 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
 
         val summaryData = fillStateWeeklySummaryData(
             weeklySummary,
-            prefixLast = "Last Week:",
-            prefixCurrent = "Current Week:"
+            prefixLast = stringsToPass[WEEK_LAST_PREFIX_INDEX],
+            prefixCurrent = stringsToPass[WEEK_CURRENT_PREFIX_INDEX]
         )
         _state.update {
             it.copy(
@@ -34,8 +42,8 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
                 summaryDataToDisplay = summaryData,
                 monthlySummaryData = fillStateMonthlySummaryData(
                     monthlySummary,
-                    prefixLast = "Last Month:",
-                    prefixCurrent = "Current Month:"
+                    prefixLast = stringsToPass[MONTH_LAST_PREFIX_INDEX],
+                    prefixCurrent = stringsToPass[MONTH_CURRENT_PREFIX_INDEX]
                 )
             )
         }
@@ -48,7 +56,7 @@ class SummaryViewModel(summaryUseCaseProvider: SummaryUseCaseProvider) : ViewMod
     fun onEvent(event: SummaryScreenEvent) {
         when (event) {
             is SummaryScreenEvent.OnPageChanged -> {
-                val summaryData = if (event.pageName == "Week") {
+                val summaryData = if (event.pageName == stringsToPass.last()) {
                     state.value.weeklySummaryData
                 } else {
                     state.value.monthlySummaryData
