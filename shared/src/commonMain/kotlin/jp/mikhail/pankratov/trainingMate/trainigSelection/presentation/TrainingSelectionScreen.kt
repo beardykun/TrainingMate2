@@ -121,8 +121,7 @@ fun TrainingSelectionScreen(
                                     },
                                     modifier = Modifier.animateItem(),
                                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                    limitWidth = false
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                 )
                             }
                         }

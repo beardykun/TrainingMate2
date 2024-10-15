@@ -19,7 +19,7 @@ object Dimens {
     val dividerHeight = 1.dp
     val cardElevation = 4.dp
     val cardMinWidth = 100.dp
-    val cardMaxWidth = 300.dp
+    val cardMaxWidth = 400.dp
     val mediumIconSize = 30.dp
 
     //selectable items

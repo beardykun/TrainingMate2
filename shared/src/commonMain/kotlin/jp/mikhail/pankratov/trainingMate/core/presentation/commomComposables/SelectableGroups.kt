@@ -235,7 +235,7 @@ fun SelectableExerciseItem(
             Spacer(modifier = Modifier.padding(Dimens.Padding16))
             Column(modifier = Modifier.weight(1f)) {
                 TextMedium(
-                    text = getExerciseNameStringResource(item.name).getString().uppercase(),
+                    text = getExerciseNameStringResource(item.name).uppercase(),
                     maxLines = 1,  // Ensure text stays on one line
                     overflow = TextOverflow.Ellipsis  // Add ellipsis if text is too long
                 )

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -51,7 +50,6 @@ fun LocalTrainingItem(
     isDeletable: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.inversePrimary,
     contentColor: Color = Color.Black,
-    limitWidth: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -59,13 +57,7 @@ fun LocalTrainingItem(
         modifier = modifier
             .clickable { onClick.invoke() }
             .padding(Dimens.Padding8)
-            .then(
-                if (limitWidth)
-                    modifier.widthIn(
-                        min = Dimens.cardMinWidth,
-                        max = Dimens.cardMaxWidth
-                    ) else modifier.fillMaxWidth().padding(horizontal = Dimens.Padding8)
-            )
+            .fillMaxWidth().padding(horizontal = Dimens.Padding8)
     ) {
         Column(
             modifier = Modifier

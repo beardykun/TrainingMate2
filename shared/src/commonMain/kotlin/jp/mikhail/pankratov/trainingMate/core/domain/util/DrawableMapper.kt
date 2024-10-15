@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.util
 
+import androidx.compose.runtime.Composable
+import jp.mikhail.pankratov.trainingMate.core.getString
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.abs
 import maxrep.shared.generated.resources.alternating_deltoid_raise
@@ -186,87 +188,88 @@ fun getDrawableResourceByName(resName: String): DrawableResource? {
     }
 }
 
-fun getExerciseNameStringResource(exerciseName: String): StringResource {
+@Composable
+fun getExerciseNameStringResource(exerciseName: String): String {
     return when (exerciseName) {
-        "barbell curls" -> Res.string.barbell_curls
-        "standing reverse curl" -> Res.string.standing_reverse_curl
-        "standing biceps cable curl" -> Res.string.standing_biceps_cable_curl
-        "overhead cable curl" -> Res.string.overhead_cable_curl
-        "seated dumbbell curls" -> Res.string.seated_dumbbell_curls
-        "dumbbell preacher curl" -> Res.string.dumbbell_preacher_curl
-        "preacher curl" -> Res.string.preacher_curl
-        "concentration curls" -> Res.string.concentration_curls
-        "dumbbell bicep curl" -> Res.string.dumbbell_bicep_curl
-        "dumbbell alternate bicep curl" -> Res.string.dumbbell_alternate_bicep_curl
-        "cross body hammer curl" -> Res.string.cross_body_hammer_curl
-        "lying triceps press" -> Res.string.lying_triceps_press
-        "standing triceps press" -> Res.string.standing_triceps_press
-        "triceps push-down" -> Res.string.triceps_pushdown
-        "push ups close triceps position" -> Res.string.push_ups_close_triceps_position
-        "dips triceps" -> Res.string.dips_triceps
-        "close grip barbell press" -> Res.string.close_grip_barbell_press
-        "cable rope overhead extension" -> Res.string.cable_rope_overhead_extension
-        "bench dips" -> Res.string.bench_dips
-        "cable one arm triceps extension" -> Res.string.cable_one_arm_triceps_extension
-        "dumbbell one arm triceps extension" -> Res.string.dumbbell_one_arm_triceps_extension
-        "barbell shoulder press" -> Res.string.barbell_shoulder_press
-        "shoulder press" -> Res.string.shoulder_press
-        "reverse machine flyes" -> Res.string.reverse_machine_flyes
-        "front dumbbell raise" -> Res.string.front_dumbbell_raise
-        "side lateral raise" -> Res.string.side_lateral_raise
-        "dumbbell shoulder press" -> Res.string.dumbbell_shoulder_press
-        "cable rear delt fly" -> Res.string.cable_rear_delt_fly
-        "bent over dumbbell rear delt raise" -> Res.string.bent_over_dumbbell_rear_delt_raise
-        "barbell rear delt rows" -> Res.string.barbell_rear_delt_rows
-        "arnold dumbbell press" -> Res.string.arnold_dumbbell_press
-        "alternating deltoid raise" -> Res.string.alternating_deltoid_raise
-        "chin ups" -> Res.string.chin_ups
-        "dead lift" -> Res.string.dead_lift
-        "reverse grip bent over rows" -> Res.string.reverse_grip_bent_over_rows
-        "lying t-bar row" -> Res.string.lying_t_bar_row
-        "close grip front lat pull-down" -> Res.string.close_grip_front_lat_pulldown
-        "bent over barbell row" -> Res.string.bent_over_barbell_row
-        "wide grip lat pull-down" -> Res.string.wide_grip_lat_pulldown
-        "underhand cable pull-down" -> Res.string.underhand_cable_pulldown
-        "one arm dumbbell row" -> Res.string.one_arm_dumbbell_row
-        "seated cable row" -> Res.string.seated_cable_row
-        "bench press" -> Res.string.bench_press
-        "machine flye" -> Res.string.machine_flye
-        "machine bench press" -> Res.string.machine_bench_press
-        "dumbbell flyes" -> Res.string.dumbbell_flyes
-        "decline dumbbell bench press" -> Res.string.decline_dumbbell_bench_press
-        "decline bench press" -> Res.string.decline_bench_press
-        "barbell incline bench" -> Res.string.barbell_incline_bench
-        "incline dumbbell bench press" -> Res.string.incline_dumbbell_bench_press
-        "incline dumbbell flyes" -> Res.string.incline_dumbbell_flyes
-        "low cable crossover" -> Res.string.low_cable_crossover
-        "squats" -> Res.string.squat
-        "romanian deadlift from deficit" -> Res.string.romanian_deadlift_from_deficit
-        "romanian deadlift" -> Res.string.romanian_deadlift
-        "leg press" -> Res.string.leg_press
-        "machine squat" -> Res.string.machine_squat
-        "leg extensions" -> Res.string.leg_extensions
-        "glute ham raise" -> Res.string.glute_ham_raise
-        "good mornings" -> Res.string.good_morning
-        "barbell squat" -> Res.string.barbell_squat
-        "barbell lunge" -> Res.string.barbell_lunge
-        "dumbbell lunges" -> Res.string.dumbbell_lunges
-        "dumbbell step ups" -> Res.string.dumbbell_step_ups
-        "smith machine squat" -> Res.string.smith_machine_squat
-        "smith machine front squat" -> Res.string.smith_machine_front_squat
-        "oblique crunches on the floor" -> Res.string.oblique_crunches_on_the_floor
-        "legs rise on bars" -> Res.string.legs_rise_on_bars
-        "flat bench leg pull in" -> Res.string.flat_bench_leg_pull_in
-        "hanging pike" -> Res.string.hanging_pike
-        "janda sit up" -> Res.string.janda_sit_up
-        "knee hip raise on bars" -> Res.string.knee_hip_raise_on_bars
-        "kneeling rope crunch" -> Res.string.kneeling_rope_crunch
-        "seated leg tucks" -> Res.string.seated_leg_tucks
-        "tuck crunch" -> Res.string.tuck_crunch
-        "barbell shrug" -> Res.string.barbell_shrug
-        "dumbbell shrug" -> Res.string.dumbbell_shrug
-        "barbell shrugs behind the back" -> Res.string.barbell_shrug_behind_the_back
-        "triceps dumbbell kickback" -> Res.string.tricep_dumbbell_kickback
-        else -> throw IllegalArgumentException("Unknown exercise name: $exerciseName")
+        "barbell curls" -> Res.string.barbell_curls.getString()
+        "standing reverse curl" -> Res.string.standing_reverse_curl.getString()
+        "standing biceps cable curl" -> Res.string.standing_biceps_cable_curl.getString()
+        "overhead cable curl" -> Res.string.overhead_cable_curl.getString()
+        "seated dumbbell curls" -> Res.string.seated_dumbbell_curls.getString()
+        "dumbbell preacher curl" -> Res.string.dumbbell_preacher_curl.getString()
+        "preacher curl" -> Res.string.preacher_curl.getString()
+        "concentration curls" -> Res.string.concentration_curls.getString()
+        "dumbbell bicep curl" -> Res.string.dumbbell_bicep_curl.getString()
+        "dumbbell alternate bicep curl" -> Res.string.dumbbell_alternate_bicep_curl.getString()
+        "cross body hammer curl" -> Res.string.cross_body_hammer_curl.getString()
+        "lying triceps press" -> Res.string.lying_triceps_press.getString()
+        "standing triceps press" -> Res.string.standing_triceps_press.getString()
+        "triceps push-down" -> Res.string.triceps_pushdown.getString()
+        "push ups close triceps position" -> Res.string.push_ups_close_triceps_position.getString()
+        "dips triceps" -> Res.string.dips_triceps.getString()
+        "close grip barbell press" -> Res.string.close_grip_barbell_press.getString()
+        "cable rope overhead extension" -> Res.string.cable_rope_overhead_extension.getString()
+        "bench dips" -> Res.string.bench_dips.getString()
+        "cable one arm triceps extension" -> Res.string.cable_one_arm_triceps_extension.getString()
+        "dumbbell one arm triceps extension" -> Res.string.dumbbell_one_arm_triceps_extension.getString()
+        "barbell shoulder press" -> Res.string.barbell_shoulder_press.getString()
+        "shoulder press" -> Res.string.shoulder_press.getString()
+        "reverse machine flyes" -> Res.string.reverse_machine_flyes.getString()
+        "front dumbbell raise" -> Res.string.front_dumbbell_raise.getString()
+        "side lateral raise" -> Res.string.side_lateral_raise.getString()
+        "dumbbell shoulder press" -> Res.string.dumbbell_shoulder_press.getString()
+        "cable rear delt fly" -> Res.string.cable_rear_delt_fly.getString()
+        "bent over dumbbell rear delt raise" -> Res.string.bent_over_dumbbell_rear_delt_raise.getString()
+        "barbell rear delt rows" -> Res.string.barbell_rear_delt_rows.getString()
+        "arnold dumbbell press" -> Res.string.arnold_dumbbell_press.getString()
+        "alternating deltoid raise" -> Res.string.alternating_deltoid_raise.getString()
+        "chin ups" -> Res.string.chin_ups.getString()
+        "dead lift" -> Res.string.dead_lift.getString()
+        "reverse grip bent over rows" -> Res.string.reverse_grip_bent_over_rows.getString()
+        "lying t-bar row" -> Res.string.lying_t_bar_row.getString()
+        "close grip front lat pull-down" -> Res.string.close_grip_front_lat_pulldown.getString()
+        "bent over barbell row" -> Res.string.bent_over_barbell_row.getString()
+        "wide grip lat pull-down" -> Res.string.wide_grip_lat_pulldown.getString()
+        "underhand cable pull-down" -> Res.string.underhand_cable_pulldown.getString()
+        "one arm dumbbell row" -> Res.string.one_arm_dumbbell_row.getString()
+        "seated cable row" -> Res.string.seated_cable_row.getString()
+        "bench press" -> Res.string.bench_press.getString()
+        "machine flye" -> Res.string.machine_flye.getString()
+        "machine bench press" -> Res.string.machine_bench_press.getString()
+        "dumbbell flyes" -> Res.string.dumbbell_flyes.getString()
+        "decline dumbbell bench press" -> Res.string.decline_dumbbell_bench_press.getString()
+        "decline bench press" -> Res.string.decline_bench_press.getString()
+        "barbell incline bench" -> Res.string.barbell_incline_bench.getString()
+        "incline dumbbell bench press" -> Res.string.incline_dumbbell_bench_press.getString()
+        "incline dumbbell flyes" -> Res.string.incline_dumbbell_flyes.getString()
+        "low cable crossover" -> Res.string.low_cable_crossover.getString()
+        "squats" -> Res.string.squat.getString()
+        "romanian deadlift from deficit" -> Res.string.romanian_deadlift_from_deficit.getString()
+        "romanian deadlift" -> Res.string.romanian_deadlift.getString()
+        "leg press" -> Res.string.leg_press.getString()
+        "machine squat" -> Res.string.machine_squat.getString()
+        "leg extensions" -> Res.string.leg_extensions.getString()
+        "glute ham raise" -> Res.string.glute_ham_raise.getString()
+        "good mornings" -> Res.string.good_morning.getString()
+        "barbell squat" -> Res.string.barbell_squat.getString()
+        "barbell lunge" -> Res.string.barbell_lunge.getString()
+        "dumbbell lunges" -> Res.string.dumbbell_lunges.getString()
+        "dumbbell step ups" -> Res.string.dumbbell_step_ups.getString()
+        "smith machine squat" -> Res.string.smith_machine_squat.getString()
+        "smith machine front squat" -> Res.string.smith_machine_front_squat.getString()
+        "oblique crunches on the floor" -> Res.string.oblique_crunches_on_the_floor.getString()
+        "legs rise on bars" -> Res.string.legs_rise_on_bars.getString()
+        "flat bench leg pull in" -> Res.string.flat_bench_leg_pull_in.getString()
+        "hanging pike" -> Res.string.hanging_pike.getString()
+        "janda sit up" -> Res.string.janda_sit_up.getString()
+        "knee hip raise on bars" -> Res.string.knee_hip_raise_on_bars.getString()
+        "kneeling rope crunch" -> Res.string.kneeling_rope_crunch.getString()
+        "seated leg tucks" -> Res.string.seated_leg_tucks.getString()
+        "tuck crunch" -> Res.string.tuck_crunch.getString()
+        "barbell shrug" -> Res.string.barbell_shrug.getString()
+        "dumbbell shrug" -> Res.string.dumbbell_shrug.getString()
+        "barbell shrugs behind the back" -> Res.string.barbell_shrug_behind_the_back.getString()
+        "triceps dumbbell kickback" -> Res.string.tricep_dumbbell_kickback.getString()
+        else -> exerciseName
     }
 }
