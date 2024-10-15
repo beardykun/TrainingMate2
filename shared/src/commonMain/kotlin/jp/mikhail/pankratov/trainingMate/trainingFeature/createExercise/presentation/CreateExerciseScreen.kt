@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation
 
 import Dimens
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +36,8 @@ fun CreateExerciseScreen(
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         InputField(
             value = state.exerciseName,
@@ -82,11 +84,10 @@ fun CreateExerciseScreen(
             })
             TextMedium(text = Res.string.using_two_dumbbell.getString())
         }
-        Spacer(modifier = Modifier.weight(1f))
         CommonButton(
             onClick = {
                 onEvent(CreateExerciseEvent.OnExerciseCreate(onSuccess = {
-                    navigator.navigate(Routs.TrainingScreens.selectTraining)
+                    navigator.navigate(Routs.TrainingScreens.addExercises)
                 }))
             },
             text = Res.string.add_exercise.getString()

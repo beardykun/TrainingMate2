@@ -135,7 +135,7 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Barbell curls",
                 group = DatabaseContract.BICEPS_GROUP,
-                image = "barbell_curl",
+                image = "barbell_curls",
                 isStrengthDefining = true
             )
         )
@@ -273,7 +273,7 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Cable rope overhead extension",
                 group = DatabaseContract.TRICEPS_GROUP,
-                image = "cable_rope_overhead_extention"
+                image = "cable_rope_overhead_extension"
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(
@@ -711,7 +711,7 @@ class AppViewModel(
             ExerciseLocal(
                 name = "Barbell shrugs behind the back",
                 group = DatabaseContract.TRAPS_GROUP,
-                image = "barbell_shrag_behind_the_back"
+                image = "barbell_shrug_behind_the_back"
             )
         )
         exerciseUseCaseProvider.getInsertLocalExerciseUseCase().invoke(

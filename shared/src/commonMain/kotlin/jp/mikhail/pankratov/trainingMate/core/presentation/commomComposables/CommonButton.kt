@@ -12,13 +12,14 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun CommonButton(
     onClick: () -> Unit,
-    text: String
+    text: String,
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = {
             onClick.invoke()
         },
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
             .padding(horizontal = Dimens.Padding48, vertical = Dimens.Padding16)
             .height(Dimens.Padding64)
     ) {

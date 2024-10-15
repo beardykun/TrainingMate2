@@ -28,6 +28,8 @@
     <string name="hint_hard">Couldn\'t complete as intended due to difficulty.</string>
     <string name="interval">Interval: %1$s</string>
     <string name="exercise_time">Exercise length: %1$s</string>
+    <string name="notification_permission_denied">Permission denied. Enable notifications to be alerted when rest time ends</string>
+    <string name="notification_permission_required">To receive rest time notifications, please enable them in your settings</string>
 
     <!-- Training Screen -->
     <string name="start_training">Start Training</string>
@@ -94,8 +96,6 @@
     <string name="ok">OK</string>
     <string name="minutes">Min</string>
     <string name="seconds">Sec</string>
-    <string name="notification_permission_always_denied">To receive rest time notifications, please enable them in your settings</string>
-    <string name="notification_permission_denied">Permission denied. Enable notifications to be alerted when rest time ends</string>
     <string name="total_in_set">Total: %1$s kg</string>
 
     <!-- ExerciseItem -->

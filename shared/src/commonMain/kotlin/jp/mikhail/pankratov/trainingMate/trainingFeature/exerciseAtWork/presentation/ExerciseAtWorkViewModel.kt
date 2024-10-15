@@ -38,9 +38,7 @@ class ExerciseAtWorkViewModel(
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val updateAutoInputUseCase: UpdateAutoInputUseCase,
     private val validateInputUseCase: ValidateInputUseCase,
-    private val trainingId: Long,
-    trainingTemplateId: Long,
-    private val exerciseTemplateId: Long,
+    private val viewModelArguments: ViewModelArguments,
     private val utilsProvider: UtilsProvider,
     val permissionsController: PermissionsController
 ) : ViewModel() {
@@ -49,14 +47,14 @@ class ExerciseAtWorkViewModel(
     val state = combine(
         _state,
         exerciseUseCaseProvider.getExerciseByTemplateIdUseCase()
-            .invoke(exerciseTemplateId = exerciseTemplateId),
+            .invoke(exerciseTemplateId = viewModelArguments.exerciseTemplateId),
         trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
         exerciseUseCaseProvider.getExerciseFromHistoryUseCase()
-            .invoke(trainingId, exerciseTemplateId),
+            .invoke(viewModelArguments.trainingId, viewModelArguments.exerciseTemplateId),
         exerciseUseCaseProvider.getLatsSameExerciseUseCase().invoke(
-            exerciseTemplateId = exerciseTemplateId,
-            trainingId = trainingId,
-            trainingTemplateId = trainingTemplateId
+            exerciseTemplateId = viewModelArguments.exerciseTemplateId,
+            trainingId = viewModelArguments.trainingId,
+            trainingTemplateId = viewModelArguments.trainingTemplateId
         )
     ) { state, exerciseLocal, ongoingTraining, exercise, lastExercise ->
         state.copy(
@@ -274,10 +272,10 @@ class ExerciseAtWorkViewModel(
             // Permission has been granted successfully.
         } catch (deniedAlways: DeniedAlwaysException) {
             // Permission is always denied.
-            ToastManager.showToast("To receive rest time notifications, please enable them in your settings.")
+            ToastManager.showToast(viewModelArguments.permissionRequest)
 
         } catch (denied: DeniedException) {
-            ToastManager.showToast("Permission denied. Enable notifications to be alerted when rest time ends")
+            ToastManager.showToast(viewModelArguments.permissionDenied)
             // Permission was denied.
         }
     }
@@ -362,7 +360,7 @@ class ExerciseAtWorkViewModel(
             state.value.ongoingTraining?.let { ongoingTraining ->
                 withContext(Dispatchers.IO) {
                     updateTrainingData(
-                        trainingId,
+                        viewModelArguments.trainingId,
                         weight,
                         reps,
                         sets,
@@ -374,8 +372,8 @@ class ExerciseAtWorkViewModel(
                         sets = sets,
                         weight = weight,
                         reps = reps,
-                        trainingId = trainingId,
-                        exerciseTemplateId = exerciseTemplateId
+                        trainingId = viewModelArguments.trainingId,
+                        exerciseTemplateId = viewModelArguments.exerciseTemplateId
                     )
                 }
             }

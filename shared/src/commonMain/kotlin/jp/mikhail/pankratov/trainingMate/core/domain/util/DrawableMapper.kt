@@ -184,6 +184,7 @@ fun getDrawableResourceByName(resName: String): DrawableResource? {
         "barbell_shrug_behind_the_back" -> Res.drawable.barbell_shrug_behind_the_back
         "barbell_shrug" -> Res.drawable.barbell_shrug
         "dumbbell_shrug" -> Res.drawable.dumbbell_shrug
+        "barbell_curls" -> Res.drawable.barbell_curls
         else -> null
     }
 }

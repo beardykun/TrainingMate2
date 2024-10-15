@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
 import Dimens
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +37,8 @@ fun CreateTrainingScreen(
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         InputField(
             value = state.trainingName,
@@ -78,7 +80,6 @@ fun CreateTrainingScreen(
                 )
             }
         )
-        Spacer(modifier = Modifier.weight(1f))
         val groupError = Res.string.select_muscle_group.getString()
         CommonButton(
             onClick = {

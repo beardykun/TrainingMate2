@@ -40,6 +40,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentati
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.cd_group_image
 import maxrep.shared.generated.resources.strength_defining
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun <T> SelectableGroupVertical(
@@ -232,26 +233,28 @@ fun SelectableExerciseItem(
                             .clip(CircleShape)
                     )
             }
-            Spacer(modifier = Modifier.padding(Dimens.Padding16))
+            getDrawableResourceByName(item.image)?.let {
+                val painter = painterResource(it)
+                Image(
+                    painter = painter,
+                    contentDescription = Res.string.cd_group_image.getString(),
+                    modifier = Modifier
+                        .padding(horizontal = Dimens.Padding8)
+                        .size(Dimens.selectableGroupImageSize)
+
+                )
+            }
             Column(modifier = Modifier.weight(1f)) {
                 TextMedium(
                     text = getExerciseNameStringResource(item.name).uppercase(),
-                    maxLines = 1,  // Ensure text stays on one line
-                    overflow = TextOverflow.Ellipsis  // Add ellipsis if text is too long
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 if (item.isStrengthDefining)
                     TextSmall(text = Res.string.strength_defining.getString())
             }
 
             Spacer(Modifier.width(Dimens.Padding16)) // Use width here to give consistent spacing
-            getDrawableResourceByName(item.image)?.let {
-                val painter = org.jetbrains.compose.resources.painterResource(it)
-                Image(
-                    painter = painter,
-                    contentDescription = Res.string.cd_group_image.getString(),
-                    modifier = Modifier.size(Dimens.selectableGroupImageSize)  // Define a consistent size if necessary
-                )
-            }
 
             Icon(
                 imageVector = Icons.Default.Delete,

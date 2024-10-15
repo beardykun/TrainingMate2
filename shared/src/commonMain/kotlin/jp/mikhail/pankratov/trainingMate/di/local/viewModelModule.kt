@@ -14,6 +14,7 @@ import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingS
 import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ViewModelArguments
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingViewModel
 import org.koin.core.module.dsl.viewModel
@@ -91,16 +92,14 @@ fun viewModelModule() = module {
         )
     }
 
-    viewModel(named("ExerciseAtWorkViewModel")) { (trainingId: Long, exerciseTemplateId: Long, trainingTemplateId: Long, permissionsController: PermissionsController) ->
+    viewModel(named("ExerciseAtWorkViewModel")) { (viewModelArguments: ViewModelArguments, permissionsController: PermissionsController) ->
         ExerciseAtWorkViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
             updateAutoInputUseCase = get(),
             validateInputUseCase = get(),
-            trainingId = trainingId,
-            exerciseTemplateId = exerciseTemplateId,
-            trainingTemplateId = trainingTemplateId,
             utilsProvider = get(),
+            viewModelArguments = viewModelArguments,
             permissionsController = permissionsController
         )
     }

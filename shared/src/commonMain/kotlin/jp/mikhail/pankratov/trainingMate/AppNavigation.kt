@@ -48,6 +48,7 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presenta
 import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.presentation.CreateExerciseViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
+import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.ViewModelArguments
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryScreen
 import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation.ThisTrainingScreen
@@ -55,6 +56,8 @@ import jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentati
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.last_month_summary
 import maxrep.shared.generated.resources.last_week_summary
+import maxrep.shared.generated.resources.notification_permission_denied
+import maxrep.shared.generated.resources.notification_permission_required
 import maxrep.shared.generated.resources.this_month_summary
 import maxrep.shared.generated.resources.this_week_summary
 import maxrep.shared.generated.resources.week
@@ -62,6 +65,7 @@ import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.transition.NavTransition
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
@@ -237,14 +241,21 @@ private fun RouteBuilder.trainingScreens(
             val trainingId: Long = backStackEntry.path(TRAINING_HISTORY_ID) ?: -1
             val exerciseTemplateId: Long = backStackEntry.path(EXERCISE_TEMPLATE_ID) ?: -1
             val trainingTemplateId: Long = backStackEntry.path(TRAINING_TEMPLATE_ID) ?: -1
+            val permissionRequest = stringResource(Res.string.notification_permission_required)
+            val permissionDenied = stringResource(Res.string.notification_permission_denied)
+            val viewModelArguments = ViewModelArguments(
+                trainingId = trainingId,
+                exerciseTemplateId = exerciseTemplateId,
+                trainingTemplateId = trainingTemplateId,
+                permissionRequest = permissionRequest,
+                permissionDenied = permissionDenied
+            )
             val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
 
             val viewModel: ExerciseAtWorkViewModel =
                 koinViewModel(qualifier = named("ExerciseAtWorkViewModel")) {
                     parametersOf(
-                        trainingId,
-                        exerciseTemplateId,
-                        trainingTemplateId,
+                        viewModelArguments,
                         factory.createPermissionsController()
                     )
                 }
