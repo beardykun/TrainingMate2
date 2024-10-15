@@ -46,47 +46,45 @@ fun AddExercisesScreen(
                 .padding(horizontal = Dimens.Padding16, vertical = Dimens.Padding8)
         ) {
             state.sortedExercises?.let { exercises ->
-                Column {
-                    SelectableExercises(
-                        exerciseLocals = exercises,
-                        isSelected = state.selectedExercises,
-                        modifier = Modifier.weight(1f),
-                        onClick = { exercise ->
-                            onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
-                        },
-                        onDeleteClick = { exercise ->
-                            onEvent(
-                                AddExercisesEvent.OnDisplayDeleteDialog(
-                                    exercise = exercise,
-                                    isDeleteVisible = true
-                                )
-                            )
-                        }
-                    )
-
-                    CommonButton(
-                        onClick = {
-                            onEvent(AddExercisesEvent.OnAddNewExercises {
-                                navigator.navigate(Routs.TrainingScreens.trainingExercises)
-                            })
-                        },
-                        text = Res.string.apply_changes.getString()
-                    )
-                }
-            }
-
-            AnimatedVisibility(visible = state.isDeleteDialogVisible) {
-                DialogPopup(
-                    title = Res.string.delete_set.getString(),
-                    description = Res.string.sure_delete_set.getString(),
-                    onAccept = {
-                        onEvent(AddExercisesEvent.OnDeleteExercise)
+                SelectableExercises(
+                    exerciseLocals = exercises,
+                    isSelected = state.selectedExercises,
+                    modifier = Modifier.weight(1f),
+                    onClick = { exercise ->
+                        onEvent(AddExercisesEvent.OnSelectExercise(exercise.name))
                     },
-                    onDenny = {
-                        onEvent(AddExercisesEvent.OnDisplayDeleteDialog(false))
+                    onDeleteClick = { exercise ->
+                        onEvent(
+                            AddExercisesEvent.OnDisplayDeleteDialog(
+                                exercise = exercise,
+                                isDeleteVisible = true
+                            )
+                        )
                     }
                 )
+
+                CommonButton(
+                    onClick = {
+                        onEvent(AddExercisesEvent.OnAddNewExercises {
+                            navigator.navigate(Routs.TrainingScreens.trainingExercises)
+                        })
+                    },
+                    text = Res.string.apply_changes.getString()
+                )
             }
+        }
+
+        AnimatedVisibility(visible = state.isDeleteDialogVisible) {
+            DialogPopup(
+                title = Res.string.delete_set.getString(),
+                description = Res.string.sure_delete_set.getString(),
+                onAccept = {
+                    onEvent(AddExercisesEvent.OnDeleteExercise)
+                },
+                onDenny = {
+                    onEvent(AddExercisesEvent.OnDisplayDeleteDialog(false))
+                }
+            )
         }
     }
 }

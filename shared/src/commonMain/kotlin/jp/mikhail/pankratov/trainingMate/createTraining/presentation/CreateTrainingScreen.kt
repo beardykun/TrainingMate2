@@ -37,8 +37,6 @@ fun CreateTrainingScreen(
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
         InputField(
             value = state.trainingName,
@@ -63,12 +61,12 @@ fun CreateTrainingScreen(
             errorText = if (state.invalidDescriptionInput) stringResource(Res.string.invalid_training_description) else ""
         )
 
-
         SelectableGroupVertical(
             items = Constants.GROUPS,
             selected = state.selectedGroups,
             displayItem = { it },
-            onClick = { selectedGroup ->
+            modifier = Modifier.weight(1f),
+                    onClick = { selectedGroup ->
                 onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
             },
             listItem = { item, isSelected, onClick, modifier ->
