@@ -14,8 +14,8 @@
     <string name="reps">Reps</string>
     <string name="add_set">Add set</string>
     <string name="cd_start_timer_button">Start timer button</string>
-    <string name="weight_cant_be_0">Weight can\'t be 0</string>
-    <string name="use_dot">Please, use \'.\' instead of \',\' for weight</string>
+    <string name="weight_cant_be_0">Weight can't be 0</string>
+    <string name="use_dot">Please, use '.' instead of ',' for weight</string>
     <string name="weight_should_not_be_empty">Weight field should not be empty</string>
     <string name="invalid_input_format">Invalid input format</string>
     <string name="reps_should_not_be_empty">Reps field should not be empty</string>
@@ -25,7 +25,7 @@
     <string name="sure_delete_set">Do you want to delete last set?</string>
     <string name="hint_light">Completed comfortably.</string>
     <string name="hint_medium">Challenging but manageable.</string>
-    <string name="hint_hard">Couldn\'t complete as intended due to difficulty.</string>
+    <string name="hint_hard">Couldn't complete as intended due to difficulty.</string>
     <string name="interval">Interval: %1$s</string>
     <string name="exercise_time">Exercise length: %1$s</string>
     <string name="notification_permission_denied">Permission denied. Enable notifications to be alerted when rest time ends</string>
@@ -115,10 +115,10 @@
     <string name="choose_your_training">Choose your training:</string>
     <string name="another_training">Another Training </string>
     <string name="another_exercise">Another Exercise </string>
-    <string name="no_analysis_data">You don\'t have any data to display yet...</string>
+    <string name="no_analysis_data">You don't have any data to display yet...</string>
 
     <!-- HistoryScreen -->
-    <string name="no_history">You don\'t have a training history yet...</string>
+    <string name="no_history">You don't have a training history yet...</string>
     <string name="delete_training">Delete Training</string>
     <string name="want_to_delete_training">Want to delete this training?</string>
 

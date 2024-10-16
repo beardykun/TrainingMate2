@@ -70,21 +70,18 @@ fun TrainingScreen(
     )
     Scaffold(floatingActionButton =
     {
-        FloatingActionButton(
-            onClick = {
-                navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-            },
-            modifier = Modifier.then(
-                if (state.ongoingTraining == null) {
-                    Modifier.scale(scale)
-                } else Modifier
-            )
-        ) {
-            Icon(
-                imageVector = Icons.Default.FitnessCenter,
-                contentDescription = Res.string.cd_add_new_training.getString()
-            )
-        }
+        if (state.ongoingTraining == null)
+            FloatingActionButton(
+                onClick = {
+                    navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                },
+                modifier = Modifier.scale(scale)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.FitnessCenter,
+                    contentDescription = Res.string.cd_add_new_training.getString()
+                )
+            }
     }) {
         val toastMessage = Res.string.dummy_data_toast.getString()
 

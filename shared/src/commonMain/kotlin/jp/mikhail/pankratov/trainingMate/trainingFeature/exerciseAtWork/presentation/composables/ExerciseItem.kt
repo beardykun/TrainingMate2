@@ -86,7 +86,8 @@ fun ExerciseItem(
             Column {
                 TextLarge(
                     text = getExerciseNameStringResource(exerciseLocal.name).uppercase(),
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontWeight = FontWeight.Bold
                 )
                 TextMedium(
                     text = stringResource(

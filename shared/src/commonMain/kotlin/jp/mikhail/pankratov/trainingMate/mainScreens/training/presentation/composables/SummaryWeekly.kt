@@ -9,6 +9,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -42,10 +43,10 @@ fun SummaryWeekly(
             }
         ) {
             Column(modifier = modifier) {
-                val topText =
-                    Res.string.this_week_summary.getString()
-
-                TextLarge(text = topText)
+                TextLarge(
+                    text = Res.string.this_week_summary.getString(),
+                    fontSize = Dimens.largeTextSize
+                )
                 TextMedium(
                     text = stringResource(
                         Res.string.number_of_workouts_with_args,
@@ -62,7 +63,8 @@ fun SummaryWeekly(
                     text = stringResource(
                         Res.string.total_lifted_weight_with_args,
                         summary.totalLiftedWeight
-                    )
+                    ),
+                    fontWeight = FontWeight.Bold
                 )
                 TextMedium(
                     text = stringResource(

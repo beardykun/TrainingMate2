@@ -53,7 +53,7 @@ fun TrainingComparison(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextLarge(
-                        stringResource(
+                        text = stringResource(
                             resource = Res.string.last_training_lifted_weight,
                             lastTraining.totalLiftedWeight,
                             Utils.countTrainingTime(lastTraining)

@@ -77,14 +77,17 @@ fun LocalTrainingItem(
                 if (isDeletable) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
-                        tint = Color.Red,
                         contentDescription = stringResource(Res.string.cd_delete),
                         modifier = Modifier.clickable {
                             training.id?.let { onDeleteClick.invoke(it) }
                         })
                 }
             }
-            TextLarge(text = training.name.uppercase(), color = contentColor)
+            TextLarge(
+                text = training.name.uppercase(),
+                color = contentColor,
+                fontSize = Dimens.largeTextSize
+            )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             AnimatedVisibility(visible = training.description.isNotBlank()) {
                 TextLarge(text = training.description, color = contentColor)
@@ -120,13 +123,6 @@ fun TrainingItem(
                 .padding(Dimens.Padding16)
 
         ) {
-            training.startTime?.let {
-                TextLarge(
-                    text = Utils.formatEpochMillisToDate(it),
-                    color = contentColor
-                )
-            }
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -137,13 +133,23 @@ fun TrainingItem(
                 )
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    tint = Color.Red,
                     contentDescription = stringResource(Res.string.cd_delete),
                     modifier = Modifier.clickable {
                         training.id?.let { onDeleteClick.invoke(it) }
                     })
             }
-            TextLarge(text = training.name.uppercase(), color = contentColor)
+            TextLarge(
+                text = training.name.uppercase(),
+                color = contentColor,
+                fontSize = Dimens.largeTextSize
+            )
+            training.startTime?.let {
+                Spacer(modifier = Modifier.height(Dimens.Padding8))
+                TextLarge(
+                    text = Utils.formatEpochMillisToDate(it),
+                    color = contentColor
+                )
+            }
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             val exercises = training.doneExercises.ifEmpty { training.exercises }
             TextLarge(
