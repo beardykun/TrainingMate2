@@ -40,7 +40,6 @@ import maxrep.shared.generated.resources.training_ongoing
 import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryInfoScreen(
     state: HistoryInfoState,

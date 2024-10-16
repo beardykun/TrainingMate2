@@ -1,5 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.local.training
 
+import jp.mikhail.pankratov.trainingMate.core.domain.Constants
+
 data class Training(
     val id: Long? = null, // Unique identifier for the training session
     val trainingTemplateId: Long = -1, // Unique identifier for the training session
@@ -17,5 +19,5 @@ data class Training(
     val weekNumber: Long = 0,
     val monthNumber: Long = 0,
     val year: Long = 0,
-    val status: String = "ONGOING"
+    val status: String = Constants.ONGOING_STATUS
 )

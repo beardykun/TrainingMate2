@@ -10,4 +10,6 @@ object Constants {
     DatabaseContract.LEGS_GROUP,
     DatabaseContract.ABS_GROUP
     )
+
+    const val ONGOING_STATUS = "ONGOING"
 }

@@ -40,6 +40,7 @@ import maxrep.shared.generated.resources.groups
 import maxrep.shared.generated.resources.total_lifted_weight_with_args
 import maxrep.shared.generated.resources.training_duration_with_arg
 import maxrep.shared.generated.resources.training_name
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -144,10 +145,10 @@ fun TrainingItem(
             }
             TextLarge(text = training.name.uppercase(), color = contentColor)
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-
+            val exercises = training.doneExercises.ifEmpty { training.exercises }
             TextLarge(
-                text = org.jetbrains.compose.resources.stringResource(Res.string.exercises_with_new_line) + training.exercises.toString()
-                    .substring(1, training.exercises.toString().length - 1), color = contentColor
+                text = stringResource(Res.string.exercises_with_new_line) + exercises.toString()
+                    .substring(1, exercises.toString().length - 1), color = contentColor
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
@@ -179,7 +180,7 @@ fun OverlappingImagesBackground(groups: List<String>, modifier: Modifier = Modif
     Box(modifier = modifier) {
         groups.forEachIndexed { index, image ->
             getDrawableResourceByName(image)?.let {
-                val painter = org.jetbrains.compose.resources.painterResource(it)
+                val painter = painterResource(it)
                 Image(
                     painter = painter,
                     contentDescription = stringResource(Res.string.cd_muscle_group_image),

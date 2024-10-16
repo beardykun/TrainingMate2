@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.trainigSelection.presentation
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -35,12 +37,20 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import kotlinx.coroutines.launch
 import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.abs
 import maxrep.shared.generated.resources.are_you_ready_to_start
+import maxrep.shared.generated.resources.back
+import maxrep.shared.generated.resources.biceps
 import maxrep.shared.generated.resources.cd_add_new_training
+import maxrep.shared.generated.resources.chest
 import maxrep.shared.generated.resources.delete_training
+import maxrep.shared.generated.resources.legs
+import maxrep.shared.generated.resources.shoulders
 import maxrep.shared.generated.resources.start_training
+import maxrep.shared.generated.resources.triceps
 import maxrep.shared.generated.resources.want_to_delete_training
 import moe.tlaster.precompose.navigation.Navigator
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun TrainingSelectionScreen(
@@ -62,18 +72,17 @@ fun TrainingSelectionScreen(
         state.availableTrainings?.let {
             Column {
                 val trainingTypes = Constants.GROUPS
+                val trainingImages = listOf(Res.drawable.biceps, Res.drawable.triceps, Res.drawable.shoulders, Res.drawable.back, Res.drawable.chest, Res.drawable.legs, Res.drawable.abs)
                 val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
                 var selectedTabIndex by remember { mutableStateOf(0) }
                 val coroutineScope = rememberCoroutineScope()
 
-                // Handle page changes in the pager
                 LaunchedEffect(pagerState.currentPage) {
                     val trainingType = trainingTypes[pagerState.currentPage]
                     selectedTabIndex = pagerState.currentPage
                     onEvent(TrainingSelectionEvent.OnTrainingTypeChanged(trainingType))
                 }
 
-                // Scrollable Tab Row with scrollable tabs
                 ScrollableTabRow(
                     selectedTabIndex = selectedTabIndex,
                     edgePadding = Dimens.Padding16
@@ -88,10 +97,13 @@ fun TrainingSelectionScreen(
                                 }
                             }
                         ) {
-                            TextMedium(
-                                text = trainingType,
-                                modifier = Modifier.padding(Dimens.Padding8)
-                            )
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Image(painter = painterResource(trainingImages[index]), contentDescription = trainingType)
+                                TextMedium(
+                                    text = trainingType,
+                                    modifier = Modifier.padding(Dimens.Padding8)
+                                )
+                            }
                         }
                     }
                 }

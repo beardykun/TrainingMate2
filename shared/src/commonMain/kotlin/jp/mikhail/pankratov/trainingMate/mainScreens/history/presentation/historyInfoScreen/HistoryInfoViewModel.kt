@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,7 @@ class HistoryInfoViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()(
                 trainingId = trainingHistoryId,
-                status = "ONGOING"
+                status = Constants.ONGOING_STATUS
             )
             withContext(Dispatchers.Main) {
                 onSuccess.invoke()

@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
@@ -219,7 +220,7 @@ class ThisTrainingViewModel(
     }
 
     private fun countTrainingTime(training: Training) = flow {
-        while (training.status == "ONGOING") {
+        while (training.status == Constants.ONGOING_STATUS) {
             val durationMillis = Clock.System.now().toEpochMilliseconds()
                 .minus(training.startTime?.seconds?.inWholeSeconds ?: 0)
             val totalSeconds = durationMillis / 1000

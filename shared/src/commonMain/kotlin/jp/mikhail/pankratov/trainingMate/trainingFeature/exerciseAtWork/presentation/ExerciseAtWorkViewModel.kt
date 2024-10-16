@@ -269,14 +269,11 @@ class ExerciseAtWorkViewModel(
     private suspend fun requestNotificationPermission() {
         try {
             permissionsController.providePermission(Permission.REMOTE_NOTIFICATION)
-            // Permission has been granted successfully.
         } catch (deniedAlways: DeniedAlwaysException) {
-            // Permission is always denied.
             ToastManager.showToast(viewModelArguments.permissionRequest)
 
         } catch (denied: DeniedException) {
             ToastManager.showToast(viewModelArguments.permissionDenied)
-            // Permission was denied.
         }
     }
 
