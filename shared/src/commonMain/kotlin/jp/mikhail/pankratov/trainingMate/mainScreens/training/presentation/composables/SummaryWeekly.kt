@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
@@ -24,6 +25,7 @@ import maxrep.shared.generated.resources.number_of_workouts_with_args
 import maxrep.shared.generated.resources.this_week_summary
 import maxrep.shared.generated.resources.total_lifted_weight_with_args
 import maxrep.shared.generated.resources.total_reps_number_with_args
+import maxrep.shared.generated.resources.total_rest_time
 import maxrep.shared.generated.resources.total_training_duration_with_args
 import org.jetbrains.compose.resources.stringResource
 
@@ -82,6 +84,12 @@ fun SummaryWeekly(
                     text = stringResource(
                         Res.string.total_reps_number_with_args,
                         summary.numReps
+                    )
+                )
+                TextMedium(
+                    text = stringResource(
+                        Res.string.total_rest_time,
+                        Utils.formatTimeText(summary.totalRestTime)
                     )
                 )
                 TextMedium(

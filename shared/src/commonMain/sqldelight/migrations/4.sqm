@@ -1,0 +1,8 @@
+ALTER TABLE TrainingHistory ADD COLUMN rest_time INTEGER;
+UPDATE TrainingHistory SET rest_time = 0 WHERE rest_time IS NULL;
+
+ALTER TABLE MonthlySummary ADD COLUMN total_rest_time INTEGER;
+UPDATE MonthlySummary SET total_rest_time = 0 WHERE total_rest_time IS NULL;
+
+ALTER TABLE WeeklySummary ADD COLUMN total_rest_time INTEGER;
+UPDATE WeeklySummary SET total_rest_time = 0 WHERE total_rest_time IS NULL;

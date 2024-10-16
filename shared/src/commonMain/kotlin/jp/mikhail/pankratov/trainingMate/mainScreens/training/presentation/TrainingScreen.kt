@@ -166,19 +166,7 @@ fun TrainingScreen(
                 val emptySummary = weeklyList.isEmpty() || weeklyList.first()?.numWorkouts == 0
                 val summaryTitle =
                     if (emptySummary) Res.string.summaries_sample.getString() else Res.string.summaries.getString()
-                val summaryItem = if (emptySummary) WeeklySummary(
-                    numWorkouts = 4,
-                    trainingDuration = 200,
-                    totalLiftedWeight = 30000.00,
-                    numExercises = 10,
-                    numSets = 40,
-                    numReps = 400,
-                    avgDurationPerWorkout = 50.00,
-                    avgLiftedWeightPerExercise = 3000.00,
-                    avgLiftedWeightPerWorkout = 7500.00,
-                    year = 2023,
-                    weekNumber = 1
-                ) else weeklyList.first()
+                val summaryItem = if (emptySummary) dummySummary else weeklyList.first()
                 TextLarge(text = summaryTitle.uppercase(), color = MaterialTheme.colorScheme.error)
                 SummaryWeekly(
                     weeklySummary = summaryItem,
@@ -210,3 +198,18 @@ fun TrainingScreen(
     }
     GlobalToastMessage()
 }
+
+
+val dummySummary = WeeklySummary(
+    numWorkouts = 4,
+    trainingDuration = 200,
+    totalLiftedWeight = 30000.00,
+    numExercises = 10,
+    numSets = 40,
+    numReps = 400,
+    avgDurationPerWorkout = 50.00,
+    avgLiftedWeightPerExercise = 3000.00,
+    avgLiftedWeightPerWorkout = 7500.00,
+    year = 2023,
+    weekNumber = 1
+)

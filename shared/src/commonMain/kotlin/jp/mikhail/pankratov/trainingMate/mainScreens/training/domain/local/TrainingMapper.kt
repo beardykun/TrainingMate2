@@ -33,6 +33,7 @@ fun TrainingHistory.toTraining(): Training {
         weekNumber = week_number ?: 0L,
         monthNumber = month_number ?: 0L,
         year = year ?: 0L,
-        status = status
+        status = status,
+        restTime = rest_time ?: 0L
     )
 }

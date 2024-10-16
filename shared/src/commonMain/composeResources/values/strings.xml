@@ -1,13 +1,13 @@
 <resources>
 
-    <!-- Create training -->
+    <!-- CreateTraining -->
     <string name="training_name">Training: </string>
     <string name="groups">Groups: </string>
     <string name="cd_muscle_group_image">muscle group image</string>
     <string name="cd_add_new_training">add new training</string>
     <string name="select_muscle_group">Select at least one muscle group</string>
 
-    <!-- Exercise at work -->
+    <!-- ExerciseAtWorkScreen -->
     <string name="select_weight">Select weight</string>
     <string name="select_reps">Select reps</string>
     <string name="weight">Weight</string>
@@ -30,8 +30,20 @@
     <string name="exercise_time">Exercise length: %1$s</string>
     <string name="notification_permission_denied">Permission denied. Enable notifications to be alerted when rest time ends</string>
     <string name="notification_permission_required">To receive rest time notifications, please enable them in your settings</string>
+    <string name="cd_exercise_history">Exercise history</string>
+    <string name="cd_start_timer">Start timer</string>
+    <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
+    <string name="last_training_set">Last Training Set\n%1$s kg x %2$s</string>
+    <string name="this_exercise">This Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="auto_input">Auto Input</string>
+    <string name="break_time">Select break time</string>
+    <string name="ok">OK</string>
+    <string name="minutes">Min</string>
+    <string name="seconds">Sec</string>
+    <string name="total_in_set">Total: %1$s kg</string>
 
-    <!-- Training Screen -->
+    <!-- TrainingScreen -->
     <string name="start_training">Start Training</string>
     <string name="last_training">Last training:</string>
     <string name="last_training_dummy">Last training sample:</string>
@@ -57,7 +69,8 @@
     <string name="summaries">Summary:</string>
     <string name="summaries_sample">Summaries sample:</string>
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
-
+    <string name="rest_time">Rest Time: %1$s</string>
+    <string name="total_rest_time">Total Rest Time: %1$s</string>
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>
     <string name="apply_changes">Apply changes</string>
@@ -83,20 +96,6 @@
     <string name="invalid_or_duplicate_exercise_name">Invalid or duplicate exercise name</string>
     <string name="using_two_dumbbell">For dumbbell exercises, check if you input weight of only one dumbbell</string>
     <string name="add_exercise">Add Exercise</string>
-
-    <!-- ExerciseAtWorkScreen -->
-    <string name="cd_exercise_history">Exercise history</string>
-    <string name="cd_start_timer">Start timer</string>
-    <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
-    <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
-    <string name="last_training_set">Last Training Set\n%1$s kg x %2$s</string>
-    <string name="this_exercise">This Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
-    <string name="auto_input">Auto Input</string>
-    <string name="break_time">Select break time</string>
-    <string name="ok">OK</string>
-    <string name="minutes">Min</string>
-    <string name="seconds">Sec</string>
-    <string name="total_in_set">Total: %1$s kg</string>
 
     <!-- ExerciseItem -->
     <string name="group">Group: %1$s</string>

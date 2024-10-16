@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.aay.compose.donutChart.model.PieChartData
+import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonPieChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.MyHorizontalViewPager
@@ -36,6 +37,7 @@ import maxrep.shared.generated.resources.number_of_done_exercises_with_args
 import maxrep.shared.generated.resources.number_of_done_sets_with_args
 import maxrep.shared.generated.resources.number_of_workouts_with_args
 import maxrep.shared.generated.resources.total_reps_number_with_args
+import maxrep.shared.generated.resources.total_rest_time
 import maxrep.shared.generated.resources.total_training_duration_with_args
 import maxrep.shared.generated.resources.total_weight_lifted_with_arg
 import maxrep.shared.generated.resources.week
@@ -120,6 +122,15 @@ fun SummaryScreen(state: SummaryScreenState, onEvent: (SummaryScreenEvent) -> Un
                             label = stringResource(
                                 Res.string.total_reps_number_with_args,
                                 getLabelValue(item.numReps).toInt()
+                            )
+                        )
+                    }
+                    item {
+                        ChartComp(
+                            list = item.totalRestTime,
+                            label = stringResource(
+                                Res.string.total_rest_time,
+                                Utils.formatTimeText(getLabelValue(item.totalRestTime).toLong())
                             )
                         )
                     }

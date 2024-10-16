@@ -37,6 +37,7 @@ import maxrep.shared.generated.resources.cd_delete
 import maxrep.shared.generated.resources.cd_muscle_group_image
 import maxrep.shared.generated.resources.exercises_with_new_line
 import maxrep.shared.generated.resources.groups
+import maxrep.shared.generated.resources.rest_time
 import maxrep.shared.generated.resources.total_lifted_weight_with_args
 import maxrep.shared.generated.resources.training_duration_with_arg
 import maxrep.shared.generated.resources.training_name
@@ -171,6 +172,13 @@ fun TrainingItem(
                         training
                     ).toString()
                 ), color = contentColor
+            )
+            Spacer(modifier = Modifier.height(Dimens.Padding8))
+            TextLarge(
+                text = stringResource(
+                    Res.string.rest_time,
+                    Utils.formatTimeText(training.restTime)
+                )
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(text = stringResource(Res.string.groups), color = contentColor)

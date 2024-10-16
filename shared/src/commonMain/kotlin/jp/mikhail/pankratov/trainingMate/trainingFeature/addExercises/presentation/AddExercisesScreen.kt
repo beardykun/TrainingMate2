@@ -31,9 +31,12 @@ fun AddExercisesScreen(
     navigator: Navigator
 ) {
     Scaffold(floatingActionButton = {
-        FloatingActionButton(onClick = {
-            navigator.navigate(Routs.TrainingScreens.createExercise)
-        }) {
+        FloatingActionButton(
+            onClick = {
+                navigator.navigate(Routs.TrainingScreens.createExercise)
+            },
+            modifier = Modifier.padding(bottom = Dimens.Padding64)
+        ) {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = Res.string.create_new_ex_btn.getString()

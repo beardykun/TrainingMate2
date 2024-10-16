@@ -69,7 +69,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             week_number = DateUtils.currentWeekNumber,
             month_number = DateUtils.currentMonthNumber,
             year = DateUtils.currentYear,
-            user_id = training.userId
+            user_id = training.userId,
+            rest_time = training.restTime
         )
     }
 
@@ -91,7 +92,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         totalLiftedWeight: Double,
         doneExercised: List<String>,
         sets: Int,
-        reps: Int
+        reps: Int,
+        restTime: Long
     ) {
         query.updateTrainingData(
             start_time = startTime,
@@ -100,7 +102,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             total_lifted_weight = totalLiftedWeight,
             done_exercises = doneExercised.listToString(),
             total_sets = sets.toLong(),
-            total_reps = reps.toLong()
+            total_reps = reps.toLong(),
+            rest_time = restTime
         )
     }
 

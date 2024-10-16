@@ -15,6 +15,7 @@ interface ISummaryDatasource {
         additionalWeight: Double,
         numExercises: Int,
         numSets: Int,
-        numReps: Int
+        numReps: Int,
+        totalRestTime: Long
     )
 }

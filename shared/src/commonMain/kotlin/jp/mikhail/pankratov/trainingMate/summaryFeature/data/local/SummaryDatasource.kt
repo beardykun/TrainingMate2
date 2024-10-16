@@ -44,7 +44,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             avg_lifted_weight_per_workout = monthlySummary.avgLiftedWeightPerWorkout,
             avg_duration_per_workout = monthlySummary.avgDurationPerWorkout,
             avg_lifted_weight_per_exercise = monthlySummary.avgLiftedWeightPerExercise,
-            training_duration = monthlySummary.trainingDuration.toLong()
+            training_duration = monthlySummary.trainingDuration.toLong(),
+            total_rest_time = monthlySummary.totalRestTime
         )
 
         val weeklySummary =
@@ -61,7 +62,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             avg_duration_per_workout = weeklySummary.avgDurationPerWorkout,
             avg_lifted_weight_per_workout = weeklySummary.avgLiftedWeightPerWorkout,
             avg_lifted_weight_per_exercise = weeklySummary.avgLiftedWeightPerExercise,
-            training_duration = weeklySummary.trainingDuration.toLong()
+            training_duration = weeklySummary.trainingDuration.toLong(),
+            total_rest_time = weeklySummary.totalRestTime
         )
     }
 
@@ -114,7 +116,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
         additionalWeight: Double,
         numExercises: Int,
         numSets: Int,
-        numReps: Int
+        numReps: Int,
+        totalRestTime: Long
     ) {
         monthlyQuery.updateMonthlySummary(
             year = currentYear,
@@ -127,7 +130,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             num_exercises = numExercises.toLong(),
             num_exercises_ = numExercises.toLong(),
             num_sets = numSets.toLong(),
-            num_reps = numReps.toLong()
+            num_reps = numReps.toLong(),
+            total_rest_time = totalRestTime
         )
 
         weeklyQuery.updateWeeklySummary(
@@ -141,7 +145,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             num_exercises = numExercises.toLong(),
             num_exercises_ = numExercises.toLong(),
             num_sets = numSets.toLong(),
-            num_reps = numReps.toLong()
+            num_reps = numReps.toLong(),
+            total_rest_time = totalRestTime
         )
     }
 }

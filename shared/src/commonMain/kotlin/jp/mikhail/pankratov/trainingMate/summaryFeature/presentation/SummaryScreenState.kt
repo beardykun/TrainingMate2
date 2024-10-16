@@ -15,6 +15,7 @@ data class SummaryData(
     val numExercises: List<PieChartData>,
     val numSets: List<PieChartData>,
     val numReps: List<PieChartData>,
+    val totalRestTime: List<PieChartData>,
     val avgDurationPerWorkout: List<PieChartData>,
     val avgLiftedWeightPerExercise: List<PieChartData>,
     val avgLiftedWeightPerWorkout: List<PieChartData>

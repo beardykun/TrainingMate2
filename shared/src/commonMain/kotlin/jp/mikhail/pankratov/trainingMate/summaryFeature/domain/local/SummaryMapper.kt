@@ -17,7 +17,8 @@ fun database.MonthlySummary.toMonthlySummary(): MonthlySummary {
         numReps = num_reps.toInt(),
         avgDurationPerWorkout = avg_duration_per_workout,
         avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise,
-        avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout
+        avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout,
+        totalRestTime = total_rest_time
     )
 }
 
@@ -34,6 +35,8 @@ fun database.WeeklySummary.toWeeklySummary(): WeeklySummary {
         numReps = num_reps.toInt(),
         avgDurationPerWorkout = avg_duration_per_workout,
         avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise,
-        avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout
+        avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout,
+        totalRestTime = total_rest_time
+
     )
 }

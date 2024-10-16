@@ -125,7 +125,7 @@ sqldelight {
         create("TrainingDatabase") {
             packageName.set("jp.mikhail.pankratov.trainingMate.database")
             srcDirs.setFrom("src/commonMain/sqldelight")
-            version = 3
+            version = 4
         }
     }
 }

@@ -17,7 +17,8 @@ interface ITrainingHistoryDataSource {
         totalLiftedWeight: Double,
         doneExercised: List<String>,
         sets: Int,
-        reps: Int
+        reps: Int,
+        restTime: Long
     )
 
     suspend fun updateTrainingHistoryStatus(trainingId: Long, status: String = "COMPLETED")

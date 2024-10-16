@@ -12,7 +12,8 @@ class UpdateSummariesUseCase(private val summaryDatasource: ISummaryDatasource) 
             additionalWeight = ongoingTraining.totalLiftedWeight,
             numExercises = ongoingTraining.doneExercises.size,
             numSets = ongoingTraining.totalSets,
-            numReps = ongoingTraining.totalReps
+            numReps = ongoingTraining.totalReps,
+            totalRestTime = ongoingTraining.restTime
         )
     }
 }

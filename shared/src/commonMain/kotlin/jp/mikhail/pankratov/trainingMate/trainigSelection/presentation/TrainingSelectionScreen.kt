@@ -60,9 +60,12 @@ fun TrainingSelectionScreen(
 ) {
     Scaffold(floatingActionButton =
     {
-        FloatingActionButton(onClick = {
-            navigator.navigate(Routs.TrainingScreens.createTraining)
-        }) {
+        FloatingActionButton(
+            onClick = {
+                navigator.navigate(Routs.TrainingScreens.createTraining)
+            },
+            modifier = Modifier.padding(bottom = Dimens.Padding64)
+        ) {
             Icon(
                 imageVector = Icons.Default.AddCard,
                 contentDescription = Res.string.cd_add_new_training.getString()
@@ -72,7 +75,15 @@ fun TrainingSelectionScreen(
         state.availableTrainings?.let {
             Column {
                 val trainingTypes = Constants.GROUPS
-                val trainingImages = listOf(Res.drawable.biceps, Res.drawable.triceps, Res.drawable.shoulders, Res.drawable.back, Res.drawable.chest, Res.drawable.legs, Res.drawable.abs)
+                val trainingImages = listOf(
+                    Res.drawable.biceps,
+                    Res.drawable.triceps,
+                    Res.drawable.shoulders,
+                    Res.drawable.back,
+                    Res.drawable.chest,
+                    Res.drawable.legs,
+                    Res.drawable.abs
+                )
                 val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
                 var selectedTabIndex by remember { mutableStateOf(0) }
                 val coroutineScope = rememberCoroutineScope()
@@ -98,7 +109,10 @@ fun TrainingSelectionScreen(
                             }
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Image(painter = painterResource(trainingImages[index]), contentDescription = trainingType)
+                                Image(
+                                    painter = painterResource(trainingImages[index]),
+                                    contentDescription = trainingType
+                                )
                                 TextMedium(
                                     text = trainingType,
                                     modifier = Modifier.padding(Dimens.Padding8)

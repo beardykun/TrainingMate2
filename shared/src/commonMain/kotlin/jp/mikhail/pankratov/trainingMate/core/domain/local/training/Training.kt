@@ -19,5 +19,6 @@ data class Training(
     val weekNumber: Long = 0,
     val monthNumber: Long = 0,
     val year: Long = 0,
-    val status: String = Constants.ONGOING_STATUS
+    val status: String = Constants.ONGOING_STATUS,
+    val restTime: Long = 0
 )

@@ -15,6 +15,7 @@ CREATE TABLE TrainingHistory (
     year INTEGER,
     week_number INTEGER,
     month_number INTEGER,
+    rest_time INTEGER,
     FOREIGN KEY(user_id) REFERENCES User(id)
 );
 
@@ -35,9 +36,10 @@ INTO TrainingHistory(
     week_number,
     month_number,
     year,
-    total_lifted_weight
+    total_lifted_weight,
+    rest_time
 )
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 getTrainingRecordById:
 SELECT *
@@ -56,7 +58,7 @@ WHERE status = 'ONGOING';
 
 updateTrainingData:
 UPDATE TrainingHistory
-SET start_time = ?, end_time = ?, total_lifted_weight = ?, done_exercises = ?, total_sets = total_sets + ?, total_reps = total_reps + ?
+SET start_time = ?, end_time = ?, total_lifted_weight = ?, done_exercises = ?, total_sets = total_sets + ?, total_reps = total_reps + ?, rest_time = ?
 WHERE id = ?;
 
 updateStatus:
