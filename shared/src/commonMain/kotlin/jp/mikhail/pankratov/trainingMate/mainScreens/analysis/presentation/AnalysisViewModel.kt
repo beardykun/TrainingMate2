@@ -31,7 +31,7 @@ class AnalysisViewModel(
             exerciseUseCaseProvider.getAllLocalExercisesUseCase().invoke()
         ) { state, localTrainings, localExercises ->
             state.copy(
-                localTrainings = localTrainings,
+                localTrainings = localTrainings.filter { it.exercises.isNotEmpty() },
                 localExercises = localExercises.filter { it.bestLiftedWeight != 0.0 }
             )
         }.onStart {

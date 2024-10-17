@@ -105,7 +105,7 @@ fun TabsComposable(
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            AnimatedVisibility(metricsMode != MetricsMode.EXERCISE) {
+            AnimatedVisibility(metricsMode != MetricsMode.EXERCISE && !metricsData.isNullOrEmpty()) {
                 DropDown(
                     initValue = analysisMode,
                     isOpen = isDropdownExpanded,

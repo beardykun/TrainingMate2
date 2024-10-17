@@ -59,7 +59,6 @@ fun AnalysisScreen(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseNameChoice(localExercises: List<ExerciseLocal>, onItemClick: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {

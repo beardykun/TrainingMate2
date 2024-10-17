@@ -11,7 +11,7 @@ fun TrainingTemplate.toTrainingLocal(): TrainingLocal {
         id = id,
         name = name,
         groups = groups,
-        exercises = exercises.split(", "),
+        exercises = exercises.stringToList(),
         description = description,
     )
 }
