@@ -27,6 +27,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
@@ -96,7 +97,7 @@ fun TrainingSelectionScreen(
 
                 ScrollableTabRow(
                     selectedTabIndex = selectedTabIndex,
-                    edgePadding = Dimens.Padding16
+                    edgePadding = Dimens.Padding8,
                 ) {
                     trainingTypes.forEachIndexed { index, trainingType ->
                         Tab(
@@ -108,7 +109,9 @@ fun TrainingSelectionScreen(
                                 }
                             }
                         ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 Image(
                                     painter = painterResource(trainingImages[index]),
                                     contentDescription = trainingType
@@ -147,7 +150,7 @@ fun TrainingSelectionScreen(
                                     },
                                     modifier = Modifier.animateItem(),
                                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                                    containerColor = Color.White
                                 )
                             }
                         }
