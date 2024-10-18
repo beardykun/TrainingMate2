@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.di.local
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.DeleteTrainingHistoryRecordUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetHistorySearchResultsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastHistoryTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastSameHistoryTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLatestHistoryTrainingsUseCase
@@ -43,4 +44,5 @@ fun trainingUseCaseModule() = module {
     single { GetParticularHistoryTrainingsUseCase(trainingHistoryDataSource = get()) }
     single { GetParticularMonthHistoryTrainings(trainingHistoryDataSource = get()) }
     single { GetParticularWeekHistoryTrainings(trainingHistoryDataSource = get()) }
+    single { GetHistorySearchResultsUseCase(trainingHistoryDataSource = get()) }
 }

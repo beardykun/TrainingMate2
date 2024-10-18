@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.TrainingMateTheme
-import jp.mikhail.pankratov.trainingMate.di.AppModule
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.rememberNavigator
 import org.koin.compose.viewmodel.koinViewModel
@@ -40,8 +39,7 @@ import org.koin.core.qualifier.named
 @Composable
 fun App(
     darkTheme: Boolean,
-    dynamicColor: Boolean,
-    appModule: AppModule
+    dynamicColor: Boolean
 ) {
     PreComposeApp {
         TrainingMateTheme(
@@ -66,6 +64,7 @@ fun App(
 
                 Scaffold(
                     topBar = {
+                        if (current?.route?.route?.contains(Routs.MainScreens.history.title) != true)
                         TopAppBar(title = {
                             Text(
                                 text = current?.route?.route?.split("/")?.first() ?: "",
@@ -77,7 +76,6 @@ fun App(
                         },
                             navigationIcon = {
                                 if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) {
-
                                     IconButton(onClick = {
                                         navigator.popBackStack()
                                     }) {

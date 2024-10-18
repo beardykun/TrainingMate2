@@ -11,7 +11,6 @@ fun MainViewController() = ComposeUIViewController {
                 UIUserInterfaceStyle.UIUserInterfaceStyleDark
     App(
         darkTheme = isDarkTheme,
-        dynamicColor = false,
-        appModule = AppModule(),
+        dynamicColor = false
     )
 }

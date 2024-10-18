@@ -27,7 +27,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
     }
 
     override fun getLatestHistoryTrainings(limit: Long, offset: Long): Flow<List<Training>> {
-        return query.getLatestHistoryTrainings(limit = limit, offset = offset).asFlow().mapToList(Dispatchers.IO)
+        return query.getLatestHistoryTrainings(limit = limit, offset = offset).asFlow()
+            .mapToList(Dispatchers.IO)
             .map { trainings ->
                 trainings.map {
                     it.toTraining()
@@ -157,5 +158,14 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             .map { trainingHistory ->
                 trainingHistory.executeAsOneOrNull()?.toTraining()
             }.flowOn(Dispatchers.IO)
+    }
+
+    override fun getSearchResults(query: String): Flow<List<Training>> {
+        return this.query.getSearchResults(query).asFlow().mapToList(Dispatchers.IO)
+            .map { trainings ->
+                trainings.map { training ->
+                    training.toTraining()
+                }
+            }
     }
 }

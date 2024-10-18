@@ -88,7 +88,36 @@ class HistoryScreenViewModel(
             }
 
             HistoryScreenEvent.OnLoadNextPage -> loadNextPage()
+            HistoryScreenEvent.OnSearchIconClick -> {
+                _state.update {
+                    it.copy(
+                        isExpanded = state.value.isExpanded.not()
+                    )
+                }
+            }
+
+            is HistoryScreenEvent.OnSearchTextChange -> {
+                _state.update {
+                    it.copy(
+                        searchText = event.newText
+                    )
+                }
+                viewModelScope.launch {
+                    searchHistoryTrainings(event)
+                }
+            }
         }
+    }
+
+    private suspend fun searchHistoryTrainings(event: HistoryScreenEvent.OnSearchTextChange) {
+        trainingUseCaseProvider.getHistorySearchResultsUseCase().invoke(query = event.newText)
+            .collect {
+                _state.update { state ->
+                    state.copy(
+                        historyList = it
+                    )
+                }
+            }
     }
 
     private suspend fun loadPaginatedTrainings() {
@@ -104,7 +133,7 @@ class HistoryScreenViewModel(
     }
 
     private fun loadNextPage() {
-        if (query != TrainingQuery.All) return
+        if (query != TrainingQuery.All || state.value.searchText.isNotBlank()) return
         viewModelScope.launch {
             loadPaginatedTrainings()
         }

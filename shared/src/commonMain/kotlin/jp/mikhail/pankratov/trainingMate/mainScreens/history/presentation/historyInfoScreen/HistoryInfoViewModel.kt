@@ -23,7 +23,7 @@ class HistoryInfoViewModel(
 
     private val _state = MutableStateFlow(HistoryInfoState())
     val state = combine(
-        trainingUseCaseProvider.getGetHistoryTrainingRecordByIdUseCase().invoke(trainingHistoryId),
+        trainingUseCaseProvider.getHistoryTrainingRecordByIdUseCase().invoke(trainingHistoryId),
         trainingUseCaseProvider.getOngoingTrainingUseCase().invoke(),
         exerciseUseCaseProvider.getGetExercisesForTrainingHistoryUseCase()
             .invoke(trainingHistoryId = trainingHistoryId),

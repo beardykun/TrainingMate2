@@ -115,5 +115,12 @@ SELECT * FROM TrainingHistory
 WHERE year = ? AND week_number = ?
 ORDER BY id DESC;
 
+getSearchResults:
+SELECT * FROM TrainingHistory
+WHERE
+name LIKE '%' || :searchTerm || '%'
+OR groups LIKE '%' || :searchTerm || '%'
+OR exercises LIKE '%' || :searchTerm || '%'
+ORDER BY end_time DESC;
 
 

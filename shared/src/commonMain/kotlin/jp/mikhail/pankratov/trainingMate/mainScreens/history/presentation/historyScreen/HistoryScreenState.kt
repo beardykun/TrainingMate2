@@ -7,5 +7,7 @@ data class HistoryScreenState(
     val showDeleteDialog: Boolean = false,
     val trainingId: Long? = null,
     val isLastPage: Boolean = false,
-    val currentPage: Int = 0
+    val currentPage: Int = 0,
+    val isExpanded: Boolean = false,
+    val searchText: String = ""
 )

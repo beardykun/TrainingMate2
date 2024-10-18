@@ -28,4 +28,5 @@ interface ITrainingHistoryDataSource {
     suspend fun deleteTrainingHistoryRecord(trainingId: Long)
     fun getLastSameTraining(trainingTemplateId: Long): Flow<Training?>
     fun getLastTraining(): Flow<Training?>
+    fun getSearchResults(query: String): Flow<List<Training>>
 }

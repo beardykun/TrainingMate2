@@ -30,6 +30,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.HighlightedText
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 import maxrep.shared.generated.resources.Res
@@ -106,6 +107,7 @@ fun LocalTrainingItem(
 @Composable
 fun TrainingItem(
     training: Training,
+    query: String = "",
     onClick: () -> Unit,
     onDeleteClick: (id: Long) -> Unit,
     containerColor: Color = Color.Unspecified,
@@ -144,6 +146,7 @@ fun TrainingItem(
                 color = contentColor,
                 fontSize = Dimens.largeTextSize
             )
+            HighlightedText(fullText = training.name, query = query, textComp = { TextLarge(it) })
             training.startTime?.let {
                 Spacer(modifier = Modifier.height(Dimens.Padding8))
                 TextLarge(
@@ -153,9 +156,10 @@ fun TrainingItem(
             }
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             val exercises = training.doneExercises.ifEmpty { training.exercises }
-            TextLarge(
-                text = stringResource(Res.string.exercises_with_new_line) + exercises.toString()
-                    .substring(1, exercises.toString().length - 1), color = contentColor
+            HighlightedText(
+                fullText = stringResource(Res.string.exercises_with_new_line) + exercises.toString()
+                    .substring(1, exercises.toString().length - 1), query = query,
+                textComp = { TextLarge(it) }
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             TextLarge(
@@ -212,3 +216,4 @@ fun OverlappingImagesBackground(groups: List<String>, modifier: Modifier = Modif
         )
     }
 }
+

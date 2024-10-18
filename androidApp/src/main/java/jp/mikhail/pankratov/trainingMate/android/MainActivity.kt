@@ -14,7 +14,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val appModule = MaxRepApp.instance.appModule
         setContent {
             MyApplicationTheme {
                 Surface(
@@ -23,8 +22,7 @@ class MainActivity : FragmentActivity() {
                 ) {
                     App(
                         darkTheme = isSystemInDarkTheme(),
-                        dynamicColor = true,
-                        appModule = appModule
+                        dynamicColor = true
                     )
                 }
             }
