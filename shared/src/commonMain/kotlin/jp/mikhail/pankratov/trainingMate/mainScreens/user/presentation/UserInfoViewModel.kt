@@ -71,9 +71,7 @@ class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : View
                 strongestMuscleValue = muscleStrength
             }
             normalizedStrength[muscleStrengthItem.name] =
-                if (normalizedStrength[muscleStrengthItem.name] == null) muscleStrength else normalizedStrength[muscleStrengthItem.name]?.plus(
-                    muscleStrength
-                )!! / 2
+                calculateNormalizedStrength(normalizedStrength, muscleStrengthItem, muscleStrength)
         }
         if (strongestMuscleValue == 0.0)
             strongestMuscleValue = normalizedStrength.values.maxOrNull() ?: 1.0
@@ -83,6 +81,15 @@ class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : View
         }
         return relativeStrengthPercentages
     }
+
+    private fun calculateNormalizedStrength(
+        normalizedStrength: MutableMap<String, Double>,
+        muscleStrengthItem: MuscleStrengthItem,
+        muscleStrength: Double
+    ) =
+        if (normalizedStrength[muscleStrengthItem.name] == null) muscleStrength else normalizedStrength[muscleStrengthItem.name]?.plus(
+            muscleStrength
+        )?.div(2) ?: 0.0
 
     private fun getCorrectMuscleRate(exerciseLocal: ExerciseLocal): MuscleStrengthItem {
         val muscleStrength = MuscleStrength()
