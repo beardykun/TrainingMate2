@@ -8,6 +8,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.DatabaseContract
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.MuscleStrength
+import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.MuscleStrengthItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,13 +19,13 @@ import kotlinx.coroutines.flow.update
 
 class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : ViewModel() {
     private val exerciseColors = mapOf(
-        "barbell curls" to Color(0xFF4CAF50),   // Green
-        "barbell squat" to Color(0xFFFF5722),   // Deep Orange
-        "bench press" to Color(0xFF2196F3),     // Blue
-        "chin ups" to Color(0xFFFFEB3B),        // Yellow
-        "lying triceps press" to Color(0xFF9C27B0), // Purple
-        "close grip barbell press" to Color(0xFFF44336), // Red
-        "barbell shoulder press" to Color(0xFF00BCD4)   // Cyan
+        DatabaseContract.GroupDetailedNames.BICEPS to Color(0xFF4CAF50),   // Green
+        DatabaseContract.GroupDetailedNames.LEGS to Color(0xFFFF5722),   // Deep Orange
+        DatabaseContract.GroupDetailedNames.CHEST to Color(0xFF2196F3),     // Blue
+        DatabaseContract.GroupDetailedNames.LOWER_BACK to Color(0xFFFFEB3B), // Yellow
+        DatabaseContract.GroupDetailedNames.UPPER_BACK to Color(0xFFF44336), // Red
+        DatabaseContract.GroupDetailedNames.TRICEPS to Color(0xFF9C27B0), // Purple
+        DatabaseContract.GroupDetailedNames.SHOULDERS to Color(0xFF00BCD4)   // Cyan
     )
 
     private val _state = MutableStateFlow(UserInfoState())
@@ -60,15 +61,19 @@ class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : View
         val normalizedStrength = mutableMapOf<String, Double>()
         var strongestMuscleValue = 0.0
         userStrength?.forEach { exercise ->
+            val muscleStrengthItem = getCorrectMuscleRate(exercise)
             if (exercise.bestLiftedWeight == 0.0) {
-                normalizedStrength[exercise.name] = 0.0
+                normalizedStrength[muscleStrengthItem.name] = 0.0
                 return@forEach
             }
-            val muscleStrength = exercise.bestLiftedWeight / getCorrectMuscleRate(exercise)
+            val muscleStrength = exercise.bestLiftedWeight / muscleStrengthItem.value
             if (exercise.group == DatabaseContract.CHEST_GROUP) {
                 strongestMuscleValue = muscleStrength
             }
-            normalizedStrength[exercise.name] = muscleStrength
+            normalizedStrength[muscleStrengthItem.name] =
+                if (normalizedStrength[muscleStrengthItem.name] == null) muscleStrength else normalizedStrength[muscleStrengthItem.name]?.plus(
+                    muscleStrength
+                )!! / 2
         }
         if (strongestMuscleValue == 0.0)
             strongestMuscleValue = normalizedStrength.values.maxOrNull() ?: 1.0
@@ -79,7 +84,7 @@ class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : View
         return relativeStrengthPercentages
     }
 
-    private fun getCorrectMuscleRate(exerciseLocal: ExerciseLocal): Double {
+    private fun getCorrectMuscleRate(exerciseLocal: ExerciseLocal): MuscleStrengthItem {
         val muscleStrength = MuscleStrength()
         return when (exerciseLocal.group) {
             DatabaseContract.BICEPS_GROUP -> muscleStrength.biceps
@@ -91,7 +96,7 @@ class UserInfoViewModel(exerciseUseCaseProvider: ExerciseUseCaseProvider) : View
 
             DatabaseContract.CHEST_GROUP -> muscleStrength.chest
             DatabaseContract.LEGS_GROUP -> muscleStrength.legs
-            else -> 0.0
+            else -> MuscleStrengthItem("", 0.0)
         }
     }
 }

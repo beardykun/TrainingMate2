@@ -141,12 +141,12 @@ fun TrainingItem(
                         training.id?.let { onDeleteClick.invoke(it) }
                     })
             }
-            TextLarge(
-                text = training.name.uppercase(),
-                color = contentColor,
-                fontSize = Dimens.largeTextSize
-            )
-            HighlightedText(fullText = training.name, query = query, textComp = { TextLarge(it) })
+            HighlightedText(fullText = training.name, query = query, textComp = {
+                TextLarge(
+                    it, color = contentColor,
+                    fontSize = Dimens.largeTextSize
+                )
+            })
             training.startTime?.let {
                 Spacer(modifier = Modifier.height(Dimens.Padding8))
                 TextLarge(

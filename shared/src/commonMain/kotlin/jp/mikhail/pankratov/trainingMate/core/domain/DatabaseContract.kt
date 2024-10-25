@@ -37,4 +37,14 @@ object DatabaseContract {
     const val LEGS_GROUP = "legs"
     const val TRAPS_GROUP = "traps"
     const val ABS_GROUP = "abs"
+
+    object GroupDetailedNames {
+        const val CHEST = "Chest"
+        const val LOWER_BACK = "Lower Back"
+        const val UPPER_BACK = "Upper Back"
+        const val BICEPS = "Biceps"
+        const val TRICEPS = "Triceps"
+        const val LEGS = "Legs"
+        const val SHOULDERS = "Shoulders"
+    }
 }

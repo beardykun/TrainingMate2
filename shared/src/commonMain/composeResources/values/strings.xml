@@ -145,8 +145,8 @@
     <string name="this_training_lifted_weight">This training\nLifted: %1$d kg\nLength: %2$s</string>
 
     <!-- UserInfo -->
-    <string name="strength_comparison_info">Base exercises strength level comparison</string>
-    <string name="strength_comparison_hint">Comparing strength levels of exercises relative to the baseline exercise (baseline = 100%)</string>
+    <string name="strength_comparison_info">Muscle groups strength level comparison</string>
+    <string name="strength_comparison_hint">Comparing strength levels of muscle groups relative to the baseline muscle group (baseline = 100%)</string>
 
     <!-- SummariesScreen -->
     <string name="total_lifted_weight">Total lifted weight</string>
