@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.hard
 import maxrep.shared.generated.resources.light
@@ -36,7 +37,7 @@ fun DifficultySelection(
         val textModifier = Modifier
             .weight(1f)
             .clip(shape = RoundedCornerShape(percent = 25))
-        TextLarge(
+        TextMedium(
             text = light,
             textAlign = TextAlign.Center,
             modifier = textModifier
@@ -49,7 +50,7 @@ fun DifficultySelection(
                 }
                 .padding(vertical = Dimens.Padding8)
         )
-        TextLarge(
+        TextMedium(
             text = medium,
             textAlign = TextAlign.Center,
             modifier = textModifier
@@ -62,7 +63,7 @@ fun DifficultySelection(
                 }
                 .padding(vertical = Dimens.Padding8)
         )
-        TextLarge(
+        TextMedium(
             text = hard,
             textAlign = TextAlign.Center,
             modifier = textModifier

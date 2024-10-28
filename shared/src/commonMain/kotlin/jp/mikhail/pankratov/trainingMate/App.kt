@@ -77,7 +77,7 @@ fun App(
                             navigationIcon = {
                                 if (!Routs.MainScreens.mainScreens.contains(current?.route?.route)) {
                                     IconButton(onClick = {
-                                        navigator.popBackStack()
+                                        navigator.goBack()
                                     }) {
                                         Icon(
                                             imageVector = Icons.AutoMirrored.Default.ArrowBack,

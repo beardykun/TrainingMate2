@@ -14,9 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.interval
@@ -64,7 +66,7 @@ fun CurrentExerciseData(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            TextLarge(
+            TextMedium(
                 color = weightTextColor,
                 text =
                 stringResource(
@@ -73,6 +75,7 @@ fun CurrentExerciseData(
                     exercise.totalLiftedWeight,
                     exercise.sets.size
                 ),
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(all = Dimens.Padding8)
             )
         }
@@ -96,7 +99,7 @@ fun LastExerciseData(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(all = Dimens.Padding8)) {
-                TextLarge(
+                TextMedium(
                     text =
                     stringResource(
                         Res.string.last_exercise,
@@ -104,6 +107,7 @@ fun LastExerciseData(
                         lastExercise.totalLiftedWeight,
                         lastExercise.sets.size
                     ),
+                    fontWeight = FontWeight.Bold
                 )
                 val setNum = exercise.sets.size
                 if (setNum < lastExercise.sets.size) {

@@ -1,7 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.trainingFeature.thisTraining.presentation
 
 import Dimens
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +35,6 @@ import maxrep.shared.generated.resources.finish_training
 import maxrep.shared.generated.resources.no_exercises_in_training
 import moe.tlaster.precompose.navigation.Navigator
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ThisTrainingScreen(
     state: ThisTrainingState,

@@ -13,9 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.last_training_lifted_weight
 import maxrep.shared.generated.resources.this_training_lifted_weight
@@ -52,12 +54,13 @@ fun TrainingComparison(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextLarge(
+                    TextMedium(
                         text = stringResource(
                             resource = Res.string.last_training_lifted_weight,
                             lastTraining.totalLiftedWeight,
                             Utils.countTrainingTime(lastTraining)
                         ),
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(all = Dimens.Padding8)
                     )
                 }
@@ -72,13 +75,14 @@ fun TrainingComparison(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextLarge(
+                    TextMedium(
                         color = textColor,
                         text = stringResource(
                             resource = Res.string.this_training_lifted_weight,
                             ongoingTraining.totalLiftedWeight,
                             trainingTime
                         ),
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(all = Dimens.Padding8)
                     )
                 }
