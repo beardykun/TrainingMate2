@@ -63,7 +63,6 @@ fun SummaryScreen(state: SummaryScreenState, onEvent: (SummaryScreenEvent) -> Un
                         text = Res.string.not_enough_data.getString(),
                         color = MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center,
-                        fontSize = Dimens.largeTextSize,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

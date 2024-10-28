@@ -38,7 +38,6 @@ fun SummaryWeekly(
     weeklySummary?.let { summary ->
         Card(
             elevation = CardDefaults.cardElevation(Dimens.cardElevation),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.outlineVariant),
             modifier = Modifier.fillMaxWidth().padding(horizontal = Dimens.Padding8),
             onClick = {
                 onClick.invoke(summary.year, summary.weekNumber)
@@ -46,8 +45,7 @@ fun SummaryWeekly(
         ) {
             Column(modifier = modifier) {
                 TextLarge(
-                    text = Res.string.this_week_summary.getString(),
-                    fontSize = Dimens.largeTextSize
+                    text = Res.string.this_week_summary.getString()
                 )
                 TextMedium(
                     text = stringResource(

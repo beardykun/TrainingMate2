@@ -103,21 +103,19 @@ fun TextSmall(
 fun TextLarge(
     text: String,
     vararg arguments: Pair<String, Color>,
-    fontWeight: FontWeight = FontWeight.Normal,
+    fontWeight: FontWeight = FontWeight.Bold,
     textAlign: TextAlign = TextAlign.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     color: Color = Color.Unspecified,
-    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text.prepareText(arguments = arguments),
-        style = MaterialTheme.typography.bodyLarge,
+        style = MaterialTheme.typography.titleLarge,
         fontWeight = fontWeight,
         color = color,
         overflow = overflow,
         textAlign = textAlign,
-        fontSize = fontSize,
         modifier = modifier
     )
 }
@@ -125,21 +123,19 @@ fun TextLarge(
 @Composable
 fun TextLarge(
     text: AnnotatedString,
-    fontWeight: FontWeight = FontWeight.Normal,
+    fontWeight: FontWeight = FontWeight.Bold,
     textAlign: TextAlign = TextAlign.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     color: Color = Color.Unspecified,
-    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     modifier: Modifier = Modifier
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.bodyLarge,
+        style = MaterialTheme.typography.titleLarge,
         fontWeight = fontWeight,
         color = color,
         overflow = overflow,
         textAlign = textAlign,
-        fontSize = fontSize,
         modifier = modifier
     )
 }

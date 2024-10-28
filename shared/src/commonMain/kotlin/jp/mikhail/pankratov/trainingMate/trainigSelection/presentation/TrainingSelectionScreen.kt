@@ -149,7 +149,6 @@ fun TrainingSelectionScreen(
                                         onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
                                     },
                                     modifier = Modifier.animateItem(),
-                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     containerColor = Color.White
                                 )
                             }

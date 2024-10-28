@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import jp.mikhail.pankratov.trainingMate.theme.DarkColorScheme
-import jp.mikhail.pankratov.trainingMate.theme.LightColorScheme
 import jp.mikhail.pankratov.trainingMate.theme.Typography
+import jp.mikhail.pankratov.trainingMate.theme.highContrastDarkColorScheme
+import jp.mikhail.pankratov.trainingMate.theme.highContrastLightColorScheme
 
 @Composable
 actual fun TrainingMateTheme(
@@ -27,8 +27,8 @@ actual fun TrainingMateTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> highContrastDarkColorScheme
+        else -> highContrastLightColorScheme
     }
 
     val view = LocalView.current

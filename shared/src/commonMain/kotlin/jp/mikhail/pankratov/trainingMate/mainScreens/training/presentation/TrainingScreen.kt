@@ -111,7 +111,6 @@ fun TrainingScreen(
                         }
                     },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             } ?: run {
                 TextLarge(
@@ -135,8 +134,7 @@ fun TrainingScreen(
                     },
                     onDeleteClick = {
                     },
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
                 )
             }
 
@@ -157,8 +155,7 @@ fun TrainingScreen(
                         },
                         onDeleteClick = {},
                         isDeletable = false,
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
                     )
                 }
             }

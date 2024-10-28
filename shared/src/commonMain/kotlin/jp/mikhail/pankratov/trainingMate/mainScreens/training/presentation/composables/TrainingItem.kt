@@ -32,6 +32,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.HighlightedText
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.cd_delete
@@ -52,7 +53,6 @@ fun LocalTrainingItem(
     onDeleteClick: (id: Long) -> Unit,
     isDeletable: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.inversePrimary,
-    contentColor: Color = Color.Black,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -73,8 +73,7 @@ fun LocalTrainingItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextLarge(
-                    text = stringResource(Res.string.training_name),
-                    color = contentColor
+                    text = stringResource(Res.string.training_name)
                 )
                 if (isDeletable) {
                     Icon(
@@ -86,16 +85,14 @@ fun LocalTrainingItem(
                 }
             }
             TextLarge(
-                text = training.name.uppercase(),
-                color = contentColor,
-                fontSize = Dimens.largeTextSize
+                text = training.name.uppercase()
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             AnimatedVisibility(visible = training.description.isNotBlank()) {
-                TextLarge(text = training.description, color = contentColor)
+                TextMedium(text = training.description)
                 Spacer(modifier = Modifier.height(Dimens.Padding8))
             }
-            TextLarge(text = stringResource(Res.string.groups), color = contentColor)
+            TextMedium(text = stringResource(Res.string.groups))
             Spacer(modifier = Modifier.height(Dimens.Padding8))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
@@ -111,7 +108,6 @@ fun TrainingItem(
     onClick: () -> Unit,
     onDeleteClick: (id: Long) -> Unit,
     containerColor: Color = Color.Unspecified,
-    contentColor: Color = Color.Unspecified
 ) {
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
@@ -131,8 +127,7 @@ fun TrainingItem(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextLarge(
-                    text = stringResource(Res.string.training_name),
-                    color = contentColor
+                    text = stringResource(Res.string.training_name)
                 )
                 Icon(
                     imageVector = Icons.Filled.Delete,
@@ -143,15 +138,13 @@ fun TrainingItem(
             }
             HighlightedText(fullText = training.name, query = query, textComp = {
                 TextLarge(
-                    it, color = contentColor,
-                    fontSize = Dimens.largeTextSize
+                    it
                 )
             })
             training.startTime?.let {
                 Spacer(modifier = Modifier.height(Dimens.Padding8))
-                TextLarge(
-                    text = Utils.formatEpochMillisToDate(it),
-                    color = contentColor
+                TextMedium(
+                    text = Utils.formatEpochMillisToDate(it)
                 )
             }
             Spacer(modifier = Modifier.height(Dimens.Padding8))
@@ -159,33 +152,32 @@ fun TrainingItem(
             HighlightedText(
                 fullText = stringResource(Res.string.exercises_with_new_line) + exercises.toString()
                     .substring(1, exercises.toString().length - 1), query = query,
-                textComp = { TextLarge(it) }
+                textComp = { TextMedium(it) }
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(
+            TextMedium(
                 text = stringResource(
                     Res.string.total_lifted_weight_with_args,
                     training.totalLiftedWeight
-                ),
-                color = contentColor
+                )
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(
+            TextMedium(
                 text = stringResource(
                     Res.string.training_duration_with_arg, Utils.trainingLengthToMin(
                         training
                     ).toString()
-                ), color = contentColor
+                )
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(
+            TextMedium(
                 text = stringResource(
                     Res.string.rest_time,
                     Utils.formatTimeText(training.restTime)
                 )
             )
             Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(text = stringResource(Res.string.groups), color = contentColor)
+            TextMedium(text = stringResource(Res.string.groups))
             OverlappingImagesBackground(
                 groups = training.groups.stringToList()
             )
