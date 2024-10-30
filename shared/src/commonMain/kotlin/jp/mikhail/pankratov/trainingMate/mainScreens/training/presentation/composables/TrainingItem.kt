@@ -133,7 +133,8 @@ fun TrainingItem(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = stringResource(Res.string.cd_delete),
                     modifier = Modifier.clickable {
-                        training.id?.let { onDeleteClick.invoke(it) }
+                        val trainingId = training.id ?: -1
+                        onDeleteClick.invoke(trainingId)
                     })
             }
             HighlightedText(fullText = training.name, query = query, textComp = {

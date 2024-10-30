@@ -105,10 +105,8 @@ fun TrainingScreen(
                     onClick = {
                         navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${lastTraining.id}")
                     },
-                    onDeleteClick = {
-                        lastTraining.id?.let { trainingId ->
-                            onEvent(TrainingScreenEvent.OnLastTrainingDelete(trainingId))
-                        }
+                    onDeleteClick = { trainingId ->
+                        onEvent(TrainingScreenEvent.OnLastTrainingDelete(trainingId))
                     },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                 )
@@ -133,6 +131,7 @@ fun TrainingScreen(
                         ToastManager.showToast(toastMessage)
                     },
                     onDeleteClick = {
+                        ToastManager.showToast(toastMessage)
                     },
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 )

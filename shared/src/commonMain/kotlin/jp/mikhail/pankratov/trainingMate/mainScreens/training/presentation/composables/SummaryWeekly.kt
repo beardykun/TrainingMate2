@@ -93,7 +93,7 @@ fun SummaryWeekly(
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_exercise_with_args,
-                        summary.avgLiftedWeightPerExercise
+                        summary.avgLiftedWeightPerExercise.toString()
                     )
                 )
                 TextMedium(

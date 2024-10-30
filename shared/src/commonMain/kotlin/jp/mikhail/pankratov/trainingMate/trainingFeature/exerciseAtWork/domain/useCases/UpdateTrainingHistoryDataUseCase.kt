@@ -33,7 +33,7 @@ class UpdateTrainingHistoryDataUseCase(private val trainingHistoryDataSource: IT
             doneExercised = doneExercises,
             sets = if (weight < 0) -1 else 1,
             reps = reps,
-            restTime = sets.sumOf { it.restSec ?: 0 }
+            restTime = sets.lastOrNull()?.restSec ?: 0
         )
     }
 }
