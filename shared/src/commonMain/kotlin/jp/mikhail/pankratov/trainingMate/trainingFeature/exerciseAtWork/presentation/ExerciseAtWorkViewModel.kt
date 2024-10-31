@@ -94,7 +94,11 @@ class ExerciseAtWorkViewModel(
             ExerciseAtWorkEvent.OnDropdownOpen -> {
                 _state.update { currentState ->
                     currentState.copy(
-                        timerState = currentState.timerState.copy(isExpanded = true)
+                        timerState = currentState.timerState.copy(
+                            isExpanded = true,
+                            timerMin = state.value.timerState.timerValue / 60,
+                            timerSec = state.value.timerState.timerValue % 60,
+                        )
                     )
                 }
                 onEvent(ExerciseAtWorkEvent.OnTimerStop)
