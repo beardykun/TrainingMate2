@@ -1,10 +1,12 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
+import androidx.compose.runtime.Immutable
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 
+@Immutable
 data class AnalysisScreenSate(
     val chartLabel: String = MetricsMode.GENERAL.name,
     val historyTrainings: List<Training>? = null,

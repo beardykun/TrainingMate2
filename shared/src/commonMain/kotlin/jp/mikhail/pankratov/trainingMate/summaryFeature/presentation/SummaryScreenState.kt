@@ -1,5 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.summaryFeature.presentation
 
+import androidx.compose.runtime.Immutable
 import com.aay.compose.donutChart.model.PieChartData
 
 data class SummaryScreenState(
@@ -8,6 +9,7 @@ data class SummaryScreenState(
     val summaryDataToDisplay:  SummaryData? = null
 )
 
+@Immutable
 data class SummaryData(
     val trainingDuration: List<PieChartData>,
     val totalLiftedWeight: List<PieChartData>,

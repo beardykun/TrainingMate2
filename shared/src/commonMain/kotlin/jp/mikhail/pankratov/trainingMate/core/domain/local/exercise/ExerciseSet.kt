@@ -1,7 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.local.exercise
 
+import androidx.compose.runtime.Immutable
 import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
 
+@Immutable
 data class ExerciseSet(
     val id: String,
     val weight: String,

@@ -1,7 +1,9 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen
 
+import androidx.compose.runtime.Immutable
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 
+@Immutable
 data class HistoryScreenState(
     val historyList: List<Training>? = null,
     val showDeleteDialog: Boolean = false,

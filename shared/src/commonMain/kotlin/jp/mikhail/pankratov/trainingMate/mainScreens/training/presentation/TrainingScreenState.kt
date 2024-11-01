@@ -1,10 +1,12 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation
 
+import androidx.compose.runtime.Immutable
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
 
+@Immutable
 data class TrainingScreenState(
     val greeting: String = "",
     val availableTrainings: List<TrainingLocal>? = null,
