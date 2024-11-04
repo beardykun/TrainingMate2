@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import jp.mikhail.pankratov.trainingMate.R
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.TimerDataHolder
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.TimerDataHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

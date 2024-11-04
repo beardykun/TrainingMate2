@@ -36,7 +36,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByN
 import jp.mikhail.pankratov.trainingMate.core.domain.util.getExerciseNameStringResource
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.theme.goldLight
-import jp.mikhail.pankratov.trainingMate.trainingFeature.addExercises.presentation.ExerciseListItem
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.ExerciseListItem
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.cd_group_image
 import maxrep.shared.generated.resources.strength_defining

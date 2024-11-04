@@ -1,15 +1,16 @@
 package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
 import Dimens
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.getString
@@ -66,7 +67,7 @@ fun CreateTrainingScreen(
             selected = state.selectedGroups,
             displayItem = { it },
             modifier = Modifier.weight(1f),
-                    onClick = { selectedGroup ->
+            onClick = { selectedGroup ->
                 onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
             },
             listItem = { item, isSelected, onClick, modifier ->
@@ -79,6 +80,7 @@ fun CreateTrainingScreen(
             }
         )
         val groupError = Res.string.select_muscle_group.getString()
+        val enabled = state.trainingName.text.isNotBlank() && state.selectedGroups.isNotEmpty()
         CommonButton(
             onClick = {
                 if (state.selectedGroups.isEmpty()) {
@@ -89,6 +91,7 @@ fun CreateTrainingScreen(
                     navigator.navigate(Routs.TrainingScreens.selectTraining)
                 }))
             },
+            enabled = enabled,
             text = Res.string.add_training.getString()
         )
     }

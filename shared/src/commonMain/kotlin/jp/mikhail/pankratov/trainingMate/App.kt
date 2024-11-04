@@ -64,7 +64,8 @@ fun App(
 
                 Scaffold(
                     topBar = {
-                        if (current?.route?.route?.contains(Routs.MainScreens.history.title) != true)
+                        if (current?.route?.route?.contains(Routs.MainScreens.history.title) != true
+                            && current?.route?.route?.contains(Routs.MainScreens.training.title) != true)
                         TopAppBar(title = {
                             Text(
                                 text = current?.route?.route?.split("/")?.first() ?: "",

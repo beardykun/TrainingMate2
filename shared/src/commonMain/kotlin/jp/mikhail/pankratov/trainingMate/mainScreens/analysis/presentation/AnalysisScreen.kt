@@ -1,6 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.mainScreens.analysis.presentation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLoca
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.ExerciseItem
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.choose_your_training
 import maxrep.shared.generated.resources.select_exercise

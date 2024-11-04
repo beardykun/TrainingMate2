@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import jp.mikhail.pankratov.trainingMate.core.getString
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.presentation.composables.TimerSpinnerWheels
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.TimerSpinnerWheels
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.no
 import maxrep.shared.generated.resources.ok

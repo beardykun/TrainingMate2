@@ -9,10 +9,10 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrai
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.summaryFeature.data.local.SummaryDatasource
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.local.ExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.data.local.ExerciseHistoryDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.data.local.ExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.data.local.ExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
 
 actual class AppModule {
 

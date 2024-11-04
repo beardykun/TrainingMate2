@@ -11,8 +11,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -93,6 +95,8 @@ fun TrainingScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(Dimens.Padding16)
         ) {
+            Spacer(modifier = Modifier.height(Dimens.Padding32))
+
             TextLarge(text = state.greeting)
 
             state.lastTraining?.let { lastTraining ->
@@ -176,6 +180,7 @@ fun TrainingScreen(
                         }
                     }
                 )
+                Spacer(modifier = Modifier.height(Dimens.Padding32))
             }
 
             AnimatedVisibility(visible = state.showDeleteDialog) {

@@ -89,7 +89,7 @@
     <string name="invalid_or_duplicate_training_name">Invalid or duplicate training name</string>
     <string name="choose_training_description">Input a training description or skip</string>
     <string name="invalid_training_description">Training description should be empty or at least 5 characters long</string>
-    <string name="add_training">Add Training</string>
+    <string name="add_training">Create Training</string>
 
     <!-- CreateExerciseScreen -->
     <string name="choose_exercise_name">Choose a exercise name</string>

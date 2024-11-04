@@ -13,10 +13,10 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.Get
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.GetStrengthDefiningExercisesUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.InsertExerciseHistoryUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.exercise.InsertLocalExerciseUseCase
-import jp.mikhail.pankratov.trainingMate.trainingFeature.createExercise.domain.IsLocalExerciseExistsUseCase
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateBestLiftedWeightUseCase
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateHistoryExerciseDataUseCase
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWorkHistory.domain.useCases.GetHistoryExercisesWithNameUseCase
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.createExercise.domain.IsLocalExerciseExistsUseCase
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.UpdateBestLiftedWeightUseCase
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.UpdateHistoryExerciseDataUseCase
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.domain.useCases.GetHistoryExercisesWithNameUseCase
 import org.koin.dsl.module
 
 fun exerciseUseCaseModule() = module {

@@ -18,7 +18,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.loc
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.IsLocalTrainingExistsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.IsLocalTrainingTableEmptyUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.local.UpdateTrainingLocalExerciseUseCase
-import jp.mikhail.pankratov.trainingMate.trainingFeature.exerciseAtWork.domain.useCases.UpdateTrainingHistoryDataUseCase
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.UpdateTrainingHistoryDataUseCase
 import org.koin.core.Koin
 
 class TrainingUseCaseProvider(val koin: Koin) {
