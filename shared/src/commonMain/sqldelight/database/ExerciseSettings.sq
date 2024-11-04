@@ -1,0 +1,35 @@
+CREATE TABLE ExerciseSettings (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    training_template_id INTEGER NOT NULL,
+    exercise_template_id INTEGER NOT NULL,
+    increment_weight_default REAL NOT NULL,
+    increment_weight_this_training_only REAL NOT NULL,
+    is_strength_defining INTEGER NOT NULL
+);
+
+insertExerciseSetting:
+INSERT OR REPLACE
+INTO ExerciseSettings(
+    id,
+    training_template_id,
+    exercise_template_id,
+    increment_weight_default,
+    increment_weight_this_training_only,
+    is_strength_defining
+)
+VALUES(?, ?, ?, ?, ?, ?);
+
+getExerciseSettings:
+SELECT *
+FROM ExerciseHistory
+WHERE training_template_id = ? AND exercise_template_id = ?;
+
+updateDefaultIncrementWeight:
+UPDATE ExerciseSettings
+SET increment_weight_default = ?
+WHERE exercise_template_id = ?;
+
+updateIncrementWeightForTraining:
+UPDATE ExerciseSettings
+SET increment_weight_this_training_only = ?
+WHERE training_template_id = ? AND exercise_template_id = ?;
