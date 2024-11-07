@@ -22,13 +22,18 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TimerOff
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -76,6 +81,7 @@ const val COLUMNS_NUM = 3
 private val COUNTDOWN_ANIMATION_RANGE = 0..10
 
 //Use same weights as before, increase or decrease selection
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExerciseAtWorkScreen(
     state: ExerciseAtWorkState,
@@ -100,7 +106,24 @@ fun ExerciseAtWorkScreen(
         }
     }
     val focus = LocalFocusManager.current
-    Scaffold(modifier = Modifier.padding(all = Dimens.Padding16)) { padding ->
+    Scaffold(
+        topBar =
+        {
+            TopAppBar(
+                title = { TextMedium(text = Routs.ExerciseScreens.exerciseAtWork) },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            navigator.navigate(route = "${Routs.ExerciseScreens.exerciseSettings}/${state.ongoingTraining?.trainingTemplateId}/${state.exerciseDetails.exerciseLocal?.id}")
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                    }
+                }
+            )
+        },
+        modifier = Modifier.padding(all = Dimens.Padding16)
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             state.exerciseDetails.exercise?.name?.let {
                 TextLarge(

@@ -38,10 +38,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.Train
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoScreen
 import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoViewModel
-import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryScreen
-import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryViewModel
-import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionScreen
-import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.AddExercisesScreen
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.createExercise.presentation.CreateExerciseScreen
@@ -51,8 +47,14 @@ import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.p
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.ViewModelArguments
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryScreen
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseScreenViewModel
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseSettingsScreen
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.presentation.ThisTrainingScreen
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.presentation.ThisTrainingViewModel
+import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryScreen
+import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryViewModel
+import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionScreen
+import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.last_month_summary
 import maxrep.shared.generated.resources.last_week_summary
@@ -265,6 +267,27 @@ private fun RouteBuilder.trainingScreens(
                 state = state,
                 onEvent = viewModel::onEvent,
                 navigator = navigator
+            )
+        }
+
+        scene(
+            route = "${Routs.ExerciseScreens.exerciseSettings}/${TRAINING_TEMPLATE_ID}/${EXERCISE_TEMPLATE_ID}",
+            navTransition = NavTransition()
+        ) { backStackEntry ->
+            val trainingTemplateId: Long = backStackEntry.path(TRAINING_TEMPLATE_ID) ?: -1
+            val exerciseTemplateId: Long = backStackEntry.path(EXERCISE_TEMPLATE_ID) ?: -1
+
+            val viewModel: ExerciseScreenViewModel =
+                koinViewModel(qualifier = named("ExerciseScreenViewModel")) {
+                    parametersOf(
+                        trainingTemplateId,
+                        exerciseTemplateId
+                    )
+                }
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            ExerciseSettingsScreen(
+                state = state,
+                onEvent = viewModel::onEvent,
             )
         }
 

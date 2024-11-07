@@ -33,6 +33,7 @@ object Routs {
     object ExerciseScreens {
         val exerciseAtWork = "Exercise At Work"
         val exerciseAtWorkHistory = "Exercise History"
+        val exerciseSettings = "Exercise Settings"
     }
 
     object SummaryScreens {
