@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.ExerciseAtWorkEvent
 import maxrep.shared.generated.resources.Res

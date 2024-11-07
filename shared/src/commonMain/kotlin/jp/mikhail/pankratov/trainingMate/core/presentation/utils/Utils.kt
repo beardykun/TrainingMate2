@@ -1,9 +1,8 @@
-package jp.mikhail.pankratov.trainingMate.core.domain.util
+package jp.mikhail.pankratov.trainingMate.core.presentation.utils
 
 import androidx.compose.ui.graphics.Color
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

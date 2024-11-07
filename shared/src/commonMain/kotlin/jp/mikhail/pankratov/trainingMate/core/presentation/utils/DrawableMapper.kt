@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.core.domain.util
+package jp.mikhail.pankratov.trainingMate.core.presentation.utils
 
 import androidx.compose.runtime.Composable
 import jp.mikhail.pankratov.trainingMate.core.getString
@@ -95,7 +95,6 @@ import maxrep.shared.generated.resources.tuck_crunch
 import maxrep.shared.generated.resources.underhand_cable_pulldown
 import maxrep.shared.generated.resources.wide_grip_lat_pulldown
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
 
 fun getDrawableResourceByName(resName: String): DrawableResource? {
     return when (resName) {

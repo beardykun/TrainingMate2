@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local
+package jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local
 
 import database.TrainingHistory
 import database.TrainingTemplate

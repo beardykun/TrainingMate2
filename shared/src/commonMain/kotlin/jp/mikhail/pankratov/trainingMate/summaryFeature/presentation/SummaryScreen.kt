@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.aay.compose.donutChart.model.PieChartData
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonPieChart
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.MyHorizontalViewPager

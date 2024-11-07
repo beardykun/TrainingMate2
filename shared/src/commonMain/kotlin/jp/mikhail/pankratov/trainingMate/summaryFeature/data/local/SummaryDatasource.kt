@@ -8,8 +8,6 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.util.DateUtils
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
-import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.toMonthlySummary
-import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.toWeeklySummary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow

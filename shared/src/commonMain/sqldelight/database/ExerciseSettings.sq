@@ -4,7 +4,8 @@ CREATE TABLE ExerciseSettings (
     exercise_template_id INTEGER NOT NULL,
     increment_weight_default REAL NOT NULL,
     increment_weight_this_training_only REAL NOT NULL,
-    is_strength_defining INTEGER NOT NULL
+    is_strength_defining INTEGER NOT NULL,
+    interval_seconds INTEGER NOT NULL
 );
 
 insertExerciseSetting:
@@ -15,14 +16,16 @@ INTO ExerciseSettings(
     exercise_template_id,
     increment_weight_default,
     increment_weight_this_training_only,
-    is_strength_defining
+    is_strength_defining,
+    interval_seconds
 )
-VALUES(?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?);
 
 getExerciseSettings:
 SELECT *
-FROM ExerciseHistory
-WHERE training_template_id = ? AND exercise_template_id = ?;
+FROM ExerciseSettings
+WHERE training_template_id = ? AND exercise_template_id = ?
+LIMIT 1;
 
 updateDefaultIncrementWeight:
 UPDATE ExerciseSettings

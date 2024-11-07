@@ -11,7 +11,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.core.randomUUID
 import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.TimerDataHolder

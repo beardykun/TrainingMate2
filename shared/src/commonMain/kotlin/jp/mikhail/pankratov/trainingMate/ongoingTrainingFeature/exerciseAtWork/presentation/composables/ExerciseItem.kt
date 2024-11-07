@@ -27,8 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
-import jp.mikhail.pankratov.trainingMate.core.domain.util.getExerciseNameStringResource
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getExerciseNameStringResource
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium

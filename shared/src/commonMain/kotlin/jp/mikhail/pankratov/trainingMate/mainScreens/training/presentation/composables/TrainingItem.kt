@@ -28,8 +28,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.times
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
-import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.HighlightedText
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium

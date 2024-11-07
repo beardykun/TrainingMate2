@@ -7,7 +7,6 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.setListToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
-import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.toExercise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -16,12 +15,12 @@ import kotlinx.coroutines.flow.map
 
 class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasource {
 
-    private val query = db.exerciseHistoryQueries
+    private val queries = db.exerciseHistoryQueries
     override fun getExerciseFromHistory(
         trainingHistoryId: Long,
         exerciseTemplateId: Long
     ): Flow<Exercise?> {
-        return query.getExerciseFromHistory(
+        return queries.getExerciseFromHistory(
             training_history_id = trainingHistoryId,
             exercise_template_id = exerciseTemplateId
         ).asFlow().map { exerciseHistory ->
@@ -30,7 +29,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
     }
 
     override fun getExercisesForTrainingHistory(trainingHistoryId: Long): Flow<List<Exercise>> {
-        return query.getExercisesForTrainingHistory(training_history_id = trainingHistoryId)
+        return queries.getExercisesForTrainingHistory(training_history_id = trainingHistoryId)
             .asFlow().mapToList(Dispatchers.IO).map { exercises ->
                 exercises.map { exercise ->
                     exercise.toExercise()
@@ -39,7 +38,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
     }
 
     override fun getExercisesForTrainingWithId(trainingId: Long): Flow<List<Exercise>> {
-        return query.getExercisesForTrainingWithId(training_template_id = trainingId)
+        return queries.getExercisesForTrainingWithId(training_template_id = trainingId)
             .asFlow().mapToList(Dispatchers.IO).map { exercises ->
                 exercises.map { exercise ->
                     exercise.toExercise()
@@ -48,7 +47,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
     }
 
     override fun getHistoryExercisesWithName(name: String): Flow<List<Exercise>> {
-        return query.getExercisesWithName(name).asFlow().mapToList(Dispatchers.IO)
+        return queries.getExercisesWithName(name).asFlow().mapToList(Dispatchers.IO)
             .map { exercises ->
                 exercises.map { exercise ->
                     exercise.toExercise()
@@ -60,7 +59,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         trainingHistoryId: Long,
         exerciseTemplateId: Long
     ): Flow<Long> {
-        return query.countExerciseInHistory(
+        return queries.countExerciseInHistory(
             training_history_id = trainingHistoryId,
             exercise_template_id = exerciseTemplateId
         ).asFlow().map { count ->
@@ -69,7 +68,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
     }
 
     override suspend fun insertExerciseHistory(exercise: Exercise) {
-        query.insertExerciseHistory(
+        queries.insertExerciseHistory(
             id = exercise.id,
             name = exercise.name,
             sets = exercise.sets.setListToString(),
@@ -90,7 +89,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         exerciseTemplateId: Long,
         reps: Int
     ) {
-        query.updateExerciseSets(
+        queries.updateExerciseSets(
             sets = sets.setListToString(),
             total_lifted_weight = totalLiftedWeight,
             training_history_id = trainingHistoryId,
@@ -104,7 +103,7 @@ class ExerciseHistoryDatasource(db: TrainingDatabase) : IExerciseHistoryDatasour
         trainingHistoryId: Long,
         trainingTemplateId: Long
     ): Flow<Exercise?> {
-        return query.getLastSameExercise(
+        return queries.getLastSameExercise(
             exercise_template_id = exerciseTemplateId,
             training_history_id = trainingHistoryId,
             training_template_id = trainingTemplateId

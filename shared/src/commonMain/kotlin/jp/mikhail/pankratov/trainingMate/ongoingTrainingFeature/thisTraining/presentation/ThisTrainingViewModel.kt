@@ -9,7 +9,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.domain.useCases.RemoveExerciseUseCase
 import kotlinx.coroutines.Dispatchers

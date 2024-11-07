@@ -15,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.last_training_lifted_weight

@@ -32,8 +32,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.core.domain.util.getDrawableResourceByName
-import jp.mikhail.pankratov.trainingMate.core.domain.util.getExerciseNameStringResource
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getExerciseNameStringResource
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.theme.goldLight
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.ExerciseListItem

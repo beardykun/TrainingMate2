@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.local.exercise
 
 import androidx.compose.runtime.Immutable
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 
 @Immutable
 data class ExerciseSet(

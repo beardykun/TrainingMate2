@@ -8,12 +8,14 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.Trainin
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.data.local.TrainingHistoryDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingHistoryDataSource
-import jp.mikhail.pankratov.trainingMate.summaryFeature.data.local.SummaryDatasource
-import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.data.local.ExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.data.local.ExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.data.local.ExerciseSettingsDatasource
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseDatasource
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseHistoryDatasource
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseSettingsDatasource
+import jp.mikhail.pankratov.trainingMate.summaryFeature.data.local.SummaryDatasource
+import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 
 actual class AppModule(private val context: Context) {
 
@@ -35,6 +37,14 @@ actual class AppModule(private val context: Context) {
 
     actual val exerciseHistoryDataSource: IExerciseHistoryDatasource by lazy {
         ExerciseHistoryDatasource(
+            db = TrainingDatabase(
+                driver = DatabaseDriverFactory(context = context).createDriver()
+            )
+        )
+    }
+
+    actual val exerciseSettingsDataSource: IExerciseSettingsDatasource by lazy {
+        ExerciseSettingsDatasource(
             db = TrainingDatabase(
                 driver = DatabaseDriverFactory(context = context).createDriver()
             )

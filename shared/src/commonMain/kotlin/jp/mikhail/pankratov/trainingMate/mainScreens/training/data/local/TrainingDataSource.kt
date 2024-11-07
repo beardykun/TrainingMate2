@@ -7,7 +7,6 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLoca
 import jp.mikhail.pankratov.trainingMate.core.listToString
 import jp.mikhail.pankratov.trainingMate.database.TrainingDatabase
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.ITrainingDataSource
-import jp.mikhail.pankratov.trainingMate.mainScreens.training.domain.local.toTrainingLocal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow

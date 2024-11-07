@@ -1,6 +1,7 @@
-package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local
+package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.data.local
 
 import database.ExerciseHistory
+import database.ExerciseSettings
 import database.ExerciseTemplate
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
@@ -29,5 +30,17 @@ fun ExerciseHistory.toExercise(): Exercise {
         date = date,
         exerciseTemplateId = exercise_template_id,
         totalLiftedWeight = total_lifted_weight
+    )
+}
+
+fun ExerciseSettings.toExerciseSettings(): jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings {
+    return jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings(
+        id = id,
+        trainingTemplateId = training_template_id,
+        exerciseTemplateId = exercise_template_id,
+        incrementWeightDefault = increment_weight_default,
+        incrementWeightThisTrainingOnly = increment_weight_this_training_only,
+        isStrengthDefining = is_strength_defining.toInt() != 0,
+        intervalSeconds = interval_seconds
     )
 }

@@ -1,4 +1,4 @@
-package jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local
+package jp.mikhail.pankratov.trainingMate.summaryFeature.data.local
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.MonthlySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary

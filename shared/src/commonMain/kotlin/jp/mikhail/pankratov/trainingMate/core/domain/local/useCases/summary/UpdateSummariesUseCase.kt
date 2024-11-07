@@ -1,7 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.summary
 
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.domain.util.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDatasource
 
 class UpdateSummariesUseCase(private val summaryDatasource: ISummaryDatasource) {
