@@ -10,7 +10,7 @@ fun ExerciseSettingsScreen(state: ExerciseSettingsState, onEvent: (ExerciseSetti
     state.exerciseSettings?.let { exerciseSettings ->
         Column {
             InputField(
-                value = TextFieldValue(exerciseSettings.incrementWeightDefault.toString()),
+                value = TextFieldValue(exerciseSettings.defaultSettings.incrementWeightDefault.toString()),
                 label = "Res.string.increment_default_weight",
                 placeholder = "Res.string.increment_default_weight",
                 onValueChanged = { newValue ->
@@ -18,11 +18,27 @@ fun ExerciseSettingsScreen(state: ExerciseSettingsState, onEvent: (ExerciseSetti
                 }
             )
             InputField(
-                value = TextFieldValue(exerciseSettings.incrementWeightThisTrainingOnly.toString()),
+                value = TextFieldValue(exerciseSettings.defaultSettings.intervalSecondsDefault.toString()),
+                label = "OnDefaultIntervalSecondsChanged",
+                placeholder = "OnDefaultIntervalSecondsChanged",
+                onValueChanged = { newValue ->
+                    onEvent(ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged(newValue))
+                }
+            )
+            InputField(
+                value = TextFieldValue(exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly.toString()),
                 label = "Res.string.increment_weight",
                 placeholder = "Res.string.increment_weight",
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnIncrementWeightChanged(newValue))
+                }
+            )
+            InputField(
+                value = TextFieldValue(exerciseSettings.exerciseTrainingSettings.intervalSeconds.toString()),
+                label = "OnIntervalSecondsChanged",
+                placeholder = "OnIntervalSecondsChanged",
+                onValueChanged = { newValue ->
+                    onEvent(ExerciseSettingsEvent.OnIntervalSecondsChanged(newValue))
                 }
             )
         }

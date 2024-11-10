@@ -39,7 +39,7 @@ class ExerciseSettingsViewModel(
                     it.copy(
                         exerciseSettings = it.exerciseSettings?.copy(
                             defaultSettings = it.exerciseSettings.defaultSettings.copy(
-                                incrementWeightDefault = event.newWeight.text.toDouble(),
+                                incrementWeightDefault = event.newValue.text.toDouble(),
                                 updated = true
                             )
                         )
@@ -52,7 +52,7 @@ class ExerciseSettingsViewModel(
                     it.copy(
                         exerciseSettings = it.exerciseSettings?.copy(
                             exerciseTrainingSettings = it.exerciseSettings.exerciseTrainingSettings.copy(
-                                incrementWeightThisTrainingOnly = event.newWeight.text.toDouble(),
+                                incrementWeightThisTrainingOnly = event.newValue.text.toDouble(),
                                 updated = true
                             )
                         )
@@ -64,6 +64,32 @@ class ExerciseSettingsViewModel(
                 viewModelScope.launch {
                     val exerciseSettings = state.value.exerciseSettings
                     updateExerciseSettings(exerciseSettings)
+                }
+            }
+
+            is ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged -> {
+                _state.update {
+                    it.copy(
+                        exerciseSettings = it.exerciseSettings?.copy(
+                            defaultSettings = it.exerciseSettings.defaultSettings.copy(
+                                intervalSecondsDefault = event.newValue.text.toLong(),
+                                updated = true
+                            )
+                        )
+                    )
+                }
+            }
+
+            is ExerciseSettingsEvent.OnIntervalSecondsChanged -> {
+                _state.update {
+                    it.copy(
+                        exerciseSettings = it.exerciseSettings?.copy(
+                            exerciseTrainingSettings = it.exerciseSettings.exerciseTrainingSettings.copy(
+                                intervalSeconds = event.newValue.text.toLong(),
+                                updated = true
+                            )
+                        )
+                    )
                 }
             }
         }
