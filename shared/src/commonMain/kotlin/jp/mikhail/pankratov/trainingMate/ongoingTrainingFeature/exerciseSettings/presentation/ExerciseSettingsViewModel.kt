@@ -60,10 +60,11 @@ class ExerciseSettingsViewModel(
                 }
             }
 
-            ExerciseSettingsEvent.OnApplyChanges -> {
+            is ExerciseSettingsEvent.OnApplyChanges -> {
                 viewModelScope.launch {
                     val exerciseSettings = state.value.exerciseSettings
                     updateExerciseSettings(exerciseSettings)
+                    event.onSuccess.invoke()
                 }
             }
 

@@ -247,7 +247,7 @@ fun ExerciseAtWorkScreen(
                     onClick = {
                         onEvent(ExerciseAtWorkEvent.OnAddNewSet)
                     },
-                    modifier = Modifier.padding(bottom = Dimens.Padding8).size(Dimens.roundButton)
+                    modifier = Modifier.padding(bottom = Dimens.Padding12).size(Dimens.roundButton)
                 ) {
                     TextMedium(text = Res.string.add_set.getString())
                 }

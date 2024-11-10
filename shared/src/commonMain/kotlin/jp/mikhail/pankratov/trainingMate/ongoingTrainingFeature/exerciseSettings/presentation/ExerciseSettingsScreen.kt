@@ -3,16 +3,22 @@ package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSetting
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.input.TextFieldValue
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
+import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
-fun ExerciseSettingsScreen(state: ExerciseSettingsState, onEvent: (ExerciseSettingsEvent) -> Unit) {
+fun ExerciseSettingsScreen(
+    state: ExerciseSettingsState, onEvent: (ExerciseSettingsEvent) -> Unit, navigator: Navigator
+) {
     state.exerciseSettings?.let { exerciseSettings ->
         Column {
+            TextLarge(text = "Default settings for this exercise")
             InputField(
                 value = TextFieldValue(exerciseSettings.defaultSettings.incrementWeightDefault.toString()),
-                label = "Res.string.increment_default_weight",
-                placeholder = "Res.string.increment_default_weight",
+                label = "increment_default_weight",
+                placeholder = "increment_default_weight",
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnDefaultIncrementWeightChanged(newValue))
                 }
@@ -25,10 +31,11 @@ fun ExerciseSettingsScreen(state: ExerciseSettingsState, onEvent: (ExerciseSetti
                     onEvent(ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged(newValue))
                 }
             )
+            TextLarge(text = "Settings for exercise in This Training")
             InputField(
                 value = TextFieldValue(exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly.toString()),
-                label = "Res.string.increment_weight",
-                placeholder = "Res.string.increment_weight",
+                label = "increment_weight",
+                placeholder = "increment_weight",
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnIncrementWeightChanged(newValue))
                 }
@@ -39,6 +46,14 @@ fun ExerciseSettingsScreen(state: ExerciseSettingsState, onEvent: (ExerciseSetti
                 placeholder = "OnIntervalSecondsChanged",
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnIntervalSecondsChanged(newValue))
+                }
+            )
+            CommonButton(
+                text = "Apply Changes",
+                onClick = {
+                    onEvent(ExerciseSettingsEvent.OnApplyChanges {
+                        navigator.goBack()
+                    })
                 }
             )
         }

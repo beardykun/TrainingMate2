@@ -18,11 +18,11 @@ class ExerciseSettingsDatasource(db: TrainingDatabase) : IExerciseSettingsDataso
             id = exerciseSettings.id,
             training_template_id = exerciseSettings.trainingTemplateId,
             exercise_template_id = exerciseSettings.exerciseTemplateId,
-            increment_weight_default = exerciseSettings.incrementWeightDefault,
-            increment_weight_this_training_only = exerciseSettings.incrementWeightThisTrainingOnly,
-            is_strength_defining = if (exerciseSettings.isStrengthDefining) 1 else 0,
-            interval_seconds = exerciseSettings.intervalSeconds,
-            interval_seconds_default = exerciseSettings.intervalSeconds
+            increment_weight_default = exerciseSettings.defaultSettings.incrementWeightDefault,
+            increment_weight_this_training_only = exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly,
+            is_strength_defining = if (exerciseSettings.defaultSettings.isStrengthDefining) 1 else 0,
+            interval_seconds = exerciseSettings.exerciseTrainingSettings.intervalSeconds,
+            interval_seconds_default = exerciseSettings.defaultSettings.intervalSecondsDefault
         )
     }
 

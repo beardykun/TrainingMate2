@@ -288,6 +288,7 @@ private fun RouteBuilder.trainingScreens(
             ExerciseSettingsScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
+                navigator = navigator
             )
         }
 
