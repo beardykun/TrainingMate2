@@ -1,7 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation
 
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings
@@ -29,22 +27,9 @@ class ExerciseSettingsViewModel(
             exerciseTemplateId = exerciseTemplateId
         )
     ) { state, exerciseSettings ->
-        if (exerciseSettings == null) state else {
-            val incrementWeight =
-                exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly?.toString()
-                    ?: ""
-            val intervalSeconds =
-                exerciseSettings.exerciseTrainingSettings.intervalSeconds?.toString() ?: ""
-            state.copy(
-                exerciseSettings = exerciseSettings,
-                incrementWeightDefault = TextFieldValue(exerciseSettings.defaultSettings.incrementWeightDefault.toString(),
-                    selection = TextRange(exerciseSettings.defaultSettings.incrementWeightDefault.toString().length)
-                ),
-                defaultIntervalSeconds = TextFieldValue(exerciseSettings.defaultSettings.intervalSecondsDefault.toString()),
-                incrementWeight = TextFieldValue(incrementWeight),
-                intervalSeconds = TextFieldValue(intervalSeconds)
-            )
-        }
+        state.copy(
+            exerciseSettings = exerciseSettings,
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExerciseSettingsState())
 
     fun onEvent(event: ExerciseSettingsEvent) {
@@ -52,7 +37,6 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnDefaultIncrementWeightChanged -> {
                 _state.update {
                     it.copy(
-                        incrementWeightDefault = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             defaultSettings = it.exerciseSettings.defaultSettings.copy(
                                 incrementWeightDefault = event.newValue.text.toDouble(),
@@ -66,7 +50,6 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnIncrementWeightChanged -> {
                 _state.update {
                     it.copy(
-                        incrementWeight = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             exerciseTrainingSettings = it.exerciseSettings.exerciseTrainingSettings.copy(
                                 incrementWeightThisTrainingOnly = event.newValue.text.toDouble(),
@@ -88,7 +71,6 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged -> {
                 _state.update {
                     it.copy(
-                        defaultIntervalSeconds = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             defaultSettings = it.exerciseSettings.defaultSettings.copy(
                                 intervalSecondsDefault = event.newValue.text.toLong(),
@@ -102,7 +84,6 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnIntervalSecondsChanged -> {
                 _state.update {
                     it.copy(
-                        intervalSeconds = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             exerciseTrainingSettings = it.exerciseSettings.exerciseTrainingSettings.copy(
                                 intervalSeconds = event.newValue.text.toLong(),
