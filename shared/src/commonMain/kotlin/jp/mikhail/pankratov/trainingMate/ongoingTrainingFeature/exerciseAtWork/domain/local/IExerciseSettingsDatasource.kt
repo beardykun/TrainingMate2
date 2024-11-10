@@ -13,14 +13,13 @@ interface IExerciseSettingsDatasource {
     suspend fun updateDefaultSettings(
         exerciseTemplateId: Long,
         weight: Double,
-        intervalSeconds: Long,
-        isStrengthDefining: Boolean
+        intervalSeconds: Long
     )
 
     suspend fun updateTrainingExerciseSettings(
         trainingTemplateId: Long,
         exerciseTemplateId: Long,
-        weight: Double,
-        intervalSeconds: Long
+        weight: Double?,
+        intervalSeconds: Long?
     )
 }

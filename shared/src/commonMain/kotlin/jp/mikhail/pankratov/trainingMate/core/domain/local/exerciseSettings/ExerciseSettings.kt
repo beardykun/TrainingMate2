@@ -14,13 +14,12 @@ data class ExerciseSettings(
 
 data class DefaultSettings(
     val incrementWeightDefault: Double,
-    val isStrengthDefining: Boolean,
     val intervalSecondsDefault: Long,
     val updated: Boolean = false
 )
 
 data class ExerciseTrainingSettings(
-    val incrementWeightThisTrainingOnly: Double,
-    val intervalSeconds: Long,
+    val incrementWeightThisTrainingOnly: Double? = null,
+    val intervalSeconds: Long? = null,
     val updated: Boolean = false
 )

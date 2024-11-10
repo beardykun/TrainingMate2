@@ -8,7 +8,11 @@ import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.DefaultSettings
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseTrainingSettings
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseSettingsUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
@@ -25,6 +29,8 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,6 +42,7 @@ private const val ZERO = 0
 class ExerciseAtWorkViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
+    private val exerciseSettingsUseCaseProvider: ExerciseSettingsUseCaseProvider,
     private val updateAutoInputUseCase: UpdateAutoInputUseCase,
     private val validateInputUseCase: ValidateInputUseCase,
     private val viewModelArguments: ViewModelArguments,
@@ -65,7 +72,13 @@ class ExerciseAtWorkViewModel(
             ),
             ongoingTraining = ongoingTraining
         )
-    }.stateIn(
+    }.onStart {
+        getExerciseSettings(
+            trainingTemplateId = viewModelArguments.trainingTemplateId,
+            exerciseTemplateId = viewModelArguments.exerciseTemplateId
+        )
+    }
+        .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(3000L),
         initialValue = ExerciseAtWorkState()
@@ -282,15 +295,17 @@ class ExerciseAtWorkViewModel(
     }
 
     private fun updateAutoInput(sets: List<ExerciseSet>, autoInputMode: AutoInputMode) {
-        val exerciseLocal = state.value.exerciseDetails.exerciseLocal
+        val exerciseSettings = state.value.exerciseSettings
         val pastSets = state.value.exerciseDetails.lastSameExercise?.sets ?: listOf()
 
-        val autoInputResult = updateAutoInputUseCase(
-            exerciseLocal = exerciseLocal,
-            currentSets = sets,
-            pastSets = pastSets,
-            autoInputMode = autoInputMode
-        )
+        val autoInputResult = exerciseSettings?.let {
+            updateAutoInputUseCase(
+                exerciseSettings = it,
+                currentSets = sets,
+                pastSets = pastSets,
+                autoInputMode = autoInputMode
+            )
+        }
         autoInputResult?.let { autoInput ->
             _state.update { currentState ->
                 currentState.copy(
@@ -455,5 +470,35 @@ class ExerciseAtWorkViewModel(
     override fun onCleared() {
         utilsProvider.getTimerServiceRep().stopService()
         super.onCleared()
+    }
+
+    private fun getExerciseSettings(
+        trainingTemplateId: Long,
+        exerciseTemplateId: Long
+    ) = viewModelScope.launch {
+        var exerciseSettings = exerciseSettingsUseCaseProvider.getExerciseSettingsUseCase().invoke(
+            trainingTemplateId = trainingTemplateId,
+            exerciseTemplateId = exerciseTemplateId
+        ).first()
+        if (exerciseSettings == null) {
+            exerciseSettings = ExerciseSettings(
+                trainingTemplateId = trainingTemplateId,
+                exerciseTemplateId = exerciseTemplateId,
+                defaultSettings = DefaultSettings(
+                    incrementWeightDefault = 2.5,
+                    intervalSecondsDefault = 55
+                ),
+                exerciseTrainingSettings = ExerciseTrainingSettings(
+                    incrementWeightThisTrainingOnly = null,
+                    intervalSeconds = null
+                )
+            )
+            exerciseSettingsUseCaseProvider.insertExerciseSettingsUseCase().invoke(
+                exerciseSettings = exerciseSettings
+            )
+        }
+        _state.update {
+            it.copy(exerciseSettings = exerciseSettings)
+        }
     }
 }

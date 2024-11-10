@@ -1,16 +1,20 @@
 package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases
 
 import androidx.compose.ui.text.input.TextFieldValue
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.SetDifficulty
-import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode.*
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode.NONE
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode.PROGRESS
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode.REST
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode.SAME
 import kotlin.math.roundToInt
 
 private const val REST_REPS_INCREMENT = 1.5
+
 class UpdateAutoInputUseCase {
     operator fun invoke(
-        exerciseLocal: ExerciseLocal?,
+        exerciseSettings: ExerciseSettings,
         currentSets: List<ExerciseSet>,
         pastSets: List<ExerciseSet>,
         autoInputMode: AutoInputMode
@@ -23,11 +27,8 @@ class UpdateAutoInputUseCase {
         val pastSet = pastSets.getOrNull(counter)
         val increment = when (pastSet?.difficulty) {
             SetDifficulty.Hard -> 0.0
-            else -> if (exerciseLocal?.usesTwoDumbbells == true) {
-                2.0
-            } else {
-                2.5
-            }
+            else -> exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly
+                ?: exerciseSettings.defaultSettings.incrementWeightDefault
         }
         val oldWeight = pastSet?.weight?.toDouble() ?: 0.0
         val oldReps = pastSet?.reps?.toInt() ?: 0
@@ -37,7 +38,9 @@ class UpdateAutoInputUseCase {
             REST -> {
                 val newReps = (oldReps * REST_REPS_INCREMENT).toInt()
                 var newWeight = oldWeight * oldReps / newReps
-                val incrementUnit = if (exerciseLocal?.usesTwoDumbbells == true) 2.0 else 2.5
+                val incrementUnit =
+                    exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly
+                        ?: exerciseSettings.defaultSettings.incrementWeightDefault
                 newWeight = (newWeight / incrementUnit).roundToInt() * incrementUnit
                 AutoInputResult(
                     reps = TextFieldValue(newReps.toString()),

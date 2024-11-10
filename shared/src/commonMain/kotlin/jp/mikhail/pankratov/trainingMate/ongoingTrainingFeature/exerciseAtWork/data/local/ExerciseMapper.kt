@@ -42,8 +42,7 @@ fun ExerciseSettings.toExerciseSettings(): jp.mikhail.pankratov.trainingMate.cor
         exerciseTemplateId = exercise_template_id,
         defaultSettings = DefaultSettings(
             incrementWeightDefault = increment_weight_default,
-            isStrengthDefining = is_strength_defining.toInt() != 0,
-            intervalSecondsDefault = interval_seconds
+            intervalSecondsDefault = interval_seconds_default
         ),
         exerciseTrainingSettings = ExerciseTrainingSettings(
             incrementWeightThisTrainingOnly = increment_weight_this_training_only,

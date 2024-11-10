@@ -20,7 +20,6 @@ class ExerciseSettingsDatasource(db: TrainingDatabase) : IExerciseSettingsDataso
             exercise_template_id = exerciseSettings.exerciseTemplateId,
             increment_weight_default = exerciseSettings.defaultSettings.incrementWeightDefault,
             increment_weight_this_training_only = exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly,
-            is_strength_defining = if (exerciseSettings.defaultSettings.isStrengthDefining) 1 else 0,
             interval_seconds = exerciseSettings.exerciseTrainingSettings.intervalSeconds,
             interval_seconds_default = exerciseSettings.defaultSettings.intervalSecondsDefault
         )
@@ -41,13 +40,11 @@ class ExerciseSettingsDatasource(db: TrainingDatabase) : IExerciseSettingsDataso
     override suspend fun updateDefaultSettings(
         exerciseTemplateId: Long,
         weight: Double,
-        intervalSeconds: Long,
-        isStrengthDefining: Boolean
+        intervalSeconds: Long
     ) {
         queries.updateDefaultSettings(
             increment_weight_default = weight,
             interval_seconds_default = intervalSeconds,
-            is_strength_defining = if (isStrengthDefining) 1 else 0,
             exercise_template_id = exerciseTemplateId
         )
     }
@@ -55,8 +52,8 @@ class ExerciseSettingsDatasource(db: TrainingDatabase) : IExerciseSettingsDataso
     override suspend fun updateTrainingExerciseSettings(
         trainingTemplateId: Long,
         exerciseTemplateId: Long,
-        weight: Double,
-        intervalSeconds: Long
+        weight: Double?,
+        intervalSeconds: Long?
     ) {
         queries.updateTrainingExerciseSettings(
             increment_weight_this_training_only = weight,

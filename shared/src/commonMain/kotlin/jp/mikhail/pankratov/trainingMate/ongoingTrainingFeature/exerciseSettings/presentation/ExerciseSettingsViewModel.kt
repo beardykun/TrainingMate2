@@ -1,35 +1,50 @@
 package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.DefaultSettings
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings
-import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseTrainingSettings
-import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.local.IExerciseSettingsDatasource
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseSettingsUseCaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ExerciseSettingsViewModel(
-    private val exerciseSettingsDatasource: IExerciseSettingsDatasource,
+    private val exerciseSettingsUseCaseProvider: ExerciseSettingsUseCaseProvider,
     trainingTemplateId: Long,
     exerciseTemplateId: Long
 ) :
     ViewModel() {
     private val _state = MutableStateFlow(ExerciseSettingsState())
-    val state = _state.onStart {
-        getExerciseSettings(
-            exerciseSettingsDatasource = exerciseSettingsDatasource,
+    val state = combine(
+        _state, exerciseSettingsUseCaseProvider.getExerciseSettingsUseCase().invoke(
             trainingTemplateId = trainingTemplateId,
             exerciseTemplateId = exerciseTemplateId
         )
+    ) { state, exerciseSettings ->
+        if (exerciseSettings == null) state else {
+            val incrementWeight =
+                exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly?.toString()
+                    ?: ""
+            val intervalSeconds =
+                exerciseSettings.exerciseTrainingSettings.intervalSeconds?.toString() ?: ""
+            state.copy(
+                exerciseSettings = exerciseSettings,
+                incrementWeightDefault = TextFieldValue(exerciseSettings.defaultSettings.incrementWeightDefault.toString(),
+                    selection = TextRange(exerciseSettings.defaultSettings.incrementWeightDefault.toString().length)
+                ),
+                defaultIntervalSeconds = TextFieldValue(exerciseSettings.defaultSettings.intervalSecondsDefault.toString()),
+                incrementWeight = TextFieldValue(incrementWeight),
+                intervalSeconds = TextFieldValue(intervalSeconds)
+            )
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExerciseSettingsState())
 
     fun onEvent(event: ExerciseSettingsEvent) {
@@ -37,6 +52,7 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnDefaultIncrementWeightChanged -> {
                 _state.update {
                     it.copy(
+                        incrementWeightDefault = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             defaultSettings = it.exerciseSettings.defaultSettings.copy(
                                 incrementWeightDefault = event.newValue.text.toDouble(),
@@ -50,6 +66,7 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnIncrementWeightChanged -> {
                 _state.update {
                     it.copy(
+                        incrementWeight = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             exerciseTrainingSettings = it.exerciseSettings.exerciseTrainingSettings.copy(
                                 incrementWeightThisTrainingOnly = event.newValue.text.toDouble(),
@@ -71,6 +88,7 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged -> {
                 _state.update {
                     it.copy(
+                        defaultIntervalSeconds = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             defaultSettings = it.exerciseSettings.defaultSettings.copy(
                                 intervalSecondsDefault = event.newValue.text.toLong(),
@@ -84,6 +102,7 @@ class ExerciseSettingsViewModel(
             is ExerciseSettingsEvent.OnIntervalSecondsChanged -> {
                 _state.update {
                     it.copy(
+                        intervalSeconds = event.newValue,
                         exerciseSettings = it.exerciseSettings?.copy(
                             exerciseTrainingSettings = it.exerciseSettings.exerciseTrainingSettings.copy(
                                 intervalSeconds = event.newValue.text.toLong(),
@@ -99,52 +118,14 @@ class ExerciseSettingsViewModel(
     private suspend fun updateExerciseSettings(exerciseSettings: ExerciseSettings?) =
         withContext(Dispatchers.IO) {
             if (exerciseSettings?.exerciseTrainingSettings?.updated == true) {
-                exerciseSettingsDatasource.updateTrainingExerciseSettings(
-                    trainingTemplateId = exerciseSettings.trainingTemplateId,
-                    exerciseTemplateId = exerciseSettings.exerciseTemplateId,
-                    weight = exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly,
-                    intervalSeconds = exerciseSettings.exerciseTrainingSettings.intervalSeconds
+                exerciseSettingsUseCaseProvider.updateExerciseSettingsUseCase().invoke(
+                    exerciseSettings = exerciseSettings
                 )
             }
             if (exerciseSettings?.defaultSettings?.updated == true) {
-                exerciseSettingsDatasource.updateDefaultSettings(
-                    exerciseTemplateId = exerciseSettings.exerciseTemplateId,
-                    weight = exerciseSettings.defaultSettings.incrementWeightDefault,
-                    intervalSeconds = exerciseSettings.defaultSettings.intervalSecondsDefault,
-                    isStrengthDefining = exerciseSettings.defaultSettings.isStrengthDefining
+                exerciseSettingsUseCaseProvider.updateDefaultExerciseSettingsUseCase().invoke(
+                    exerciseSettings = exerciseSettings
                 )
             }
         }
-
-    private fun getExerciseSettings(
-        exerciseSettingsDatasource: IExerciseSettingsDatasource,
-        trainingTemplateId: Long,
-        exerciseTemplateId: Long
-    ) = viewModelScope.launch {
-        var exerciseSettings = exerciseSettingsDatasource.getExerciseSettings(
-            trainingTemplateId = trainingTemplateId,
-            exerciseTemplateId = exerciseTemplateId
-        ).first()
-        if (exerciseSettings == null) {
-            exerciseSettings = ExerciseSettings(
-                trainingTemplateId = trainingTemplateId,
-                exerciseTemplateId = exerciseTemplateId,
-                defaultSettings = DefaultSettings(
-                    incrementWeightDefault = 2.5,
-                    isStrengthDefining = false,
-                    intervalSecondsDefault = 55
-                ),
-                exerciseTrainingSettings = ExerciseTrainingSettings(
-                    incrementWeightThisTrainingOnly = 2.5,
-                    intervalSeconds = 55
-                )
-            )
-            exerciseSettingsDatasource.insertExerciseSettings(
-                exerciseSettings = exerciseSettings
-            )
-        }
-        _state.update {
-            it.copy(exerciseSettings = exerciseSettings)
-        }
-    }
 }

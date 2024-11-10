@@ -97,6 +97,7 @@ fun viewModelModule() = module {
         ExerciseAtWorkViewModel(
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
+            exerciseSettingsUseCaseProvider = get(),
             updateAutoInputUseCase = get(),
             validateInputUseCase = get(),
             utilsProvider = get(),
@@ -114,7 +115,7 @@ fun viewModelModule() = module {
 
     viewModel(named("ExerciseSettingsViewModel")) { (trainingTemplateId: Long, exerciseTemplateId: Long) ->
         ExerciseSettingsViewModel(
-            exerciseSettingsDatasource = get(),
+            exerciseSettingsUseCaseProvider = get(),
             trainingTemplateId = trainingTemplateId,
             exerciseTemplateId = exerciseTemplateId
         )

@@ -4,18 +4,20 @@ CREATE TABLE IF NOT EXISTS ExerciseSettings (
     training_template_id INTEGER NOT NULL,
     exercise_template_id INTEGER NOT NULL,
     increment_weight_default REAL NOT NULL DEFAULT 2.5,
-    increment_weight_this_training_only REAL NOT NULL DEFAULT 0.0,
-    is_strength_defining INTEGER NOT NULL DEFAULT 0
+    increment_weight_this_training_only REAL DEFAULT null,
+    interval_seconds INTEGER DEFAULT null,
+    interval_seconds_default INTEGER NOT NULL DEFAULT 60
 );
 
 -- Insert default settings for each unique combination of training_template_id and exercise_template_id
-INSERT INTO ExerciseSettings (training_template_id, exercise_template_id, increment_weight_default, increment_weight_this_training_only, is_strength_defining)
+INSERT INTO ExerciseSettings (training_template_id, exercise_template_id, increment_weight_default, increment_weight_this_training_only, interval_seconds, interval_seconds_default)
 SELECT
     training_template_id,
     exercise_template_id,
     2.5,  -- Default increment weight
-    2.5,  -- Default increment weight for this training only
-    0     -- Default is_strength_defining (0 = false)
+    null,  -- Default increment weight for this training only,
+    null,
+    60
 FROM
     ExerciseHistory
 GROUP BY
