@@ -196,7 +196,9 @@ fun ExerciseAtWorkScreen(
             TextSmall(hint, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
             state.exerciseDetails.exercise?.sets?.let { sets ->
-                LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMNS_NUM)) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(count = COLUMNS_NUM), modifier = Modifier.weight(1f)
+                ) {
                     items(sets, key = { it.id }) { item ->
                         AnimatedTextItem(
                             lastTrainingSet = state.exerciseDetails.lastSameExercise?.sets?.getOrNull(
@@ -212,7 +214,6 @@ fun ExerciseAtWorkScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
