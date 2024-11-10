@@ -16,6 +16,7 @@ import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.createExercise.p
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.ViewModelArguments
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseSettingsViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.presentation.ThisTrainingViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -108,6 +109,14 @@ fun viewModelModule() = module {
         ExerciseAtWorkHistoryViewModel(
             exerciseUseCaseProvider = get(),
             exerciseName = exerciseName
+        )
+    }
+
+    viewModel(named("ExerciseSettingsViewModel")) { (trainingTemplateId: Long, exerciseTemplateId: Long) ->
+        ExerciseSettingsViewModel(
+            exerciseSettingsDatasource = get(),
+            trainingTemplateId = trainingTemplateId,
+            exerciseTemplateId = exerciseTemplateId
         )
     }
 

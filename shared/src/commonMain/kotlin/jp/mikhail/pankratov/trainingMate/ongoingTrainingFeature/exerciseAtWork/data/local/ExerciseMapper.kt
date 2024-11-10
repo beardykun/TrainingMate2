@@ -5,6 +5,8 @@ import database.ExerciseSettings
 import database.ExerciseTemplate
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.DefaultSettings
+import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseTrainingSettings
 import jp.mikhail.pankratov.trainingMate.core.stringToSetList
 
 fun ExerciseTemplate.toExerciseLocal(): ExerciseLocal {
@@ -38,9 +40,14 @@ fun ExerciseSettings.toExerciseSettings(): jp.mikhail.pankratov.trainingMate.cor
         id = id,
         trainingTemplateId = training_template_id,
         exerciseTemplateId = exercise_template_id,
-        incrementWeightDefault = increment_weight_default,
-        incrementWeightThisTrainingOnly = increment_weight_this_training_only,
-        isStrengthDefining = is_strength_defining.toInt() != 0,
-        intervalSeconds = interval_seconds
+        defaultSettings = DefaultSettings(
+            incrementWeightDefault = increment_weight_default,
+            isStrengthDefining = is_strength_defining.toInt() != 0,
+            intervalSecondsDefault = interval_seconds
+        ),
+        exerciseTrainingSettings = ExerciseTrainingSettings(
+            incrementWeightThisTrainingOnly = increment_weight_this_training_only,
+            intervalSeconds = interval_seconds
+        )
     )
 }

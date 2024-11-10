@@ -47,8 +47,8 @@ import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.p
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.ViewModelArguments
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryScreen
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
-import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseScreenViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseSettingsScreen
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseSettingsViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.presentation.ThisTrainingScreen
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.presentation.ThisTrainingViewModel
 import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryScreen
@@ -271,14 +271,14 @@ private fun RouteBuilder.trainingScreens(
         }
 
         scene(
-            route = "${Routs.ExerciseScreens.exerciseSettings}/${TRAINING_TEMPLATE_ID}/${EXERCISE_TEMPLATE_ID}",
+            route = "${Routs.ExerciseScreens.exerciseSettings}/{${TRAINING_TEMPLATE_ID}}/{${EXERCISE_TEMPLATE_ID}}",
             navTransition = NavTransition()
         ) { backStackEntry ->
             val trainingTemplateId: Long = backStackEntry.path(TRAINING_TEMPLATE_ID) ?: -1
             val exerciseTemplateId: Long = backStackEntry.path(EXERCISE_TEMPLATE_ID) ?: -1
 
-            val viewModel: ExerciseScreenViewModel =
-                koinViewModel(qualifier = named("ExerciseScreenViewModel")) {
+            val viewModel: ExerciseSettingsViewModel =
+                koinViewModel(qualifier = named("ExerciseSettingsViewModel")) {
                     parametersOf(
                         trainingTemplateId,
                         exerciseTemplateId
