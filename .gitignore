@@ -36,3 +36,4 @@ iosApp/iosApp/Pods/
 *.kotlin_metadata
 *.framework
 *.xcfilelist
+*.kotlin/metadata
