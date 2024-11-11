@@ -22,7 +22,6 @@ fun ExerciseSettingsScreen(
                 label = "increment_default_weight",
                 placeholder = "increment_default_weight",
                 onValueChanged = { newValue ->
-                    println("TAGGER $newValue")
                     onEvent(ExerciseSettingsEvent.OnDefaultIncrementWeightChanged(newValue))
                 },
                 keyboardType = KeyboardType.Decimal

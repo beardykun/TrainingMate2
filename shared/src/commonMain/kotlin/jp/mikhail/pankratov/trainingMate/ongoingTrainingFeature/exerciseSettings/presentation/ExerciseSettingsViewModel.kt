@@ -10,7 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,30 +24,36 @@ class ExerciseSettingsViewModel(
 ) :
     ViewModel() {
     private val _state = MutableStateFlow(ExerciseSettingsState())
-    val state = combine(
-        _state, exerciseSettingsUseCaseProvider.getExerciseSettingsUseCase().invoke(
+    val state = _state.onStart {
+        val exerciseSettings = exerciseSettingsUseCaseProvider.getExerciseSettingsUseCase().invoke(
             trainingTemplateId = trainingTemplateId,
             exerciseTemplateId = exerciseTemplateId
-        )
-    ) { state, exerciseSettings ->
-        if (state.exerciseSettings == null) {
-            println("TAGGER 111")
-            state.copy(
+        ).first()
+        _state.update {
+            it.copy(
                 exerciseSettings = exerciseSettings,
-                incrementWeightDefault = state.incrementWeightDefault.takeIf { it.text.isNotEmpty() }
-                    ?: TextFieldValue(
-                        exerciseSettings?.defaultSettings?.incrementWeightDefault?.toString() ?: "",
-                        selection = TextRange((exerciseSettings?.defaultSettings?.incrementWeightDefault?.toString() ?: "").length)
-                    ),
-                intervalSecondsDefault = state.intervalSecondsDefault.takeIf { it.text.isNotEmpty() }
-                    ?: TextFieldValue(exerciseSettings?.defaultSettings?.intervalSecondsDefault?.toString() ?: ""),
-                incrementWeightThisTrainingOnly = state.incrementWeightThisTrainingOnly.takeIf { it.text.isNotEmpty() }
-                    ?: TextFieldValue(exerciseSettings?.exerciseTrainingSettings?.incrementWeightThisTrainingOnly?.toString() ?: ""),
-                intervalSeconds = state.intervalSeconds.takeIf { it.text.isNotEmpty() }
-                    ?: TextFieldValue(exerciseSettings?.exerciseTrainingSettings?.intervalSeconds?.toString() ?: "")
+                incrementWeightDefault = TextFieldValue(
+                    exerciseSettings?.defaultSettings?.incrementWeightDefault?.toString() ?: "",
+                    selection = TextRange(
+                        (exerciseSettings?.defaultSettings?.incrementWeightDefault?.toString()
+                            ?: "").length
+                    )
+                ),
+                intervalSecondsDefault = TextFieldValue(
+                    exerciseSettings?.defaultSettings?.intervalSecondsDefault?.toString() ?: ""
+                ),
+                incrementWeightThisTrainingOnly = TextFieldValue(
+                    exerciseSettings?.exerciseTrainingSettings?.incrementWeightThisTrainingOnly?.toString()
+                        ?: ""
+                ),
+                intervalSeconds = TextFieldValue(
+                    exerciseSettings?.exerciseTrainingSettings?.intervalSeconds?.toString()
+                        ?: ""
+                )
             )
-        } else state
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExerciseSettingsState())
+        }
+    }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExerciseSettingsState())
 
     fun onEvent(event: ExerciseSettingsEvent) {
         when (event) {
