@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSetting
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
@@ -17,7 +18,7 @@ fun ExerciseSettingsScreen(
         Column {
             TextLarge(text = "Default settings for this exercise")
             InputField(
-                value = TextFieldValue(text = exerciseSettings.defaultSettings.incrementWeightDefault.toString()),
+                value = state.incrementWeightDefault,
                 label = "increment_default_weight",
                 placeholder = "increment_default_weight",
                 onValueChanged = { newValue ->
@@ -27,7 +28,7 @@ fun ExerciseSettingsScreen(
                 keyboardType = KeyboardType.Decimal
             )
             InputField(
-                value = TextFieldValue(text = exerciseSettings.defaultSettings.intervalSecondsDefault.toString()),
+                value = state.intervalSecondsDefault,
                 label = "OnDefaultIntervalSecondsChanged",
                 placeholder = "OnDefaultIntervalSecondsChanged",
                 onValueChanged = { newValue ->
@@ -37,7 +38,7 @@ fun ExerciseSettingsScreen(
             )
             TextLarge(text = "Settings for exercise in This Training")
             InputField(
-                value = TextFieldValue(text = exerciseSettings.exerciseTrainingSettings.incrementWeightThisTrainingOnly.toString()),
+                value = state.incrementWeightThisTrainingOnly,
                 label = "increment_weight",
                 placeholder = "increment_weight",
                 onValueChanged = { newValue ->
@@ -45,7 +46,7 @@ fun ExerciseSettingsScreen(
                 }
             )
             InputField(
-                value = TextFieldValue(text = exerciseSettings.exerciseTrainingSettings.intervalSeconds.toString()),
+                value = state.intervalSeconds,
                 label = "OnIntervalSecondsChanged",
                 placeholder = "OnIntervalSecondsChanged",
                 onValueChanged = { newValue ->
