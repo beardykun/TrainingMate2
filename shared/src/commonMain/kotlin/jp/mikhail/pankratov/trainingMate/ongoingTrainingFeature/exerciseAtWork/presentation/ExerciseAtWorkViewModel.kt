@@ -21,7 +21,7 @@ import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.TimerDataHolder
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.UpdateAutoInputUseCase
-import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.ValidateInputUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases.ValidateInputUseCase
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
@@ -445,7 +445,10 @@ class ExerciseAtWorkViewModel(
 
     private fun invalidInput(): Boolean {
         val exerciseDetails = state.value.exerciseDetails
-        val inputError = validateInputUseCase.invoke(exerciseDetails)
+        var inputError = validateInputUseCase.validateFloat(exerciseDetails.weight.text)
+        if (inputError == null) {
+            inputError = validateInputUseCase.validateInt(exerciseDetails.reps.text)
+        }
         inputError?.let { error ->
             _state.update {
                 it.copy(

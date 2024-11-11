@@ -77,14 +77,14 @@ fun LocalDate.getIsoWeekNumber(): Long {
 
 fun InputError.asResId(): StringResource {
     return when (this) {
-        InputError.InputErrorReps.INVALID_FORMAT -> Res.string.invalid_input_format
-        InputError.InputErrorReps.EMPTY_REPS -> Res.string.reps_should_not_be_empty
-        InputError.InputErrorReps.REPS_IS_FLOAT -> Res.string.not_a_float
-        InputError.InputErrorReps.REPS_CANT_BE_0 -> Res.string.not_a_0
-        InputError.InputErrorWeight.INVALID_FORMAT -> Res.string.invalid_input_format
-        InputError.InputErrorWeight.WEIGHT_CANT_BE_0 -> Res.string.weight_cant_be_0
-        InputError.InputErrorWeight.USE_DOT_IN_WEIGHT -> Res.string.use_dot
-        InputError.InputErrorWeight.EMPTY_WEIGHT -> Res.string.weight_should_not_be_empty
+        InputError.InputErrorInt.INVALID_FORMAT -> Res.string.invalid_input_format
+        InputError.InputErrorInt.EMPTY_REPS -> Res.string.reps_should_not_be_empty
+        InputError.InputErrorInt.REPS_IS_FLOAT -> Res.string.not_a_float
+        InputError.InputErrorInt.REPS_CANT_BE_0 -> Res.string.not_a_0
+        InputError.InputErrorFloat.INVALID_FORMAT -> Res.string.invalid_input_format
+        InputError.InputErrorFloat.WEIGHT_CANT_BE_0 -> Res.string.weight_cant_be_0
+        InputError.InputErrorFloat.USE_DOT_IN_WEIGHT -> Res.string.use_dot
+        InputError.InputErrorFloat.EMPTY_WEIGHT -> Res.string.weight_should_not_be_empty
     }
 }
 

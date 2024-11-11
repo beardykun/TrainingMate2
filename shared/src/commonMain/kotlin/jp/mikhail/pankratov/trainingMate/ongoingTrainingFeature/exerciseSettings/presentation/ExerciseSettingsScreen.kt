@@ -2,9 +2,10 @@ package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSetting
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
+import jp.mikhail.pankratov.trainingMate.core.asResId
+import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.CommonButton
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
@@ -24,7 +25,10 @@ fun ExerciseSettingsScreen(
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnDefaultIncrementWeightChanged(newValue))
                 },
-                keyboardType = KeyboardType.Decimal
+                keyboardType = KeyboardType.Decimal,
+                isError = state.inputError is InputError.InputErrorFloat,
+                errorText = (state.inputError as? InputError.InputErrorFloat)?.asResId()
+                    ?.getString() ?: ""
             )
             InputField(
                 value = state.intervalSecondsDefault,
@@ -33,7 +37,10 @@ fun ExerciseSettingsScreen(
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged(newValue))
                 },
-                keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Number,
+                isError = state.inputError is InputError.InputErrorInt,
+                errorText = (state.inputError as? InputError.InputErrorInt)?.asResId()
+                    ?.getString()
             )
             TextLarge(text = "Settings for exercise in This Training")
             InputField(
@@ -42,7 +49,10 @@ fun ExerciseSettingsScreen(
                 placeholder = "increment_weight",
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnIncrementWeightChanged(newValue))
-                }
+                },
+                isError = state.inputError is InputError.InputErrorFloat,
+                errorText = (state.inputError as? InputError.InputErrorFloat)?.asResId()
+                    ?.getString() ?: ""
             )
             InputField(
                 value = state.intervalSeconds,
@@ -50,7 +60,11 @@ fun ExerciseSettingsScreen(
                 placeholder = "OnIntervalSecondsChanged",
                 onValueChanged = { newValue ->
                     onEvent(ExerciseSettingsEvent.OnIntervalSecondsChanged(newValue))
-                }
+                },
+                keyboardType = KeyboardType.Number,
+                isError = state.inputError is InputError.InputErrorInt,
+                errorText = (state.inputError as? InputError.InputErrorInt)?.asResId()
+                    ?.getString()
             )
             CommonButton(
                 text = "Apply Changes",

@@ -4,6 +4,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases.ValidateInputUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.ExerciseSettingsUseCaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +20,7 @@ import kotlinx.coroutines.withContext
 
 class ExerciseSettingsViewModel(
     private val exerciseSettingsUseCaseProvider: ExerciseSettingsUseCaseProvider,
+    private val validateInputUseCase: ValidateInputUseCase,
     trainingTemplateId: Long,
     exerciseTemplateId: Long
 ) :
@@ -58,6 +60,15 @@ class ExerciseSettingsViewModel(
     fun onEvent(event: ExerciseSettingsEvent) {
         when (event) {
             is ExerciseSettingsEvent.OnDefaultIncrementWeightChanged -> {
+                val inputError = validateInputUseCase.validateFloat(event.newValue.text)
+                if (inputError != null) {
+                    _state.update {
+                        it.copy(
+                            inputError = inputError
+                        )
+                    }
+                    return
+                }
                 _state.update {
                     it.copy(
                         incrementWeightDefault = event.newValue,
@@ -66,12 +77,22 @@ class ExerciseSettingsViewModel(
                                 incrementWeightDefault = event.newValue.text.toDouble(),
                                 updated = true
                             )
-                        )
+                        ),
+                        inputError = null
                     )
                 }
             }
 
             is ExerciseSettingsEvent.OnIncrementWeightChanged -> {
+                val inputError = validateInputUseCase.validateFloat(event.newValue.text)
+                if (inputError != null) {
+                    _state.update {
+                        it.copy(
+                            inputError = inputError
+                        )
+                    }
+                    return
+                }
                 _state.update {
                     it.copy(
                         incrementWeightThisTrainingOnly = event.newValue,
@@ -80,7 +101,8 @@ class ExerciseSettingsViewModel(
                                 incrementWeightThisTrainingOnly = event.newValue.text.toDouble(),
                                 updated = true
                             )
-                        )
+                        ),
+                        inputError = null
                     )
                 }
             }
@@ -94,6 +116,15 @@ class ExerciseSettingsViewModel(
             }
 
             is ExerciseSettingsEvent.OnDefaultIntervalSecondsChanged -> {
+                val inputError = validateInputUseCase.validateInt(event.newValue.text)
+                if (inputError != null) {
+                    _state.update {
+                        it.copy(
+                            inputError = inputError
+                        )
+                    }
+                    return
+                }
                 _state.update {
                     it.copy(
                         intervalSecondsDefault = event.newValue,
@@ -102,12 +133,22 @@ class ExerciseSettingsViewModel(
                                 intervalSecondsDefault = event.newValue.text.toLong(),
                                 updated = true
                             )
-                        )
+                        ),
+                        inputError = null
                     )
                 }
             }
 
             is ExerciseSettingsEvent.OnIntervalSecondsChanged -> {
+                val inputError = validateInputUseCase.validateInt(event.newValue.text)
+                if (inputError != null) {
+                    _state.update {
+                        it.copy(
+                            inputError = inputError
+                        )
+                    }
+                    return
+                }
                 _state.update {
                     it.copy(
                         intervalSeconds = event.newValue,
@@ -116,7 +157,8 @@ class ExerciseSettingsViewModel(
                                 intervalSeconds = event.newValue.text.toLong(),
                                 updated = true
                             )
-                        )
+                        ),
+                        inputError = null
                     )
                 }
             }

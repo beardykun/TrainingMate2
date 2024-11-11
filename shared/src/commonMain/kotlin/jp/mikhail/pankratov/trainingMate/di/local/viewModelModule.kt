@@ -9,8 +9,6 @@ import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.histor
 import jp.mikhail.pankratov.trainingMate.mainScreens.history.presentation.historyScreen.domain.TrainingQuery
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.TrainingViewModel
 import jp.mikhail.pankratov.trainingMate.mainScreens.user.presentation.UserInfoViewModel
-import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryViewModel
-import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.AddExercisesViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.createExercise.presentation.CreateExerciseViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.ExerciseAtWorkViewModel
@@ -18,6 +16,8 @@ import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.p
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWorkHistory.presentation.ExerciseAtWorkHistoryViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseSettings.presentation.ExerciseSettingsViewModel
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.presentation.ThisTrainingViewModel
+import jp.mikhail.pankratov.trainingMate.summaryFeature.presentation.SummaryViewModel
+import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingSelectionViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -116,6 +116,7 @@ fun viewModelModule() = module {
     viewModel(named("ExerciseSettingsViewModel")) { (trainingTemplateId: Long, exerciseTemplateId: Long) ->
         ExerciseSettingsViewModel(
             exerciseSettingsUseCaseProvider = get(),
+            validateInputUseCase = get(),
             trainingTemplateId = trainingTemplateId,
             exerciseTemplateId = exerciseTemplateId
         )

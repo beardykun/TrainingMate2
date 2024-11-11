@@ -114,7 +114,7 @@ fun LastExerciseData(
                     val setNumToDisplay = exercise.sets.size + 1
                     val set = lastExercise.sets[setNum]
                     val background = Utils.setDifficultyColor(set.difficulty)
-                    TextLarge(
+                    TextMedium(
                         text = stringResource(
                             Res.string.last_exercise_next_set,
                             setNumToDisplay,

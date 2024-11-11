@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TimerOff
@@ -110,7 +111,13 @@ fun ExerciseAtWorkScreen(
         topBar =
         {
             TopAppBar(
-                title = { TextMedium(text = Routs.ExerciseScreens.exerciseAtWork) },
+                title = {
+                    TextLarge(
+                        text = Routs.ExerciseScreens.exerciseAtWork,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                },
                 actions = {
                     IconButton(
                         onClick = {
@@ -118,6 +125,16 @@ fun ExerciseAtWorkScreen(
                         }
                     ) {
                         Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navigator.goBack()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = null
+                        )
                     }
                 }
             )

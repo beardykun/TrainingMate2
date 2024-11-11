@@ -39,9 +39,9 @@ fun InputFields(
     onFocusChangedReps: (FocusState) -> Unit
 ) {
     val weightError =
-        if (inputError is InputError.InputErrorWeight) inputError.asResId().getString() else ""
+        if (inputError is InputError.InputErrorFloat) inputError.asResId().getString() else ""
     val repsError =
-        if (inputError is InputError.InputErrorReps) inputError.asResId().getString() else ""
+        if (inputError is InputError.InputErrorInt) inputError.asResId().getString() else ""
     Row(modifier = Modifier.fillMaxWidth()) {
         InputField(
             value = weight,
@@ -51,7 +51,7 @@ fun InputFields(
                 onEvent(ExerciseAtWorkEvent.OnWeightChanged(newWeight = value))
             },
             keyboardType = KeyboardType.Decimal,
-            isError = inputError is InputError.InputErrorWeight,
+            isError = inputError is InputError.InputErrorFloat,
             errorText = weightError,
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
@@ -69,7 +69,7 @@ fun InputFields(
                 onEvent(ExerciseAtWorkEvent.OnRepsChanged(newReps = value))
             },
             keyboardType = KeyboardType.Number,
-            isError = inputError is InputError.InputErrorReps,
+            isError = inputError is InputError.InputErrorInt,
             errorText = repsError,
             keyboardActions = KeyboardActions(onDone = {
                 focus.clearFocus()
