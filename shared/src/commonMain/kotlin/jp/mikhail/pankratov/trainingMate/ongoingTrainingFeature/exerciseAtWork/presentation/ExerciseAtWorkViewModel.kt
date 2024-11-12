@@ -21,7 +21,7 @@ import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.TimerDataHolder
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.UpdateAutoInputUseCase
-import jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases.ValidateInputUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases.ValidateNumericInputUseCase
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +44,7 @@ class ExerciseAtWorkViewModel(
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val exerciseSettingsUseCaseProvider: ExerciseSettingsUseCaseProvider,
     private val updateAutoInputUseCase: UpdateAutoInputUseCase,
-    private val validateInputUseCase: ValidateInputUseCase,
+    private val validateNumericInputUseCase: ValidateNumericInputUseCase,
     private val viewModelArguments: ViewModelArguments,
     private val utilsProvider: UtilsProvider,
     val permissionsController: PermissionsController
@@ -445,9 +445,9 @@ class ExerciseAtWorkViewModel(
 
     private fun invalidInput(): Boolean {
         val exerciseDetails = state.value.exerciseDetails
-        var inputError = validateInputUseCase.validateFloat(exerciseDetails.weight.text)
+        var inputError = validateNumericInputUseCase.validateFloat(exerciseDetails.weight.text)
         if (inputError == null) {
-            inputError = validateInputUseCase.validateInt(exerciseDetails.reps.text)
+            inputError = validateNumericInputUseCase.validateInt(exerciseDetails.reps.text)
         }
         inputError?.let { error ->
             _state.update {

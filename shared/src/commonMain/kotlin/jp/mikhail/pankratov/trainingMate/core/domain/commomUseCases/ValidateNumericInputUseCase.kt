@@ -2,7 +2,7 @@ package jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases
 
 import jp.mikhail.pankratov.trainingMate.core.domain.util.InputError
 
-class ValidateInputUseCase {
+class ValidateNumericInputUseCase {
 
     fun validateFloat(float: String): InputError? {
         try {

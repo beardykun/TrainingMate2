@@ -99,7 +99,7 @@ fun viewModelModule() = module {
             exerciseUseCaseProvider = get(),
             exerciseSettingsUseCaseProvider = get(),
             updateAutoInputUseCase = get(),
-            validateInputUseCase = get(),
+            validateNumericInputUseCase = get(),
             utilsProvider = get(),
             viewModelArguments = viewModelArguments,
             permissionsController = permissionsController
@@ -116,7 +116,7 @@ fun viewModelModule() = module {
     viewModel(named("ExerciseSettingsViewModel")) { (trainingTemplateId: Long, exerciseTemplateId: Long) ->
         ExerciseSettingsViewModel(
             exerciseSettingsUseCaseProvider = get(),
-            validateInputUseCase = get(),
+            validateNumericInputUseCase = get(),
             trainingTemplateId = trainingTemplateId,
             exerciseTemplateId = exerciseTemplateId
         )

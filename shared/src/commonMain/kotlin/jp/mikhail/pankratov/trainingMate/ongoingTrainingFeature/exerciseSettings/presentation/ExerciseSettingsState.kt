@@ -12,5 +12,8 @@ data class ExerciseSettingsState(
     val intervalSecondsDefault: TextFieldValue = TextFieldValue(""),
     val incrementWeightThisTrainingOnly: TextFieldValue = TextFieldValue(""),
     val intervalSeconds: TextFieldValue = TextFieldValue(""),
-    val inputError: InputError? = null
+    val inputErrorDefaultIncrementWeight: InputError? = null,
+    val inputErrorIncrementWeight: InputError? = null,
+    val inputErrorDefaultIntervalSeconds: InputError? = null,
+    val inputErrorIntervalSeconds: InputError? = null
 )
