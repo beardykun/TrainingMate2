@@ -7,6 +7,7 @@ import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
+import jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases.ValidateNumericInputUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.DefaultSettings
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exerciseSettings.ExerciseSettings
@@ -21,7 +22,6 @@ import jp.mikhail.pankratov.trainingMate.di.UtilsProvider
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.TimerDataHolder
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.UpdateAutoInputUseCase
-import jp.mikhail.pankratov.trainingMate.core.domain.commomUseCases.ValidateNumericInputUseCase
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.state.ExerciseAtWorkState
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.state.ExerciseDetails
 import kotlinx.coroutines.Dispatchers
@@ -79,10 +79,10 @@ class ExerciseAtWorkViewModel(
         )
     }
         .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(3000L),
-        initialValue = ExerciseAtWorkState()
-    )
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(3000L),
+            initialValue = ExerciseAtWorkState()
+        )
 
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {
@@ -253,6 +253,16 @@ class ExerciseAtWorkViewModel(
                     updateAutoInput(
                         state.value.exerciseDetails.exercise?.sets ?: listOf(),
                         selectedAutoInput
+                    )
+                }
+            }
+
+            ExerciseAtWorkEvent.OnRefreshAutoInputValues -> {
+                val autoInputMode = state.value.uiState.autoInputSelected
+                if (autoInputMode != AutoInputMode.NONE) {
+                    updateAutoInput(
+                        sets = state.value.exerciseDetails.exercise?.sets ?: listOf(),
+                        autoInputMode
                     )
                 }
             }
@@ -489,7 +499,7 @@ class ExerciseAtWorkViewModel(
                 exerciseTemplateId = exerciseTemplateId,
                 defaultSettings = DefaultSettings(
                     incrementWeightDefault = 2.5,
-                    intervalSecondsDefault = 55
+                    intervalSecondsDefault = 60
                 ),
                 exerciseTrainingSettings = ExerciseTrainingSettings(
                     incrementWeightThisTrainingOnly = null,
@@ -500,8 +510,17 @@ class ExerciseAtWorkViewModel(
                 exerciseSettings = exerciseSettings
             )
         }
+        val timerValue = (exerciseSettings.exerciseTrainingSettings.intervalSeconds
+            ?: exerciseSettings.defaultSettings.intervalSecondsDefault).toInt()
         _state.update {
-            it.copy(exerciseSettings = exerciseSettings)
+            it.copy(
+                exerciseSettings = exerciseSettings,
+                timerState = it.timerState.copy(
+                    timerValue = timerValue,
+                    timerMin = timerValue / 60,
+                    timerSec = timerValue % 60,
+                )
+            )
         }
     }
 }

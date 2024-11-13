@@ -117,14 +117,16 @@ class ExerciseSettingsViewModel(
 
                 val state = state.value
                 val exerciseSettings = state.exerciseSettings
+                val intervalSeconds = if (state.intervalSeconds.text.isBlank()) null else state.intervalSeconds.text.toLong()
+                val incrementWeight = if (state.incrementWeightThisTrainingOnly.text.isBlank()) null else state.incrementWeightThisTrainingOnly.text.toDouble()
                 val updatedExerciseSettings = exerciseSettings?.copy(
                     defaultSettings = exerciseSettings.defaultSettings.copy(
                         intervalSecondsDefault = state.intervalSecondsDefault.text.toLong(),
                         incrementWeightDefault = state.incrementWeightDefault.text.toDouble()
                     ),
                     exerciseTrainingSettings = exerciseSettings.exerciseTrainingSettings.copy(
-                        intervalSeconds = state.intervalSeconds.text.toLong(),
-                        incrementWeightThisTrainingOnly = state.incrementWeightThisTrainingOnly.text.toDouble()
+                        intervalSeconds = intervalSeconds,
+                        incrementWeightThisTrainingOnly = incrementWeight
                     )
                 )
 
@@ -143,9 +145,9 @@ class ExerciseSettingsViewModel(
         val intervalSecondsDefaultError =
             validateNumericInputUseCase.validateInt(state.intervalSecondsDefault.text)
         val incrementWeightThisTrainingOnlyError =
-            validateNumericInputUseCase.validateFloat(state.incrementWeightThisTrainingOnly.text)
+            validateNumericInputUseCase.validateFloatNullable(state.incrementWeightThisTrainingOnly.text)
         val intervalSecondsError =
-            validateNumericInputUseCase.validateInt(state.intervalSeconds.text)
+            validateNumericInputUseCase.validateIntNullable(state.intervalSeconds.text)
 
         _state.update {
             it.copy(

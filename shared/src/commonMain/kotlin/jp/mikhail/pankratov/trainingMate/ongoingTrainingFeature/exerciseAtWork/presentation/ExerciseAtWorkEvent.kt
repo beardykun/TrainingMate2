@@ -23,4 +23,5 @@ sealed interface ExerciseAtWorkEvent {
 
     data class OnSetDifficultySelected(val difficulty: SetDifficulty) : ExerciseAtWorkEvent
     data class OnAutoInputChanged(val autoInputMode: AutoInputMode) : ExerciseAtWorkEvent
+    data object OnRefreshAutoInputValues: ExerciseAtWorkEvent
 }

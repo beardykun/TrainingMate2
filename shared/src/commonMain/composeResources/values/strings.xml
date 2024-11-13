@@ -165,10 +165,10 @@
     <string name="global_exercise_settings">Global Exercise Settings</string>
     <string name="global_exercise_settings_hint">This settings will apply for this exercise regardless the training</string>
     <string name="this_training_exercise_settings">This Training Exercise Settings</string>
-    <string name="this_training_exercise_settings_hint">This settings will apply for this exercise only in this training</string>
-    <string name="increment_weight_label">Progress Increment Weight</string>
+    <string name="this_training_exercise_settings_hint">This settings will override global settings only for this training</string>
+    <string name="increment_weight_label">Auto Input Increment Weight</string>
     <string name="increment_weight_placeholder">Increment weight value in progress mode</string>
-    <string name="interval_seconds_label">Rest Interval Seconds</string>
+    <string name="interval_seconds_label">Timer Rest Interval Seconds</string>
     <string name="interval_seconds_placeholder">Rest interval between sets in seconds</string>
 
 
