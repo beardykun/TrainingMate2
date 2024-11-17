@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables
 
 import Dimens
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -27,14 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseLocal
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getExerciseNameStringResource
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
-import jp.mikhail.pankratov.trainingMate.theme.gold
-import jp.mikhail.pankratov.trainingMate.theme.goldLight
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getExerciseNameStringResource
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.best_weight
 import maxrep.shared.generated.resources.cd_done_icon
@@ -51,13 +51,11 @@ fun ExerciseItem(
     isStrengthDefining: Boolean,
     modifier: Modifier
 ) {
-    val cardColor =
-        when {
-            isStrengthDefining && !isDone -> goldLight
-            isStrengthDefining && isDone -> gold
-            !isStrengthDefining && isDone -> MaterialTheme.colorScheme.inversePrimary
-            else -> CardDefaults.cardColors().containerColor
-        }
+    val cardColor by animateColorAsState(
+        targetValue = if (isDone)
+            MaterialTheme.colorScheme.inversePrimary else
+            CardDefaults.cardColors().containerColor
+    )
     Card(
         elevation = CardDefaults.cardElevation(Dimens.cardElevation),
         modifier = modifier.fillMaxSize()

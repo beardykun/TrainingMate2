@@ -22,7 +22,9 @@ import maxrep.shared.generated.resources.apply_changes
 import maxrep.shared.generated.resources.create_new_ex_btn
 import maxrep.shared.generated.resources.delete_set
 import maxrep.shared.generated.resources.sure_delete_set
+import moe.tlaster.precompose.navigation.NavOptions
 import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.PopUpTo
 
 @Composable
 fun AddExercisesScreen(
@@ -69,7 +71,10 @@ fun AddExercisesScreen(
                 CommonButton(
                     onClick = {
                         onEvent(AddExercisesEvent.OnAddNewExercises {
-                            navigator.navigate(Routs.TrainingScreens.trainingExercises)
+                            navigator.navigate(
+                                Routs.TrainingScreens.trainingExercises,
+                                options = NavOptions(popUpTo = PopUpTo(Routs.MainScreens.training.title))
+                            )
                         })
                     },
                     text = Res.string.apply_changes.getString()

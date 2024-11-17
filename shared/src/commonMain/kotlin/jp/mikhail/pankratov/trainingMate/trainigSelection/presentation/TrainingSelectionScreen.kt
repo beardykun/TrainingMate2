@@ -50,7 +50,9 @@ import maxrep.shared.generated.resources.shoulders
 import maxrep.shared.generated.resources.start_training
 import maxrep.shared.generated.resources.triceps
 import maxrep.shared.generated.resources.want_to_delete_training
+import moe.tlaster.precompose.navigation.NavOptions
 import moe.tlaster.precompose.navigation.Navigator
+import moe.tlaster.precompose.navigation.PopUpTo
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -175,7 +177,8 @@ fun TrainingSelectionScreen(
                         onAccept = {
                             onEvent(TrainingSelectionEvent.OnStartNewTraining {
                                 navigator.navigate(
-                                    Routs.TrainingScreens.trainingExercises
+                                    Routs.TrainingScreens.trainingExercises,
+                                    options = NavOptions(popUpTo = PopUpTo(Routs.MainScreens.training.title))
                                 )
                             })
                         },

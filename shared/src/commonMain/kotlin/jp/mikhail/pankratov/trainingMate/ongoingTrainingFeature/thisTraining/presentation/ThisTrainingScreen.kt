@@ -44,7 +44,9 @@ fun ThisTrainingScreen(
     Scaffold(floatingActionButton = {
         FloatingActionButton(
             onClick = {
-                navigator.navigate(Routs.TrainingScreens.addExercises)
+                navigator.navigate(
+                    route = Routs.TrainingScreens.addExercises
+                )
             },
             modifier = Modifier.padding(bottom = Dimens.Padding64)
         ) {

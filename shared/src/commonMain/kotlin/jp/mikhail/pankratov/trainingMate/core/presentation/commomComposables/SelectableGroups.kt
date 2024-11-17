@@ -1,6 +1,7 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -136,7 +138,7 @@ fun SelectableGroupItem(
 
         Spacer(Modifier.weight(1f))
         getDrawableResourceByName(group)?.let {
-            val painter = org.jetbrains.compose.resources.painterResource(it)
+            val painter = painterResource(it)
             Image(
                 painter = painter,
                 contentDescription = Res.string.cd_group_image.getString()
@@ -198,15 +200,20 @@ fun SelectableExerciseItem(
     onDeleteClick: (ExerciseLocal) -> Unit,
     modifier: Modifier
 ) {
-    val color = if (item.isStrengthDefining) goldLight else Color.Unspecified
+    val selected = isSelected.contains(item.name)
+    val cardColor by animateColorAsState(
+        targetValue = if (selected)
+            MaterialTheme.colorScheme.inversePrimary else
+            CardDefaults.cardColors().containerColor
+    )
     Card(
         shape = RoundedCornerShape(percent = 20),
         border = BorderStroke(width = Dimens.borderWidth, color = Color.Black),
         elevation = CardDefaults.elevatedCardElevation(Dimens.cardElevation),
-        colors = CardDefaults.cardColors().copy(containerColor = color),
+        colors = CardDefaults.cardColors().copy(containerColor = cardColor),
         modifier = modifier
             .selectable(
-                selected = isSelected.contains(item.name),
+                selected = selected,
                 onClick = {
                     onClick.invoke(item)
                 }
