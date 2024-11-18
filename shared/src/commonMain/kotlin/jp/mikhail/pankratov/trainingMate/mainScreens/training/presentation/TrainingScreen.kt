@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -77,7 +78,8 @@ fun TrainingScreen(
                 onClick = {
                     navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
                 },
-                modifier = Modifier.scale(scale)
+                modifier = Modifier.scale(scale),
+                elevation = FloatingActionButtonDefaults.elevation(defaultElevation = Dimens.cardElevation * scale)
             ) {
                 Icon(
                     imageVector = Icons.Default.FitnessCenter,
