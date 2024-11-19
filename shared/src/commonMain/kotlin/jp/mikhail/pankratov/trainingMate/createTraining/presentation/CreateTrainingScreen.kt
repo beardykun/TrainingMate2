@@ -1,16 +1,12 @@
 package jp.mikhail.pankratov.trainingMate.createTraining.presentation
 
 import Dimens
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import jp.mikhail.pankratov.trainingMate.core.domain.Constants
 import jp.mikhail.pankratov.trainingMate.core.domain.ToastManager
 import jp.mikhail.pankratov.trainingMate.core.getString
@@ -20,6 +16,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Glo
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.InputField
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.add_training
 import maxrep.shared.generated.resources.choose_training_description
@@ -36,64 +33,71 @@ fun CreateTrainingScreen(
     onEvent: (CreateTrainingEvent) -> Unit,
     navigator: Navigator
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
-    ) {
-        InputField(
-            value = state.trainingName,
-            onValueChanged = { newValue ->
-                onEvent(CreateTrainingEvent.OnTrainingNameChanged(name = newValue))
-            },
-            label = stringResource(Res.string.choose_training_name),
-            placeholder = stringResource(Res.string.choose_training_name),
-            modifier = Modifier.fillMaxWidth(),
-            isError = state.invalidNameInput,
-            errorText = if (state.invalidNameInput) stringResource(Res.string.invalid_or_duplicate_training_name) else ""
-        )
-        InputField(
-            value = state.trainingDescription,
-            onValueChanged = { newValue ->
-                onEvent(CreateTrainingEvent.OnTrainingDescriptionChanged(description = newValue))
-            },
-            label = stringResource(Res.string.choose_training_description),
-            placeholder = stringResource(Res.string.choose_training_description),
-            modifier = Modifier.fillMaxWidth(),
-            isError = state.invalidDescriptionInput,
-            errorText = if (state.invalidDescriptionInput) stringResource(Res.string.invalid_training_description) else ""
-        )
+    TopAppBarScaffold(
+        label = Routs.TrainingScreens.createTraining,
+        onBackPressed = { navigator.navigate(Routs.TrainingScreens.selectTraining) },
+        content = {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
+            ) {
+                InputField(
+                    value = state.trainingName,
+                    onValueChanged = { newValue ->
+                        onEvent(CreateTrainingEvent.OnTrainingNameChanged(name = newValue))
+                    },
+                    label = stringResource(Res.string.choose_training_name),
+                    placeholder = stringResource(Res.string.choose_training_name),
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = state.invalidNameInput,
+                    errorText = if (state.invalidNameInput) stringResource(Res.string.invalid_or_duplicate_training_name) else ""
+                )
+                InputField(
+                    value = state.trainingDescription,
+                    onValueChanged = { newValue ->
+                        onEvent(CreateTrainingEvent.OnTrainingDescriptionChanged(description = newValue))
+                    },
+                    label = stringResource(Res.string.choose_training_description),
+                    placeholder = stringResource(Res.string.choose_training_description),
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = state.invalidDescriptionInput,
+                    errorText = if (state.invalidDescriptionInput) stringResource(Res.string.invalid_training_description) else ""
+                )
 
-        SelectableGroupVertical(
-            items = Constants.GROUPS,
-            selected = state.selectedGroups,
-            displayItem = { it },
-            modifier = Modifier.weight(1f),
-            onClick = { selectedGroup ->
-                onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
-            },
-            listItem = { item, isSelected, onClick, modifier ->
-                SelectableGroupItem(
-                    group = item,
-                    isSelected = isSelected,
-                    onClick = onClick,
-                    modifier = modifier
+                SelectableGroupVertical(
+                    items = Constants.GROUPS,
+                    selected = state.selectedGroups,
+                    displayItem = { it },
+                    modifier = Modifier.weight(1f),
+                    onClick = { selectedGroup ->
+                        onEvent(CreateTrainingEvent.OnTrainingGroupsChanged(selectedGroup))
+                    },
+                    listItem = { item, isSelected, onClick, modifier ->
+                        SelectableGroupItem(
+                            group = item,
+                            isSelected = isSelected,
+                            onClick = onClick,
+                            modifier = modifier
+                        )
+                    }
+                )
+                val groupError = Res.string.select_muscle_group.getString()
+                val enabled =
+                    state.trainingName.text.isNotBlank() && state.selectedGroups.isNotEmpty()
+                CommonButton(
+                    onClick = {
+                        if (state.selectedGroups.isEmpty()) {
+                            ToastManager.showToast(message = groupError)
+                            return@CommonButton
+                        }
+                        onEvent(CreateTrainingEvent.OnAddNewTraining(onSuccess = {
+                            navigator.navigate(Routs.TrainingScreens.selectTraining)
+                        }))
+                    },
+                    enabled = enabled,
+                    text = Res.string.add_training.getString()
                 )
             }
-        )
-        val groupError = Res.string.select_muscle_group.getString()
-        val enabled = state.trainingName.text.isNotBlank() && state.selectedGroups.isNotEmpty()
-        CommonButton(
-            onClick = {
-                if (state.selectedGroups.isEmpty()) {
-                    ToastManager.showToast(message = groupError)
-                    return@CommonButton
-                }
-                onEvent(CreateTrainingEvent.OnAddNewTraining(onSuccess = {
-                    navigator.navigate(Routs.TrainingScreens.selectTraining)
-                }))
-            },
-            enabled = enabled,
-            text = Res.string.add_training.getString()
-        )
-    }
-    GlobalToastMessage()
+            GlobalToastMessage()
+        }
+    )
 }

@@ -29,11 +29,11 @@ import androidx.compose.material.icons.filled.TimerOff
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -60,6 +60,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TimerDialog
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.domain.useCases.AutoInputMode
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.CountdownAnimation
@@ -89,7 +90,6 @@ fun ExerciseAtWorkScreen(
     onEvent: (ExerciseAtWorkEvent) -> Unit,
     navigator: Navigator
 ) {
-
     val focusRequesterWeight = remember { FocusRequester() }
     val focusRequesterReps = remember { FocusRequester() }
 
@@ -110,9 +110,10 @@ fun ExerciseAtWorkScreen(
         onEvent(ExerciseAtWorkEvent.OnRefreshAutoInputValues)
     }
     val focus = LocalFocusManager.current
-    Scaffold(
-        topBar =
-        {
+    TopAppBarScaffold(
+        label = Routs.ExerciseScreens.exerciseAtWork,
+        onBackPressed = {},
+        topAppBar = {
             TopAppBar(
                 title = {
                     TextLarge(
@@ -142,194 +143,210 @@ fun ExerciseAtWorkScreen(
                 }
             )
         },
-        modifier = Modifier.padding(all = Dimens.Padding16)
-    ) { padding ->
-        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            state.exerciseDetails.exercise?.name?.let {
-                TextLarge(
-                    text = it.uppercase(),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            if (state.exerciseDetails.exercise != null) {
-                ExerciseComparison(
-                    lastExercise = state.exerciseDetails.lastSameExercise,
-                    exercise = state.exerciseDetails.exercise
-                ) { exerciseName ->
-                    navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/$exerciseName")
-                }
-            }
-            AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise?.sets?.isEmpty() == false) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TextMedium(text = Res.string.auto_input.getString())
-                    SelectableGroupHorizontal(
-                        items = AutoInputMode.entries.minus(AutoInputMode.NONE),
-                        selected = state.uiState.autoInputSelected,
-                        onClick = { autoInputMode ->
-                            onEvent(ExerciseAtWorkEvent.OnAutoInputChanged(autoInputMode))
-                        },
-                        displayItem = { it.name },
-                        listItem = { item, selected, onClick ->
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                TextSmall(text = item.name)
-                                Checkbox(
-                                    checked = selected == item,
-                                    onCheckedChange = {
-                                        onClick.invoke(item)
-                                    })
-                            }
-                        }
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier.fillMaxSize().padding(paddingValues).padding(Dimens.Padding16)
+            ) {
+                state.exerciseDetails.exercise?.name?.let {
+                    TextLarge(
+                        text = it.uppercase(),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
                     )
                 }
-            }
 
-            InputFields(
-                weight = state.exerciseDetails.weight,
-                reps = state.exerciseDetails.reps,
-                inputError = state.exerciseDetails.inputError,
-                onEvent = onEvent,
-                focus = focus,
-                focusRequesterWeight = focusRequesterWeight,
-                onFocusChangedWeight = onFocusChangedWeight,
-                focusRequesterReps = focusRequesterReps,
-                onFocusChangedReps = onFocusChangedReps
-            )
-            DifficultySelection(
-                selected = state.exerciseDetails.setDifficulty.name,
-                onSelect = { difficulty ->
-                    onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
-                })
-            val hint = when (state.exerciseDetails.setDifficulty) {
-                SetDifficulty.Light -> Res.string.hint_light.getString()
-                SetDifficulty.Medium -> Res.string.hint_medium.getString()
-                SetDifficulty.Hard -> Res.string.hint_hard.getString()
-            }
-            TextSmall(hint, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
-
-            state.exerciseDetails.exercise?.sets?.let { sets ->
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = COLUMNS_NUM), modifier = Modifier.weight(1f)
-                ) {
-                    items(sets, key = { it.id }) { item ->
-                        AnimatedTextItem(
-                            lastTrainingSet = state.exerciseDetails.lastSameExercise?.sets?.getOrNull(
-                                sets.indexOf(item)
-                            ),
-                            set = item,
-                            onEvent = onEvent,
-                            isAnimating = state.uiState.isAnimating,
-                            isUsingTwoDumbbells = state.exerciseDetails.exerciseLocal?.usesTwoDumbbells
-                                ?: false,
-                            modifier = Modifier
+                if (state.exerciseDetails.exercise != null) {
+                    ExerciseComparison(
+                        lastExercise = state.exerciseDetails.lastSameExercise,
+                        exercise = state.exerciseDetails.exercise
+                    ) { exerciseName ->
+                        navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/$exerciseName")
+                    }
+                }
+                AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise?.sets?.isEmpty() == false) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TextMedium(text = Res.string.auto_input.getString())
+                        SelectableGroupHorizontal(
+                            items = AutoInputMode.entries.minus(AutoInputMode.NONE),
+                            selected = state.uiState.autoInputSelected,
+                            onClick = { autoInputMode ->
+                                onEvent(ExerciseAtWorkEvent.OnAutoInputChanged(autoInputMode))
+                            },
+                            displayItem = { it.name },
+                            listItem = { item, selected, onClick ->
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    TextSmall(text = item.name)
+                                    Checkbox(
+                                        checked = selected == item,
+                                        onCheckedChange = {
+                                            onClick.invoke(item)
+                                        })
+                                }
+                            }
                         )
                     }
                 }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                val minText =
-                    if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
-                val secText =
-                    if (state.timerState.timerSec < 10) "0${state.timerState.timerSec}" else state.timerState.timerSec
-                TextLarge(
-                    textAlign = TextAlign.Center,
-                    text = "$minText:$secText",
-                    modifier = Modifier.clickable {
-                        onEvent(ExerciseAtWorkEvent.OnDropdownOpen)
-                    }.clip(
-                        RoundedCornerShape(percent = 50)
-                    ).background(color = MaterialTheme.colorScheme.primaryContainer)
-                        .padding(Dimens.Padding16)
-                )
 
-                Spacer(modifier = Modifier.width(Dimens.Padding16))
-                OutlinedButton(
-                    shape = CircleShape,
-                    border = BorderStroke(1.dp, Color.Blue),
-                    contentPadding = PaddingValues(0.dp),
-                    elevation = ButtonDefaults.buttonElevation(defaultElevation = Dimens.cardElevation),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White
-                    ),
-                    onClick = {
-                        onEvent(ExerciseAtWorkEvent.OnAddNewSet)
-                    },
-                    modifier = Modifier.padding(bottom = Dimens.Padding12).size(Dimens.roundButton)
-                ) {
-                    TextMedium(text = Res.string.add_set.getString())
+                InputFields(
+                    weight = state.exerciseDetails.weight,
+                    reps = state.exerciseDetails.reps,
+                    inputError = state.exerciseDetails.inputError,
+                    onEvent = onEvent,
+                    focus = focus,
+                    focusRequesterWeight = focusRequesterWeight,
+                    onFocusChangedWeight = onFocusChangedWeight,
+                    focusRequesterReps = focusRequesterReps,
+                    onFocusChangedReps = onFocusChangedReps
+                )
+                DifficultySelection(
+                    selected = state.exerciseDetails.setDifficulty.name,
+                    onSelect = { difficulty ->
+                        onEvent(ExerciseAtWorkEvent.OnSetDifficultySelected(difficulty))
+                    })
+                val hint = when (state.exerciseDetails.setDifficulty) {
+                    SetDifficulty.Light -> Res.string.hint_light.getString()
+                    SetDifficulty.Medium -> Res.string.hint_medium.getString()
+                    SetDifficulty.Hard -> Res.string.hint_hard.getString()
                 }
-                Spacer(modifier = Modifier.width(Dimens.Padding16))
+                TextSmall(hint, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
-                val timerImage =
-                    if (state.timerState.isCounting) Icons.Default.TimerOff else Icons.Default.Timer
-                Image(
-                    imageVector = timerImage,
-                    contentDescription = Res.string.cd_start_timer.getString(),
-                    contentScale = ContentScale.Inside,
-                    modifier = Modifier.clip(CircleShape)
-                        .clickable {
-                            if (state.timerState.isCounting)
-                                onEvent(ExerciseAtWorkEvent.OnTimerStop)
-                            else
-                                onEvent(ExerciseAtWorkEvent.OnTimerStart)
+                state.exerciseDetails.exercise?.sets?.let { sets ->
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(count = COLUMNS_NUM),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        items(sets, key = { it.id }) { item ->
+                            AnimatedTextItem(
+                                lastTrainingSet = state.exerciseDetails.lastSameExercise?.sets?.getOrNull(
+                                    sets.indexOf(item)
+                                ),
+                                set = item,
+                                onEvent = onEvent,
+                                isAnimating = state.uiState.isAnimating,
+                                isUsingTwoDumbbells = state.exerciseDetails.exerciseLocal?.usesTwoDumbbells
+                                    ?: false,
+                                modifier = Modifier
+                            )
                         }
-                        .size(Dimens.timerIcon)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
-                )
-            }
-
-            AnimatedVisibility(visible = state.uiState.isDeleteDialogVisible) {
-                DialogPopup(
-                    title = Res.string.delete_set.getString(),
-                    description = Res.string.sure_delete_set.getString(),
-                    onAccept = {
-                        onEvent(ExerciseAtWorkEvent.OnSetDelete)
-                    },
-                    onDenny = {
-                        onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(false))
                     }
-                )
-            }
+                }
+                HorizontalDivider()
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = Dimens.Padding8),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    val minText =
+                        if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
+                    val secText =
+                        if (state.timerState.timerSec < 10) "0${state.timerState.timerSec}" else state.timerState.timerSec
+                    TextLarge(
+                        textAlign = TextAlign.Center,
+                        text = "$minText:$secText",
+                        modifier = Modifier.clickable {
+                            onEvent(ExerciseAtWorkEvent.OnDropdownOpen)
+                        }.clip(
+                            RoundedCornerShape(percent = 50)
+                        ).background(color = MaterialTheme.colorScheme.primaryContainer)
+                            .padding(Dimens.Padding16)
+                    )
 
-            AnimatedVisibility(visible = state.timerState.isExpanded) {
-                TimerDialog(
-                    minuteValue = state.timerState.timerMin,
-                    secondValue = state.timerState.timerSec,
-                    dialogTitle = Res.string.break_time.getString(),
-                    onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
-                    onMinuteUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnMinutesUpdated(value)) },
-                    onSecondUpdated = { value -> onEvent(ExerciseAtWorkEvent.OnSecondsUpdated(value)) },
-                    showDialog = state.timerState.isExpanded,
-                    onConfirm = {
-                        onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected)
-                    },
-                )
+                    Spacer(modifier = Modifier.width(Dimens.Padding16))
+                    OutlinedButton(
+                        shape = CircleShape,
+                        border = BorderStroke(1.dp, Color.Blue),
+                        contentPadding = PaddingValues(0.dp),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = Dimens.cardElevation),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            onEvent(ExerciseAtWorkEvent.OnAddNewSet)
+                        },
+                        modifier = Modifier.padding(bottom = Dimens.Padding12)
+                            .size(Dimens.roundButton)
+                    ) {
+                        TextMedium(text = Res.string.add_set.getString())
+                    }
+                    Spacer(modifier = Modifier.width(Dimens.Padding16))
+
+                    val timerImage =
+                        if (state.timerState.isCounting) Icons.Default.TimerOff else Icons.Default.Timer
+                    Image(
+                        imageVector = timerImage,
+                        contentDescription = Res.string.cd_start_timer.getString(),
+                        contentScale = ContentScale.Inside,
+                        modifier = Modifier.clip(CircleShape)
+                            .clickable {
+                                if (state.timerState.isCounting)
+                                    onEvent(ExerciseAtWorkEvent.OnTimerStop)
+                                else
+                                    onEvent(ExerciseAtWorkEvent.OnTimerStart)
+                            }
+                            .size(Dimens.timerIcon)
+                            .background(color = MaterialTheme.colorScheme.primaryContainer)
+                    )
+                }
+
+                AnimatedVisibility(visible = state.uiState.isDeleteDialogVisible) {
+                    DialogPopup(
+                        title = Res.string.delete_set.getString(),
+                        description = Res.string.sure_delete_set.getString(),
+                        onAccept = {
+                            onEvent(ExerciseAtWorkEvent.OnSetDelete)
+                        },
+                        onDenny = {
+                            onEvent(ExerciseAtWorkEvent.OnDisplayDeleteDialog(false))
+                        }
+                    )
+                }
+
+                AnimatedVisibility(visible = state.timerState.isExpanded) {
+                    TimerDialog(
+                        minuteValue = state.timerState.timerMin,
+                        secondValue = state.timerState.timerSec,
+                        dialogTitle = Res.string.break_time.getString(),
+                        onDismiss = { onEvent(ExerciseAtWorkEvent.OnDropdownClosed) },
+                        onMinuteUpdated = { value ->
+                            onEvent(
+                                ExerciseAtWorkEvent.OnMinutesUpdated(
+                                    value
+                                )
+                            )
+                        },
+                        onSecondUpdated = { value ->
+                            onEvent(
+                                ExerciseAtWorkEvent.OnSecondsUpdated(
+                                    value
+                                )
+                            )
+                        },
+                        showDialog = state.timerState.isExpanded,
+                        onConfirm = {
+                            onEvent(ExerciseAtWorkEvent.OnDropdownItemSelected)
+                        },
+                    )
+                }
             }
-        }
-        AnimatedVisibility(
-            visible = state.timerState.isCounting &&
-                    state.timerState.timerMin == 0 &&
-                    state.timerState.timerSec in COUNTDOWN_ANIMATION_RANGE
-        ) {
-            if (state.timerState.timerSec in COUNTDOWN_ANIMATION_RANGE) {
-                CountdownAnimation(currentTimerValue = state.timerState.timerSec)
+            AnimatedVisibility(
+                visible = state.timerState.isCounting &&
+                        state.timerState.timerMin == 0 &&
+                        state.timerState.timerSec in COUNTDOWN_ANIMATION_RANGE
+            ) {
+                if (state.timerState.timerSec in COUNTDOWN_ANIMATION_RANGE) {
+                    CountdownAnimation(currentTimerValue = state.timerState.timerSec)
+                }
             }
-        }
-        GlobalToastMessage()
-    }
+            GlobalToastMessage()
+        })
 }
 
 

@@ -119,6 +119,8 @@
     <string name="no_history">You don't have a training history yet...</string>
     <string name="delete_training">Delete Training</string>
     <string name="want_to_delete_training">Want to delete this training?</string>
+    <string name="training_search">Search fo a training...</string>
+
 
     <!-- HistoryInfoScreen -->
     <string name="training_name_with_arg">Training name: %1$s</string>

@@ -19,6 +19,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Inp
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupItem
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.SelectableGroupVertical
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.add_exercise
@@ -33,64 +34,69 @@ fun CreateExerciseScreen(
     onEvent: (CreateExerciseEvent) -> Unit,
     navigator: Navigator
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        InputField(
-            value = state.exerciseName,
-            onValueChanged = { newValue ->
-                onEvent(CreateExerciseEvent.OnExerciseNameChanged(newName = newValue))
-            },
-            label = Res.string.choose_exercise_name.getString(),
-            placeholder = Res.string.choose_exercise_name.getString(),
-            modifier = Modifier.fillMaxWidth(),
-            isError = state.invalidNameInput,
-            errorText = if (state.invalidNameInput) Res.string.invalid_or_duplicate_exercise_name.getString() else ""
-        )
-
-        state.ongoingTraining?.let { ongoingTraining ->
-            val groups = ongoingTraining.groups.stringToList()
-            if (groups.size == 1) {
-                LaunchedEffect(Unit) {
-                    onEvent(CreateExerciseEvent.OnExerciseGroupChanged(groups.first()))
-                }
-            } else {
-                val selectedGroups = state.exerciseGroup.stringToList()
-                SelectableGroupVertical(
-                    items = groups,
-                    selected = selectedGroups,
-                    modifier = Modifier.weight(1f),
-                    onClick = { selectedGroup ->
-                        onEvent(CreateExerciseEvent.OnExerciseGroupChanged(selectedGroup))
+    TopAppBarScaffold(
+        label = Routs.TrainingScreens.createExercise,
+        onBackPressed = { navigator.goBack() },
+        content = {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(Dimens.Padding16),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                InputField(
+                    value = state.exerciseName,
+                    onValueChanged = { newValue ->
+                        onEvent(CreateExerciseEvent.OnExerciseNameChanged(newName = newValue))
                     },
-                    displayItem = { it },
-                    listItem = { item, isSelected, onClick, modifier ->
-                        SelectableGroupItem(
-                            group = item,
-                            isSelected = isSelected,
-                            onClick = onClick,
-                            modifier = modifier
+                    label = Res.string.choose_exercise_name.getString(),
+                    placeholder = Res.string.choose_exercise_name.getString(),
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = state.invalidNameInput,
+                    errorText = if (state.invalidNameInput) Res.string.invalid_or_duplicate_exercise_name.getString() else ""
+                )
+
+                state.ongoingTraining?.let { ongoingTraining ->
+                    val groups = ongoingTraining.groups.stringToList()
+                    if (groups.size == 1) {
+                        LaunchedEffect(Unit) {
+                            onEvent(CreateExerciseEvent.OnExerciseGroupChanged(groups.first()))
+                        }
+                    } else {
+                        val selectedGroups = state.exerciseGroup.stringToList()
+                        SelectableGroupVertical(
+                            items = groups,
+                            selected = selectedGroups,
+                            modifier = Modifier.weight(1f),
+                            onClick = { selectedGroup ->
+                                onEvent(CreateExerciseEvent.OnExerciseGroupChanged(selectedGroup))
+                            },
+                            displayItem = { it },
+                            listItem = { item, isSelected, onClick, modifier ->
+                                SelectableGroupItem(
+                                    group = item,
+                                    isSelected = isSelected,
+                                    onClick = onClick,
+                                    modifier = modifier
+                                )
+                            }
                         )
                     }
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = state.usesTwoDumbbell, onCheckedChange = {
+                        onEvent(CreateExerciseEvent.OnExerciseUsesTwoDumbbells)
+                    })
+                    TextMedium(text = Res.string.using_two_dumbbell.getString())
+                }
+                CommonButton(
+                    onClick = {
+                        onEvent(CreateExerciseEvent.OnExerciseCreate(onSuccess = {
+                            navigator.navigate(Routs.TrainingScreens.addExercises)
+                        }))
+                    },
+                    enabled = state.exerciseName.text.isNotBlank() && state.exerciseGroup.isNotBlank(),
+                    text = Res.string.add_exercise.getString()
                 )
             }
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = state.usesTwoDumbbell, onCheckedChange = {
-                onEvent(CreateExerciseEvent.OnExerciseUsesTwoDumbbells)
-            })
-            TextMedium(text = Res.string.using_two_dumbbell.getString())
-        }
-        CommonButton(
-            onClick = {
-                onEvent(CreateExerciseEvent.OnExerciseCreate(onSuccess = {
-                    navigator.navigate(Routs.TrainingScreens.addExercises)
-                }))
-            },
-            enabled = state.exerciseName.text.isNotBlank() && state.exerciseGroup.isNotBlank(),
-            text = Res.string.add_exercise.getString()
-        )
-    }
+        })
 }

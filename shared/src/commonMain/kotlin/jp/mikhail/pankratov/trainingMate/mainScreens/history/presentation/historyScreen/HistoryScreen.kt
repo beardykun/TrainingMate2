@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
@@ -34,10 +33,12 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.TrainingItem
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.delete_training
 import maxrep.shared.generated.resources.no_history
+import maxrep.shared.generated.resources.training_search
 import maxrep.shared.generated.resources.want_to_delete_training
 import moe.tlaster.precompose.navigation.Navigator
 
@@ -47,83 +48,94 @@ fun HistoryScreen(
     onEvent: (HistoryScreenEvent) -> Unit,
     navigator: Navigator
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(state = state, setSearchText = { newText ->
-                onEvent(HistoryScreenEvent.OnSearchTextChange(newText = newText))
-            }, onSearchIconClick = {
-                onEvent(HistoryScreenEvent.OnSearchIconClick)
-            })
-        }
-    ) {
-        val listState = rememberLazyListState()
-        Column(modifier = Modifier.fillMaxSize()) {
-            state.historyList?.let { trainings ->
-                if (trainings.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        TextLarge(Res.string.no_history.getString())
-                    }
-                } else {
-                    LazyColumn(state = listState) {
-                        items(
-                            items = trainings,
-                            key = { training ->
-                                training.id ?: -1
-                            }) { training ->
-                            TrainingItem(training = training, query = state.searchText, onClick = {
-                                navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${training.id}")
-                            }, onDeleteClick = { trainingId ->
-                                onEvent(HistoryScreenEvent.OnDeleteClick(trainingId = trainingId))
-                            })
+    TopAppBarScaffold(
+        label = Routs.MainScreens.history.title,
+        onBackPressed = { navigator.goBack() },
+        topAppBar = {
+            TopAppBar(
+                isExpanded = state.isExpanded,
+                searchText = state.searchText,
+                setSearchText = { newText ->
+                    onEvent(HistoryScreenEvent.OnSearchTextChange(newText = newText))
+                },
+                onSearchIconClick = {
+                    onEvent(HistoryScreenEvent.OnSearchIconClick)
+                })
+        }, content = {
+
+            val listState = rememberLazyListState()
+            Column(modifier = Modifier.fillMaxSize()) {
+                state.historyList?.let { trainings ->
+                    if (trainings.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            TextLarge(Res.string.no_history.getString())
                         }
-                    }
-                    LaunchedEffect(key1 = listState, key2 = trainings.size) {
-                        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
-                            .collect { lastVisibleItemIndex ->
-                                if (lastVisibleItemIndex == trainings.size - 1 && !state.isLastPage) {
-                                    onEvent(HistoryScreenEvent.OnLoadNextPage)
-                                }
+                    } else {
+                        LazyColumn(state = listState) {
+                            items(
+                                items = trainings,
+                                key = { training ->
+                                    training.id ?: -1
+                                }) { training ->
+                                TrainingItem(
+                                    training = training,
+                                    query = state.searchText,
+                                    onClick = {
+                                        navigator.navigate(route = "${Routs.HistoryScreens.historyInfo}/${training.id}")
+                                    },
+                                    onDeleteClick = { trainingId ->
+                                        onEvent(HistoryScreenEvent.OnDeleteClick(trainingId = trainingId))
+                                    })
                             }
-                    }
-                }
-                AnimatedVisibility(visible = state.showDeleteDialog) {
-                    DialogPopup(
-                        title = Res.string.delete_training.getString(),
-                        description = Res.string.want_to_delete_training.getString(),
-                        onAccept = {
-                            onEvent(HistoryScreenEvent.OnDeleteConfirmClick)
-                            navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
-                        },
-                        onDenny = {
-                            onEvent(HistoryScreenEvent.OnDeleteDenyClick)
                         }
-                    )
+                        LaunchedEffect(key1 = listState, key2 = trainings.size) {
+                            snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+                                .collect { lastVisibleItemIndex ->
+                                    if (lastVisibleItemIndex == trainings.size - 1 && !state.isLastPage) {
+                                        onEvent(HistoryScreenEvent.OnLoadNextPage)
+                                    }
+                                }
+                        }
+                    }
+                    AnimatedVisibility(visible = state.showDeleteDialog) {
+                        DialogPopup(
+                            title = Res.string.delete_training.getString(),
+                            description = Res.string.want_to_delete_training.getString(),
+                            onAccept = {
+                                onEvent(HistoryScreenEvent.OnDeleteConfirmClick)
+                                navigator.navigate(Routs.TrainingScreens.trainingGroupRout)
+                            },
+                            onDenny = {
+                                onEvent(HistoryScreenEvent.OnDeleteDenyClick)
+                            }
+                        )
+                    }
                 }
             }
-        }
-    }
+        })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
-    state: HistoryScreenState,
+    isExpanded: Boolean,
+    searchText: String,
     setSearchText: (String) -> Unit,
     onSearchIconClick: () -> Unit
 ) {
     TopAppBar(
         title = {
-            AnimatedVisibility(state.isExpanded) {
+            AnimatedVisibility(isExpanded) {
                 TextField(
-                    value = state.searchText,
+                    value = searchText,
                     onValueChange = { setSearchText(it) },
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = {
                         TextMedium(
-                            "stringResource(Res.string.hint_search)",
+                            Res.string.training_search.getString(),
                             color = Color.White
                         )
                     },
@@ -137,7 +149,7 @@ fun TopAppBar(
                     )
                 )
             }
-            AnimatedVisibility(state.isExpanded.not()) {
+            AnimatedVisibility(isExpanded.not()) {
                 Text(
                     text = Routs.MainScreens.history.title,
                     textAlign = TextAlign.Center,
@@ -149,8 +161,8 @@ fun TopAppBar(
         actions = {
             IconButton(onClick = { onSearchIconClick.invoke() }) {
                 Icon(
-                    imageVector = if (state.isExpanded) Icons.Filled.Close else Icons.Filled.Search,
-                    contentDescription = "stringResource(Res.string.hint_search)"
+                    imageVector = if (isExpanded) Icons.Filled.Close else Icons.Filled.Search,
+                    contentDescription = Res.string.training_search.getString()
                 )
             }
         }

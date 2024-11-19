@@ -20,12 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.finish_ongoing_and_continue
@@ -45,67 +46,72 @@ fun HistoryInfoScreen(
     onEvent: (HistoryInfoEvent) -> Unit,
     navigator: Navigator
 ) {
-    Column(modifier = Modifier.fillMaxSize().padding(all = Dimens.Padding16)) {
-        state.training?.let { training ->
-            TextLarge(
-                text = stringResource(
-                    Res.string.training_name_with_arg,
-                    training.name
-                )
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(
-                text = stringResource(
-                    Res.string.training_groups_with_arg, training.groups
-                )
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(
-                text = stringResource(
-                    Res.string.training_duration_with_arg, Utils.countTrainingTime(training)
-                )
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextLarge(
-                text = stringResource(
-                    Res.string.total_weight_lifted_with_arg, training.totalLiftedWeight
-                )
-            )
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-        }
-        state.exercises?.let { exercises ->
-            LazyColumn {
-                items(
-                    items = exercises,
-                    key = { item ->
-                        item.name
-                    }) { exercise ->
-                    ExerciseHistoryItem(
-                        exercise, modifier = Modifier
-                            .fillParentMaxWidth()
-                            .animateItem()
+    TopAppBarScaffold(
+        label = Routs.HistoryScreens.historyInfo,
+        onBackPressed = { navigator.goBack() },
+        content = {
+            Column(modifier = Modifier.fillMaxSize().padding(all = Dimens.Padding16)) {
+                state.training?.let { training ->
+                    TextLarge(
+                        text = stringResource(
+                            Res.string.training_name_with_arg,
+                            training.name
+                        )
                     )
+                    HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+                    Spacer(modifier = Modifier.height(Dimens.Padding8))
+                    TextLarge(
+                        text = stringResource(
+                            Res.string.training_groups_with_arg, training.groups
+                        )
+                    )
+                    HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+                    Spacer(modifier = Modifier.height(Dimens.Padding8))
+                    TextLarge(
+                        text = stringResource(
+                            Res.string.training_duration_with_arg, Utils.countTrainingTime(training)
+                        )
+                    )
+                    HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+                    Spacer(modifier = Modifier.height(Dimens.Padding8))
+                    TextLarge(
+                        text = stringResource(
+                            Res.string.total_weight_lifted_with_arg, training.totalLiftedWeight
+                        )
+                    )
+                    HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+                    Spacer(modifier = Modifier.height(Dimens.Padding8))
+                }
+                state.exercises?.let { exercises ->
+                    LazyColumn {
+                        items(
+                            items = exercises,
+                            key = { item ->
+                                item.name
+                            }) { exercise ->
+                            ExerciseHistoryItem(
+                                exercise, modifier = Modifier
+                                    .fillParentMaxWidth()
+                                    .animateItem()
+                            )
+                        }
+                    }
+                }
+                if (state.isError) {
+                    DialogPopup(
+                        title = Res.string.training_ongoing.getString(),
+                        description = Res.string.finish_ongoing_and_continue.getString(),
+                        onAccept = {
+                            onEvent(HistoryInfoEvent.OnFinishOngoingAndContinue {
+                                navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
+                            })
+                        },
+                        onDenny = {
+                            onEvent(HistoryInfoEvent.OnFinishDeny)
+                        })
                 }
             }
-        }
-        if (state.isError) {
-            DialogPopup(
-                title = Res.string.training_ongoing.getString(),
-                description = Res.string.finish_ongoing_and_continue.getString(),
-                onAccept = {
-                    onEvent(HistoryInfoEvent.OnFinishOngoingAndContinue {
-                        navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
-                    })
-                },
-                onDenny = {
-                    onEvent(HistoryInfoEvent.OnFinishDeny)
-                })
-        }
-    }
+        })
 }
 
 @Composable

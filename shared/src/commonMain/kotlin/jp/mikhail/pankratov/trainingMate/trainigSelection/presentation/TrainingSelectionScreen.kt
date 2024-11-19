@@ -14,8 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
@@ -35,6 +33,7 @@ import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
 import jp.mikhail.pankratov.trainingMate.mainScreens.training.presentation.composables.LocalTrainingItem
 import kotlinx.coroutines.launch
 import maxrep.shared.generated.resources.Res
@@ -61,133 +60,140 @@ fun TrainingSelectionScreen(
     onEvent: (TrainingSelectionEvent) -> Unit,
     navigator: Navigator
 ) {
-    Scaffold(floatingActionButton =
-    {
-        FloatingActionButton(
-            onClick = {
-                navigator.navigate(Routs.TrainingScreens.createTraining)
-            },
-            modifier = Modifier.padding(bottom = Dimens.Padding64)
-        ) {
-            Icon(
-                imageVector = Icons.Default.AddCard,
-                contentDescription = Res.string.cd_add_new_training.getString()
-            )
-        }
-    }) {
-        state.availableTrainings?.let {
-            Column {
-                val trainingTypes = Constants.GROUPS
-                val trainingImages = listOf(
-                    Res.drawable.biceps,
-                    Res.drawable.triceps,
-                    Res.drawable.shoulders,
-                    Res.drawable.back,
-                    Res.drawable.chest,
-                    Res.drawable.legs,
-                    Res.drawable.abs
+    TopAppBarScaffold(
+        label = Routs.TrainingScreens.selectTraining,
+        onBackPressed = { navigator.navigate(Routs.MainScreens.training.title) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navigator.navigate(Routs.TrainingScreens.createTraining)
+                },
+                modifier = Modifier.padding(bottom = Dimens.Padding64)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AddCard,
+                    contentDescription = Res.string.cd_add_new_training.getString()
                 )
-                val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
-                var selectedTabIndex by remember { mutableStateOf(0) }
-                val coroutineScope = rememberCoroutineScope()
+            }
+        },
+        content = {
+            state.availableTrainings?.let {
+                Column {
+                    val trainingTypes = Constants.GROUPS
+                    val trainingImages = listOf(
+                        Res.drawable.biceps,
+                        Res.drawable.triceps,
+                        Res.drawable.shoulders,
+                        Res.drawable.back,
+                        Res.drawable.chest,
+                        Res.drawable.legs,
+                        Res.drawable.abs
+                    )
+                    val pagerState = rememberPagerState(pageCount = { trainingTypes.size })
+                    var selectedTabIndex by remember { mutableStateOf(0) }
+                    val coroutineScope = rememberCoroutineScope()
 
-                LaunchedEffect(pagerState.currentPage) {
-                    val trainingType = trainingTypes[pagerState.currentPage]
-                    selectedTabIndex = pagerState.currentPage
-                    onEvent(TrainingSelectionEvent.OnTrainingTypeChanged(trainingType))
-                }
+                    LaunchedEffect(pagerState.currentPage) {
+                        val trainingType = trainingTypes[pagerState.currentPage]
+                        selectedTabIndex = pagerState.currentPage
+                        onEvent(TrainingSelectionEvent.OnTrainingTypeChanged(trainingType))
+                    }
 
-                ScrollableTabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    edgePadding = Dimens.Padding8,
-                ) {
-                    trainingTypes.forEachIndexed { index, trainingType ->
-                        Tab(
-                            selected = selectedTabIndex == index,
-                            onClick = {
-                                selectedTabIndex = index
-                                coroutineScope.launch {
-                                    pagerState.animateScrollToPage(index)
+                    ScrollableTabRow(
+                        selectedTabIndex = selectedTabIndex,
+                        edgePadding = Dimens.Padding8,
+                    ) {
+                        trainingTypes.forEachIndexed { index, trainingType ->
+                            Tab(
+                                selected = selectedTabIndex == index,
+                                onClick = {
+                                    selectedTabIndex = index
+                                    coroutineScope.launch {
+                                        pagerState.animateScrollToPage(index)
+                                    }
+                                }
+                            ) {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Image(
+                                        painter = painterResource(trainingImages[index]),
+                                        contentDescription = trainingType
+                                    )
+                                    TextMedium(
+                                        text = trainingType,
+                                        modifier = Modifier.padding(Dimens.Padding8)
+                                    )
                                 }
                             }
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
+                        }
+                    }
+                    val nestedScrollConnection = remember { object : NestedScrollConnection {} }
+                    state.typedTrainings?.let { trainings ->
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier
+                                .nestedScroll(nestedScrollConnection)
+                        ) { page ->
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize()
                             ) {
-                                Image(
-                                    painter = painterResource(trainingImages[index]),
-                                    contentDescription = trainingType
-                                )
-                                TextMedium(
-                                    text = trainingType,
-                                    modifier = Modifier.padding(Dimens.Padding8)
-                                )
-                            }
-                        }
-                    }
-                }
-                val nestedScrollConnection = remember { object : NestedScrollConnection {} }
-                state.typedTrainings?.let { trainings ->
-                    HorizontalPager(
-                        state = pagerState,
-                        modifier = Modifier
-                            .nestedScroll(nestedScrollConnection)
-                    ) { page ->
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            items(trainings, key = { it.name }) { training ->
-                                LocalTrainingItem(
-                                    training = training,
-                                    onClick = {
-                                        onEvent(
-                                            TrainingSelectionEvent.OnTrainingItemClick(
-                                                shouldShowDialog = true,
-                                                training = training
+                                items(trainings, key = { it.name }) { training ->
+                                    LocalTrainingItem(
+                                        training = training,
+                                        onClick = {
+                                            onEvent(
+                                                TrainingSelectionEvent.OnTrainingItemClick(
+                                                    shouldShowDialog = true,
+                                                    training = training
+                                                )
                                             )
-                                        )
-                                    },
-                                    onDeleteClick = { id ->
-                                        onEvent(TrainingSelectionEvent.OnTrainingTemplateDelete(id))
-                                    },
-                                    modifier = Modifier.animateItem(),
-                                    containerColor = Color.White
-                                )
+                                        },
+                                        onDeleteClick = { id ->
+                                            onEvent(
+                                                TrainingSelectionEvent.OnTrainingTemplateDelete(
+                                                    id
+                                                )
+                                            )
+                                        },
+                                        modifier = Modifier.animateItem(),
+                                        containerColor = Color.White
+                                    )
+                                }
                             }
                         }
                     }
-                }
-                AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
-                    DialogPopup(
-                        title = Res.string.delete_training.getString(),
-                        description = Res.string.want_to_delete_training.getString(),
-                        onAccept = {
-                            onEvent(TrainingSelectionEvent.OnDeleteTemplateConfirmClick)
-                        },
-                        onDenny = {
-                            onEvent(TrainingSelectionEvent.OnDeleteTemplateDenyClick)
-                        }
-                    )
-                }
+                    AnimatedVisibility(visible = state.showDeleteTemplateDialog) {
+                        DialogPopup(
+                            title = Res.string.delete_training.getString(),
+                            description = Res.string.want_to_delete_training.getString(),
+                            onAccept = {
+                                onEvent(TrainingSelectionEvent.OnDeleteTemplateConfirmClick)
+                            },
+                            onDenny = {
+                                onEvent(TrainingSelectionEvent.OnDeleteTemplateDenyClick)
+                            }
+                        )
+                    }
 
-                AnimatedVisibility(visible = state.showStartTrainingDialog) {
-                    DialogPopup(
-                        title = Res.string.start_training.getString(),
-                        description = Res.string.are_you_ready_to_start.getString(),
-                        onAccept = {
-                            onEvent(TrainingSelectionEvent.OnStartNewTraining {
-                                navigator.navigate(
-                                    Routs.TrainingScreens.trainingExercises,
-                                    options = NavOptions(popUpTo = PopUpTo(Routs.MainScreens.training.title))
-                                )
-                            })
-                        },
-                        onDenny = {
-                            onEvent(TrainingSelectionEvent.OnStartNewTrainingDeny)
-                        }
-                    )
+                    AnimatedVisibility(visible = state.showStartTrainingDialog) {
+                        DialogPopup(
+                            title = Res.string.start_training.getString(),
+                            description = Res.string.are_you_ready_to_start.getString(),
+                            onAccept = {
+                                onEvent(TrainingSelectionEvent.OnStartNewTraining {
+                                    navigator.navigate(
+                                        Routs.TrainingScreens.trainingExercises,
+                                        options = NavOptions(popUpTo = PopUpTo(Routs.MainScreens.training.title))
+                                    )
+                                })
+                            },
+                            onDenny = {
+                                onEvent(TrainingSelectionEvent.OnStartNewTrainingDeny)
+                            }
+                        )
+                    }
                 }
             }
-        }
-    }
+        })
 }

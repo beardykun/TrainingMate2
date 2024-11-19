@@ -153,7 +153,7 @@ private fun RouteBuilder.summaryScreens(
             val viewModel: SummaryViewModel =
                 koinViewModel(qualifier = named("SummaryViewModel")) { parametersOf(stringsToPass) }
             val state by viewModel.state.collectAsStateWithLifecycle()
-            SummaryScreen(state = state, onEvent = viewModel::onEvent)
+            SummaryScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
         }
     }
 }
