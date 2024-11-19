@@ -2,6 +2,7 @@ package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.
 
 import Dimens
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +38,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -278,21 +280,23 @@ fun ExerciseAtWorkScreen(
                     }
                     Spacer(modifier = Modifier.width(Dimens.Padding16))
 
+                    val isCounting = state.timerState.isCounting
                     val timerImage =
-                        if (state.timerState.isCounting) Icons.Default.TimerOff else Icons.Default.Timer
+                        if (isCounting) Icons.Default.TimerOff else Icons.Default.Timer
+                    val tint by animateColorAsState(targetValue = if (isCounting) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer)
                     Image(
                         imageVector = timerImage,
                         contentDescription = Res.string.cd_start_timer.getString(),
                         contentScale = ContentScale.Inside,
                         modifier = Modifier.clip(CircleShape)
                             .clickable {
-                                if (state.timerState.isCounting)
+                                if (isCounting)
                                     onEvent(ExerciseAtWorkEvent.OnTimerStop)
                                 else
                                     onEvent(ExerciseAtWorkEvent.OnTimerStart)
                             }
                             .size(Dimens.timerIcon)
-                            .background(color = MaterialTheme.colorScheme.primaryContainer)
+                            .background(color = tint)
                     )
                 }
 
