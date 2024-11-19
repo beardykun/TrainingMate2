@@ -245,6 +245,9 @@ fun ExerciseAtWorkScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    val isCounting = state.timerState.isCounting
+
+                    val tint by animateColorAsState(targetValue = if (isCounting) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer)
                     val minText =
                         if (state.timerState.timerMin < 10) "0${state.timerState.timerMin}" else state.timerState.timerMin
                     val secText =
@@ -256,7 +259,7 @@ fun ExerciseAtWorkScreen(
                             onEvent(ExerciseAtWorkEvent.OnDropdownOpen)
                         }.clip(
                             RoundedCornerShape(percent = 50)
-                        ).background(color = MaterialTheme.colorScheme.primaryContainer)
+                        ).background(color = tint)
                             .padding(Dimens.Padding16)
                     )
 
@@ -280,10 +283,8 @@ fun ExerciseAtWorkScreen(
                     }
                     Spacer(modifier = Modifier.width(Dimens.Padding16))
 
-                    val isCounting = state.timerState.isCounting
                     val timerImage =
                         if (isCounting) Icons.Default.TimerOff else Icons.Default.Timer
-                    val tint by animateColorAsState(targetValue = if (isCounting) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer)
                     Image(
                         imageVector = timerImage,
                         contentDescription = Res.string.cd_start_timer.getString(),
