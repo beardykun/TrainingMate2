@@ -69,7 +69,7 @@
     <string name="summaries_sample">Summaries sample:</string>
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
     <string name="rest_time">Rest Time: %1$s</string>
-    <string name="total_rest_time">Total Rest Time: %1$s</string>
+    <string name="total_rest_time">Total Rest Time: %1$s min</string>
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>
     <string name="apply_changes">Apply Changes</string>

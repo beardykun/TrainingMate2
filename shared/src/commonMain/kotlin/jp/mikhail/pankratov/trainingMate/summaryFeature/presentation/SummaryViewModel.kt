@@ -124,9 +124,9 @@ class SummaryViewModel(
             totalRestTime = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = last?.totalRestTime?.toDouble(),
-                currentData = first.totalRestTime.toDouble(),
-                unit = ""
+                lastData = last?.totalRestTime?.toDouble()?.div(60),
+                currentData = first.totalRestTime.toDouble().div(60),
+                unit = "min"
             ),
             avgDurationPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
@@ -205,9 +205,9 @@ class SummaryViewModel(
             totalRestTime = getPieChartData(
                 prefixLast = prefixLast,
                 prefixCurrent = prefixCurrent,
-                lastData = last?.totalRestTime?.toDouble(),
-                currentData = first.totalRestTime.toDouble(),
-                unit = ""
+                lastData = last?.totalRestTime?.toDouble()?.div(60),
+                currentData = first.totalRestTime.toDouble() / 60,
+                unit = "min"
             ),
             avgDurationPerWorkout = getPieChartData(
                 prefixLast = prefixLast,

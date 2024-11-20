@@ -28,7 +28,6 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Com
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.MyHorizontalViewPager
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.average_weight_per_exercise_with_args
 import maxrep.shared.generated.resources.average_weight_per_workout_with_args
@@ -95,7 +94,7 @@ fun SummaryScreen(
                                     list = item.trainingDuration,
                                     label = stringResource(
                                         Res.string.total_training_duration_with_args,
-                                        getLabelValue(item.trainingDuration).toInt()
+                                        getLabelValue(item.trainingDuration)
                                     )
                                 )
                             }
@@ -104,7 +103,7 @@ fun SummaryScreen(
                                     list = item.numWorkouts,
                                     label = stringResource(
                                         Res.string.number_of_workouts_with_args,
-                                        getLabelValue(item.numWorkouts).toInt()
+                                        getLabelValue(item.numWorkouts)
                                     )
                                 )
                             }
@@ -113,7 +112,7 @@ fun SummaryScreen(
                                     list = item.numExercises,
                                     label = stringResource(
                                         Res.string.number_of_done_exercises_with_args,
-                                        getLabelValue(item.numExercises).toInt()
+                                        getLabelValue(item.numExercises)
                                     )
                                 )
                             }
@@ -122,7 +121,7 @@ fun SummaryScreen(
                                     list = item.numSets,
                                     label = stringResource(
                                         Res.string.number_of_done_sets_with_args,
-                                        getLabelValue(item.numSets).toInt()
+                                        getLabelValue(item.numSets)
                                     )
                                 )
                             }
@@ -131,7 +130,7 @@ fun SummaryScreen(
                                     list = item.numReps,
                                     label = stringResource(
                                         Res.string.total_reps_number_with_args,
-                                        getLabelValue(item.numReps).toInt()
+                                        getLabelValue(item.numReps)
                                     )
                                 )
                             }
@@ -140,7 +139,7 @@ fun SummaryScreen(
                                     list = item.totalRestTime,
                                     label = stringResource(
                                         Res.string.total_rest_time,
-                                        Utils.formatTimeText(getLabelValue(item.totalRestTime).toLong())
+                                        getLabelValue(item.totalRestTime)
                                     )
                                 )
                             }
@@ -202,8 +201,8 @@ private fun getLabelIcon(list: List<PieChartData>): Pair<ImageVector, Color> {
     } else Pair(Icons.Filled.Remove, Color.Black)
 }
 
-private fun getLabelValue(list: List<PieChartData>): Double {
+private fun getLabelValue(list: List<PieChartData>): Int {
     return if (list.size > 1) {
-        list.last().data - list.first().data
-    } else list.first().data
+        (list.last().data - list.first().data).toInt()
+    } else list.first().data.toInt()
 }
