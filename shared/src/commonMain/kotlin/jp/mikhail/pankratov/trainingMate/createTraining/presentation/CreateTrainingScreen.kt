@@ -90,7 +90,7 @@ fun CreateTrainingScreen(
                             return@CommonButton
                         }
                         onEvent(CreateTrainingEvent.OnAddNewTraining(onSuccess = {
-                            navigator.navigate(Routs.TrainingScreens.selectTraining)
+                            navigator.goBack()
                         }))
                     },
                     enabled = enabled,

@@ -35,12 +35,11 @@ class TrainingSelectionViewModel(
             ) else state
     }.onEach {
         sortTrainings(it.sortType, it.availableTrainings)
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(3000L),
-            initialValue = TrainingSelectionState()
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(3000L),
+        initialValue = TrainingSelectionState()
+    )
 
     fun onEvent(event: TrainingSelectionEvent) {
         when (event) {
