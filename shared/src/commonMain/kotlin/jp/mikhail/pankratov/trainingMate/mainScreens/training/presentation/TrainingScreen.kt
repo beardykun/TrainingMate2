@@ -169,9 +169,11 @@ fun TrainingScreen(
                 val summaryTitle =
                     if (emptySummary) Res.string.summaries_sample.getString() else Res.string.summaries.getString()
                 val summaryItem = if (emptySummary) dummySummary else weeklyList.first()
+                val lastWeekSummary = if (weeklyList.size > 1) weeklyList.last() else null
                 TextLarge(text = summaryTitle.uppercase(), color = MaterialTheme.colorScheme.error)
                 SummaryWeekly(
                     weeklySummary = summaryItem,
+                    lastWeekSummary = lastWeekSummary,
                     modifier = Modifier.padding(Dimens.Padding16),
                     onClick = { year, weekNum ->
                         if (emptySummary.not()) {

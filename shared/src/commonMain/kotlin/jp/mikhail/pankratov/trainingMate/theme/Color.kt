@@ -222,5 +222,5 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF313539)
 
 val goldLight = Color(0xFFFFF2B2)
 val gold = Color(0xFFFFD700)
-
+val darkGreen = Color(0xFF008000)
 

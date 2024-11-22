@@ -28,6 +28,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Com
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.MyHorizontalViewPager
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
+import jp.mikhail.pankratov.trainingMate.theme.darkGreen
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.average_weight_per_exercise_with_args
 import maxrep.shared.generated.resources.average_weight_per_workout_with_args
@@ -194,7 +195,7 @@ private fun getLabelIcon(list: List<PieChartData>): Pair<ImageVector, Color> {
     return if (list.size > 1) {
         val difference = list.last().data - list.first().data
         return when {
-            difference > 0 -> Pair(Icons.AutoMirrored.Filled.TrendingUp, Color.Green)
+            difference > 0 -> Pair(Icons.AutoMirrored.Filled.TrendingUp, darkGreen)
             difference < 0 -> Pair(Icons.AutoMirrored.Filled.TrendingDown, Color.Red)
             else -> Pair(Icons.Filled.Remove, Color.Black)
         }

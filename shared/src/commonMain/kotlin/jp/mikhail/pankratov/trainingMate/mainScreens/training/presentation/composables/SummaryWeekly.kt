@@ -8,12 +8,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
+import jp.mikhail.pankratov.trainingMate.theme.darkGreen
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.average_weight_per_exercise_with_args
 import maxrep.shared.generated.resources.average_weight_per_workout_with_args
@@ -31,6 +33,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SummaryWeekly(
     weeklySummary: WeeklySummary?,
+    lastWeekSummary: WeeklySummary?,
     modifier: Modifier,
     onClick: (year: Long, week: Long) -> Unit
 ) {
@@ -50,11 +53,16 @@ fun SummaryWeekly(
                     text = stringResource(
                         Res.string.number_of_workouts_with_args,
                         summary.numWorkouts
-                    )
+                    ),
+                    arguments = getArgument(lastWeekSummary?.numWorkouts, summary.numWorkouts)
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.total_training_duration_with_args,
+                        summary.trainingDuration
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.trainingDuration,
                         summary.trainingDuration
                     )
                 )
@@ -63,51 +71,89 @@ fun SummaryWeekly(
                         Res.string.total_lifted_weight_with_args,
                         summary.totalLiftedWeight
                     ),
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    arguments = getArgument(
+                        lastWeekSummary?.totalLiftedWeight?.toInt(),
+                        summary.totalLiftedWeight.toInt()
+                    )
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.number_of_done_exercises_with_args,
                         summary.numExercises
-                    )
+                    ),
+                    arguments = getArgument(lastWeekSummary?.numExercises, summary.numExercises)
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.number_of_done_sets_with_args,
                         summary.numSets
-                    )
+                    ),
+                    arguments = getArgument(lastWeekSummary?.numSets, summary.numSets)
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.total_reps_number_with_args,
                         summary.numReps
-                    )
+                    ),
+                    arguments = getArgument(lastWeekSummary?.numReps, summary.numReps)
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.total_rest_time,
                         Utils.formatTimeText(summary.totalRestTime)
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.totalRestTime?.toInt(),
+                        summary.totalRestTime.toInt()
                     )
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_exercise_with_args,
                         summary.avgLiftedWeightPerExercise.toString()
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.avgLiftedWeightPerExercise?.toInt(),
+                        summary.avgLiftedWeightPerExercise.toInt()
                     )
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_workout_with_args,
                         summary.avgLiftedWeightPerWorkout
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.avgLiftedWeightPerWorkout?.toInt(),
+                        summary.avgLiftedWeightPerWorkout.toInt()
                     )
                 )
                 TextMedium(
                     text = stringResource(
                         Res.string.average_workout_time_with_args,
                         summary.avgDurationPerWorkout
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.avgDurationPerWorkout?.toInt(),
+                        summary.avgDurationPerWorkout.toInt()
                     )
                 )
             }
         }
     }
+}
+
+private fun getArgument(
+    lastWeekValue: Int?,
+    thisWeekValue: Int
+): Array<out Pair<String, Color>> {
+    val argumentValue =
+        if (lastWeekValue != null) thisWeekValue - lastWeekValue else null
+    val argumentColor = if (argumentValue != null && argumentValue >= 0) darkGreen else Color.Red
+    return if (argumentValue != null) arrayOf(
+        Pair(
+            "  ($argumentValue)",
+            argumentColor
+        )
+    ) else emptyArray()
 }
