@@ -55,8 +55,8 @@ SELECT *
 FROM MonthlySummary
 WHERE year =? AND month_number = ?;
 
-getTwoLastMonthlySummaries:
+getLastMonthlySummaries:
 SELECT *
 FROM MonthlySummary
 ORDER BY id DESC
-LIMIT 2;
+LIMIT :limit;

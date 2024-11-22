@@ -55,9 +55,8 @@ SELECT *
 FROM WeeklySummary
 WHERE year =? AND week_number = ?;
 
-getTwoLastWeeklySummaries:
+getLastWeeklySummaries:
 SELECT *
 FROM WeeklySummary
 ORDER BY id DESC
-LIMIT 2;
-
+LIMIT :limit;

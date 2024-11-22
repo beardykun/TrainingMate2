@@ -72,6 +72,7 @@ fun App(
                                 NavigationBarItem(
                                     selected = selectedIndex == index,
                                     onClick = {
+                                        if (selectedIndex == index) return@NavigationBarItem
                                         selectedIndex = index
                                         navigateOnTabClick(index, navigator)
                                     },

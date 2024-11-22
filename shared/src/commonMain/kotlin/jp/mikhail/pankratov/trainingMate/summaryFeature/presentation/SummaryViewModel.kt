@@ -18,6 +18,7 @@ private const val WEEK_LAST_PREFIX_INDEX = 0
 private const val WEEK_CURRENT_PREFIX_INDEX = 1
 private const val MONTH_LAST_PREFIX_INDEX = 2
 private const val MONTH_CURRENT_PREFIX_INDEX = 3
+private const val LIMIT: Long = 30
 
 class SummaryViewModel(
     summaryUseCaseProvider: SummaryUseCaseProvider,
@@ -27,24 +28,35 @@ class SummaryViewModel(
     private val _state = MutableStateFlow(SummaryScreenState())
 
     val state = _state.onStart {
-        val weeklySummary = summaryUseCaseProvider.getTwoLastWeeklySummaryUseCase().invoke().first()
+        val weeklySummary =
+            summaryUseCaseProvider.getTwoLastWeeklySummaryUseCase().invoke(limit = LIMIT).first()
         val monthlySummary =
-            summaryUseCaseProvider.getTwoLastMonthlySummaryUseCase().invoke().first()
+            summaryUseCaseProvider.getTwoLastMonthlySummaryUseCase().invoke(limit = LIMIT).first()
 
-        val summaryData = fillStateWeeklySummaryData(
-            weeklySummary,
+        val weeklySummaryData = fillStateWeeklySummaryData(
+            summary = if (weeklySummary.size >= 2) {
+                weeklySummary.subList(weeklySummary.size - 2, weeklySummary.size)
+            } else {
+                weeklySummary
+            },
             prefixLast = stringsToPass[WEEK_LAST_PREFIX_INDEX],
             prefixCurrent = stringsToPass[WEEK_CURRENT_PREFIX_INDEX]
         )
+        val monthlySummaryData = fillStateMonthlySummaryData(
+            summary = if (monthlySummary.size >= 2) {
+                monthlySummary.subList(monthlySummary.size - 2, monthlySummary.size)
+            } else {
+                monthlySummary
+            },
+            prefixLast = stringsToPass[MONTH_LAST_PREFIX_INDEX],
+            prefixCurrent = stringsToPass[MONTH_CURRENT_PREFIX_INDEX]
+        )
+
         _state.update {
             it.copy(
-                weeklySummaryData = summaryData,
-                summaryDataToDisplay = summaryData,
-                monthlySummaryData = fillStateMonthlySummaryData(
-                    monthlySummary,
-                    prefixLast = stringsToPass[MONTH_LAST_PREFIX_INDEX],
-                    prefixCurrent = stringsToPass[MONTH_CURRENT_PREFIX_INDEX]
-                )
+                weeklySummaryData = weeklySummaryData,
+                summaryDataToDisplay = weeklySummaryData,
+                monthlySummaryData = monthlySummaryData
             )
         }
     }.stateIn(

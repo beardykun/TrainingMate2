@@ -76,8 +76,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             }.flowOn(Dispatchers.IO)
     }
 
-    override fun getTwoLastWeeklySummary(): Flow<List<WeeklySummary?>> {
-        return weeklyQuery.getTwoLastWeeklySummaries()
+    override fun getLastWeeklySummaries(limit: Long): Flow<List<WeeklySummary?>> {
+        return weeklyQuery.getLastWeeklySummaries(limit = limit)
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { summaries ->
@@ -98,8 +98,8 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             }.flowOn(Dispatchers.IO)
     }
 
-    override fun getTwoLastMonthlySummary(): Flow<List<MonthlySummary?>> {
-        return monthlyQuery.getTwoLastMonthlySummaries()
+    override fun getLastMonthlySummaries(limit: Long): Flow<List<MonthlySummary?>> {
+        return monthlyQuery.getLastMonthlySummaries(limit = limit)
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { summaries ->

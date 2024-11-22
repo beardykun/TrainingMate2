@@ -5,7 +5,7 @@ import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.local.ISummaryDat
 import kotlinx.coroutines.flow.Flow
 
 class GetTwoLastMonthlySummaryUseCase(private val summaryDatasource: ISummaryDatasource) {
-    operator fun invoke(): Flow<List<MonthlySummary?>> {
-        return summaryDatasource.getTwoLastMonthlySummary()
+    operator fun invoke(limit: Long = 2): Flow<List<MonthlySummary?>> {
+        return summaryDatasource.getLastMonthlySummaries(limit = limit)
     }
 }

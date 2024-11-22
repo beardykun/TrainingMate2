@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.runtime.Composable
@@ -314,7 +315,7 @@ fun bottomNavigationItems() = listOf(
     BottomNavigationItem(
         title = Routs.MainScreens.training.title,
         selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.FitnessCenter,
+        unselectedIcon = Icons.Outlined.Home,
         hasNews = false
     ),
     BottomNavigationItem(
