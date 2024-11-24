@@ -22,7 +22,7 @@ fun SummaryScreen(
         label = Routs.SummaryScreens.summaryScreen,
         onBackPressed = { navigator.navigate(Routs.MainScreens.training.title) },
         content = {
-            state.summaryPieChatDataToDisplay?.let { summaryItem ->
+            state.summaryDataToDisplay?.let { summaryItem ->
                 MyHorizontalViewPager(
                     pageNames = listOf(
                         Res.string.week.getString(),

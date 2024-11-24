@@ -7,7 +7,7 @@ import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.LocalBarParameter
 data class SummaryScreenState(
     val weeklySummaryPieChatData: SummaryPieChatData? = null,
     val monthlySummaryPieChatData: SummaryPieChatData? = null,
-    val summaryPieChatDataToDisplay: SummaryChatData? = null,
+    val summaryDataToDisplay: SummaryChatData? = null,
     val weeklySummaryBarChatData: SummaryBarChatData? = null,
     val monthlySummaryBarChatData: SummaryBarChatData? = null,
 )

@@ -81,7 +81,7 @@ class SummaryViewModel(
         _state.update { state ->
             state.copy(
                 weeklySummaryPieChatData = weeklySummaryData,
-                summaryPieChatDataToDisplay = weeklySummaryData,
+                summaryDataToDisplay = weeklySummaryData,
                 monthlySummaryPieChatData = monthlySummaryData,
                 weeklySummaryBarChatData = prepareWeeklyBarData(weeklySummary),
                 monthlySummaryBarChatData = prepareMonthlyBarData(monthlySummary)
@@ -262,12 +262,12 @@ class SummaryViewModel(
                     }
 
                     else -> {
-                        state.value.monthlySummaryPieChatData
+                        state.value.summaryDataToDisplay
                     }
                 }
                 _state.update {
                     it.copy(
-                        summaryPieChatDataToDisplay = summaryData
+                        summaryDataToDisplay = summaryData
                     )
                 }
             }
