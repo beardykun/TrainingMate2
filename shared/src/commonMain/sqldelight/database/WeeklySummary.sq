@@ -57,6 +57,10 @@ WHERE year =? AND week_number = ?;
 
 getLastWeeklySummaries:
 SELECT *
-FROM WeeklySummary
-ORDER BY id DESC
-LIMIT :limit;
+FROM (
+    SELECT *
+    FROM WeeklySummary
+    ORDER BY id DESC
+    LIMIT :limit
+) AS sub
+ORDER BY id;

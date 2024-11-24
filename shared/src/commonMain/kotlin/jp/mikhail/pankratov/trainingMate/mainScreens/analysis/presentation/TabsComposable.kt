@@ -40,7 +40,6 @@ import maxrep.shared.generated.resources.another_exercise
 import maxrep.shared.generated.resources.another_training
 import maxrep.shared.generated.resources.no_analysis_data
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabsComposable(
     chartLabel: String,
@@ -124,12 +123,12 @@ fun TabsComposable(
 
         HorizontalPager(state = pagerState) {
             AnimatedVisibility(visible = !metricsData.isNullOrEmpty()) {
-                metricsData?.let {
+                metricsData?.let { data ->
                     CommonBarChart(
                         params = listOf(
                             BarParameters(
                                 dataName = chartLabel,
-                                data = it,
+                                data = data,
                                 barColor = MaterialTheme.colorScheme.primary
                             )
                         ),

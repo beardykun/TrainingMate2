@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aay.compose.barChart.BarChart
@@ -70,6 +71,8 @@ fun CommonLineChart(
 fun CommonBarChart(
     params: List<BarParameters>,
     xAxisData: List<String> = listOf(""),
+    yAxisRange: Int = 20,
+    spaceBetweenBars: Dp = Dimens.Padding32,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
@@ -90,9 +93,9 @@ fun CommonBarChart(
                 fontWeight = FontWeight.W400
             ),
             showXAxis = false,
-            yAxisRange = 20,
+            yAxisRange = yAxisRange,
             barWidth = 20.dp,
-            spaceBetweenBars = Dimens.Padding32
+            spaceBetweenBars = spaceBetweenBars
         )
     }
 }

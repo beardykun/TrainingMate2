@@ -5,7 +5,6 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Timeline
-import androidx.compose.material.icons.outlined.FitnessCenter
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
@@ -59,11 +58,14 @@ import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingS
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.last_month_summary
 import maxrep.shared.generated.resources.last_week_summary
+import maxrep.shared.generated.resources.month
+import maxrep.shared.generated.resources.month_all
 import maxrep.shared.generated.resources.notification_permission_denied
 import maxrep.shared.generated.resources.notification_permission_required
 import maxrep.shared.generated.resources.this_month_summary
 import maxrep.shared.generated.resources.this_week_summary
 import maxrep.shared.generated.resources.week
+import maxrep.shared.generated.resources.week_all
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
@@ -149,7 +151,10 @@ private fun RouteBuilder.summaryScreens(
                 Res.string.this_week_summary.getString(),
                 Res.string.last_month_summary.getString(),
                 Res.string.this_month_summary.getString(),
-                Res.string.week.getString()
+                Res.string.week.getString(),
+                Res.string.month.getString(),
+                Res.string.week_all.getString(),
+                Res.string.month_all.getString()
             )
             val viewModel: SummaryViewModel =
                 koinViewModel(qualifier = named("SummaryViewModel")) { parametersOf(stringsToPass) }

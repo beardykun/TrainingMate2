@@ -1,7 +1,6 @@
 package jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables
 
 import Dimens
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -18,14 +17,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun <T> MyHorizontalViewPager(
+fun MyHorizontalViewPager(
     pageNames: List<String>,
-    onSelectionChanged: (String) -> Unit,
-    item: T,
-    onItemClick: (item: T) -> Unit,
-    pageComposable: @Composable (item: T, onItemSelected: (item: T) -> Unit) -> Unit
+    onTabChanged: (String) -> Unit,
+    pageComposable: @Composable () -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { pageNames.size })
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -34,7 +30,7 @@ fun <T> MyHorizontalViewPager(
     LaunchedEffect(pagerState.currentPage) {
         val selectedType = pageNames[pagerState.currentPage]
         selectedTabIndex = pagerState.currentPage
-        onSelectionChanged(selectedType)
+        onTabChanged(selectedType)
     }
     Column {
         TabRow(selectedTabIndex = selectedTabIndex) {
@@ -55,7 +51,7 @@ fun <T> MyHorizontalViewPager(
             }
         }
         HorizontalPager(state = pagerState) {
-            pageComposable(item, onItemClick)
+            pageComposable()
         }
     }
 }

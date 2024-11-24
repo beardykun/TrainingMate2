@@ -2,15 +2,21 @@ package jp.mikhail.pankratov.trainingMate.summaryFeature.presentation
 
 import androidx.compose.runtime.Immutable
 import com.aay.compose.donutChart.model.PieChartData
+import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.LocalBarParameters
 
 data class SummaryScreenState(
-    val weeklySummaryData: SummaryData? = null,
-    val monthlySummaryData: SummaryData? = null,
-    val summaryDataToDisplay:  SummaryData? = null
+    val weeklySummaryPieChatData: SummaryPieChatData? = null,
+    val monthlySummaryPieChatData: SummaryPieChatData? = null,
+    val summaryPieChatDataToDisplay: SummaryChatData? = null,
+    val weeklySummaryBarChatData: SummaryBarChatData? = null,
+    val monthlySummaryBarChatData: SummaryBarChatData? = null,
 )
 
 @Immutable
-data class SummaryData(
+sealed interface SummaryChatData
+
+@Immutable
+data class SummaryPieChatData(
     val trainingDuration: List<PieChartData>,
     val totalLiftedWeight: List<PieChartData>,
     val numWorkouts: List<PieChartData>,
@@ -21,4 +27,9 @@ data class SummaryData(
     val avgDurationPerWorkout: List<PieChartData>,
     val avgLiftedWeightPerExercise: List<PieChartData>,
     val avgLiftedWeightPerWorkout: List<PieChartData>
-)
+) : SummaryChatData
+
+@Immutable
+data class SummaryBarChatData(
+    val barChatParams: List<List<LocalBarParameters>>
+) : SummaryChatData

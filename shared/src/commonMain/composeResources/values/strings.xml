@@ -156,11 +156,14 @@
     <string name="number_of_done_exercises">Done exercises</string>
     <string name="number_of_done_sets">Done sets</string>
     <string name="total_reps_number">Total reps number</string>
+    <string name="total_rest">Total rest time</string>
     <string name="average_weight_per_exercise">Average weight per exercise</string>
     <string name="average_weight_per_workout">Average weight per workout</string>
     <string name="average_workout_time">Average workout time</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
+    <string name="week_all">Week All</string>
+    <string name="month_all">Month All</string>
     <string name="not_enough_data">Not enough data to show charts comparison</string>
 
     <!-- ExerciseSettingsScreen -->

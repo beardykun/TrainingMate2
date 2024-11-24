@@ -165,11 +165,11 @@ fun TrainingScreen(
                 }
             }
             state.weeklySummary?.let { weeklyList ->
-                val emptySummary = weeklyList.isEmpty() || weeklyList.first()?.numWorkouts == 0
+                val emptySummary = weeklyList.isEmpty() || weeklyList.last()?.numWorkouts == 0
                 val summaryTitle =
                     if (emptySummary) Res.string.summaries_sample.getString() else Res.string.summaries.getString()
-                val summaryItem = if (emptySummary) dummySummary else weeklyList.first()
-                val lastWeekSummary = if (weeklyList.size > 1) weeklyList.last() else null
+                val summaryItem = if (emptySummary) dummySummary else weeklyList.last()
+                val lastWeekSummary = if (weeklyList.size > 1) weeklyList.first() else null
                 TextLarge(text = summaryTitle.uppercase(), color = MaterialTheme.colorScheme.error)
                 SummaryWeekly(
                     weeklySummary = summaryItem,

@@ -29,9 +29,9 @@ fun UserInfoScreen(state: UserInfoState, navigator: Navigator) {
         Spacer(modifier = Modifier.height(Dimens.Padding8))
         TextSmall(text = Res.string.strength_comparison_hint.getString())
         Spacer(modifier = Modifier.height(Dimens.Padding32))
-        state.strengthLevelParams?.let {
-            if (it.size < 3) return@Column
-            CommonBarChart(params = it, modifier = Modifier.fillMaxWidth())
+        state.strengthLevelParams?.let { params ->
+            if (params.size < 3) return@Column
+            CommonBarChart(params = params, modifier = Modifier.fillMaxWidth())
         }
     }
 }

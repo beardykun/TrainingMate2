@@ -84,7 +84,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
                 summaries.map {
                     it.toWeeklySummary()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override fun getMonthlySummary(): Flow<MonthlySummary?> {
@@ -106,7 +106,7 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
                 summaries.map {
                     it.toMonthlySummary()
                 }
-            }
+            }.flowOn(Dispatchers.IO)
     }
 
     override suspend fun updateSummaries(

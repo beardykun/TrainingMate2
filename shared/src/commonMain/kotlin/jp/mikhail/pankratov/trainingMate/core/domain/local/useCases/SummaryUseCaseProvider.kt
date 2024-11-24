@@ -9,8 +9,8 @@ import org.koin.core.Koin
 class SummaryUseCaseProvider(val koin: Koin) {
     inline fun <reified T : Any> get(): T = koin.get()
 
-    fun getTwoLastMonthlySummaryUseCase(): GetTwoLastMonthlySummaryUseCase = get()
-    fun getTwoLastWeeklySummaryUseCase(): GetLastWeeklySummariesUseCase = get()
+    fun getLastMonthlySummariesUseCase(): GetTwoLastMonthlySummaryUseCase = get()
+    fun getLastWeeklySummariesUseCase(): GetLastWeeklySummariesUseCase = get()
     fun getInsetSummaryUseCase(): InsetSummaryUseCase = get()
     fun getUpdateSummariesUseCase(): UpdateSummariesUseCase = get()
 }
