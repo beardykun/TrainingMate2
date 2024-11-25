@@ -104,8 +104,8 @@ fun SummaryWeekly(
                         Utils.formatTimeText(summary.totalRestTime)
                     ),
                     arguments = getArgument(
-                        lastWeekSummary?.totalRestTime?.toInt(),
-                        summary.totalRestTime.toInt()
+                        lastWeekSummary?.totalRestTime?.toInt()?.div(60),
+                        summary.totalRestTime.toInt() / 60
                     )
                 )
                 TextMedium(
@@ -152,7 +152,7 @@ private fun getArgument(
     val argumentColor = if (argumentValue != null && argumentValue >= 0) darkGreen else Color.Red
     return if (argumentValue != null) arrayOf(
         Pair(
-            "  ($argumentValue)",
+            if (argumentValue > 0) "  (+$argumentValue)" else "  ($argumentValue)",
             argumentColor
         )
     ) else emptyArray()
