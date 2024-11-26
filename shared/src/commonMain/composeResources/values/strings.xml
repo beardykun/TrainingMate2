@@ -34,7 +34,11 @@
     <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
     <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
     <string name="last_training_set">Last Training Set\n%1$s kg x %2$s</string>
-    <string name="this_exercise">This Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="this_exercise_with_args">This Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="this_exercise">This Exercise</string>
+    <string name="this_exercise_length">\nLength: </string>
+    <string name="this_exercise_lifted">\nLifted: </string>
+    <string name="this_exercise_sets">\nSets: </string>
     <string name="auto_input">Auto Input</string>
     <string name="break_time">Select break time</string>
     <string name="ok">OK</string>
@@ -142,8 +146,9 @@
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
     <string name="no_exercises_in_training">No exercises in this training yet</string>
     <string name="finish_training">Finish Training</string>
-    <string name="last_training_lifted_weight">Last training\nLifted: %1$d kg\nLength: %2$s</string>
-    <string name="this_training_lifted_weight">This training\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="last_training_with_args">Last training\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="this_training_with_args">This training\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="this_training">This training</string>
 
     <!-- UserInfo -->
     <string name="strength_comparison_info">Muscle groups strength level comparison</string>

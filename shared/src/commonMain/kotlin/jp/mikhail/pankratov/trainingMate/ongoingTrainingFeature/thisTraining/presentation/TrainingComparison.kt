@@ -15,11 +15,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import maxrep.shared.generated.resources.Res
-import maxrep.shared.generated.resources.last_training_lifted_weight
-import maxrep.shared.generated.resources.this_training_lifted_weight
+import maxrep.shared.generated.resources.last_training_with_args
+import maxrep.shared.generated.resources.this_exercise_length
+import maxrep.shared.generated.resources.this_exercise_lifted
+import maxrep.shared.generated.resources.this_training
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -55,7 +58,7 @@ fun TrainingComparison(
                 ) {
                     TextMedium(
                         text = stringResource(
-                            resource = Res.string.last_training_lifted_weight,
+                            resource = Res.string.last_training_with_args,
                             lastTraining.totalLiftedWeight,
                             Utils.countTrainingTime(lastTraining)
                         ),
@@ -66,6 +69,10 @@ fun TrainingComparison(
             }
         }
         ongoingTraining?.let { ongoingTraining ->
+            val weightTextColor =
+                if (ongoingTraining.totalLiftedWeight >= (lastTraining?.totalLiftedWeight
+                        ?: 0.0)
+                ) Color.Blue else Color.Red
             Card(
                 modifier = Modifier.weight(1f).padding(horizontal = Dimens.Padding8),
                 elevation = CardDefaults.cardElevation(Dimens.cardElevation)
@@ -75,11 +82,24 @@ fun TrainingComparison(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextMedium(
-                        color = textColor,
-                        text = stringResource(
-                            resource = Res.string.this_training_lifted_weight,
-                            ongoingTraining.totalLiftedWeight,
-                            trainingTime
+                        text = Res.string.this_training.getString(),
+                        arguments = arrayOf(
+                            Pair(
+                                Res.string.this_exercise_lifted.getString(),
+                                Color.Unspecified
+                            ),
+                            Pair(
+                                ongoingTraining.totalLiftedWeight.toString(),
+                                weightTextColor
+                            ),
+                            Pair(
+                                Res.string.this_exercise_length.getString(),
+                                Color.Unspecified
+                            ),
+                            Pair(
+                                trainingTime,
+                                Color.Unspecified
+                            )
                         ),
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(all = Dimens.Padding8)

@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
+import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextSmall
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
@@ -24,6 +25,10 @@ import maxrep.shared.generated.resources.interval
 import maxrep.shared.generated.resources.last_exercise
 import maxrep.shared.generated.resources.last_exercise_next_set
 import maxrep.shared.generated.resources.this_exercise
+import maxrep.shared.generated.resources.this_exercise_length
+import maxrep.shared.generated.resources.this_exercise_lifted
+import maxrep.shared.generated.resources.this_exercise_sets
+import maxrep.shared.generated.resources.this_exercise_with_args
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -32,10 +37,6 @@ fun ExerciseComparison(
     exercise: Exercise,
     onClick: (name: String) -> Unit
 ) {
-    val weightTextColor =
-        if (exercise.totalLiftedWeight >= (lastExercise?.totalLiftedWeight ?: 0.0))
-            Color.Blue
-        else Color.Red
     Row(
         modifier = Modifier.fillMaxWidth()
             .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)
@@ -47,16 +48,29 @@ fun ExerciseComparison(
             LastExerciseData(onClick, lastExercise, exercise, Modifier.weight(1f))
         }
 
-        CurrentExerciseData(weightTextColor, exercise, Modifier.weight(1f))
+        CurrentExerciseData(
+            lastExercise = lastExercise,
+            exercise = exercise,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
 @Composable
 fun CurrentExerciseData(
-    weightTextColor: Color,
+    lastExercise: Exercise?,
     exercise: Exercise,
     modifier: Modifier
 ) {
+    val weightTextColor =
+        if (exercise.totalLiftedWeight >= (lastExercise?.totalLiftedWeight ?: 0.0))
+            Color.Blue
+        else Color.Red
+    val sumOfRest = exercise.sets.sumOf { it.restSec ?: 0 }
+    val restColor = if (sumOfRest > (lastExercise?.sets?.sumOf { it.restSec ?: 0 }
+            ?: 0)) Color.Red else Color.Blue
+    val setColor =
+        if (exercise.sets.size >= (lastExercise?.sets?.size ?: 0)) Color.Blue else Color.Red
     Card(
         modifier = modifier.padding(horizontal = Dimens.Padding8),
         elevation = CardDefaults.cardElevation(Dimens.cardElevation)
@@ -66,13 +80,32 @@ fun CurrentExerciseData(
             modifier = Modifier.fillMaxWidth()
         ) {
             TextMedium(
-                color = weightTextColor,
-                text =
-                stringResource(
-                    Res.string.this_exercise,
-                    Utils.formatTimeText(exercise.sets.sumOf { it.restSec ?: 0 }),
-                    exercise.totalLiftedWeight,
-                    exercise.sets.size
+                text = Res.string.this_exercise.getString(),
+                arguments = arrayOf(
+                    Pair(
+                        Res.string.this_exercise_length.getString(),
+                        Color.Unspecified
+                    ),
+                    Pair(
+                        Utils.formatTimeText(sumOfRest),
+                        restColor
+                    ),
+                    Pair(
+                        Res.string.this_exercise_lifted.getString(),
+                        Color.Unspecified
+                    ),
+                    Pair(
+                        exercise.totalLiftedWeight.toString(),
+                        weightTextColor
+                    ),
+                    Pair(
+                        Res.string.this_exercise_sets.getString(),
+                        Color.Unspecified
+                    ),
+                    Pair(
+                        exercise.sets.size.toString(),
+                        setColor
+                    )
                 ),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(all = Dimens.Padding8)
