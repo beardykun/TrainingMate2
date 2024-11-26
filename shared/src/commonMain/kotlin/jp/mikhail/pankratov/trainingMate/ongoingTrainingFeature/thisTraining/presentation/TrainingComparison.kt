@@ -32,11 +32,6 @@ fun TrainingComparison(
     trainingTime: String,
     onClick: (trainingId: Long) -> Unit
 ) {
-    val textColor =
-        if (
-            (ongoingTraining?.totalLiftedWeight ?: 0.0) >= (lastTraining?.totalLiftedWeight ?: 0.0)
-        ) Color.Blue
-        else Color.Red
     Row(
         modifier = Modifier.fillMaxWidth()
             .padding(bottom = Dimens.Padding16, start = Dimens.Padding16, end = Dimens.Padding16)

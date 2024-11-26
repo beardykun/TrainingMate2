@@ -67,8 +67,8 @@ fun CurrentExerciseData(
             Color.Blue
         else Color.Red
     val sumOfRest = exercise.sets.sumOf { it.restSec ?: 0 }
-    val restColor = if (sumOfRest > (lastExercise?.sets?.sumOf { it.restSec ?: 0 }
-            ?: 0)) Color.Red else Color.Blue
+    val restColor = if (sumOfRest < (lastExercise?.sets?.sumOf { it.restSec ?: 0 }
+            ?: 0)) Color.Blue else Color.Red
     val setColor =
         if (exercise.sets.size >= (lastExercise?.sets?.size ?: 0)) Color.Blue else Color.Red
     Card(
