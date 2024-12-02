@@ -74,6 +74,43 @@
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
     <string name="rest_time">Rest Time: %1$s</string>
     <string name="total_rest_time">Total Rest Time: %1$s min</string>
+
+    <!-- Training Scores -->
+    <!-- All Progress -->
+    <string name="all_progress_perfect_score">Outstanding performance! You've reached the perfect score. Keep up the fantastic work!</string>
+    <string name="all_progress">You’ve done an excellent job! Keep pushing to achieve perfection!</string>
+
+    <!-- Only Rest Time Regressed -->
+    <string name="only_rest_time_regressed_perfect_score">Perfect score! Your total effort remains exceptional despite an increase in rest time.</string>
+    <string name="only_rest_time_regressed">Good effort! Try to optimize your rest time for better results next time!</string>
+
+    <!-- Only Weight Regressed -->
+    <string name="only_weight_regressed_perfect_score">Perfect score! Keep up the excellent work on volume and rest time!</string>
+    <string name="only_weight_regressed">You maintained excellent volume and rest time. Focus on lifting heavier weights next time!</string>
+
+    <!-- Only Volume Regressed -->
+    <string name="only_volume_regressed_perfect_score">Perfect score! Outstanding lifting effort!</string>
+    <string name="only_volume_regressed">Great lifting effort! Improving your training volume will elevate your score.</string>
+
+    <!-- Weight and Volume Regressed -->
+    <string name="weight_and_volume_regressed_perfect_score">Perfect score! Rest time balance ensured top performance despite challenges.</string>
+    <string name="weight_and_volume_regressed">Focus on lifting heavier weights and completing more reps or sets in your next training.</string>
+
+    <!-- Weight and Rest Regressed -->
+    <string name="weight_and_rest_regressed_perfect_score">Perfect score! Your volume compensated beautifully for longer rest and lighter weights.</string>
+    <string name="weight_and_rest_regressed">Push harder with heavier weights and shorter breaks next time!</string>
+
+    <!-- Volume and Rest Regressed -->
+    <string name="volume_and_rest_regressed_perfect_score">Perfect score! Great lifting effort despite longer rest and reduced volume.</string>
+    <string name="volume_and_rest_regressed">Focus on improving training volume and rest time for better progress.</string>
+
+    <!-- All Regressed -->
+    <string name="all_regressed_perfect_score">Perfect score achieved despite challenges! Focus on incremental improvements in all areas.</string>
+    <string name="all_regressed">Your overall performance decreased. Don't get discouraged! Focus on one aspect at a time for improvement.</string>
+
+    <!-- First Training -->
+    <string name="first_training">Grate training! Well take it as a baseline for future improvements.</string>
+
     <!-- AddExercisesScreen -->
     <string name="create_new_ex_btn">"Create new exercises button"</string>
     <string name="apply_changes">Apply Changes</string>
@@ -180,7 +217,6 @@
     <string name="increment_weight_placeholder">Increment weight value in progress mode</string>
     <string name="interval_seconds_label">Timer Rest Interval Seconds</string>
     <string name="interval_seconds_placeholder">Rest interval between sets in seconds</string>
-
 
 
     <!-- EXERCISES NAMES -->

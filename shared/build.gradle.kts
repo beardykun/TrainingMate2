@@ -70,6 +70,10 @@ kotlin {
                 api(libs.permissions.compose) // permissions api + compose extensions
 
                 implementation(libs.permissions.test)
+
+                implementation(libs.assertK)
+                implementation(libs.turbine)
+                implementation(libs.kotlin.test)
             }
         }
         val commonTest by getting {
