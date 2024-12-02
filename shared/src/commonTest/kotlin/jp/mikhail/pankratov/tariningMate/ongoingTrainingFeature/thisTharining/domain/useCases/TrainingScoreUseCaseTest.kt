@@ -12,6 +12,9 @@ import maxrep.shared.generated.resources.only_rest_time_regressed
 import maxrep.shared.generated.resources.only_rest_time_regressed_perfect_score
 import maxrep.shared.generated.resources.only_volume_regressed
 import maxrep.shared.generated.resources.only_weight_regressed
+import maxrep.shared.generated.resources.only_weight_regressed_perfect_score
+import maxrep.shared.generated.resources.weight_and_rest_regressed
+import maxrep.shared.generated.resources.weight_and_rest_regressed_perfect_score
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
@@ -113,5 +116,54 @@ class TrainingScoreUseCaseTest {
 
         assertThat(result.score).isEqualTo(100)
         assertThat(result.comment).isEqualTo(Res.string.only_rest_time_regressed_perfect_score)
+    }
+
+    @Test
+    fun `should handle perfect performance with minor weigh regression`() {
+        val training = baseTraining.copy(
+            restTime = 500,
+            totalLiftedWeight = 90.0,
+            totalSets = 11,
+            totalReps = 110
+        )
+        val previousTraining = baseTraining
+
+        val result = useCase(training, previousTraining)
+
+        assertThat(result.score).isEqualTo(100)
+        assertThat(result.comment).isEqualTo(Res.string.only_weight_regressed_perfect_score)
+    }
+
+    @Test
+    fun `should handle performance with rest regression and weight progress`() {
+        val training = baseTraining.copy(restTime = 1200, totalLiftedWeight = 110.0)
+        val previousTraining = baseTraining
+
+        val result = useCase(training, previousTraining)
+
+        assertThat(result.score).isEqualTo(89)
+        assertThat(result.comment).isEqualTo(Res.string.only_rest_time_regressed)
+    }
+
+    @Test
+    fun `should handle performance with rest and weight regression`() {
+        val training = baseTraining.copy(restTime = 1200, totalLiftedWeight = 90.0)
+        val previousTraining = baseTraining
+
+        val result = useCase(training, previousTraining)
+
+        assertThat(result.score).isEqualTo(81)
+        assertThat(result.comment).isEqualTo(Res.string.weight_and_rest_regressed)
+    }
+
+    @Test
+    fun `should handle performance with minor rest and weight regression perfect score`() {
+        val training = baseTraining.copy(restTime = 610, totalLiftedWeight = 99.0, totalSets = 15, totalReps = 150)
+        val previousTraining = baseTraining
+
+        val result = useCase(training, previousTraining)
+
+        assertThat(result.score).isEqualTo(100)
+        assertThat(result.comment).isEqualTo(Res.string.weight_and_rest_regressed_perfect_score)
     }
 }
