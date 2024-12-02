@@ -10,6 +10,7 @@ sealed class ThisTrainingEvent {
     ) : ThisTrainingEvent()
 
     data object EndTraining : ThisTrainingEvent()
+    data object OnScoreTraining : ThisTrainingEvent()
     data class OnCollapsedEvent(val item: ExerciseListItem) : ThisTrainingEvent()
     data class OnExtendedEvent(val item: ExerciseListItem) : ThisTrainingEvent()
     data class OnRemoveExercise(val exerciseName: String) : ThisTrainingEvent()

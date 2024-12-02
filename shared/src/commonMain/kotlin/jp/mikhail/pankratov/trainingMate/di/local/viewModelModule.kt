@@ -28,7 +28,8 @@ fun viewModelModule() = module {
             trainingUseCaseProvider = get(),
             exerciseUseCaseProvider = get(),
             summaryUseCaseProvider = get(),
-            removeTrainingExerciseUseCase = get()
+            removeTrainingExerciseUseCase = get(),
+            trainingScoreUseCase = get()
         )
     }
 

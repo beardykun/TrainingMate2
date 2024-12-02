@@ -74,7 +74,7 @@
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
     <string name="rest_time">Rest Time: %1$s</string>
     <string name="total_rest_time">Total Rest Time: %1$s min</string>
-
+    <string name="training_score">Training Score</string>
     <!-- Training Scores -->
     <!-- All Progress -->
     <string name="all_progress_perfect_score">Outstanding performance! You've reached the perfect score. Keep up the fantastic work!</string>

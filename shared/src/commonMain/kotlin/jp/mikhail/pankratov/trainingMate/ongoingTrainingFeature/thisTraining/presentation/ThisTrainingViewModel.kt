@@ -12,6 +12,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseC
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.addExercises.presentation.ExerciseListItem
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.domain.useCases.RemoveExerciseUseCase
+import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.domain.useCases.TrainingScoreUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,8 @@ class ThisTrainingViewModel(
     private val trainingUseCaseProvider: TrainingUseCaseProvider,
     private val exerciseUseCaseProvider: ExerciseUseCaseProvider,
     private val summaryUseCaseProvider: SummaryUseCaseProvider,
-    private val removeTrainingExerciseUseCase: RemoveExerciseUseCase
+    private val removeTrainingExerciseUseCase: RemoveExerciseUseCase,
+    private val trainingScoreUseCase: TrainingScoreUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ThisTrainingState())
@@ -104,6 +106,12 @@ class ThisTrainingViewModel(
                     }
                 }
             }
+
+            ThisTrainingEvent.OnScoreTraining -> {
+                state.value.ongoingTraining?.let { ongoingTraining ->
+                    scoreTraining(ongoingTraining)
+                }
+            }
         }
     }
 
@@ -159,6 +167,17 @@ class ThisTrainingViewModel(
             _state.update {
                 it.copy(timerState = state.value.timerState.copy(trainingTime = time))
             }
+        }
+    }
+
+    private fun scoreTraining(ongoingTraining: Training) {
+        val previousTraining = state.value.lastTraining
+        val score = trainingScoreUseCase.invoke(
+            training = ongoingTraining,
+            previousTraining = previousTraining
+        )
+        _state.update {
+            it.copy(score = score)
         }
     }
 
