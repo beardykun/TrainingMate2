@@ -26,7 +26,10 @@ data class SummaryPieChatData(
     val totalRestTime: List<PieChartData>,
     val avgDurationPerWorkout: List<PieChartData>,
     val avgLiftedWeightPerExercise: List<PieChartData>,
-    val avgLiftedWeightPerWorkout: List<PieChartData>
+    val avgLiftedWeightPerWorkout: List<PieChartData>,
+    val avgTrainingScore: List<PieChartData>,
+    val bestTrainingScore: List<PieChartData>,
+    val minTrainingScore: List<PieChartData>
 ) : SummaryChatData
 
 @Immutable

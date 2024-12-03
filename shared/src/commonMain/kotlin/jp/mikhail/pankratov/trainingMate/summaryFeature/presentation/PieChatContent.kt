@@ -27,9 +27,12 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Com
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.theme.darkGreen
 import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.average_training_score_with_args
 import maxrep.shared.generated.resources.average_weight_per_exercise_with_args
 import maxrep.shared.generated.resources.average_weight_per_workout_with_args
 import maxrep.shared.generated.resources.average_workout_time_with_args
+import maxrep.shared.generated.resources.best_training_score_with_args
+import maxrep.shared.generated.resources.min_training_score_with_args
 import maxrep.shared.generated.resources.not_enough_data
 import maxrep.shared.generated.resources.number_of_done_exercises_with_args
 import maxrep.shared.generated.resources.number_of_done_sets_with_args
@@ -142,6 +145,33 @@ fun PieChatContent(summaryItem: SummaryPieChatData) {
                     label = stringResource(
                         Res.string.average_weight_per_exercise_with_args,
                         getLabelValue(summaryItem.avgLiftedWeightPerExercise)
+                    )
+                )
+            }
+            item {
+                ChartComp(
+                    list = summaryItem.avgTrainingScore,
+                    label = stringResource(
+                        Res.string.average_training_score_with_args,
+                        getLabelValue(summaryItem.avgTrainingScore)
+                    )
+                )
+            }
+            item {
+                ChartComp(
+                    list = summaryItem.bestTrainingScore,
+                    label = stringResource(
+                        Res.string.best_training_score_with_args,
+                        getLabelValue(summaryItem.bestTrainingScore)
+                    )
+                )
+            }
+            item {
+                ChartComp(
+                    list = summaryItem.minTrainingScore,
+                    label = stringResource(
+                        Res.string.min_training_score_with_args,
+                        getLabelValue(summaryItem.minTrainingScore)
                     )
                 )
             }

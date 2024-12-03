@@ -9,6 +9,39 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.summary.WeeklySummary
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.SummaryUseCaseProvider
 import jp.mikhail.pankratov.trainingMate.core.presentation.UiText
 import jp.mikhail.pankratov.trainingMate.summaryFeature.domain.LocalBarParameters
+import jp.mikhail.pankratov.trainingMate.theme.Amber
+import jp.mikhail.pankratov.trainingMate.theme.AvgDurationPerWorkout
+import jp.mikhail.pankratov.trainingMate.theme.AvgLiftedWeightPerExercise
+import jp.mikhail.pankratov.trainingMate.theme.AvgLiftedWeightPerWorkout
+import jp.mikhail.pankratov.trainingMate.theme.Blue
+import jp.mikhail.pankratov.trainingMate.theme.BlueGray
+import jp.mikhail.pankratov.trainingMate.theme.Brown
+import jp.mikhail.pankratov.trainingMate.theme.DeepOrange
+import jp.mikhail.pankratov.trainingMate.theme.Green
+import jp.mikhail.pankratov.trainingMate.theme.LightAmber
+import jp.mikhail.pankratov.trainingMate.theme.LightBlue
+import jp.mikhail.pankratov.trainingMate.theme.LightBlueAlt
+import jp.mikhail.pankratov.trainingMate.theme.LightBlueGray
+import jp.mikhail.pankratov.trainingMate.theme.LightBrown
+import jp.mikhail.pankratov.trainingMate.theme.LightGreen
+import jp.mikhail.pankratov.trainingMate.theme.LightOrange
+import jp.mikhail.pankratov.trainingMate.theme.LightOrangeAlt
+import jp.mikhail.pankratov.trainingMate.theme.LightPurple
+import jp.mikhail.pankratov.trainingMate.theme.LightTeal
+import jp.mikhail.pankratov.trainingMate.theme.LighterBlue
+import jp.mikhail.pankratov.trainingMate.theme.NumExercises
+import jp.mikhail.pankratov.trainingMate.theme.NumReps
+import jp.mikhail.pankratov.trainingMate.theme.NumSets
+import jp.mikhail.pankratov.trainingMate.theme.NumWorkouts
+import jp.mikhail.pankratov.trainingMate.theme.Orange
+import jp.mikhail.pankratov.trainingMate.theme.Purple
+import jp.mikhail.pankratov.trainingMate.theme.ScoreAverage
+import jp.mikhail.pankratov.trainingMate.theme.ScoreBest
+import jp.mikhail.pankratov.trainingMate.theme.ScoreMin
+import jp.mikhail.pankratov.trainingMate.theme.Teal
+import jp.mikhail.pankratov.trainingMate.theme.TotalLiftedWeight
+import jp.mikhail.pankratov.trainingMate.theme.TotalRestTime
+import jp.mikhail.pankratov.trainingMate.theme.TrainingDuration
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
@@ -16,9 +49,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.average_training_score
 import maxrep.shared.generated.resources.average_weight_per_exercise
 import maxrep.shared.generated.resources.average_weight_per_workout
 import maxrep.shared.generated.resources.average_workout_time
+import maxrep.shared.generated.resources.best_training_score
+import maxrep.shared.generated.resources.min_training_score
 import maxrep.shared.generated.resources.number_of_done_exercises
 import maxrep.shared.generated.resources.number_of_done_sets
 import maxrep.shared.generated.resources.number_of_workouts
@@ -95,71 +131,92 @@ class SummaryViewModel(
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.trainingDuration?.toDouble() },
-                        barColor = Color(0xFF4CAF50), // Green for time-related metrics
+                        barColor = TrainingDuration, // Green for time-related metrics
                         dataName = UiText.StringResourceId(id = Res.string.total_training_duration),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.totalLiftedWeight },
-                        barColor = Color(0xFFFF5722), // Deep Orange for weight
+                        barColor = TotalLiftedWeight, // Deep Orange for weight
                         dataName = UiText.StringResourceId(id = Res.string.total_lifted_weight),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.numWorkouts?.toDouble() },
-                        barColor = Color(0xFF2196F3), // Blue for workout count
+                        barColor = NumWorkouts, // Blue for workout count
                         dataName = UiText.StringResourceId(id = Res.string.number_of_workouts),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.numExercises?.toDouble() },
-                        barColor = Color(0xFFFFC107), // Amber for exercise count
+                        barColor = NumExercises, // Amber for exercise count
                         dataName = UiText.StringResourceId(id = Res.string.number_of_done_exercises),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.numSets?.toDouble() },
-                        barColor = Color(0xFF9C27B0), // Purple for sets
+                        barColor = NumSets, // Purple for sets
                         dataName = UiText.StringResourceId(id = Res.string.number_of_done_sets),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.numReps?.toDouble() },
-                        barColor = Color(0xFF03A9F4), // Light Blue for reps
+                        barColor = NumReps, // Light Blue for reps
                         dataName = UiText.StringResourceId(id = Res.string.total_reps_number),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.totalRestTime?.toDouble()?.div(60) },
-                        barColor = Color(0xFF795548), // Brown for rest time
+                        barColor = TotalRestTime, // Brown for rest time
                         dataName = UiText.StringResourceId(id = Res.string.total_rest),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.avgDurationPerWorkout },
-                        barColor = Color(0xFF607D8B), // Blue Gray for average duration
+                        barColor = AvgDurationPerWorkout, // Blue Gray for average duration
                         dataName = UiText.StringResourceId(id = Res.string.average_workout_time),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.avgLiftedWeightPerExercise },
-                        barColor = Color(0xFF009688), // Teal for average weight per exercise
+                        barColor = AvgLiftedWeightPerExercise, // Teal for average weight per exercise
                         dataName = UiText.StringResourceId(id = Res.string.average_weight_per_exercise),
                     )
                 ),
                 listOf(
                     LocalBarParameters(
                         data = weeklySummary.mapNotNull { it?.avgLiftedWeightPerWorkout },
-                        barColor = Color(0xFFFF9800), // Orange for average weight per workout
+                        barColor = AvgLiftedWeightPerWorkout, // Orange for average weight per workout
                         dataName = UiText.StringResourceId(id = Res.string.average_weight_per_workout),
+                    )
+                ),
+                listOf(
+                    LocalBarParameters(
+                        data = weeklySummary.mapNotNull { it?.averageTrainingScore?.toDouble() },
+                        barColor = ScoreAverage, // Light Blue for average score
+                        dataName = UiText.StringResourceId(id = Res.string.average_training_score),
+                    )
+                ),
+                listOf(
+                    LocalBarParameters(
+                        data = weeklySummary.mapNotNull { it?.bestTrainingScore?.toDouble() },
+                        barColor = ScoreBest, // Green for best score
+                        dataName = UiText.StringResourceId(id = Res.string.best_training_score),
+                    )
+                ),
+                listOf(
+                    LocalBarParameters(
+                        data = weeklySummary.mapNotNull { it?.minTrainingScore?.toDouble() },
+                        barColor = ScoreMin, // Red for min score
+                        dataName = UiText.StringResourceId(id = Res.string.min_training_score),
                     )
                 )
             )
@@ -289,8 +346,8 @@ class SummaryViewModel(
                 lastData = lastData?.trainingDuration?.toDouble(),
                 currentData = if (currentData.trainingDuration.toDouble() == 0.0) 1.0 else currentData.trainingDuration.toDouble(),
                 unit = "min",
-                colorCurrent = Color(0xFF4CAF50), // Green
-                colorLast = Color(0xFFC8E6C9)    // Light Green
+                colorCurrent = Green,
+                colorLast = LightGreen
             ),
             totalLiftedWeight = getPieChartData(
                 prefixLast = prefixLast,
@@ -298,8 +355,8 @@ class SummaryViewModel(
                 lastData = lastData?.totalLiftedWeight,
                 currentData = if (currentData.totalLiftedWeight == 0.0) 1.0 else currentData.totalLiftedWeight,
                 unit = "kg",
-                colorCurrent = Color(0xFFFF5722), // Deep Orange
-                colorLast = Color(0xFFFFCCBC)    // Light Orange
+                colorCurrent = DeepOrange,
+                colorLast = LightOrange
             ),
             numWorkouts = getPieChartData(
                 prefixLast = prefixLast,
@@ -307,8 +364,8 @@ class SummaryViewModel(
                 lastData = lastData?.numWorkouts?.toDouble(),
                 currentData = currentData.numWorkouts.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFF2196F3), // Blue
-                colorLast = Color(0xFFBBDEFB)    // Light Blue
+                colorCurrent = Blue,
+                colorLast = LightBlue
             ),
             numExercises = getPieChartData(
                 prefixLast = prefixLast,
@@ -316,8 +373,8 @@ class SummaryViewModel(
                 lastData = lastData?.numExercises?.toDouble(),
                 currentData = currentData.numExercises.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFFFFC107), // Amber
-                colorLast = Color(0xFFFFF8E1)    // Light Amber
+                colorCurrent = Amber,
+                colorLast = LightAmber
             ),
             numSets = getPieChartData(
                 prefixLast = prefixLast,
@@ -325,8 +382,8 @@ class SummaryViewModel(
                 lastData = lastData?.numSets?.toDouble(),
                 currentData = currentData.numSets.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFF9C27B0), // Purple
-                colorLast = Color(0xFFE1BEE7)    // Light Purple
+                colorCurrent = Purple,
+                colorLast = LightPurple
             ),
             numReps = getPieChartData(
                 prefixLast = prefixLast,
@@ -334,8 +391,8 @@ class SummaryViewModel(
                 lastData = lastData?.numReps?.toDouble(),
                 currentData = currentData.numReps.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFF03A9F4), // Light Blue
-                colorLast = Color(0xFFB3E5FC)    // Lighter Blue
+                colorCurrent = LightBlueAlt,
+                colorLast = LighterBlue
             ),
             totalRestTime = getPieChartData(
                 prefixLast = prefixLast,
@@ -343,8 +400,8 @@ class SummaryViewModel(
                 lastData = lastData?.totalRestTime?.toDouble()?.div(60),
                 currentData = currentData.totalRestTime.toDouble().div(60),
                 unit = "min",
-                colorCurrent = Color(0xFF795548), // Brown
-                colorLast = Color(0xFFD7CCC8)    // Light Brown
+                colorCurrent = Brown,
+                colorLast = LightBrown
             ),
             avgDurationPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
@@ -352,8 +409,8 @@ class SummaryViewModel(
                 lastData = lastData?.avgDurationPerWorkout,
                 currentData = if (currentData.avgDurationPerWorkout == 0.0) 1.0 else currentData.avgDurationPerWorkout,
                 unit = "min",
-                colorCurrent = Color(0xFF607D8B), // Blue Gray
-                colorLast = Color(0xFFCFD8DC)    // Light Blue Gray
+                colorCurrent = BlueGray,
+                colorLast = LightBlueGray
             ),
             avgLiftedWeightPerExercise = getPieChartData(
                 prefixLast = prefixLast,
@@ -361,8 +418,8 @@ class SummaryViewModel(
                 lastData = lastData?.avgLiftedWeightPerExercise,
                 currentData = if (currentData.avgLiftedWeightPerExercise == 0.0) 1.0 else currentData.avgLiftedWeightPerExercise,
                 unit = "kg",
-                colorCurrent = Color(0xFF009688), // Teal
-                colorLast = Color(0xFFB2DFDB)    // Light Teal
+                colorCurrent = Teal,
+                colorLast = LightTeal
             ),
             avgLiftedWeightPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
@@ -370,8 +427,35 @@ class SummaryViewModel(
                 lastData = lastData?.avgLiftedWeightPerWorkout,
                 currentData = if (currentData.avgLiftedWeightPerWorkout == 0.0) 1.0 else currentData.avgLiftedWeightPerWorkout,
                 unit = "kg",
-                colorCurrent = Color(0xFFFF9800), // Orange
-                colorLast = Color(0xFFFFE0B2)    // Light Orange
+                colorCurrent = Orange,
+                colorLast = LightOrangeAlt
+            ),
+            avgTrainingScore = getPieChartData(
+                prefixLast = prefixLast,
+                prefixCurrent = prefixCurrent,
+                lastData = lastData?.averageTrainingScore?.toDouble(),
+                currentData = currentData.averageTrainingScore.toDouble(),
+                unit = "pts",
+                colorCurrent = ScoreAverage,
+                colorLast = ScoreAverage.copy(alpha = 0.6f)
+            ),
+            bestTrainingScore = getPieChartData(
+                prefixLast = prefixLast,
+                prefixCurrent = prefixCurrent,
+                lastData = lastData?.bestTrainingScore?.toDouble(),
+                currentData = currentData.bestTrainingScore.toDouble(),
+                unit = "pts",
+                colorCurrent = ScoreBest,
+                colorLast = ScoreBest.copy(alpha = 0.6f)
+            ),
+            minTrainingScore = getPieChartData(
+                prefixLast = prefixLast,
+                prefixCurrent = prefixCurrent,
+                lastData = lastData?.minTrainingScore?.toDouble(),
+                currentData = currentData.minTrainingScore.toDouble(),
+                unit = "pts",
+                colorCurrent = ScoreMin,
+                colorLast = ScoreMin.copy(alpha = 0.6f)
             )
         )
     }
@@ -390,8 +474,8 @@ class SummaryViewModel(
                 lastData = lastData?.trainingDuration?.toDouble(),
                 currentData = if (currentData.trainingDuration.toDouble() == 0.0) 1.0 else currentData.trainingDuration.toDouble(),
                 unit = "min",
-                colorCurrent = Color(0xFF4CAF50), // Green
-                colorLast = Color(0xFFC8E6C9)    // Light Green
+                colorCurrent = Green,
+                colorLast = LightGreen
             ),
             totalLiftedWeight = getPieChartData(
                 prefixLast = prefixLast,
@@ -399,8 +483,8 @@ class SummaryViewModel(
                 lastData = lastData?.totalLiftedWeight,
                 currentData = if (currentData.totalLiftedWeight == 0.0) 1.0 else currentData.totalLiftedWeight,
                 unit = "kg",
-                colorCurrent = Color(0xFFFF5722), // Deep Orange
-                colorLast = Color(0xFFFFCCBC)    // Light Orange
+                colorCurrent = DeepOrange,
+                colorLast = LightOrange
             ),
             numWorkouts = getPieChartData(
                 prefixLast = prefixLast,
@@ -408,8 +492,8 @@ class SummaryViewModel(
                 lastData = lastData?.numWorkouts?.toDouble(),
                 currentData = currentData.numWorkouts.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFF2196F3), // Blue
-                colorLast = Color(0xFFBBDEFB)    // Light Blue
+                colorCurrent = Blue,
+                colorLast = LightBlue
             ),
             numExercises = getPieChartData(
                 prefixLast = prefixLast,
@@ -417,8 +501,8 @@ class SummaryViewModel(
                 lastData = lastData?.numExercises?.toDouble(),
                 currentData = currentData.numExercises.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFFFFC107), // Amber
-                colorLast = Color(0xFFFFF8E1)    // Light Amber
+                colorCurrent = Amber,
+                colorLast = LightAmber
             ),
             numSets = getPieChartData(
                 prefixLast = prefixLast,
@@ -426,8 +510,8 @@ class SummaryViewModel(
                 lastData = lastData?.numSets?.toDouble(),
                 currentData = currentData.numSets.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFF9C27B0), // Purple
-                colorLast = Color(0xFFE1BEE7)    // Light Purple
+                colorCurrent = Purple,
+                colorLast = LightPurple
             ),
             numReps = getPieChartData(
                 prefixLast = prefixLast,
@@ -435,8 +519,8 @@ class SummaryViewModel(
                 lastData = lastData?.numReps?.toDouble(),
                 currentData = currentData.numReps.toDouble(),
                 unit = "",
-                colorCurrent = Color(0xFF03A9F4), // Light Blue
-                colorLast = Color(0xFFB3E5FC)    // Lighter Blue
+                colorCurrent = LightBlueAlt,
+                colorLast = LighterBlue
             ),
             totalRestTime = getPieChartData(
                 prefixLast = prefixLast,
@@ -444,8 +528,8 @@ class SummaryViewModel(
                 lastData = lastData?.totalRestTime?.toDouble()?.div(60),
                 currentData = currentData.totalRestTime.toDouble().div(60),
                 unit = "min",
-                colorCurrent = Color(0xFF795548), // Brown
-                colorLast = Color(0xFFD7CCC8)    // Light Brown
+                colorCurrent = Brown,
+                colorLast = LightBrown
             ),
             avgDurationPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
@@ -453,8 +537,8 @@ class SummaryViewModel(
                 lastData = lastData?.avgDurationPerWorkout,
                 currentData = if (currentData.avgDurationPerWorkout == 0.0) 1.0 else currentData.avgDurationPerWorkout,
                 unit = "min",
-                colorCurrent = Color(0xFF607D8B), // Blue Gray
-                colorLast = Color(0xFFCFD8DC)    // Light Blue Gray
+                colorCurrent = BlueGray,
+                colorLast = LightBlueGray
             ),
             avgLiftedWeightPerExercise = getPieChartData(
                 prefixLast = prefixLast,
@@ -462,8 +546,8 @@ class SummaryViewModel(
                 lastData = lastData?.avgLiftedWeightPerExercise,
                 currentData = if (currentData.avgLiftedWeightPerExercise == 0.0) 1.0 else currentData.avgLiftedWeightPerExercise,
                 unit = "kg",
-                colorCurrent = Color(0xFF009688), // Teal
-                colorLast = Color(0xFFB2DFDB)    // Light Teal
+                colorCurrent = Teal,
+                colorLast = LightTeal
             ),
             avgLiftedWeightPerWorkout = getPieChartData(
                 prefixLast = prefixLast,
@@ -471,8 +555,35 @@ class SummaryViewModel(
                 lastData = lastData?.avgLiftedWeightPerWorkout,
                 currentData = if (currentData.avgLiftedWeightPerWorkout == 0.0) 1.0 else currentData.avgLiftedWeightPerWorkout,
                 unit = "kg",
-                colorCurrent = Color(0xFFFF9800), // Orange
-                colorLast = Color(0xFFFFE0B2)    // Light Orange
+                colorCurrent = Orange,
+                colorLast = LightOrangeAlt
+            ),
+            avgTrainingScore = getPieChartData(
+                prefixLast = prefixLast,
+                prefixCurrent = prefixCurrent,
+                lastData = lastData?.averageTrainingScore?.toDouble(),
+                currentData = currentData.averageTrainingScore.toDouble(),
+                unit = "pts",
+                colorCurrent = ScoreAverage,
+                colorLast = ScoreAverage.copy(alpha = 0.6f)
+            ),
+            bestTrainingScore = getPieChartData(
+                prefixLast = prefixLast,
+                prefixCurrent = prefixCurrent,
+                lastData = lastData?.bestTrainingScore?.toDouble(),
+                currentData = currentData.bestTrainingScore.toDouble(),
+                unit = "pts",
+                colorCurrent = ScoreBest,
+                colorLast = ScoreBest.copy(alpha = 0.6f)
+            ),
+            minTrainingScore = getPieChartData(
+                prefixLast = prefixLast,
+                prefixCurrent = prefixCurrent,
+                lastData = lastData?.minTrainingScore?.toDouble(),
+                currentData = currentData.minTrainingScore.toDouble(),
+                unit = "pts",
+                colorCurrent = ScoreMin,
+                colorLast = ScoreMin.copy(alpha = 0.6f)
             )
         )
     }

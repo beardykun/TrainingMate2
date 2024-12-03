@@ -1,4 +1,5 @@
 package jp.mikhail.pankratov.trainingMate.theme
+
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF206487)
@@ -218,9 +219,52 @@ val surfaceContainerHighDarkHighContrast = Color(0xFF262B2E)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF313539)
 
 
-
-
 val goldLight = Color(0xFFFFF2B2)
 val gold = Color(0xFFFFD700)
 val darkGreen = Color(0xFF008000)
 
+val Green = Color(0xFF4CAF50)
+val LightGreen = Color(0xFFC8E6C9)
+
+val DeepOrange = Color(0xFFFF5722)
+val LightOrange = Color(0xFFFFCCBC)
+
+val Blue = Color(0xFF2196F3)
+val LightBlue = Color(0xFFBBDEFB)
+
+val Amber = Color(0xFFFFC107)
+val LightAmber = Color(0xFFFFF8E1)
+
+val Purple = Color(0xFF9C27B0)
+val LightPurple = Color(0xFFE1BEE7)
+
+val LightBlueAlt = Color(0xFF03A9F4)
+val LighterBlue = Color(0xFFB3E5FC)
+
+val Brown = Color(0xFF795548)
+val LightBrown = Color(0xFFD7CCC8)
+
+val BlueGray = Color(0xFF607D8B)
+val LightBlueGray = Color(0xFFCFD8DC)
+
+val Teal = Color(0xFF009688)
+val LightTeal = Color(0xFFB2DFDB)
+
+val Orange = Color(0xFFFF9800)
+val LightOrangeAlt = Color(0xFFFFE0B2)
+
+val ScoreTotal = Color(0xFFFFA726) // Deep Orange
+val ScoreAverage = Color(0xFF29B6F6) // Light Blue
+val ScoreBest = Color(0xFF66BB6A) // Green
+val ScoreMin = Color(0xFFEF5350) // Red
+
+val TrainingDuration = Color(0xFF4CAF50) // Green
+val TotalLiftedWeight = Color(0xFFFF5722) // Deep Orange
+val NumWorkouts = Color(0xFF2196F3) // Blue
+val NumExercises = Color(0xFFFFC107) // Amber
+val NumSets = Color(0xFF9C27B0) // Purple
+val NumReps = Color(0xFF03A9F4) // Light Blue
+val TotalRestTime = Color(0xFF795548) // Brown
+val AvgDurationPerWorkout = Color(0xFF607D8B) // Blue Gray
+val AvgLiftedWeightPerExercise = Color(0xFF009688) // Teal
+val AvgLiftedWeightPerWorkout = Color(0xFFFF9800) // Orange
