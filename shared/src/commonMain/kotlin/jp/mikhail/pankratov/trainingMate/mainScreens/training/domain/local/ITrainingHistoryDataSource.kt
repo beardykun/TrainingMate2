@@ -21,7 +21,7 @@ interface ITrainingHistoryDataSource {
         restTime: Long
     )
 
-    suspend fun updateTrainingHistoryStatus(trainingId: Long, status: String = "COMPLETED")
+    suspend fun finishTrainingHistory(trainingId: Long, status: String = "COMPLETED", score: Int)
     fun getGroupTrainings(group: String): Flow<List<Training>>
     fun getParticularHistoryTrainings(trainingTemplateId: Long): Flow<List<Training>>
     fun getTrainingsWithExercise(exerciseName: String): Flow<List<Training>>

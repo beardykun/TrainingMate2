@@ -18,7 +18,11 @@ fun database.MonthlySummary.toMonthlySummary(): MonthlySummary {
         avgDurationPerWorkout = avg_duration_per_workout,
         avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise,
         avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout,
-        totalRestTime = total_rest_time
+        totalRestTime = total_rest_time,
+        totalScore = total_training_score,
+        averageTrainingScore = average_training_score,
+        bestTrainingScore = best_training_score,
+        minTrainingScore = min_training_score
     )
 }
 
@@ -36,7 +40,10 @@ fun database.WeeklySummary.toWeeklySummary(): WeeklySummary {
         avgDurationPerWorkout = avg_duration_per_workout,
         avgLiftedWeightPerExercise = avg_lifted_weight_per_exercise,
         avgLiftedWeightPerWorkout = avg_lifted_weight_per_workout,
-        totalRestTime = total_rest_time
-
+        totalRestTime = total_rest_time,
+        totalScore = total_training_score,
+        averageTrainingScore = average_training_score,
+        bestTrainingScore = best_training_score,
+        minTrainingScore = min_training_score
     )
 }

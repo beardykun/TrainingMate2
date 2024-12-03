@@ -69,6 +69,9 @@
     <string name="average_weight_per_exercise_with_args">Average weight per exercise: %1$d kg</string>
     <string name="average_weight_per_workout_with_args">Average weight per workout: %1$d kg</string>
     <string name="average_workout_time_with_args">Average workout time: %1$d min</string>
+    <string name="average_training_score_with_args">Average training score: %1$d min</string>
+    <string name="best_training_score_with_args">Best training score: %1$d min</string>
+    <string name="min_training_score_with_args">Min training score: %1$d min</string>
     <string name="summaries">Summary:</string>
     <string name="summaries_sample">Summaries sample:</string>
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>

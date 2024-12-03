@@ -189,9 +189,11 @@ class ThisTrainingViewModel(
                         .invoke(ongoingTrainingId)
                     return@let
                 }
-                trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
-                    .invoke(trainingId = ongoingTrainingId)
-                updateSummaries()
+                state.value.score?.score?.let { score ->
+                    trainingUseCaseProvider.getFinishTrainingHistoryUseCase()
+                        .invoke(trainingId = ongoingTrainingId, score = score)
+                    updateSummaries()
+                }
             }
         }
 

@@ -34,6 +34,7 @@ fun TrainingHistory.toTraining(): Training {
         monthNumber = month_number ?: 0L,
         year = year ?: 0L,
         status = status,
-        restTime = rest_time ?: 0L
+        restTime = rest_time ?: 0L,
+        score = training_score ?: 0
     )
 }

@@ -13,6 +13,10 @@ data class MonthlySummary(
     val avgDurationPerWorkout: Double = 0.0, // Average duration of each training session during the week (in minutes)
     val avgLiftedWeightPerExercise: Double = 0.0, // Average weight lifted per exercise during the week
     val avgLiftedWeightPerWorkout: Double = 0.0,
-    val totalRestTime: Long = 0L // Total rest time during the month (in seconds)
+    val totalRestTime: Long = 0L, // Total rest time during the month (in seconds)
+    val totalScore: Long = 0,
+    val averageTrainingScore: Long = 0,
+    val bestTrainingScore: Long = 0,
+    val minTrainingScore: Long = 100
 )
 

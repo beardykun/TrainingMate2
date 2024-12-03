@@ -60,7 +60,6 @@ class TrainingSelectionViewModel(
                         )
                     }
                     viewModelScope.launch {
-                        finishLastTrainingWhenStartingNew()
                         startNewTraining(localTraining)
                         event.onSuccess.invoke()
                     }
@@ -145,17 +144,5 @@ class TrainingSelectionViewModel(
             )
         )
         summaryUseCaseProvider.getInsetSummaryUseCase().invoke()
-    }
-
-    private suspend fun finishLastTrainingWhenStartingNew() = withContext(Dispatchers.IO) {
-        state.value.ongoingTraining?.id?.let { ongoingTrainingId ->
-            if (state.value.ongoingTraining?.totalLiftedWeight == 0.0) {
-                trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
-                    .invoke(trainingId = ongoingTrainingId)
-                return@let
-            }
-            trainingUseCaseProvider.getUpdateTrainingHistoryStatusUseCase()
-                .invoke(trainingId = ongoingTrainingId)
-        }
     }
 }

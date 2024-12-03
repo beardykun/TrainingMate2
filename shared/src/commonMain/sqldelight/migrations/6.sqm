@@ -1,0 +1,23 @@
+ALTER TABLE TrainingHistory ADD COLUMN training_score INTEGER;
+
+ALTER TABLE MonthlySummary ADD COLUMN total_training_score INTEGER;
+ALTER TABLE MonthlySummary ADD COLUMN average_training_score INTEGER;
+ALTER TABLE MonthlySummary ADD COLUMN best_training_score INTEGER;
+ALTER TABLE MonthlySummary ADD COLUMN min_training_score INTEGER;
+
+ALTER TABLE WeeklySummary ADD COLUMN total_training_score INTEGER;
+ALTER TABLE WeeklySummary ADD COLUMN average_training_score INTEGER;
+ALTER TABLE WeeklySummary ADD COLUMN best_training_score INTEGER;
+ALTER TABLE WeeklySummary ADD COLUMN min_training_score INTEGER;
+
+UPDATE TrainingHistory SET training_score = 80 WHERE training_score IS NULL;
+
+UPDATE MonthlySummary SET total_training_score = 240 WHERE total_training_score IS NULL;
+UPDATE MonthlySummary SET average_training_score = 80 WHERE average_training_score IS NULL;
+UPDATE MonthlySummary SET best_training_score = 90 WHERE best_training_score IS NULL;
+UPDATE MonthlySummary SET min_training_score = 70 WHERE min_training_score IS NULL;
+
+UPDATE WeeklySummary SET total_training_score = 240 WHERE total_training_score IS NULL;
+UPDATE WeeklySummary SET average_training_score = 80 WHERE average_training_score IS NULL;
+UPDATE WeeklySummary SET best_training_score = 90 WHERE best_training_score IS NULL;
+UPDATE WeeklySummary SET min_training_score = 70 WHERE min_training_score IS NULL;

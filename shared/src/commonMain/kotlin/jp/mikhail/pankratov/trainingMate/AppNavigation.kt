@@ -175,7 +175,7 @@ private fun RouteBuilder.historyScreens(
         val viewModel: HistoryInfoViewModel =
             koinViewModel(qualifier = named("HistoryInfoViewModel")) { parametersOf(trainingId) }
         val state by viewModel.state.collectAsStateWithLifecycle()
-        HistoryInfoScreen(state = state, onEvent = viewModel::onEvent, navigator = navigator)
+        HistoryInfoScreen(state = state, navigator = navigator)
     }
 }
 

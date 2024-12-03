@@ -70,7 +70,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             month_number = DateUtils.currentMonthNumber,
             year = DateUtils.currentYear,
             user_id = training.userId,
-            rest_time = training.restTime
+            rest_time = training.restTime,
+            training_score = training.score.toLong()
         )
     }
 
@@ -107,10 +108,11 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         )
     }
 
-    override suspend fun updateTrainingHistoryStatus(trainingId: Long, status: String) {
-        query.updateStatus(
+    override suspend fun finishTrainingHistory(trainingId: Long, status: String, score: Int) {
+        query.finishHistoryTraining(
             status = status,
-            id = trainingId
+            id = trainingId,
+            training_score = score.toLong()
         )
     }
 

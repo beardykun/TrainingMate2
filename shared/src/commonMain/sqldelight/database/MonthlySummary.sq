@@ -2,17 +2,20 @@ CREATE TABLE IF NOT EXISTS MonthlySummary (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     month_number INTEGER NOT NULL,
     year INTEGER NOT NULL,
-    training_duration INTEGER NOT NULL, -- Total duration spent on training activities during the week (in minutes)
-    total_lifted_weight REAL NOT NULL, -- Sum of the weights lifted across all exercises during the week
-    num_workouts INTEGER NOT NULL, -- Total number of training sessions completed during the week
-    num_exercises INTEGER NOT NULL, -- Total number of unique exercises performed during the week
+    training_duration INTEGER NOT NULL, -- Total duration spent on training activities during the month (in minutes)
+    total_lifted_weight REAL NOT NULL, -- Sum of the weights lifted across all exercises during the month
+    num_workouts INTEGER NOT NULL, -- Total number of training sessions completed during the month
+    num_exercises INTEGER NOT NULL, -- Total number of unique exercises performed during the month
     num_sets INTEGER NOT NULL,
     num_reps INTEGER NOT NULL,
-    avg_duration_per_workout REAL NOT NULL, -- Average duration of each training session during the week (in minutes)
-    avg_lifted_weight_per_workout REAL NOT NULL, -- Average weight lifted per exercise during the week
-    avg_lifted_weight_per_exercise REAL NOT NULL, -- Average weight lifted per exercise during the week
+    avg_duration_per_workout REAL NOT NULL, -- Average duration of each training session during the month (in minutes)
+    avg_lifted_weight_per_workout REAL NOT NULL, -- Average weight lifted per exercise during the month
+    avg_lifted_weight_per_exercise REAL NOT NULL, -- Average weight lifted per exercise during the month
     total_rest_time INTEGER NOT NULL,
-    -- intensity_distribution TEXT, -- Distribution of training intensity levels across workouts during the week
+    total_training_score INTEGER NOT NULL, -- Total score accumulated from all training sessions
+    average_training_score INTEGER NOT NULL, -- Average training score across all sessions
+    best_training_score INTEGER NOT NULL, -- Highest training score of the month
+    min_training_score INTEGER NOT NULL, -- Lowest training score of the month
     UNIQUE(month_number, year) -- Ensure uniqueness for each week in a year
 );
 
@@ -31,23 +34,31 @@ num_reps,
 avg_duration_per_workout,
 avg_lifted_weight_per_workout,
 avg_lifted_weight_per_exercise,
-total_rest_time
+total_rest_time,
+total_training_score,
+average_training_score,
+best_training_score,
+min_training_score
 )
-VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);
+VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
 
 updateMonthlySummary:
 UPDATE MonthlySummary
 SET
-    num_exercises = num_exercises + ?,
-    num_sets = num_sets + ?,
-    num_reps = num_reps + ?,
-    total_lifted_weight = total_lifted_weight + ?,
-    avg_lifted_weight_per_workout = (total_lifted_weight + ?) / (num_workouts + 1),
-    avg_lifted_weight_per_exercise = (total_lifted_weight + ?) / (num_exercises + ?),
+    num_exercises = num_exercises + :additional_exercises,
+    num_sets = num_sets + :additional_sets,
+    num_reps = num_reps + :additional_reps,
+    total_lifted_weight = total_lifted_weight + :additional_weight,
+    avg_lifted_weight_per_workout = (total_lifted_weight + :additional_weight) / (num_workouts + 1),
+    avg_lifted_weight_per_exercise = (total_lifted_weight + :additional_weight) / (num_exercises + :additional_exercises),
     num_workouts = num_workouts + 1,
-    training_duration = training_duration + ?,
+    training_duration = training_duration + :additional_duration,
     avg_duration_per_workout = (training_duration + ?) / (num_workouts + 1),
-    total_rest_time = total_rest_time + ?
+    total_rest_time = total_rest_time + :additional_rest_time,
+    total_training_score = total_training_score + :additional_score,
+    average_training_score = (total_training_score + :additional_score) / (num_workouts + 1),
+    best_training_score = MAX(best_training_score, :additional_score),
+    min_training_score = MIN(min_training_score, :additional_score)
 WHERE month_number = ? AND year = ?;
 
 getMonthlySummary:

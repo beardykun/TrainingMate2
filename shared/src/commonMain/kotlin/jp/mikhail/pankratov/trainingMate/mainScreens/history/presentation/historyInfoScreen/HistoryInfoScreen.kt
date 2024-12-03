@@ -22,28 +22,24 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.Exercise
 import jp.mikhail.pankratov.trainingMate.core.domain.local.exercise.ExerciseSet
 import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
-import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.DialogPopup
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import maxrep.shared.generated.resources.Res
-import maxrep.shared.generated.resources.finish_ongoing_and_continue
 import maxrep.shared.generated.resources.lifted_weight_with_arg
 import maxrep.shared.generated.resources.sets
 import maxrep.shared.generated.resources.total_weight_lifted_with_arg
 import maxrep.shared.generated.resources.training_duration_with_arg
 import maxrep.shared.generated.resources.training_groups_with_arg
 import maxrep.shared.generated.resources.training_name_with_arg
-import maxrep.shared.generated.resources.training_ongoing
 import moe.tlaster.precompose.navigation.Navigator
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun HistoryInfoScreen(
     state: HistoryInfoState,
-    onEvent: (HistoryInfoEvent) -> Unit,
     navigator: Navigator
 ) {
     TopAppBarScaffold(
@@ -96,19 +92,6 @@ fun HistoryInfoScreen(
                             )
                         }
                     }
-                }
-                if (state.isError) {
-                    DialogPopup(
-                        title = Res.string.training_ongoing.getString(),
-                        description = Res.string.finish_ongoing_and_continue.getString(),
-                        onAccept = {
-                            onEvent(HistoryInfoEvent.OnFinishOngoingAndContinue {
-                                navigator.navigate(route = Routs.TrainingScreens.trainingExercises)
-                            })
-                        },
-                        onDenny = {
-                            onEvent(HistoryInfoEvent.OnFinishDeny)
-                        })
                 }
             }
         })

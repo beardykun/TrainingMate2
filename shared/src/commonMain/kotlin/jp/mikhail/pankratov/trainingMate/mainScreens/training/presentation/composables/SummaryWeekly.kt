@@ -17,9 +17,12 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Tex
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.theme.darkGreen
 import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.average_training_score_with_args
 import maxrep.shared.generated.resources.average_weight_per_exercise_with_args
 import maxrep.shared.generated.resources.average_weight_per_workout_with_args
 import maxrep.shared.generated.resources.average_workout_time_with_args
+import maxrep.shared.generated.resources.best_training_score_with_args
+import maxrep.shared.generated.resources.min_training_score_with_args
 import maxrep.shared.generated.resources.number_of_done_exercises_with_args
 import maxrep.shared.generated.resources.number_of_done_sets_with_args
 import maxrep.shared.generated.resources.number_of_workouts_with_args
@@ -111,7 +114,7 @@ fun SummaryWeekly(
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_exercise_with_args,
-                        summary.avgLiftedWeightPerExercise.toString()
+                        summary.avgLiftedWeightPerExercise.toInt()
                     ),
                     arguments = getArgument(
                         lastWeekSummary?.avgLiftedWeightPerExercise?.toInt(),
@@ -121,7 +124,7 @@ fun SummaryWeekly(
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_workout_with_args,
-                        summary.avgLiftedWeightPerWorkout
+                        summary.avgLiftedWeightPerWorkout.toInt()
                     ),
                     arguments = getArgument(
                         lastWeekSummary?.avgLiftedWeightPerWorkout?.toInt(),
@@ -136,6 +139,36 @@ fun SummaryWeekly(
                     arguments = getArgument(
                         lastWeekSummary?.avgDurationPerWorkout?.toInt(),
                         summary.avgDurationPerWorkout.toInt()
+                    )
+                )
+                TextMedium(
+                    text = stringResource(
+                        Res.string.average_training_score_with_args,
+                        summary.averageTrainingScore
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.averageTrainingScore?.toInt(),
+                        summary.averageTrainingScore.toInt()
+                    )
+                )
+                TextMedium(
+                    text = stringResource(
+                        Res.string.best_training_score_with_args,
+                        summary.bestTrainingScore
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.bestTrainingScore?.toInt(),
+                        summary.bestTrainingScore.toInt()
+                    )
+                )
+                TextMedium(
+                    text = stringResource(
+                        Res.string.min_training_score_with_args,
+                        summary.minTrainingScore
+                    ),
+                    arguments = getArgument(
+                        lastWeekSummary?.minTrainingScore?.toInt(),
+                        summary.minTrainingScore.toInt()
                     )
                 )
             }

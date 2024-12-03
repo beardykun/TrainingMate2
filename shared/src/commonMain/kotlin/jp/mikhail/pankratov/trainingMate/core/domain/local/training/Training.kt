@@ -20,5 +20,6 @@ data class Training(
     val monthNumber: Long = 0,
     val year: Long = 0,
     val status: String = Constants.ONGOING_STATUS,
-    val restTime: Long = 0
+    val restTime: Long = 0,
+    val score: Long = 0
 )

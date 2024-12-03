@@ -43,7 +43,11 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             avg_duration_per_workout = monthlySummary.avgDurationPerWorkout,
             avg_lifted_weight_per_exercise = monthlySummary.avgLiftedWeightPerExercise,
             training_duration = monthlySummary.trainingDuration.toLong(),
-            total_rest_time = monthlySummary.totalRestTime
+            total_rest_time = monthlySummary.totalRestTime,
+            total_training_score = monthlySummary.totalScore,
+            average_training_score = monthlySummary.averageTrainingScore,
+            best_training_score = monthlySummary.bestTrainingScore,
+            min_training_score = monthlySummary.minTrainingScore
         )
 
         val weeklySummary =
@@ -61,7 +65,11 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
             avg_lifted_weight_per_workout = weeklySummary.avgLiftedWeightPerWorkout,
             avg_lifted_weight_per_exercise = weeklySummary.avgLiftedWeightPerExercise,
             training_duration = weeklySummary.trainingDuration.toLong(),
-            total_rest_time = weeklySummary.totalRestTime
+            total_rest_time = weeklySummary.totalRestTime,
+            total_training_score = weeklySummary.totalScore,
+            average_training_score = weeklySummary.averageTrainingScore,
+            best_training_score = weeklySummary.bestTrainingScore,
+            min_training_score = weeklySummary.minTrainingScore
         )
     }
 
@@ -112,39 +120,36 @@ class SummaryDatasource(db: TrainingDatabase) : ISummaryDatasource {
     override suspend fun updateSummaries(
         additionalDuration: Double,
         additionalWeight: Double,
-        numExercises: Int,
-        numSets: Int,
-        numReps: Int,
-        totalRestTime: Long
+        additionalExercises: Int,
+        additionalSets: Int,
+        additionalReps: Int,
+        additionalRestTime: Long,
+        additionalScore: Long
     ) {
         monthlyQuery.updateMonthlySummary(
             year = currentYear,
             month_number = currentMonthNumber,
             training_duration = additionalDuration.toLong(),
-            training_duration_ = additionalDuration.toLong(),
-            total_lifted_weight = additionalWeight,
-            total_lifted_weight_ = additionalWeight,
-            total_lifted_weight__ = additionalWeight,
-            num_exercises = numExercises.toLong(),
-            num_exercises_ = numExercises.toLong(),
-            num_sets = numSets.toLong(),
-            num_reps = numReps.toLong(),
-            total_rest_time = totalRestTime
+            additional_duration = additionalDuration.toLong(),
+            additional_weight = additionalWeight,
+            additional_exercises = additionalExercises.toLong(),
+            additional_sets = additionalSets.toLong(),
+            additional_reps = additionalReps.toLong(),
+            additional_rest_time = additionalRestTime,
+            additional_score = additionalScore
         )
 
         weeklyQuery.updateWeeklySummary(
             year = currentYear,
             week_number = currentWeekNumber,
             training_duration = additionalDuration.toLong(),
-            training_duration_ = additionalDuration.toLong(),
-            total_lifted_weight = additionalWeight,
-            total_lifted_weight_ = additionalWeight,
-            total_lifted_weight__ = additionalWeight,
-            num_exercises = numExercises.toLong(),
-            num_exercises_ = numExercises.toLong(),
-            num_sets = numSets.toLong(),
-            num_reps = numReps.toLong(),
-            total_rest_time = totalRestTime
+            additional_duration = additionalDuration.toLong(),
+            additional_weight = additionalWeight,
+            additional_exercises = additionalExercises.toLong(),
+            additional_sets = additionalSets.toLong(),
+            additional_reps = additionalReps.toLong(),
+            additional_rest_time = additionalRestTime,
+            additional_score = additionalScore
         )
     }
 }

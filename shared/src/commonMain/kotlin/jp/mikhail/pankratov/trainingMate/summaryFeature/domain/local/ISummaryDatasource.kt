@@ -13,9 +13,10 @@ interface ISummaryDatasource {
     suspend fun updateSummaries(
         additionalDuration: Double,
         additionalWeight: Double,
-        numExercises: Int,
-        numSets: Int,
-        numReps: Int,
-        totalRestTime: Long
+        additionalExercises: Int,
+        additionalSets: Int,
+        additionalReps: Int,
+        additionalRestTime: Long,
+        additionalScore: Long
     )
 }

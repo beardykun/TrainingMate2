@@ -22,17 +22,18 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.times
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.TrainingLocal
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
-import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.HighlightedText
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
+import jp.mikhail.pankratov.trainingMate.core.presentation.utils.getDrawableResourceByName
 import jp.mikhail.pankratov.trainingMate.core.stringToList
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.cd_delete
@@ -115,73 +116,76 @@ fun TrainingItem(
             .padding(Dimens.Padding8)
             .clickable { onClick.invoke() }
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(containerColor)
-                .padding(Dimens.Padding16)
+        Box(contentAlignment = Alignment.BottomEnd) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(containerColor)
+                    .padding(Dimens.Padding16)
 
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TextLarge(
-                    text = stringResource(Res.string.training_name)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TextLarge(
+                        text = stringResource(Res.string.training_name)
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(Res.string.cd_delete),
+                        modifier = Modifier.clickable {
+                            val trainingId = training.id ?: -1
+                            onDeleteClick.invoke(trainingId)
+                        })
+                }
+                HighlightedText(fullText = training.name, query = query, textComp = {
+                    TextLarge(
+                        it
+                    )
+                })
+                training.startTime?.let {
+                    Spacer(modifier = Modifier.height(Dimens.Padding8))
+                    TextMedium(
+                        text = Utils.formatEpochMillisToDate(it)
+                    )
+                }
+                Spacer(modifier = Modifier.height(Dimens.Padding8))
+                val exercises = training.doneExercises.ifEmpty { training.exercises }
+                HighlightedText(
+                    fullText = stringResource(Res.string.exercises_with_new_line) + exercises.toString()
+                        .substring(1, exercises.toString().length - 1), query = query,
+                    textComp = { TextMedium(it) }
                 )
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(Res.string.cd_delete),
-                    modifier = Modifier.clickable {
-                        val trainingId = training.id ?: -1
-                        onDeleteClick.invoke(trainingId)
-                    })
-            }
-            HighlightedText(fullText = training.name, query = query, textComp = {
-                TextLarge(
-                    it
-                )
-            })
-            training.startTime?.let {
                 Spacer(modifier = Modifier.height(Dimens.Padding8))
                 TextMedium(
-                    text = Utils.formatEpochMillisToDate(it)
+                    text = stringResource(
+                        Res.string.total_lifted_weight_with_args,
+                        training.totalLiftedWeight
+                    )
+                )
+                Spacer(modifier = Modifier.height(Dimens.Padding8))
+                TextMedium(
+                    text = stringResource(
+                        Res.string.training_duration_with_arg, Utils.trainingLengthToMin(
+                            training
+                        ).toString()
+                    )
+                )
+                Spacer(modifier = Modifier.height(Dimens.Padding8))
+                TextMedium(
+                    text = stringResource(
+                        Res.string.rest_time,
+                        Utils.formatTimeText(training.restTime)
+                    )
+                )
+                Spacer(modifier = Modifier.height(Dimens.Padding8))
+                TextMedium(text = stringResource(Res.string.groups))
+                OverlappingImagesBackground(
+                    groups = training.groups.stringToList()
                 )
             }
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            val exercises = training.doneExercises.ifEmpty { training.exercises }
-            HighlightedText(
-                fullText = stringResource(Res.string.exercises_with_new_line) + exercises.toString()
-                    .substring(1, exercises.toString().length - 1), query = query,
-                textComp = { TextMedium(it) }
-            )
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextMedium(
-                text = stringResource(
-                    Res.string.total_lifted_weight_with_args,
-                    training.totalLiftedWeight
-                )
-            )
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextMedium(
-                text = stringResource(
-                    Res.string.training_duration_with_arg, Utils.trainingLengthToMin(
-                        training
-                    ).toString()
-                )
-            )
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextMedium(
-                text = stringResource(
-                    Res.string.rest_time,
-                    Utils.formatTimeText(training.restTime)
-                )
-            )
-            Spacer(modifier = Modifier.height(Dimens.Padding8))
-            TextMedium(text = stringResource(Res.string.groups))
-            OverlappingImagesBackground(
-                groups = training.groups.stringToList()
-            )
+            ScoreStamp(score = training.score, modifier = Modifier.padding(Dimens.Padding8))
         }
     }
 }
