@@ -25,6 +25,9 @@ class UpdateTrainingHistoryDataUseCase(private val trainingHistoryDataSource: IT
         } else if (doneExercises.contains(exerciseName) && sets.isEmpty()) {
             doneExercises.remove(exerciseName)
         }
+        val restTime =
+            if (ongoingTraining.lastDoneExercise == exerciseName) sets.lastOrNull()?.restSec
+                ?: 0 else 0
         trainingHistoryDataSource.updateTrainingData(
             startTime = ongoingTraining.startTime ?: Clock.System.now()
                 .toEpochMilliseconds(),
@@ -33,7 +36,8 @@ class UpdateTrainingHistoryDataUseCase(private val trainingHistoryDataSource: IT
             doneExercised = doneExercises,
             sets = if (weight < 0) -1 else 1,
             reps = reps,
-            restTime = sets.lastOrNull()?.restSec ?: 0
+            restTime = restTime,
+            lastDoneExercise = exerciseName
         )
     }
 }

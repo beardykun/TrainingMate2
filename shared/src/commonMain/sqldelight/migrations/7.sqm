@@ -1,0 +1,1 @@
+ALTER TABLE TrainingHistory ADD COLUMN last_done_exercise TEXT;

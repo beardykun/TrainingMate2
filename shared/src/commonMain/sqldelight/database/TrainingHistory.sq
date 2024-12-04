@@ -17,6 +17,7 @@ CREATE TABLE TrainingHistory (
     month_number INTEGER,
     rest_time INTEGER,
     training_score INTEGER DEFAULT 0,
+    last_done_exercise TEXT,
     FOREIGN KEY(user_id) REFERENCES User(id)
 );
 
@@ -66,7 +67,8 @@ total_lifted_weight = ?,
 done_exercises = ?,
 total_sets = total_sets + ?,
 total_reps = total_reps + ?,
-rest_time = rest_time + ?
+rest_time = rest_time + ?,
+last_done_exercise = ?
 WHERE id = ?;
 
 finishHistoryTraining:

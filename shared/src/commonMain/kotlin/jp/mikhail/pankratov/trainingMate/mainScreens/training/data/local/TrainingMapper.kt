@@ -35,6 +35,7 @@ fun TrainingHistory.toTraining(): Training {
         year = year ?: 0L,
         status = status,
         restTime = rest_time ?: 0L,
-        score = training_score ?: 0
+        score = training_score ?: 0,
+        lastDoneExercise = last_done_exercise
     )
 }

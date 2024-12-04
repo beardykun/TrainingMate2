@@ -77,12 +77,11 @@ class ExerciseAtWorkViewModel(
             trainingTemplateId = viewModelArguments.trainingTemplateId,
             exerciseTemplateId = viewModelArguments.exerciseTemplateId
         )
-    }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(3000L),
-            initialValue = ExerciseAtWorkState()
-        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(3000L),
+        initialValue = ExerciseAtWorkState()
+    )
 
     fun onEvent(event: ExerciseAtWorkEvent) {
         when (event) {

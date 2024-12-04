@@ -94,7 +94,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         doneExercised: List<String>,
         sets: Int,
         reps: Int,
-        restTime: Long
+        restTime: Long,
+        lastDoneExercise: String?
     ) {
         query.updateTrainingData(
             start_time = startTime,
@@ -104,7 +105,8 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
             done_exercises = doneExercised.listToString(),
             total_sets = sets.toLong(),
             total_reps = reps.toLong(),
-            rest_time = restTime
+            rest_time = restTime,
+            last_done_exercise = lastDoneExercise
         )
     }
 
