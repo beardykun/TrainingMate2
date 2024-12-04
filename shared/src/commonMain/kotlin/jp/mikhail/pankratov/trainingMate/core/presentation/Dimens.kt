@@ -36,11 +36,13 @@ object Dimens {
 
     val historyFabPadding = 128.dp
 
+    val borderWidth = 1.dp
+
+    val scoreStampSize = 160.dp
+    val scoreTextBackgroundRadius = 25.dp
+    val PieChartSize = 400.dp
+
     //text sizes
     val normalTextSize = 16.sp
     val largeTextSize = 20.sp
-
-    val borderWidth = 1.dp
-
-    val PieChartSize = 400.dp
 }
