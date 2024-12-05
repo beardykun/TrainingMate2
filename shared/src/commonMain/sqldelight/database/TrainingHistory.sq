@@ -105,11 +105,11 @@ DELETE
 FROM TrainingHistory
 WHERE id = ?;
 
-getLastSameTraining:
+getLastSameTrainings:
 SELECT * FROM TrainingHistory
 WHERE status = 'COMPLETED' AND training_template_id = ?
 ORDER BY id DESC
-LIMIT 1;
+LIMIT 5;
 
 getLastTraining:
 SELECT * FROM TrainingHistory

@@ -4,7 +4,7 @@ import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.TrainingUseC
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.DeleteTrainingHistoryRecordUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetHistorySearchResultsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastHistoryTrainingUseCase
-import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastSameHistoryTrainingUseCase
+import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLastSameHistoryTrainingsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetLatestHistoryTrainingsUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetOngoingTrainingUseCase
 import jp.mikhail.pankratov.trainingMate.core.domain.local.useCases.training.history.GetParticularHistoryTrainingsUseCase
@@ -38,7 +38,7 @@ fun trainingUseCaseModule() = module {
     single { DeleteTrainingHistoryRecordUseCase(trainingHistoryDataSource = get()) }
     single { InsertTrainingHistoryRecordUseCase(trainingHistoryDataSource = get()) }
     single { FinishTrainingHistoryUseCase(trainingHistoryDataSource = get()) }
-    single { GetLastSameHistoryTrainingUseCase(trainingHistoryDataSource = get()) }
+    single { GetLastSameHistoryTrainingsUseCase(trainingHistoryDataSource = get()) }
     single { GetLastHistoryTrainingUseCase(trainingHistoryDataSource = get()) }
     single { GetTrainingHistoryRecordByIdUseCase(trainingHistoryDataSource = get()) }
     single { GetParticularHistoryTrainingsUseCase(trainingHistoryDataSource = get()) }

@@ -3,7 +3,6 @@ package jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.do
 import jp.mikhail.pankratov.trainingMate.core.domain.local.training.Training
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.thisTraining.domain.TrainingScore
 import maxrep.shared.generated.resources.Res
-import maxrep.shared.generated.resources.all_progress
 import maxrep.shared.generated.resources.all_progress_perfect_score
 import maxrep.shared.generated.resources.all_regressed
 import maxrep.shared.generated.resources.all_regressed_perfect_score
@@ -20,12 +19,12 @@ import maxrep.shared.generated.resources.weight_and_rest_regressed
 import maxrep.shared.generated.resources.weight_and_rest_regressed_perfect_score
 import maxrep.shared.generated.resources.weight_and_volume_regressed
 import maxrep.shared.generated.resources.weight_and_volume_regressed_perfect_score
+import maxrep.shared.generated.resources.weight_stagnation_penalty_applied
 
 private const val MAX_SCORE_WEIGHT = 40.0
 private const val MAX_SCORE = 30.0
 private const val MIN_SCORE = 10.0
 private const val MAX_TOTAL_SCORE = 100
-private const val DEFAULT_ZERO = 0
 private const val ZERO = 0
 private const val POSITIVE_MARGIN = 5
 
@@ -33,22 +32,31 @@ class TrainingScoreUseCase {
 
     operator fun invoke(
         training: Training,
-        previousTraining: Training?
+        recentTrainings: List<Training>?
     ): TrainingScore {
-        val previousTrainingLifted = previousTraining?.totalLiftedWeight ?: DEFAULT_ZERO.toDouble()
-        val previousTotalSets = previousTraining?.totalSets ?: DEFAULT_ZERO
-        val previousTotalReps = previousTraining?.totalReps ?: DEFAULT_ZERO
-        val previousRestTime = previousTraining?.restTime ?: DEFAULT_ZERO.toLong()
+        // Calculate averages from recent trainings
+        val avgLiftedWeight = recentTrainings?.map { it.totalLiftedWeight }?.average() ?: 0.0
+        val avgTotalSets = recentTrainings?.map { it.totalSets }?.average()?.toInt() ?: 0
+        val avgTotalReps = recentTrainings?.map { it.totalReps }?.average()?.toInt() ?: 0
+        val avgRestTime = recentTrainings?.map { it.restTime }?.average()?.toLong() ?: 0
 
-        val trainingWeightScore = getTrainingWeightScore(previousTrainingLifted, training)
-
-        val trainingVolumeScore = getTrainingVolumeScore(previousTotalSets, previousTotalReps, training)
-
-        val trainingRestTimeScore = getTrainingRestTimeScore(previousRestTime, training)
-
-        val totalScore = (trainingWeightScore + trainingVolumeScore + trainingRestTimeScore).toInt()
+        // Calculate scores based on trends and averages
+        val trainingWeightScore = getTrainingWeightScore(avgLiftedWeight, training)
+        val trainingVolumeScore = getTrainingVolumeScore(avgTotalSets, avgTotalReps, training)
+        val trainingRestTimeScore = getTrainingRestTimeScore(avgRestTime, training)
+        var totalScore = (trainingWeightScore + trainingVolumeScore + trainingRestTimeScore).toInt()
             .coerceIn(ZERO, MAX_TOTAL_SCORE)
 
+        // Calculate weight stagnation penalty only if totalScore == MAX_TOTAL_SCORE
+        val weightStagnationPenalty = if (totalScore == MAX_TOTAL_SCORE) {
+            recentTrainings?.let { calculateWeightStagnationPenalty(it) } ?: 0
+        } else 0
+
+        // Subtract the penalty if applicable
+        totalScore -= weightStagnationPenalty
+        val weightStagnationPenaltyApplied = weightStagnationPenalty > 0
+
+        // Analyze trends
         val allProgress = trainingWeightScore >= MAX_SCORE_WEIGHT &&
                 trainingVolumeScore >= MAX_SCORE &&
                 trainingRestTimeScore >= MAX_SCORE
@@ -74,9 +82,11 @@ class TrainingScoreUseCase {
                 trainingVolumeScore < MAX_SCORE &&
                 trainingRestTimeScore < MAX_SCORE
 
+        val lastTraining = recentTrainings?.firstOrNull()
+        // Generate comment based on the analysis
         val comment = getTrainingComment(
-            previousTrainingLifted = previousTrainingLifted,
-            previousTotalReps = previousTotalReps,
+            lastLiftedWeight = lastTraining?.totalLiftedWeight ?: 0.0,
+            lastTotalReps = lastTraining?.totalReps ?: 0,
             allProgress = allProgress,
             totalScore = totalScore,
             onlyRestTimeRegressed = onlyRestTimeRegressed,
@@ -85,7 +95,8 @@ class TrainingScoreUseCase {
             weightAndVolumeRegressed = weightAndVolumeRegressed,
             weightAndRestRegressed = weightAndRestRegressed,
             volumeAndRestRegressed = volumeAndRestRegressed,
-            allRegressed = allRegressed
+            allRegressed = allRegressed,
+            weightStagnationPenaltyApplied = weightStagnationPenaltyApplied
         )
 
         return TrainingScore(
@@ -95,8 +106,8 @@ class TrainingScoreUseCase {
     }
 
     private fun getTrainingComment(
-        previousTrainingLifted: Double,
-        previousTotalReps: Int,
+        lastLiftedWeight: Double,
+        lastTotalReps: Int,
         allProgress: Boolean,
         totalScore: Int,
         onlyRestTimeRegressed: Boolean,
@@ -105,18 +116,19 @@ class TrainingScoreUseCase {
         weightAndVolumeRegressed: Boolean,
         weightAndRestRegressed: Boolean,
         volumeAndRestRegressed: Boolean,
-        allRegressed: Boolean
+        allRegressed: Boolean,
+        weightStagnationPenaltyApplied: Boolean
     ) = when {
-        previousTrainingLifted == 0.0 || previousTotalReps == 0 -> {
+        lastLiftedWeight == 0.0 || lastTotalReps == 0 -> {
             Res.string.first_training
         }
 
+        weightStagnationPenaltyApplied -> {
+            Res.string.weight_stagnation_penalty_applied
+        }
+
         allProgress -> {
-            if (totalScore == MAX_TOTAL_SCORE) {
-                Res.string.all_progress_perfect_score
-            } else {
-                Res.string.all_progress
-            }
+            Res.string.all_progress_perfect_score
         }
 
         onlyRestTimeRegressed -> {
@@ -212,5 +224,14 @@ class TrainingScoreUseCase {
             .coerceIn(MIN_SCORE, (MAX_SCORE_WEIGHT + POSITIVE_MARGIN))
     } else {
         MAX_SCORE_WEIGHT
+    }
+
+    private fun calculateWeightStagnationPenalty(trainings: List<Training>): Int {
+        val stagnationCount = trainings
+            .map { it.totalLiftedWeight }
+            .windowed(size = 3, step = 1)
+            .count { window -> window.distinct().size == 1 }
+
+        return if (stagnationCount > 0) 5 * stagnationCount else 0
     }
 }

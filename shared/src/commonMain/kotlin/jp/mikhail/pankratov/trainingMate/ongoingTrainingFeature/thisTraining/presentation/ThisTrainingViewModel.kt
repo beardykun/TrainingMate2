@@ -129,12 +129,13 @@ class ThisTrainingViewModel(
     }
 
     private suspend fun loadLastSameTrainingData(ongoingTrainingTemplateId: Long) {
-        val lastTraining = trainingUseCaseProvider.getLastSameHistoryTrainingUseCase()
+        val lastTrainings = trainingUseCaseProvider.getLastSameHistoryTrainingsUseCase()
             .invoke(trainingTemplateId = ongoingTrainingTemplateId)
             .first()
         _state.update {
             it.copy(
-                lastTraining = lastTraining
+                lastTraining = lastTrainings?.firstOrNull(),
+                recentTrainings = lastTrainings
             )
         }
     }
@@ -171,10 +172,10 @@ class ThisTrainingViewModel(
     }
 
     private fun scoreTraining(ongoingTraining: Training) {
-        val previousTraining = state.value.lastTraining
+        val recentTrainings = state.value.recentTrainings ?: emptyList()
         val score = trainingScoreUseCase.invoke(
             training = ongoingTraining,
-            previousTraining = previousTraining
+            recentTrainings = recentTrainings
         )
         _state.update {
             it.copy(score = score)

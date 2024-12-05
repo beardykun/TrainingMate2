@@ -81,7 +81,7 @@
     <!-- Training Scores -->
     <!-- All Progress -->
     <string name="all_progress_perfect_score">Outstanding performance! You've reached the perfect score. Keep up the fantastic work!</string>
-    <string name="all_progress">You’ve done an excellent job! Keep pushing to achieve perfection!</string>
+    <string name="weight_stagnation_penalty_applied">"Good job! But lifted weight has stagnated over multiple trainings. Let's push for progress next time!"</string>
 
     <!-- Only Rest Time Regressed -->
     <string name="only_rest_time_regressed_perfect_score">Perfect score! Your total effort remains exceptional despite an increase in rest time.</string>

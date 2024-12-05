@@ -12,6 +12,7 @@ data class ThisTrainingState(
     val exerciseLocalsWithHeaders: List<ExerciseListItem>? = null,
     val exercisesLocal: List<ExerciseLocal> = emptyList(),
     val lastTraining: Training? = null,
+    val recentTrainings: List<Training>? = null,
     val timerState: TimerState = TimerState(),
     val score: TrainingScore? = null
 )

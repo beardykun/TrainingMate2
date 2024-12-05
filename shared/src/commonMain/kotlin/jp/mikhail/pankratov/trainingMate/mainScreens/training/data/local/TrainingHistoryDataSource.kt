@@ -149,11 +149,14 @@ class TrainingHistoryDataSource(db: TrainingDatabase) : ITrainingHistoryDataSour
         exerciseQuery.deleteTrainingExercisesRecords(training_history_id = trainingId)
     }
 
-    override fun getLastSameTraining(trainingTemplateId: Long): Flow<Training?> {
-        return query.getLastSameTraining(training_template_id = trainingTemplateId).asFlow()
-            .map { trainingHistory ->
-                trainingHistory.executeAsOneOrNull()?.toTraining()
-            }.flowOn(Dispatchers.IO)
+    override fun getLastSameTrainings(trainingTemplateId: Long): Flow<List<Training>?> {
+        return query.getLastSameTrainings(training_template_id = trainingTemplateId).asFlow()
+            .mapToList(Dispatchers.IO)
+            .map { trainings ->
+                trainings.map {
+                    it.toTraining()
+                }
+            }
     }
 
     override fun getLastTraining(): Flow<Training?> {
