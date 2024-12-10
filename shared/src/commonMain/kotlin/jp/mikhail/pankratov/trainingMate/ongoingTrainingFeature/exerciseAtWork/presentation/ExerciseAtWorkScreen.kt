@@ -163,7 +163,7 @@ fun ExerciseAtWorkScreen(
                         lastExercise = state.exerciseDetails.lastSameExercise,
                         exercise = state.exerciseDetails.exercise
                     ) { exerciseName ->
-                        navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/$exerciseName")
+                        navigator.navigate("${Routs.ExerciseScreens.exerciseAtWorkHistory}/$exerciseName/${state.ongoingTraining?.trainingTemplateId}")
                     }
                 }
                 AnimatedVisibility(visible = state.exerciseDetails.lastSameExercise?.sets?.isEmpty() == false) {

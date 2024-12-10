@@ -58,14 +58,10 @@ import jp.mikhail.pankratov.trainingMate.trainigSelection.presentation.TrainingS
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.last_month_summary
 import maxrep.shared.generated.resources.last_week_summary
-import maxrep.shared.generated.resources.month
-import maxrep.shared.generated.resources.month_all
 import maxrep.shared.generated.resources.notification_permission_denied
 import maxrep.shared.generated.resources.notification_permission_required
 import maxrep.shared.generated.resources.this_month_summary
 import maxrep.shared.generated.resources.this_week_summary
-import maxrep.shared.generated.resources.week
-import maxrep.shared.generated.resources.week_all
 import moe.tlaster.precompose.navigation.Navigator
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
@@ -150,11 +146,7 @@ private fun RouteBuilder.summaryScreens(
                 Res.string.last_week_summary.getString(),
                 Res.string.this_week_summary.getString(),
                 Res.string.last_month_summary.getString(),
-                Res.string.this_month_summary.getString(),
-                Res.string.week.getString(),
-                Res.string.month.getString(),
-                Res.string.week_all.getString(),
-                Res.string.month_all.getString()
+                Res.string.this_month_summary.getString()
             )
             val viewModel: SummaryViewModel =
                 koinViewModel(qualifier = named("SummaryViewModel")) { parametersOf(stringsToPass) }
@@ -299,13 +291,14 @@ private fun RouteBuilder.trainingScreens(
         }
 
         scene(
-            route = "${Routs.ExerciseScreens.exerciseAtWorkHistory}/{$EXERCISE_NAME}",
+            route = "${Routs.ExerciseScreens.exerciseAtWorkHistory}/{$EXERCISE_NAME}/{$TRAINING_TEMPLATE_ID}",
             navTransition = NavTransition()
         ) { backStackEntry ->
             val exerciseName: String = backStackEntry.path(EXERCISE_NAME) ?: ""
+            val trainingTemplateId: Long = backStackEntry.path(TRAINING_TEMPLATE_ID) ?: -1
             val viewModel: ExerciseAtWorkHistoryViewModel =
                 koinViewModel(qualifier = named("ExerciseAtWorkHistoryViewModel"))
-                { parametersOf(exerciseName) }
+                { parametersOf(exerciseName, trainingTemplateId) }
             val state by viewModel.state.collectAsStateWithLifecycle()
             ExerciseAtWorkHistoryScreen(
                 state = state,

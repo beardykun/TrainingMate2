@@ -107,10 +107,11 @@ fun viewModelModule() = module {
         )
     }
 
-    viewModel(named("ExerciseAtWorkHistoryViewModel")) { (exerciseName: String) ->
+    viewModel(named("ExerciseAtWorkHistoryViewModel")) { (exerciseName: String, trainingTemplateId: Long) ->
         ExerciseAtWorkHistoryViewModel(
             exerciseUseCaseProvider = get(),
-            exerciseName = exerciseName
+            exerciseName = exerciseName,
+            trainingTemplateId = trainingTemplateId
         )
     }
 

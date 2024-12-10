@@ -15,6 +15,7 @@ import maxrep.shared.generated.resources.use_dot
 import maxrep.shared.generated.resources.value_should_not_be_0
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.round
 
 fun List<String>.listToString(): String {
     return this.filterNot { it.isEmpty() }
@@ -85,6 +86,10 @@ fun InputError.asResId(): StringResource {
         InputError.InputErrorFloat.USE_DOT_IN_WEIGHT -> Res.string.use_dot
         InputError.InputErrorFloat.EMPTY_WEIGHT -> Res.string.field_should_not_be_empty
     }
+}
+
+fun Double.toOneDecimal(): Double {
+    return round(this * 10) / 10.0
 }
 
 

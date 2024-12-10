@@ -31,11 +31,11 @@
     <string name="notification_permission_required">To receive rest time notifications, please enable them in your settings</string>
     <string name="cd_exercise_history">Exercise history</string>
     <string name="cd_start_timer">Start timer</string>
-    <string name="last_exercise">Last Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="last_exercise">Last Time\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
     <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
-    <string name="last_training_set">Last Training Set\n%1$s kg x %2$s</string>
-    <string name="this_exercise_with_args">This Exercise\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
-    <string name="this_exercise">This Exercise</string>
+    <string name="last_training_set">Last Time Set\n%1$s kg x %2$s</string>
+    <string name="this_exercise_with_args">Today\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="this_exercise">Today</string>
     <string name="this_exercise_length">\nLength: </string>
     <string name="this_exercise_lifted">\nLifted: </string>
     <string name="this_exercise_sets">\nSets: </string>
@@ -75,8 +75,8 @@
     <string name="summaries">Summary:</string>
     <string name="summaries_sample">Summaries sample:</string>
     <string name="dummy_data_toast">Dummy data\nFinish a few trainings to see yours</string>
-    <string name="rest_time">Rest Time: %1$s</string>
-    <string name="total_rest_time">Total Rest Time: %1$s min</string>
+    <string name="rest_time">Interval: %1$s</string>
+    <string name="total_rest_time">Total Intervals: %1$s min</string>
     <string name="training_score">Training Score</string>
     <!-- Training Scores -->
     <!-- All Progress -->
@@ -84,28 +84,28 @@
     <string name="weight_stagnation_penalty_applied">"Good job! But lifted weight has stagnated over multiple trainings. Let's push for progress next time!"</string>
 
     <!-- Only Rest Time Regressed -->
-    <string name="only_rest_time_regressed_perfect_score">Perfect score! Your total effort remains exceptional despite an increase in rest time.</string>
-    <string name="only_rest_time_regressed">Good effort! Try to optimize your rest time for better results next time!</string>
+    <string name="only_rest_time_regressed_perfect_score">Perfect score! Your total effort remains exceptional despite an increase in intervals time.</string>
+    <string name="only_rest_time_regressed">Good effort! Try to optimize your intervals for better results next time!</string>
 
     <!-- Only Weight Regressed -->
-    <string name="only_weight_regressed_perfect_score">Perfect score! Keep up the excellent work on volume and rest time!</string>
-    <string name="only_weight_regressed">You maintained excellent volume and rest time. Focus on lifting heavier weights next time!</string>
+    <string name="only_weight_regressed_perfect_score">Perfect score! Keep up the excellent work on volume and intervals time!</string>
+    <string name="only_weight_regressed">You maintained excellent volume and intervals. Focus on lifting heavier weights next time!</string>
 
     <!-- Only Volume Regressed -->
     <string name="only_volume_regressed_perfect_score">Perfect score! Outstanding lifting effort!</string>
     <string name="only_volume_regressed">Great lifting effort! Improving your training volume will elevate your score.</string>
 
     <!-- Weight and Volume Regressed -->
-    <string name="weight_and_volume_regressed_perfect_score">Perfect score! Rest time balance ensured top performance despite challenges.</string>
+    <string name="weight_and_volume_regressed_perfect_score">Perfect score! Intervals time balance ensured top performance despite challenges.</string>
     <string name="weight_and_volume_regressed">Focus on lifting heavier weights and completing more reps or sets in your next training.</string>
 
     <!-- Weight and Rest Regressed -->
-    <string name="weight_and_rest_regressed_perfect_score">Perfect score! Your volume compensated beautifully for longer rest and lighter weights.</string>
+    <string name="weight_and_rest_regressed_perfect_score">Perfect score! Your volume compensated beautifully for longer intervals and lighter weights.</string>
     <string name="weight_and_rest_regressed">Push harder with heavier weights and shorter breaks next time!</string>
 
     <!-- Volume and Rest Regressed -->
-    <string name="volume_and_rest_regressed_perfect_score">Perfect score! Great lifting effort despite longer rest and reduced volume.</string>
-    <string name="volume_and_rest_regressed">Focus on improving training volume and rest time for better progress.</string>
+    <string name="volume_and_rest_regressed_perfect_score">Perfect score! Great lifting effort despite longer intervals and reduced volume.</string>
+    <string name="volume_and_rest_regressed">Focus on improving training volume and intervals time for better progress.</string>
 
     <!-- All Regressed -->
     <string name="all_regressed_perfect_score">Perfect score achieved despite challenges! Focus on incremental improvements in all areas.</string>
@@ -151,6 +151,8 @@
     <string name="light">Light</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
+    <string name="all">All</string>
+    <string name="same_training">Same training</string>
 
     <!-- AnalysisScreen -->
     <string name="select_exercise">Select Exercise</string>
@@ -169,7 +171,7 @@
     <!-- HistoryInfoScreen -->
     <string name="training_name_with_arg">Training name: %1$s</string>
     <string name="training_groups_with_arg">Training groups: %1$s</string>
-    <string name="training_duration_with_arg">Training duration: %1$s min</string>
+    <string name="training_duration_with_arg">Training duration: %1$s</string>
     <string name="total_weight_lifted_with_arg">Total Lifted weight: %1$d kg</string>
     <string name="lifted_weight_with_arg">Lifted weight: %1$d kg</string>
     <string name="back_btn">Back</string>
@@ -186,8 +188,8 @@
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
     <string name="no_exercises_in_training">No exercises in this training yet</string>
     <string name="finish_training">Finish Training</string>
-    <string name="last_training_with_args">Last training\nLifted: %1$d kg\nLength: %2$s</string>
-    <string name="this_training_with_args">This training\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="last_training_with_args">Last time\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="this_training_with_args">Today\nLifted: %1$d kg\nLength: %2$s</string>
     <string name="this_training">This training</string>
 
     <!-- UserInfo -->
@@ -201,7 +203,7 @@
     <string name="number_of_done_exercises">Done exercises</string>
     <string name="number_of_done_sets">Done sets</string>
     <string name="total_reps_number">Total reps number</string>
-    <string name="total_rest">Total rest time</string>
+    <string name="total_rest">Total intervals</string>
     <string name="average_weight_per_exercise">Average weight per exercise</string>
     <string name="average_weight_per_workout">Average weight per workout</string>
     <string name="average_workout_time">Average workout time</string>
@@ -222,7 +224,7 @@
     <string name="increment_weight_label">Auto Input Increment Weight</string>
     <string name="increment_weight_placeholder">Increment weight value in progress mode</string>
     <string name="interval_seconds_label">Timer Rest Interval Seconds</string>
-    <string name="interval_seconds_placeholder">Rest interval between sets in seconds</string>
+    <string name="interval_seconds_placeholder">Interval between sets in seconds</string>
 
 
     <!-- EXERCISES NAMES -->

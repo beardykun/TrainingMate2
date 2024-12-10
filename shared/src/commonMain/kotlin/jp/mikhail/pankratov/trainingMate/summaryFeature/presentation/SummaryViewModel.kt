@@ -67,10 +67,6 @@ private const val WEEK_LAST_PREFIX_INDEX = 0
 private const val WEEK_CURRENT_PREFIX_INDEX = 1
 private const val MONTH_LAST_PREFIX_INDEX = 2
 private const val MONTH_CURRENT_PREFIX_INDEX = 3
-private const val WEEK_INDEX = 4
-private const val MONTH_INDEX = 5
-private const val WEEK_ALL_INDEX = 6
-private const val MONTH_ALL_INDEX = 7
 private const val LIMIT: Long = 30
 private const val MIN_LIST_SIZE = 2
 
@@ -301,25 +297,21 @@ class SummaryViewModel(
     fun onEvent(event: SummaryScreenEvent) {
         when (event) {
             is SummaryScreenEvent.OnTabChanged -> {
-                val summaryData = when (event.pageName) {
-                    stringsToPass[WEEK_INDEX] -> {
+                val summaryData = when (event.tab) {
+                    SummaryTabs.WEEK -> {
                         state.value.weeklySummaryPieChatData
                     }
 
-                    stringsToPass[MONTH_INDEX] -> {
+                    SummaryTabs.MONTH -> {
                         state.value.monthlySummaryPieChatData
                     }
 
-                    stringsToPass[WEEK_ALL_INDEX] -> {
+                    SummaryTabs.WEEK_ALL -> {
                         state.value.weeklySummaryBarChatData
                     }
 
-                    stringsToPass[MONTH_ALL_INDEX] -> {
+                    SummaryTabs.MONTH_ALL -> {
                         state.value.monthlySummaryBarChatData
-                    }
-
-                    else -> {
-                        state.value.summaryDataToDisplay
                     }
                 }
                 _state.update {

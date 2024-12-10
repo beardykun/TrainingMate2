@@ -5,11 +5,6 @@ import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.Routs
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.MyHorizontalViewPager
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TopAppBarScaffold
-import maxrep.shared.generated.resources.Res
-import maxrep.shared.generated.resources.month
-import maxrep.shared.generated.resources.month_all
-import maxrep.shared.generated.resources.week
-import maxrep.shared.generated.resources.week_all
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -23,15 +18,17 @@ fun SummaryScreen(
         onBackPressed = { navigator.navigate(Routs.MainScreens.training.title) },
         content = {
             state.summaryDataToDisplay?.let { summaryItem ->
+                val tabs = SummaryTabs.entries.map { it.tabName.getString() }
                 MyHorizontalViewPager(
-                    pageNames = listOf(
-                        Res.string.week.getString(),
-                        Res.string.month.getString(),
-                        Res.string.week_all.getString(),
-                        Res.string.month_all.getString()
-                    ),
+                    pageNames = tabs,
                     onTabChanged = { item ->
-                        onEvent(SummaryScreenEvent.OnTabChanged(item))
+                        onEvent(
+                            SummaryScreenEvent.OnTabChanged(
+                                SummaryTabs.entries[tabs.indexOf(
+                                    item
+                                )]
+                            )
+                        )
                     }
                 ) {
                     when (summaryItem) {

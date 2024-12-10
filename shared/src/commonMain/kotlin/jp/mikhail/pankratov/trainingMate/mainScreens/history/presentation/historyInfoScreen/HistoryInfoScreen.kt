@@ -28,6 +28,7 @@ import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.Top
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
 import jp.mikhail.pankratov.trainingMate.ongoingTrainingFeature.exerciseAtWork.presentation.composables.AnimatedTextItem
 import maxrep.shared.generated.resources.Res
+import maxrep.shared.generated.resources.date
 import maxrep.shared.generated.resources.lifted_weight_with_arg
 import maxrep.shared.generated.resources.sets
 import maxrep.shared.generated.resources.total_weight_lifted_with_arg
@@ -54,6 +55,16 @@ fun HistoryInfoScreen(
                             training.name
                         )
                     )
+                    training.startTime?.let { startTime ->
+                        HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
+                        Spacer(modifier = Modifier.height(Dimens.Padding8))
+                        TextLarge(
+                            text = stringResource(
+                                Res.string.date,
+                                Utils.formatEpochMillisToDate(startTime)
+                            )
+                        )
+                    }
                     HorizontalDivider(color = Color.LightGray, thickness = Dimens.dividerHeight)
                     Spacer(modifier = Modifier.height(Dimens.Padding8))
                     TextLarge(

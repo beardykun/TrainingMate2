@@ -15,6 +15,7 @@ import jp.mikhail.pankratov.trainingMate.core.getString
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextLarge
 import jp.mikhail.pankratov.trainingMate.core.presentation.commomComposables.TextMedium
 import jp.mikhail.pankratov.trainingMate.core.presentation.utils.Utils
+import jp.mikhail.pankratov.trainingMate.core.toOneDecimal
 import jp.mikhail.pankratov.trainingMate.theme.darkGreen
 import maxrep.shared.generated.resources.Res
 import maxrep.shared.generated.resources.average_training_score_with_args
@@ -114,7 +115,7 @@ fun SummaryWeekly(
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_exercise_with_args,
-                        summary.avgLiftedWeightPerExercise.toInt()
+                        summary.avgLiftedWeightPerExercise.toOneDecimal()
                     ),
                     arguments = getArgument(
                         lastWeekSummary?.avgLiftedWeightPerExercise?.toInt(),
@@ -124,7 +125,7 @@ fun SummaryWeekly(
                 TextMedium(
                     text = stringResource(
                         Res.string.average_weight_per_workout_with_args,
-                        summary.avgLiftedWeightPerWorkout.toInt()
+                        summary.avgLiftedWeightPerWorkout.toOneDecimal()
                     ),
                     arguments = getArgument(
                         lastWeekSummary?.avgLiftedWeightPerWorkout?.toInt(),

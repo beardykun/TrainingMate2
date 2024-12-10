@@ -54,6 +54,7 @@ import maxrep.shared.generated.resources.summaries
 import maxrep.shared.generated.resources.summaries_sample
 import maxrep.shared.generated.resources.want_to_delete_last_training
 import maxrep.shared.generated.resources.your_last_training_dummy
+import moe.tlaster.precompose.navigation.BackHandler
 import moe.tlaster.precompose.navigation.Navigator
 
 @Composable
@@ -71,6 +72,7 @@ fun TrainingScreen(
             repeatMode = RepeatMode.Reverse
         )
     )
+    BackHandler(enabled = true, onBack = {})
     Scaffold(floatingActionButton =
     {
         if (state.ongoingTraining == null)
