@@ -165,7 +165,11 @@ fun ThisTrainingScreen(
                     }
                     CommonButton(
                         onClick = {
-                            onEvent(ThisTrainingEvent.OnScoreTraining)
+                            if (state.ongoingTraining?.totalLiftedWeight == 0.0) {
+                                onEvent(ThisTrainingEvent.EndTraining)
+                                navigator.navigate(Routs.MainScreens.training.title)
+                            } else
+                                onEvent(ThisTrainingEvent.OnScoreTraining)
                         },
                         text = Res.string.finish_training.getString()
                     )

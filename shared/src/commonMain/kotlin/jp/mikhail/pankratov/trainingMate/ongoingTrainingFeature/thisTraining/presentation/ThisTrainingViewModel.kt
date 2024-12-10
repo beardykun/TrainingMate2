@@ -188,7 +188,7 @@ class ThisTrainingViewModel(
                 if (ongoingTraining.totalLiftedWeight == 0.0) {
                     trainingUseCaseProvider.getDeleteTrainingHistoryRecordUseCase()
                         .invoke(ongoingTrainingId)
-                    return@let
+                    return@launch
                 }
                 state.value.score?.score?.let { score ->
                     trainingUseCaseProvider.getFinishTrainingHistoryUseCase()
