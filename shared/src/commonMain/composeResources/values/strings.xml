@@ -31,11 +31,11 @@
     <string name="notification_permission_required">To receive rest time notifications, please enable them in your settings</string>
     <string name="cd_exercise_history">Exercise history</string>
     <string name="cd_start_timer">Start timer</string>
-    <string name="last_exercise">Last Time\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="last_exercise">Last Time:\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
     <string name="last_exercise_next_set">Set %1$d: %2$s kg x %3$s</string>
-    <string name="last_training_set">Last Time Set\n%1$s kg x %2$s</string>
-    <string name="this_exercise_with_args">Today\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
-    <string name="this_exercise">Today</string>
+    <string name="last_training_set">Last training:\n%1$s kg x %2$s</string>
+    <string name="this_exercise_with_args">Today:\nLength: %1$s\nLifted: %2$d kg\nSets: %3$d</string>
+    <string name="this_exercise">Today:</string>
     <string name="this_exercise_length">\nLength: </string>
     <string name="this_exercise_lifted">\nLifted: </string>
     <string name="this_exercise_sets">\nSets: </string>
@@ -188,9 +188,9 @@
     <string name="cd_add_new_exercises_button">Add new exercises button</string>
     <string name="no_exercises_in_training">No exercises in this training yet</string>
     <string name="finish_training">Finish Training</string>
-    <string name="last_training_with_args">Last time\nLifted: %1$d kg\nLength: %2$s</string>
-    <string name="this_training_with_args">Today\nLifted: %1$d kg\nLength: %2$s</string>
-    <string name="this_training">This training</string>
+    <string name="last_training_with_args">Last time:\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="this_training_with_args">Today:\nLifted: %1$d kg\nLength: %2$s</string>
+    <string name="this_training">Today:</string>
 
     <!-- UserInfo -->
     <string name="strength_comparison_info">Muscle groups strength level comparison</string>
